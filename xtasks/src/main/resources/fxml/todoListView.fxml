@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xtasks.javafx.controller.TodoListViewController">
+      <children>
+         <ListView fx:id="openList" layoutX="123.0" layoutY="101.0" prefHeight="83.0" prefWidth="612.0" />
+         <Button layoutX="150.0" layoutY="220.0" mnemonicParsing="false" onAction="#taskDoneAction" prefHeight="26.0" prefWidth="498.0" text="Set task to done" />
+         <ComboBox fx:id="userSelection" layoutX="128.0" layoutY="36.0" onAction="#userSelectionAction" prefHeight="26.0" prefWidth="608.0" />
+         <Label layoutX="33.0" layoutY="101.0" text="Open" />
+         <Label layoutX="41.0" layoutY="41.0" text="Person" />
+      </children>
+   </AnchorPane>

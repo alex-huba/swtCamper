@@ -1,0 +1,39 @@
+stages:
+    - checkformat
+    - compile
+    - testcoverage
+
+variables:
+    DOCKER_HOST: unix:///var/run/docker.sock
+    COMPOSE_HTTP_TIMEOUT: "300"
+    GIT_DEPTH: 1
+
+checkformat:
+    stage: checkformat
+    image: docker/compose:latest
+    tags:
+        - builder
+        - amd64
+    script:
+        - docker-compose -f ci.yml rm -f
+        - docker-compose -f ci.yml up --build --exit-code-from=checkformat checkformat
+        
+compile:
+    stage: compile
+    image: docker/compose:latest
+    tags:
+        - builder
+        - amd64
+    script:
+        - docker-compose -f ci.yml rm -f
+        - docker-compose -f ci.yml up --build --exit-code-from=compile compile
+
+testcoverage:
+    stage: testcoverage
+    image: docker/compose:latest
+    tags:
+        - builder
+        - amd64
+    script:
+        - docker-compose -f ci.yml rm -f
+        - docker-compose -f ci.yml up --build --exit-code-from=testcoverage testcoverage

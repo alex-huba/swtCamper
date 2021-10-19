@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "prettier": "^2.0.5",
+        "prettier-plugin-java": "^0.8.0"
+    },
+    "scripts": {
+        "autoformat": "prettier --write src/**/*.java",
+        "ci-prettier-check": "prettier --check src/**/*.java"
+    }
+}

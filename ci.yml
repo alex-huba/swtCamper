@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  checkformat:
+    build:
+      context: ./xtasks/
+      dockerfile: Dockerfile.ci
+      target: checkformat
+  compile:
+    build:
+      context: ./xtasks/
+      dockerfile: Dockerfile.ci
+      target: compile
+  testcoverage:
+    build:
+      context: ./xtasks/
+      dockerfile: Dockerfile.ci
+      target: testcoverage

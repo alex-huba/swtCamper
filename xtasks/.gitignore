@@ -1,0 +1,12 @@
+.idea
+*.iml
+local.properties
+/build
+.gradle
+out
+/node_modules/
+/bin/
+
+.classpath
+.project
+/.settings/

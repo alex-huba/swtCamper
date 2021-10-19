@@ -1,0 +1,97 @@
+buildscript {
+    ext {
+        springBootVersion = '2.3.0.RELEASE'
+        jacocoReportsDir = file("$buildDir/reports/jacoco")
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.+"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'application'
+    id 'jacoco'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+group 'xtasks'
+mainClassName = 'xtasks.Main'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform ("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.1.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+}
+
+sourceSets {
+    main.java.srcDir "src/main/java"
+    main.resources.srcDir "src/main/resources"
+    test.java.srcDir "src/test/java"
+    test.resources.srcDir "src/test/resources"
+}
+
+javafx {
+    version = "11.0.2"
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
+}
+
+jacocoTestReport {
+    // run tests before generating the report
+    dependsOn test
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+// see https://medium.com/@tristan.lins/gradle-und-gitlab-coverage-4b334ed1551c
+task coverageReport() {
+    dependsOn jacocoTestReport
+
+    def reportFile = project.file("$jacocoReportsDir/test/jacocoTestReport.xml")
+    inputs.file(reportFile)
+
+    doLast {
+        def slurper = new XmlSlurper()
+        slurper.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        slurper.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        def xml = slurper.parse(reportFile)
+        def counter = xml.counter.find {
+            // can also use BRANCH instead of INSTRUCTION
+            node -> node.@type == 'INSTRUCTION'
+        }
+        def missed = counter.@missed.toDouble()
+        def covered = counter.@covered.toDouble()
+        def total = missed + covered
+        def percentage = covered / total * 100
+
+        printf "Missed %.0f branches%n", missed
+        printf "Covered %.0f branches%n", covered
+        printf "Total %.0f%%%n", percentage
+    }
+}
