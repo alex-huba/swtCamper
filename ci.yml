@@ -3,16 +3,47 @@ version: '3.7'
 services:
   checkformat:
     build:
-      context: ./xtasks/
+      context: ./
       dockerfile: Dockerfile.ci
       target: checkformat
   compile:
     build:
-      context: ./xtasks/
+      context: ./
       dockerfile: Dockerfile.ci
       target: compile
   testcoverage:
     build:
-      context: ./xtasks/
+      context: ./
       dockerfile: Dockerfile.ci
       target: testcoverage
+    env_file:
+      - env/ci/metrics.env
+    environment:
+      - CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH
+  metric_loc_java:
+    build:
+      context: ./
+      dockerfile: Dockerfile.ci
+      target: metric_loc_java
+    env_file:
+      - env/ci/metrics.env
+    environment:
+      - CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH
+  metric_loc_java_main:
+    build:
+      context: ./
+      dockerfile: Dockerfile.ci
+      target: metric_loc_java_main
+    env_file:
+      - env/ci/metrics.env
+    environment:
+      - CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH
+  metric_loc_java_test:
+    build:
+      context: ./
+      dockerfile: Dockerfile.ci
+      target: metric_loc_java_test
+    env_file:
+      - env/ci/metrics.env
+    environment:
+      - CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH

@@ -1,5 +1,6 @@
 stages:
     - checkformat
+    - monitor
     - compile
     - testcoverage
 
@@ -17,7 +18,40 @@ checkformat:
     script:
         - docker-compose -f ci.yml rm -f
         - docker-compose -f ci.yml up --build --exit-code-from=checkformat checkformat
-        
+
+metric_loc_java:
+  stage: monitor
+  image: docker/compose:latest
+  tags:
+      - builder
+      - amd64
+  script:
+      - docker-compose -f ci.yml rm -f
+      - export CI_COMMIT_BRANCH
+      - docker-compose -f ci.yml up --build --exit-code-from=metric_loc_java metric_loc_java
+
+metric_loc_java_main:
+  stage: monitor
+  image: docker/compose:latest
+  tags:
+      - builder
+      - amd64
+  script:
+      - docker-compose -f ci.yml rm -f
+      - export CI_COMMIT_BRANCH
+      - docker-compose -f ci.yml up --build --exit-code-from=metric_loc_java_main metric_loc_java_main
+
+metric_loc_java_test:
+  stage: monitor
+  image: docker/compose:latest
+  tags:
+      - builder
+      - amd64
+  script:
+      - docker-compose -f ci.yml rm -f
+      - export CI_COMMIT_BRANCH
+      - docker-compose -f ci.yml up --build --exit-code-from=metric_loc_java_test metric_loc_java_test
+
 compile:
     stage: compile
     image: docker/compose:latest

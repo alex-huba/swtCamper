@@ -8,6 +8,8 @@ The purpose of the xTASKS demo project is to provide a working application that 
 * Contained unit and integration tests that provide good examples on how to test the code.
 * A preconfigured GitLab CI pipeline that builds/tests the software, and checks for formatting issues automatically.
 
+The corresponding SWT Monitor dashboard for the dev branch is available at ...
+
 See [Specification.md](doc/Specification.md) for a description of the functionality.
 
 See [Documentation.md](doc/Documentation.md) for a description of the implementation and notes on development.
