@@ -14,6 +14,8 @@ public class VehicleDTO {
 
     private String[] particularities;
 
+    private VehicleStatusDTO vehicleStatus;
+
     public VehicleDTO() {
         super();
     }
@@ -32,15 +34,15 @@ public class VehicleDTO {
         return vehicleType;
     }
 
-    public void setVehicleType(VehicleTypeDTO vehicleType) {
+    public void setVehicleTypeDTO(VehicleTypeDTO vehicleType) {
         this.vehicleType = vehicleType;
     }
 
-    public VehicleFeaturesDTO getVehicleFeatures() {
+    public VehicleFeaturesDTO getVehicleFeaturesDTO() {
         return vehicleFeatures;
     }
 
-    public void setVehicleFeatures(VehicleFeaturesDTO vehicleFeatures) {
+    public void setVehicleFeaturesDTO(VehicleFeaturesDTO vehicleFeatures) {
         this.vehicleFeatures = vehicleFeatures;
     }
 
@@ -67,7 +69,8 @@ public class VehicleDTO {
             VehicleTypeDTO vehicleType,
             VehicleFeaturesDTO vehicleFeatures,
             String[] pictureURLs,
-            String[] particularities
+            String[] particularities,
+            VehicleStatusDTO vehicleStatus
     ) {
         super();
         this.vehicleID = vehicleID;
@@ -75,6 +78,7 @@ public class VehicleDTO {
         this.vehicleFeatures = vehicleFeatures;
         this.pictureURLs = pictureURLs;
         this.particularities = particularities;
+        this.vehicleStatus = vehicleStatus
     }
 
     @Override
