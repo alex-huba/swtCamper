@@ -5,12 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xtasks.api.contract.PersonDTO;
-import xtasks.api.contract.TaskDTO;
-import xtasks.api.contract.TaskStatusDTO;
-import xtasks.backend.entities.Person;
-import xtasks.backend.entities.Task;
-import xtasks.backend.entities.TaskStatus;
+import xtasks.api.contract.*;
+import xtasks.backend.entities.*;
 import xtasks.backend.services.TaskService;
 import xtasks.backend.services.exceptions.GenericServiceException;
 
@@ -68,5 +64,32 @@ public class ModelMapper {
       taskDTOs.add(taskToTaskDTO(task));
     }
     return taskDTOs;
+  }
+
+  // ------------------------------Team A ab hier----------------------------------
+
+  public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
+
+  }
+
+  public VehicleFeaturesDTO vehicleFeaturesToVehicleFeaturesDTO(VehicleFeatures vehicleFeatures) {
+
+  }
+
+  public VehicleStatusDTO vehicleStatusToVehicleStatusDTO(VehicleStatus vehicleStatus) {
+
+  }
+
+  public VehicleDTO vehicleToVehicleDTO(Vehicle vehicle)
+  // TODO throws Exception
+  {
+    return new VehicleDTO(
+            vehicle.getVehicleID(),
+            vehicleTypeToVehicleTypeDTO(vehicle.getVehicleType()),
+            vehicleFeaturesToVehicleFeaturesDTO(vehicle.getVehicleFeatures()),
+            vehicle.getPictureURLs(),
+            vehicle.getParticularities(),
+            vehicleStatusToVehicleStatusDTO(vehicle.getVehicleStatus())
+    );
   }
 }
