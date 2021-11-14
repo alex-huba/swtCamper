@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Vehicle {
 
-    VehicleStatus vehicleStatus;
+    Availability availability;
 
     @Id
     @GeneratedValue
@@ -20,26 +20,26 @@ public class Vehicle {
 
 
     public Vehicle(VehicleType vehicleType){
-        this.vehicleStatus = VehicleStatus.AVAILABLE;
+        this.availability = Availability.AVAILABLE;
         this.vehicleType = vehicleType;
     }
 
     @Override
     public String toString() {
         return "Vehicle: " +
-                "vehicleStatus=" + vehicleStatus +
+                "vehicleStatus=" + availability +
                 ", vehicleID=" + vehicleID +
                 ", vehicleType=" + vehicleType +
                 ", pictureURLs=" + Arrays.toString(pictureURLs) +
                 ", particularities='" + particularities + '\'';
     }
 
-    public VehicleStatus getVehicleStatus() {
-        return vehicleStatus;
+    public Availability getVehicleStatus() {
+        return availability;
     }
 
-    public void setVehicleStatus(VehicleStatus vehicleStatus) {
-        this.vehicleStatus = vehicleStatus;
+    public void setVehicleStatus(Availability availability) {
+        this.availability = availability;
     }
 
     public Long getVehicleID() {
