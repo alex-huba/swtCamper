@@ -19,9 +19,19 @@ public class Vehicle {
     private String[] particularities;
 
 
-    public Vehicle(VehicleType vehicleType){
+    public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
         this.vehicleStatus = VehicleStatus.AVAILABLE;
         this.vehicleType = vehicleType;
+        this.vehicleFeatures = vehicleFeatures;
+    }
+
+    public Vehicle(VehicleType vehicleType) {
+        this.vehicleStatus = VehicleStatus.AVAILABLE;
+        this.vehicleType = vehicleType;
+    }
+
+    public Vehicle() {
+        super();
     }
 
     @Override
@@ -56,6 +66,14 @@ public class Vehicle {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public VehicleFeatures getVehicleFeatures() {
+        return vehicleFeatures;
+    }
+
+    public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
+        this.vehicleFeatures = vehicleFeatures;
     }
 
     public String[] getPictureURLs() {

@@ -20,7 +20,7 @@ public class VehicleFeatures {
     private String transmission;
 
 
-    public VehicleFeatures(Vehicle vehicle){
+    public VehicleFeatures(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
