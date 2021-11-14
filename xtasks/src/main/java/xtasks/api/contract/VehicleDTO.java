@@ -1,8 +1,5 @@
 package xtasks.api.contract;
 
-import xtasks.backend.entities.VehicleFeatures;
-import xtasks.backend.entities.VehicleType;
-
 import java.util.Arrays;
 
 public class VehicleDTO {
