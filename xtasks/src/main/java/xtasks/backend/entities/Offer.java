@@ -1,21 +1,23 @@
 package xtasks.backend.entities;
 
 public interface Offer {
+  // enum definieren --> type = Type.VEHICLE;
+  // public T getOfferedObject();
+  // public void setOfferedObject(T offeredObject);
 
-    // public T getOfferedObject();
-    // public void setOfferedObject(T offeredObject);
+  public Availability getAvailability();
 
-    public Availability getAvailability();
-    public void setAvailability(Availability availability);
+  public void setAvailability(Availability availability);
 
-    public Long getPrice();
-    public void setPrice(Long price);
+  public Long getPrice();
 
-    public String getRentalStartDate();
-    public void setRentalStartDate(String rentalStartDate);
+  public void setPrice(Long price);
 
-    public String getRentalReturnDate();
-    public void setRentalReturnDate(String rentalReturnDate);
+  public String getRentalStartDate();
 
+  public void setRentalStartDate(String rentalStartDate);
 
+  public String getRentalReturnDate();
+
+  public void setRentalReturnDate(String rentalReturnDate);
 }

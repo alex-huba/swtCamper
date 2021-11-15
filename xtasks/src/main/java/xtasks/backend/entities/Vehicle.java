@@ -1,76 +1,93 @@
 package xtasks.backend.entities;
 
+import java.util.Arrays;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Arrays;
 
 public class Vehicle {
 
-    Availability availability;
+  Availability availability;
 
-    @Id
-    @GeneratedValue
-    private Long vehicleID;
+  @Id
+  @GeneratedValue
+  private Long vehicleID;
 
-    private VehicleType vehicleType;
-    private VehicleFeatures vehicleFeatures;
+  private VehicleType vehicleType;
+  private VehicleFeatures vehicleFeatures;
 
-    private String[] pictureURLs;
-    private String[] particularities;
+  private String[] pictureURLs;
+  private String[] particularities;
 
+  public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
+    this.availability = Availability.AVAILABLE;
+    this.vehicleType = vehicleType;
+    this.vehicleFeatures = vehicleFeatures;
+  }
 
-    public Vehicle(VehicleType vehicleType){
-        this.availability = Availability.AVAILABLE;
-        this.vehicleType = vehicleType;
-    }
+  public Vehicle(VehicleType vehicleType) {
+    this.availability = Availability.AVAILABLE;
+    this.vehicleType = vehicleType;
+  }
 
-    @Override
-    public String toString() {
-        return "Vehicle: " +
-                "vehicleStatus=" + availability +
-                ", vehicleID=" + vehicleID +
-                ", vehicleType=" + vehicleType +
-                ", pictureURLs=" + Arrays.toString(pictureURLs) +
-                ", particularities='" + particularities + '\'';
-    }
+  public Vehicle() {
+    super();
+  }
 
-    public Availability getVehicleStatus() {
-        return availability;
-    }
+  @Override
+  public String toString() {
+    return (
+      "Vehicle: " +
+      "vehicleStatus=" +
+      availability +
+      ", vehicleID=" +
+      vehicleID +
+      ", vehicleType=" +
+      vehicleType +
+      ", pictureURLs=" +
+      Arrays.toString(pictureURLs) +
+      ", particularities='" +
+      particularities +
+      '\''
+    );
+  }
 
-    public void setVehicleStatus(Availability availability) {
-        this.availability = availability;
-    }
+  public Availability getVehicleStatus() {
+    return availability;
+  }
 
-    public Long getVehicleID() {
-        return vehicleID;
-    }
+  public void setVehicleStatus(Availability availability) {
+    this.availability = availability;
+  }
 
-    public void setVehicleID(Long vehicleID) {
-        this.vehicleID = vehicleID;
-    }
+  public Long getVehicleID() {
+    return vehicleID;
+  }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
+  public void setVehicleID(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+  public VehicleType getVehicleType() {
+    return vehicleType;
+  }
 
-    public String[] getPictureURLs() {
-        return pictureURLs;
-    }
+  public void setVehicleType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public void setPictureURLs(String[] pictureURLs) {
-        this.pictureURLs = pictureURLs;
-    }
+  public String[] getPictureURLs() {
+    return pictureURLs;
+  }
 
-    public String[] getParticularities() {
-        return particularities;
-    }
+  public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = pictureURLs;
+  }
 
-    public void setParticularities(String[] particularities) {
-        this.particularities = particularities;
-    }
+  public String[] getParticularities() {
+    return particularities;
+  }
+
+  public void setParticularities(String[] particularities) {
+    this.particularities = particularities;
+  }
 }
