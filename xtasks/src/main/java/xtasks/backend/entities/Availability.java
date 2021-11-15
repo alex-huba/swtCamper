@@ -1,5 +1,5 @@
 package xtasks.backend.entities;
 
-public enum VehicleStatus {
+public enum Availability {
     AVAILABLE, RENT, RESERVED,
 }

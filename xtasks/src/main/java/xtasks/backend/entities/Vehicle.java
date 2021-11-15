@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Vehicle {
 
-    VehicleStatus vehicleStatus;
+    Availability availability;
 
     @Id
     @GeneratedValue
@@ -19,27 +19,37 @@ public class Vehicle {
     private String[] particularities;
 
 
-    public Vehicle(VehicleType vehicleType){
-        this.vehicleStatus = VehicleStatus.AVAILABLE;
+    public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
+        this.availability = Availability.AVAILABLE;
         this.vehicleType = vehicleType;
+        this.vehicleFeatures = vehicleFeatures;
+    }
+
+    public Vehicle(VehicleType vehicleType) {
+        this.availability = Availability.AVAILABLE;
+        this.vehicleType = vehicleType;
+    }
+
+    public Vehicle() {
+        super();
     }
 
     @Override
     public String toString() {
         return "Vehicle: " +
-                "vehicleStatus=" + vehicleStatus +
+                "vehicleStatus=" + availability +
                 ", vehicleID=" + vehicleID +
                 ", vehicleType=" + vehicleType +
                 ", pictureURLs=" + Arrays.toString(pictureURLs) +
                 ", particularities='" + particularities + '\'';
     }
 
-    public VehicleStatus getVehicleStatus() {
-        return vehicleStatus;
+    public Availability getVehicleStatus() {
+        return availability;
     }
 
-    public void setVehicleStatus(VehicleStatus vehicleStatus) {
-        this.vehicleStatus = vehicleStatus;
+    public void setVehicleStatus(Availability availability) {
+        this.availability = availability;
     }
 
     public Long getVehicleID() {
@@ -56,6 +66,14 @@ public class Vehicle {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public VehicleFeatures getVehicleFeatures() {
+        return vehicleFeatures;
+    }
+
+    public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
+        this.vehicleFeatures = vehicleFeatures;
     }
 
     public String[] getPictureURLs() {
