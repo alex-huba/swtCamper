@@ -2,8 +2,6 @@ package xtasks.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xtasks.api.contract.VehicleFeaturesDTO;
-import xtasks.api.contract.VehicleTypeDTO;
 import xtasks.backend.entities.Vehicle;
 import xtasks.backend.entities.VehicleFeatures;
 import xtasks.backend.entities.VehicleType;
@@ -27,10 +25,12 @@ public class VehicleService {
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID(vehicleID);
         vehicle.setVehicleType(vehicleType);
-        vehicle.setVehicleFeatures(vehicleFeatures);
+        vehicle.setVehicleFeaturesID(vehicleFeatures.getID());
         vehicle.setPictureURLs(pictureURLs);
         vehicle.setParticularities(particularities);
 
+        // TODO implement vehicleFeaturesRepository
+        vehicleFeaturesRepository.save(vehicleFeatures);
         return vehicleRepository.save(vehicle);
     }
 }

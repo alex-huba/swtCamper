@@ -8,17 +8,13 @@ public class VehicleDTO {
 
     private VehicleTypeDTO vehicleType;
 
-    private VehicleFeaturesDTO vehicleFeatures;
+    private Long vehicleFeaturesID;
 
     private String[] pictureURLs;
 
     private String[] particularities;
 
     private AvailabilityDTO availability;
-
-    public VehicleDTO() {
-        super();
-    }
 
     // Getters & Setters
 
@@ -38,12 +34,12 @@ public class VehicleDTO {
         this.vehicleType = vehicleType;
     }
 
-    public VehicleFeaturesDTO getVehicleFeaturesDTO() {
-        return vehicleFeatures;
+    public Long getVehicleFeaturesID() {
+        return vehicleFeaturesID;
     }
 
-    public void setVehicleFeaturesDTO(VehicleFeaturesDTO vehicleFeatures) {
-        this.vehicleFeatures = vehicleFeatures;
+    public void setVehicleFeaturesID(long vehicleFeaturesID) {
+        this.vehicleFeaturesID = vehicleFeaturesID;
     }
 
     public String[] getPictureURLs() {
@@ -64,10 +60,12 @@ public class VehicleDTO {
 
     // Constructor
 
+    public VehicleDTO() { super(); }
+
     public VehicleDTO(
             Long vehicleID,
             VehicleTypeDTO vehicleType,
-            VehicleFeaturesDTO vehicleFeatures,
+            Long vehicleFeaturesID,
             String[] pictureURLs,
             String[] particularities,
             AvailabilityDTO availability
@@ -75,7 +73,7 @@ public class VehicleDTO {
         super();
         this.vehicleID = vehicleID;
         this.vehicleType = vehicleType;
-        this.vehicleFeatures = vehicleFeatures;
+        this.vehicleFeaturesID = vehicleFeaturesID;
         this.pictureURLs = pictureURLs;
         this.particularities = particularities;
         this.availability = availability;
@@ -86,7 +84,7 @@ public class VehicleDTO {
         return "VehicleDTO{" +
                 "vehicleID=" + vehicleID +
                 ", vehicleType=" + vehicleType +
-                ", vehicleFeatures=" + vehicleFeatures +
+                ", vehicleFeaturesID=" + vehicleFeaturesID +
                 ", pictureURLs=" + Arrays.toString(pictureURLs) +
                 ", particularities=" + Arrays.toString(particularities) +
                 '}';
