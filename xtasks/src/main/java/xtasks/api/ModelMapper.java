@@ -77,15 +77,26 @@ public class ModelMapper {
           return VehicleTypeDTO.CAMPER;
         case TRAILER:
           return VehicleTypeDTO.TRAILER;
-//        TODO implement default throws Exception
-//        default:
+//      TODO remove return: null;
+//       implement default throws Exception
+        default: return null;
 //          throw new GenericServiceException("VehicleType is invalid.");
       }
   }
 
   public AvailabilityDTO availabilityToAvailabilityDTO(Availability availability) {
-    // TODO implement
-    return null;
+    switch (availability) {
+      case AVAILABLE:
+        return AvailabilityDTO.AVAILABLE;
+      case RENT:
+        return AvailabilityDTO.RENT;
+      case RESERVED:
+        return AvailabilityDTO.RESERVED;
+//      TODO remove return: null;
+//       implement default throws Exception
+        default: return null;
+        // throw new GenericServiceException("Availability value is invalid.");
+    }
   }
 
   public VehicleDTO vehicleToVehicleDTO(Vehicle vehicle)
