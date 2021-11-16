@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xtasks.javafx.controller.TaskAssignmentViewController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.TaskAssignmentViewController">
    <children>
       <ListView fx:id="assignedPersonList" layoutX="445.0" layoutY="113.0" prefHeight="323.0" prefWidth="279.0"/>
       <Button layoutX="296.0" layoutY="124.0" mnemonicParsing="false" onAction="#assignButtonAction" prefHeight="26.0" prefWidth="126.0" text="&gt;&gt; assign &gt;&gt;" />

@@ -1,15 +1,15 @@
 FROM node:10 as checkformat
 WORKDIR /app
-COPY ./xtasks/package.json /app/package.json
-COPY ./xtasks/package-lock.json /app/package-lock.json
+COPY ./swtcamper/package.json /app/package.json
+COPY ./swtcamper/package-lock.json /app/package-lock.json
 RUN npm install
-COPY ./xtasks/ /app
+COPY ./swtcamper/ /app
 ENTRYPOINT ["npm", "run", "ci-prettier-check"]
 
 FROM aldanial/cloc as cloc
 RUN apt-get update && apt-get install --yes --no-install-recommends jq curl cloc
 WORKDIR /app
-COPY ./xtasks /app/xtasks
+COPY ./swtcamper /app/swtcamper
 COPY ./.git/ /app
 
 FROM cloc as metric_loc_java
@@ -17,7 +17,7 @@ ENV METRIC=LOC_JAVA
 WORKDIR /app
 ENTRYPOINT BRANCH=$(git branch | sed -n 's/^\* //p'); \
 HASH=$(git rev-parse --short HEAD); \
-VALUE=$(cloc ./xtasks --json | jq -r '.Java.code'); \
+VALUE=$(cloc ./swtcamper --json | jq -r '.Java.code'); \
 ZEIT=$(git show -s --format=%ct ${HASH}); \
 curl --silent -0 -X POST ${APIENDPOINT} \
 -H "Expect:" \
@@ -37,7 +37,7 @@ ENV METRIC=LOC_JAVA_MAIN
 WORKDIR /app
 ENTRYPOINT BRANCH=$(git branch | sed -n 's/^\* //p'); \
 HASH=$(git rev-parse --short HEAD); \
-VALUE=$(cloc ./xtasks/src/main --json | jq -r '.Java.code'); \
+VALUE=$(cloc ./swtcamper/src/main --json | jq -r '.Java.code'); \
 ZEIT=$(git show -s --format=%ct ${HASH}); \
 curl --silent -0 -X POST ${APIENDPOINT} \
 -H "Expect:" \
@@ -57,7 +57,7 @@ ENV METRIC=LOC_JAVA_TEST
 WORKDIR /app
 ENTRYPOINT BRANCH=$(git branch | sed -n 's/^\* //p'); \
 HASH=$(git rev-parse --short HEAD); \
-VALUE=$(cloc ./xtasks/src/test --json | jq -r '.Java.code'); \
+VALUE=$(cloc ./swtcamper/src/test --json | jq -r '.Java.code'); \
 ZEIT=$(git show -s --format=%ct ${HASH}); \
 curl --silent -0 -X POST ${APIENDPOINT} \
 -H "Expect:" \
@@ -76,15 +76,15 @@ curl --silent -0 -X POST ${APIENDPOINT} \
 
 FROM openjdk:11-jdk-slim as compile
 WORKDIR /app
-COPY ./xtasks/gradle/ /app/gradle/
-COPY ./xtasks/build.gradle /app/build.gradle
-COPY ./xtasks/settings.gradle /app/settings.gradle
-COPY ./xtasks/gradlew /app/gradlew
+COPY ./swtcamper/gradle/ /app/gradle/
+COPY ./swtcamper/build.gradle /app/build.gradle
+COPY ./swtcamper/settings.gradle /app/settings.gradle
+COPY ./swtcamper/gradlew /app/gradlew
 # cache gradle dependencies
 RUN chmod +x /app/gradlew
 RUN /app/gradlew build || return 0
 # build app without testing
-COPY ./xtasks/ /app
+COPY ./swtcamper/ /app
 ENTRYPOINT ["./gradlew", "--no-daemon", "compileJava"] 
 
 FROM compile as testcoverage
@@ -98,7 +98,7 @@ ENTRYPOINT ./gradlew --no-daemon coverageReport > log.txt; \
 BRANCH=$(git branch | sed -n 's/^\* //p'); \
 HASH=$(git rev-parse --short HEAD); \
 VALUE=$(grep -oP "Total \K([0-9]+)" log.txt); \
-# VALUE=$(cloc ./xtasks/src/test --json | jq -r '.Java.code'); \
+# VALUE=$(cloc ./swtcamper/src/test --json | jq -r '.Java.code'); \
 ZEIT=$(git show -s --format=%ct ${HASH}); \
 curl --silent -0 -X POST ${APIENDPOINT} \
 -H "Expect:" \

@@ -1,11 +1,11 @@
-package xtasks.javafx.controller;
+package swtcamper.javafx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xtasks.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class MainViewController {

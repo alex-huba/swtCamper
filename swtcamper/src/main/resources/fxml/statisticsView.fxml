@@ -2,7 +2,7 @@
 
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xtasks.javafx.controller.StatisticsViewController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.StatisticsViewController">
    <children>
       <PieChart fx:id="taskDistributionChart" labelsVisible="false" layoutX="14.0" layoutY="14.0" prefHeight="540.0" prefWidth="775.0" title="Task status distribution" />
    </children>

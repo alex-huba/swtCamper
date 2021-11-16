@@ -1,4 +1,4 @@
-package xtasks.backend.services.exceptions;
+package swtcamper.backend.services.exceptions;
 
 /**
  * Used to wrap any failure happening on the backend side of the application.

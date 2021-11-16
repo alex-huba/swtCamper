@@ -1,4 +1,4 @@
-package xtasks;
+package swtcamper;
 
 public class Main {
 

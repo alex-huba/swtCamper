@@ -1,4 +1,4 @@
-package xtasks;
+package swtcamper;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +31,7 @@ public class App extends Application {
     fxmlLoader.setLocation(getClass().getResource("/fxml/mainView.fxml"));
     Parent rootNode = fxmlLoader.load();
 
-    primaryStage.setTitle("xTASKS");
+    primaryStage.setTitle("SWTCamper");
     primaryStage.setScene(new Scene(rootNode, 800, 600));
     primaryStage.show();
   }

@@ -21,8 +21,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
-group 'xtasks'
-mainClassName = 'xtasks.Main'
+group 'swtcamper'
+mainClassName = 'swtcamper.Main'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.11

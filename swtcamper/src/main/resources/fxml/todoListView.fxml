@@ -3,7 +3,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xtasks.javafx.controller.TodoListViewController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.TodoListViewController">
       <children>
          <ListView fx:id="openList" layoutX="123.0" layoutY="101.0" prefHeight="83.0" prefWidth="612.0" />
          <Button layoutX="150.0" layoutY="220.0" mnemonicParsing="false" onAction="#taskDoneAction" prefHeight="26.0" prefWidth="498.0" text="Set task to done" />
