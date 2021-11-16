@@ -69,13 +69,18 @@ public class ModelMapper {
   // ------------------------------Team A ab hier----------------------------------
 
   public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
-    // TODO implement
-    return null;
-  }
-
-  public VehicleFeaturesDTO vehicleFeaturesToVehicleFeaturesDTO(VehicleFeatures vehicleFeatures) {
-    // TODO implement
-    return null;
+    // TODO throws Exception {
+      switch (vehicleType) {
+        case BUS:
+          return VehicleTypeDTO.BUS;
+        case CAMPER:
+          return VehicleTypeDTO.CAMPER;
+        case TRAILER:
+          return VehicleTypeDTO.TRAILER;
+//        TODO implement default throws Exception
+//        default:
+//          throw new GenericServiceException("VehicleType is invalid.");
+      }
   }
 
   public AvailabilityDTO availabilityToAvailabilityDTO(Availability availability) {
@@ -89,7 +94,7 @@ public class ModelMapper {
     return new VehicleDTO(
             vehicle.getVehicleID(),
             vehicleTypeToVehicleTypeDTO(vehicle.getVehicleType()),
-            vehicleFeaturesToVehicleFeaturesDTO(vehicle.getVehicleFeatures()),
+            vehicle.getVehicleFeaturesID(),
             vehicle.getPictureURLs(),
             vehicle.getParticularities(),
             availabilityToAvailabilityDTO(vehicle.getAvailability())
