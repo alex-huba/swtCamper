@@ -14,7 +14,7 @@ public class VehicleDTO {
 
     private String[] particularities;
 
-    private VehicleStatusDTO vehicleStatus;
+    private AvailabilityDTO availability;
 
     public VehicleDTO() {
         super();
@@ -70,7 +70,7 @@ public class VehicleDTO {
             VehicleFeaturesDTO vehicleFeatures,
             String[] pictureURLs,
             String[] particularities,
-            VehicleStatusDTO vehicleStatus
+            AvailabilityDTO availability
     ) {
         super();
         this.vehicleID = vehicleID;
@@ -78,7 +78,7 @@ public class VehicleDTO {
         this.vehicleFeatures = vehicleFeatures;
         this.pictureURLs = pictureURLs;
         this.particularities = particularities;
-        this.vehicleStatus = vehicleStatus
+        this.availability = availability;
     }
 
     @Override

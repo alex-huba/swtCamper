@@ -37,18 +37,18 @@ public class Vehicle {
     @Override
     public String toString() {
         return "Vehicle: " +
-                "vehicleStatus=" + availability +
+                "availability=" + availability +
                 ", vehicleID=" + vehicleID +
                 ", vehicleType=" + vehicleType +
                 ", pictureURLs=" + Arrays.toString(pictureURLs) +
                 ", particularities='" + particularities + '\'';
     }
 
-    public Availability getVehicleStatus() {
+    public Availability getAvailability() {
         return availability;
     }
 
-    public void setVehicleStatus(Availability availability) {
+    public void setAvailability(Availability availability) {
         this.availability = availability;
     }
 

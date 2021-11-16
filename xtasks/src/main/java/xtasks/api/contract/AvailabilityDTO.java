@@ -1,5 +1,5 @@
 package xtasks.api.contract;
 
-public enum VehicleStatusDTO {
+public enum AvailabilityDTO {
     AVAILABLE, RENT, RESERVED,
 }
