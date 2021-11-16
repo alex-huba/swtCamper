@@ -25,7 +25,6 @@ public class VehicleService {
         // TODO throws Exception
         // TODO validate Methoden
         Vehicle vehicle = new Vehicle();
-        // TODO Melissa: Leeren Vehicle Konstruktor mit super() anlegen
         vehicle.setVehicleID(vehicleID);
         vehicle.setVehicleType(vehicleType);
         vehicle.setVehicleFeatures(vehicleFeatures);

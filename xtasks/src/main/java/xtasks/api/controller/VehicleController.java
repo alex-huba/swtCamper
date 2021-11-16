@@ -6,6 +6,8 @@ import xtasks.api.contract.IVehicleController;
 import xtasks.api.contract.VehicleDTO;
 import xtasks.api.contract.VehicleFeaturesDTO;
 import xtasks.api.contract.VehicleTypeDTO;
+import xtasks.backend.entities.VehicleFeatures;
+import xtasks.backend.entities.VehicleType;
 import xtasks.backend.services.VehicleService;
 
 public class VehicleController implements IVehicleController {
@@ -19,8 +21,8 @@ public class VehicleController implements IVehicleController {
     @Override
     public VehicleDTO create(
             Long vehicleID,
-            VehicleTypeDTO vehicleType,
-            VehicleFeaturesDTO vehicleFeatures,
+            VehicleType vehicleType,
+            VehicleFeatures vehicleFeatures,
             String[] pictureURLs,
             String[] particularities
     ) {

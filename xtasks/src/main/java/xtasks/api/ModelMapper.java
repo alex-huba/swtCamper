@@ -69,15 +69,18 @@ public class ModelMapper {
   // ------------------------------Team A ab hier----------------------------------
 
   public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
-
+    // TODO implement
+    return null;
   }
 
   public VehicleFeaturesDTO vehicleFeaturesToVehicleFeaturesDTO(VehicleFeatures vehicleFeatures) {
-
+    // TODO implement
+    return null;
   }
 
-  public VehicleStatusDTO vehicleStatusToVehicleStatusDTO(VehicleStatus vehicleStatus) {
-
+  public AvailabilityDTO availabilityToAvailabilityDTO(Availability availability) {
+    // TODO implement
+    return null;
   }
 
   public VehicleDTO vehicleToVehicleDTO(Vehicle vehicle)
@@ -89,7 +92,7 @@ public class ModelMapper {
             vehicleFeaturesToVehicleFeaturesDTO(vehicle.getVehicleFeatures()),
             vehicle.getPictureURLs(),
             vehicle.getParticularities(),
-            vehicleStatusToVehicleStatusDTO(vehicle.getVehicleStatus())
+            availabilityToAvailabilityDTO(vehicle.getAvailability())
     );
   }
 }
