@@ -2,98 +2,96 @@ package xtasks.backend.entities;
 
 public class VehicleFeatures {
 
-    Vehicle vehicle;
+  Vehicle vehicle;
 
-    // Hersteller
-    private String make;
-    // Fahrzeugtyp
-    private String type;
-    private String model;
-    private String year;
+  // Hersteller
+  private String make;
+  // Fahrzeugtyp
+  private String type;
+  private String model;
+  private String year;
 
-    private double length;
-    private double width;
-    private double height;
+  private double length;
+  private double width;
+  private double height;
 
-    private String engine;
-    //Getriebe (manuell oder automatisch)
-    private String transmission;
+  private String engine;
+  //Getriebe (manuell oder automatisch)
+  private String transmission;
 
+  public VehicleFeatures(Vehicle vehicle) {
+    this.vehicle = vehicle;
+  }
 
-    public VehicleFeatures(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
+  public String getMake() {
+    return make;
+  }
 
+  public void setMake(String make) {
+    this.make = make;
+  }
 
-    public String getMake() {
-        return make;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public void setMake(String make) {
-        this.make = make;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public String getModel() {
+    return model;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public void setModel(String model) {
+    this.model = model;
+  }
 
-    public String getModel() {
-        return model;
-    }
+  public String getYear() {
+    return year;
+  }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+  public void setYear(String year) {
+    this.year = year;
+  }
 
-    public String getYear() {
-        return year;
-    }
+  public double getLength() {
+    return length;
+  }
 
-    public void setYear(String year) {
-        this.year = year;
-    }
+  public void setLength(double length) {
+    this.length = length;
+  }
 
-    public double getLength() {
-        return length;
-    }
+  public double getHeight() {
+    return height;
+  }
 
-    public void setLength(double length) {
-        this.length = length;
-    }
+  public void setHeight(double height) {
+    this.height = height;
+  }
 
-    public double getHeight() {
-        return height;
-    }
+  public double getWidth() {
+    return width;
+  }
 
-    public void setHeight(double height) {
-        this.height = height;
-    }
+  public void setWidth(double width) {
+    this.width = width;
+  }
 
-    public double getWidth() {
-        return width;
-    }
+  public String getEngine() {
+    return engine;
+  }
 
-    public void setWidth(double width) {
-        this.width = width;
-    }
+  public void setEngine(String engine) {
+    this.engine = engine;
+  }
 
-    public String getEngine() {
-        return engine;
-    }
+  public String getTransmission() {
+    return transmission;
+  }
 
-    public void setEngine(String engine) {
-        this.engine = engine;
-    }
-
-    public String getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
+  public void setTransmission(String transmission) {
+    this.transmission = transmission;
+  }
 }
