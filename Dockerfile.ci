@@ -84,8 +84,8 @@ COPY ./swtcamper/gradlew /app/gradlew
 RUN chmod +x /app/gradlew
 RUN /app/gradlew build || return 0
 # build app without testing
-RUN chmod +x /app/gradlew
 COPY ./swtcamper/ /app
+RUN chmod +x /app/gradlew
 ENTRYPOINT ["./gradlew", "--no-daemon", "compileJava"] 
 
 FROM compile as testcoverage
