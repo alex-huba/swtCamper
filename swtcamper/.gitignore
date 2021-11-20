@@ -6,6 +6,8 @@ local.properties
 out
 /node_modules/
 /bin/
+/gradle
+/lib
 
 .classpath
 .project

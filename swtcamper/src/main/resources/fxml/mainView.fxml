@@ -6,35 +6,7 @@
   <children>
     <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <items>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="TODO list">
-                    <content>
-                        <fx:include source="todoListView.fxml" />
-                  </content>
-                </Tab>
-                <Tab text="Task Assignments">
-                  <content>
-                      <fx:include  source="taskAssignmentView.fxml" />
-                  </content>
-                </Tab>
-                  <Tab text="Person Importer">
-                     <content>
-                         <fx:include  source="personImportView.fxml" />
-                     </content>
-                  </Tab>
-                  <Tab text="Task creation">
-                     <content>
-                         <fx:include  source="taskCreationView.fxml" />
-                     </content>
-                  </Tab>
-                  <Tab text="Statistics">
-                     <content>
-                         <fx:include source="statisticsView.fxml" />
-                     </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
+
          </items>
     </SplitPane>
   </children>
