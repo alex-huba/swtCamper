@@ -1,31 +1,34 @@
 package xtasks.backend.entities;
 
 import java.util.Arrays;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Vehicle {
-
-  Availability availability;
 
   @Id
   @GeneratedValue
   private Long vehicleID;
 
+  // VehicleType lieber in VehicleFeatures?
   private VehicleType vehicleType;
+
+  @OneToMany
   private VehicleFeatures vehicleFeatures;
 
+  // pictureURLs und particularities lieber in VehicleFeatures?
   private String[] pictureURLs;
   private String[] particularities;
 
   public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
-    this.availability = Availability.AVAILABLE;
     this.vehicleType = vehicleType;
     this.vehicleFeatures = vehicleFeatures;
   }
 
   public Vehicle(VehicleType vehicleType) {
-    this.availability = Availability.AVAILABLE;
     this.vehicleType = vehicleType;
   }
 
@@ -35,28 +38,13 @@ public class Vehicle {
 
   @Override
   public String toString() {
-    return (
-      "Vehicle: " +
-      "vehicleStatus=" +
-      availability +
-      ", vehicleID=" +
-      vehicleID +
-      ", vehicleType=" +
-      vehicleType +
-      ", pictureURLs=" +
-      Arrays.toString(pictureURLs) +
-      ", particularities='" +
-      particularities +
-      '\''
-    );
-  }
-
-  public Availability getVehicleStatus() {
-    return availability;
-  }
-
-  public void setVehicleStatus(Availability availability) {
-    this.availability = availability;
+    return "Vehicle{" +
+            "vehicleID=" + vehicleID +
+            ", vehicleType=" + vehicleType +
+            ", vehicleFeatures=" + vehicleFeatures +
+            ", pictureURLs=" + Arrays.toString(pictureURLs) +
+            ", particularities=" + Arrays.toString(particularities) +
+            '}';
   }
 
   public Long getVehicleID() {

@@ -1,23 +1,34 @@
 package xtasks.backend.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class VehicleOffer implements Offer {
 
-  Vehicle vehicle;
-  Availability availability;
+  @Id
+  @GeneratedValue
+  private Long offerID;
+  private Availability availability;
 
-  Long price;
+  Long vehicleID;
 
-  String rentalStartDate;
-  String rentalReturnDate;
+  private Long price;
 
+  private String rentalStartDate;
+  private String rentalReturnDate;
+
+  // hier lieber direkt vehicleID übergeben statt Vehicle selbst?
+  // Hab es erstmal so gelassen, damit das refactoring bei den anderen nicht zu kompliziert wird
   public VehicleOffer(Vehicle vehicle, Long price) {
-    this.vehicle = vehicle;
+    this.vehicleID = vehicle.getVehicleID();
     this.price = price;
     this.availability = Availability.AVAILABLE;
   }
 
   public VehicleOffer(Vehicle vehicle) {
-    this.vehicle = vehicle;
+    this.vehicleID = vehicle.getVehicleID();
   }
 
   public VehicleOffer() {}
@@ -42,12 +53,12 @@ public class VehicleOffer implements Offer {
   //
   //  }
 
-  public Vehicle getVehicle() {
-    return vehicle;
+  public Long getVehicleID() {
+    return vehicleID;
   }
 
-  public void setVehicle(Vehicle vehicle) {
-    this.vehicle = vehicle;
+  public void setVehicle(Long vehicleID) {
+    this.vehicleID = vehicleID;
   }
 
   @Override
