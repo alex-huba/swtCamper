@@ -42,11 +42,9 @@ public class VehicleFeatures {
   private boolean kitchenUnit;
   private boolean fridge;
 
-
   public VehicleFeatures(Long vehicleID) {
     this.vehicleID = vehicleID;
   }
-
 
   public Long getVehicleFeaturesID() {
     return vehicleFeaturesID;
@@ -71,7 +69,6 @@ public class VehicleFeatures {
   public void setVehicleType(VehicleType vehicleType) {
     this.vehicleType = vehicleType;
   }
-
 
   public String getMake() {
     return make;
@@ -144,6 +141,7 @@ public class VehicleFeatures {
   public void setTransmission(String transmission) {
     this.transmission = transmission;
   }
+
   public int getSeats() {
     return seats;
   }

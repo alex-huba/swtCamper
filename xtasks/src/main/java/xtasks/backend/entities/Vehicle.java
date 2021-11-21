@@ -38,13 +38,20 @@ public class Vehicle {
 
   @Override
   public String toString() {
-    return "Vehicle{" +
-            "vehicleID=" + vehicleID +
-            ", vehicleType=" + vehicleType +
-            ", vehicleFeatures=" + vehicleFeatures +
-            ", pictureURLs=" + Arrays.toString(pictureURLs) +
-            ", particularities=" + Arrays.toString(particularities) +
-            '}';
+    return (
+      "Vehicle{" +
+      "vehicleID=" +
+      vehicleID +
+      ", vehicleType=" +
+      vehicleType +
+      ", vehicleFeatures=" +
+      vehicleFeatures +
+      ", pictureURLs=" +
+      Arrays.toString(pictureURLs) +
+      ", particularities=" +
+      Arrays.toString(particularities) +
+      '}'
+    );
   }
 
   public Long getVehicleID() {

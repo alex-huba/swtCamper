@@ -10,6 +10,7 @@ public class VehicleOffer implements Offer {
   @Id
   @GeneratedValue
   private Long offerID;
+
   private Availability availability;
 
   Long vehicleID;
