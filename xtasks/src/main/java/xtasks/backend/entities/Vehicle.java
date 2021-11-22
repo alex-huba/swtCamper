@@ -1,94 +1,88 @@
 package xtasks.backend.entities;
 
+import java.util.Arrays;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Arrays;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Vehicle {
 
-    Availability availability;
+  @Id
+  @GeneratedValue
+  private Long vehicleID;
 
-    @Id
-    @GeneratedValue
-    private Long vehicleID;
+  // VehicleType lieber in VehicleFeatures?
+  private VehicleType vehicleType;
 
-    private VehicleType vehicleType;
-    private VehicleFeatures vehicleFeatures;
+  @OneToMany
+  private VehicleFeatures vehicleFeatures;
 
-    private String[] pictureURLs;
-    private String[] particularities;
+  // pictureURLs und particularities lieber in VehicleFeatures?
+  private String[] pictureURLs;
+  private String[] particularities;
 
+  public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
+    this.vehicleType = vehicleType;
+    this.vehicleFeatures = vehicleFeatures;
+  }
 
-    public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
-        this.availability = Availability.AVAILABLE;
-        this.vehicleType = vehicleType;
-        this.vehicleFeatures = vehicleFeatures;
-    }
+  public Vehicle(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public Vehicle(VehicleType vehicleType) {
-        this.availability = Availability.AVAILABLE;
-        this.vehicleType = vehicleType;
-    }
+  public Vehicle() {
+    super();
+  }
 
-    public Vehicle() {
-        super();
-    }
+  @Override
+  public String toString() {
+    return (
+      "Vehicle{" +
+      "vehicleID=" +
+      vehicleID +
+      ", vehicleType=" +
+      vehicleType +
+      ", vehicleFeatures=" +
+      vehicleFeatures +
+      ", pictureURLs=" +
+      Arrays.toString(pictureURLs) +
+      ", particularities=" +
+      Arrays.toString(particularities) +
+      '}'
+    );
+  }
 
-    @Override
-    public String toString() {
-        return "Vehicle: " +
-                "availability=" + availability +
-                ", vehicleID=" + vehicleID +
-                ", vehicleType=" + vehicleType +
-                ", pictureURLs=" + Arrays.toString(pictureURLs) +
-                ", particularities='" + particularities + '\'';
-    }
+  public Long getVehicleID() {
+    return vehicleID;
+  }
 
-    public Availability getAvailability() {
-        return availability;
-    }
+  public void setVehicleID(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public void setAvailability(Availability availability) {
-        this.availability = availability;
-    }
+  public VehicleType getVehicleType() {
+    return vehicleType;
+  }
 
-    public Long getVehicleID() {
-        return vehicleID;
-    }
+  public void setVehicleType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public void setVehicleID(Long vehicleID) {
-        this.vehicleID = vehicleID;
-    }
+  public String[] getPictureURLs() {
+    return pictureURLs;
+  }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
+  public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = pictureURLs;
+  }
 
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+  public String[] getParticularities() {
+    return particularities;
+  }
 
-    public VehicleFeatures getVehicleFeatures() {
-        return vehicleFeatures;
-    }
-
-    public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
-        this.vehicleFeatures = vehicleFeatures;
-    }
-
-    public String[] getPictureURLs() {
-        return pictureURLs;
-    }
-
-    public void setPictureURLs(String[] pictureURLs) {
-        this.pictureURLs = pictureURLs;
-    }
-
-    public String[] getParticularities() {
-        return particularities;
-    }
-
-    public void setParticularities(String[] particularities) {
-        this.particularities = particularities;
-    }
+  public void setParticularities(String[] particularities) {
+    this.particularities = particularities;
+  }
 }

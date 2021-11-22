@@ -1,99 +1,216 @@
 package xtasks.backend.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class VehicleFeatures {
 
-    Vehicle vehicle;
+  @Id
+  @GeneratedValue
+  private Long vehicleFeaturesID;
 
-    // Hersteller
-    private String make;
-    // Fahrzeugtyp
-    private String type;
-    private String model;
-    private String year;
+  Long vehicleID;
 
-    private double length;
-    private double width;
-    private double height;
+  private VehicleType vehicleType;
 
-    private String engine;
-    //Getriebe (manuell oder automatisch)
-    private String transmission;
+  //Generelle Überlegung: Macht es mehr Sinn, die Attribute alle auf public bzw. default zu setzen aber dafür als final?
+  // So kann man sich die ganzen Getter und Setter sparen
+  // Auf der anderen Seite geht dabei die Flexibilität verloren, im Nachhinein noch was zu ändern
+  // (falls z.B. noch eine Dusche oder ein WC nachträglich eingebaut wird)
 
+  private String make;
+  private String model;
+  private String year;
 
-    public VehicleFeatures(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
+  private double length;
+  private double width;
+  private double height;
 
+  private String engine;
+  private String transmission;
 
-    public String getMake() {
-        return make;
-    }
+  private int seats;
+  private int beds;
 
-    public void setMake(String make) {
-        this.make = make;
-    }
+  private boolean roofTent;
+  private boolean roofRack;
+  private boolean bikeRack;
+  private boolean shower;
+  private boolean toilet;
+  private boolean kitchenUnit;
+  private boolean fridge;
 
-    public String getType() {
-        return type;
-    }
+  public VehicleFeatures(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public Long getVehicleFeaturesID() {
+    return vehicleFeaturesID;
+  }
 
-    public String getModel() {
-        return model;
-    }
+  public void setVehicleFeaturesID(Long vehicleFeaturesID) {
+    this.vehicleFeaturesID = vehicleFeaturesID;
+  }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+  public Long getVehicleID() {
+    return vehicleID;
+  }
 
-    public String getYear() {
-        return year;
-    }
+  public void setVehicleID(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public void setYear(String year) {
-        this.year = year;
-    }
+  public VehicleType getVehicleType() {
+    return vehicleType;
+  }
 
-    public double getLength() {
-        return length;
-    }
+  public void setVehicleType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public void setLength(double length) {
-        this.length = length;
-    }
+  public String getMake() {
+    return make;
+  }
 
-    public double getHeight() {
-        return height;
-    }
+  public void setMake(String make) {
+    this.make = make;
+  }
 
-    public void setHeight(double height) {
-        this.height = height;
-    }
+  public VehicleType getType() {
+    return vehicleType;
+  }
 
-    public double getWidth() {
-        return width;
-    }
+  public void setType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public void setWidth(double width) {
-        this.width = width;
-    }
+  public String getModel() {
+    return model;
+  }
 
-    public String getEngine() {
-        return engine;
-    }
+  public void setModel(String model) {
+    this.model = model;
+  }
 
-    public void setEngine(String engine) {
-        this.engine = engine;
-    }
+  public String getYear() {
+    return year;
+  }
 
-    public String getTransmission() {
-        return transmission;
-    }
+  public void setYear(String year) {
+    this.year = year;
+  }
 
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
+  public double getLength() {
+    return length;
+  }
+
+  public void setLength(double length) {
+    this.length = length;
+  }
+
+  public double getHeight() {
+    return height;
+  }
+
+  public void setHeight(double height) {
+    this.height = height;
+  }
+
+  public double getWidth() {
+    return width;
+  }
+
+  public void setWidth(double width) {
+    this.width = width;
+  }
+
+  public String getEngine() {
+    return engine;
+  }
+
+  public void setEngine(String engine) {
+    this.engine = engine;
+  }
+
+  public String getTransmission() {
+    return transmission;
+  }
+
+  public void setTransmission(String transmission) {
+    this.transmission = transmission;
+  }
+
+  public int getSeats() {
+    return seats;
+  }
+
+  public void setSeats(int seats) {
+    this.seats = seats;
+  }
+
+  public int getBeds() {
+    return beds;
+  }
+
+  public void setBeds(int beds) {
+    this.beds = beds;
+  }
+
+  public boolean isRoofTent() {
+    return roofTent;
+  }
+
+  public void setRoofTent(boolean roofTent) {
+    this.roofTent = roofTent;
+  }
+
+  public boolean isRoofRack() {
+    return roofRack;
+  }
+
+  public void setRoofRack(boolean roofRack) {
+    this.roofRack = roofRack;
+  }
+
+  public boolean isBikeRack() {
+    return bikeRack;
+  }
+
+  public void setBikeRack(boolean bikeRack) {
+    this.bikeRack = bikeRack;
+  }
+
+  public boolean isShower() {
+    return shower;
+  }
+
+  public void setShower(boolean shower) {
+    this.shower = shower;
+  }
+
+  public boolean isToilet() {
+    return toilet;
+  }
+
+  public void setToilet(boolean toilet) {
+    this.toilet = toilet;
+  }
+
+  public boolean isKitchenUnit() {
+    return kitchenUnit;
+  }
+
+  public void setKitchenUnit(boolean kitchenUnit) {
+    this.kitchenUnit = kitchenUnit;
+  }
+
+  public boolean isFridge() {
+    return fridge;
+  }
+
+  public void setFridge(boolean fridge) {
+    this.fridge = fridge;
+  }
 }

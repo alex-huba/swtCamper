@@ -13,6 +13,9 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private vehicleFeaturesRepository vehicleFeaturesRepository;
+
     public Vehicle create(
             Long vehicleID,
             VehicleType vehicleType,
