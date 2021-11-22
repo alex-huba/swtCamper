@@ -26,6 +26,9 @@ public class OfferService {
             //  alle Vehicle-Attribute
             //  alle VehicleFeatures-Attribute
         ) {
+
+        // !!! Hier werden die ganzen zusammenhängenden Objekte erstellt und die IDs untereinander verteilt !!!
+
         VehicleOffer vehicleOffer = new VehicleOffer();
         // TODO set Offer-Attribute
 
@@ -40,6 +43,8 @@ public class OfferService {
         vehicle.setVehicleFeaturesID(vehicleFeatures.getID());
 
         vehicleOffer.setVehicleID(vehicle.getID());
+
+        // Objekte erstellt und IDs verteilt --> ab in die DB
 
         vehicleFeaturesRepository.save(vehicleFeatures);
         vehicleRepository.save(vehicle);
