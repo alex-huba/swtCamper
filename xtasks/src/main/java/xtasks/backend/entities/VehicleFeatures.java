@@ -1,8 +1,6 @@
 package xtasks.backend.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class VehicleFeatures {
@@ -11,14 +9,10 @@ public class VehicleFeatures {
   @GeneratedValue
   private Long vehicleFeaturesID;
 
+  @OneToMany
   Long vehicleID;
 
   private VehicleType vehicleType;
-
-  //Generelle Überlegung: Macht es mehr Sinn, die Attribute alle auf public bzw. default zu setzen aber dafür als final?
-  // So kann man sich die ganzen Getter und Setter sparen
-  // Auf der anderen Seite geht dabei die Flexibilität verloren, im Nachhinein noch was zu ändern
-  // (falls z.B. noch eine Dusche oder ein WC nachträglich eingebaut wird)
 
   private String make;
   private String model;
@@ -42,8 +36,9 @@ public class VehicleFeatures {
   private boolean kitchenUnit;
   private boolean fridge;
 
-  public VehicleFeatures(Long vehicleID) {
-    this.vehicleID = vehicleID;
+
+  public VehicleFeatures(Vehicle vehicle) {
+    this.vehicleID = vehicle.getVehicleID();
   }
 
   public Long getVehicleFeaturesID() {
