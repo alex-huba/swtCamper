@@ -68,47 +68,40 @@ public class ModelMapper {
 
   // ------------------------------Team A ab hier----------------------------------
 
-  public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
-    // TODO throws Exception {
-      switch (vehicleType) {
-        case BUS:
-          return VehicleTypeDTO.BUS;
-        case CAMPER:
-          return VehicleTypeDTO.CAMPER;
-        case TRAILER:
-          return VehicleTypeDTO.TRAILER;
-//      TODO remove return: null;
-//       implement default throws Exception
-        default: return null;
-//          throw new GenericServiceException("VehicleType is invalid.");
-      }
-  }
+//  public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
+//    // TODO alt throws Exception {
+//      switch (vehicleType) {
+//        case BUS:
+//          return VehicleTypeDTO.BUS;
+//        case CAMPER:
+//          return VehicleTypeDTO.CAMPER;
+//        case TRAILER:
+//          return VehicleTypeDTO.TRAILER;
+////      TODO alt remove return: null;
+////       implement default throws Exception
+//        default: return null;
+////          throw new GenericServiceException("VehicleType is invalid.");
+//      }
+//  }
+//
+//  public AvailabilityDTO availabilityToAvailabilityDTO(Availability availability) {
+//    switch (availability) {
+//      case AVAILABLE:
+//        return AvailabilityDTO.AVAILABLE;
+//      case RENT:
+//        return AvailabilityDTO.RENT;
+//      case RESERVED:
+//        return AvailabilityDTO.RESERVED;
+////      TODO alt remove return: null;
+////       implement default throws Exception
+//        default: return null;
+//        // throw new GenericServiceException("Availability value is invalid.");
+//    }
+//  }
 
-  public AvailabilityDTO availabilityToAvailabilityDTO(Availability availability) {
-    switch (availability) {
-      case AVAILABLE:
-        return AvailabilityDTO.AVAILABLE;
-      case RENT:
-        return AvailabilityDTO.RENT;
-      case RESERVED:
-        return AvailabilityDTO.RESERVED;
-//      TODO remove return: null;
-//       implement default throws Exception
-        default: return null;
-        // throw new GenericServiceException("Availability value is invalid.");
-    }
-  }
-
-  public VehicleDTO vehicleToVehicleDTO(Vehicle vehicle)
-  // TODO throws Exception
-  {
-    return new VehicleDTO(
-            vehicle.getVehicleID(),
-            vehicleTypeToVehicleTypeDTO(vehicle.getVehicleType()),
-            vehicle.getVehicleFeaturesID(),
-            vehicle.getPictureURLs(),
-            vehicle.getParticularities(),
-            availabilityToAvailabilityDTO(vehicle.getAvailability())
+  public OfferDTO offerToOfferDTO(Offer offer) {
+    return new OfferDTO(
+            // TODO offer.get -> alles getten / toDTO-Methoden
     );
   }
 }

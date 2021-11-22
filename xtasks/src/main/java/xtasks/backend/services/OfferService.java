@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import xtasks.backend.entities.Offer;
 import xtasks.backend.entities.Vehicle;
 import xtasks.backend.entities.VehicleFeatures;
-import xtasks.backend.entities.VehicleOffer;
+import xtasks.backend.repositories.OfferRepository;
+import xtasks.backend.repositories.VehicleFeaturesRepository;
 import xtasks.backend.repositories.VehicleRepository;
 
 @Service
@@ -29,26 +30,22 @@ public class OfferService {
 
         // !!! Hier werden die ganzen zusammenhängenden Objekte erstellt und die IDs untereinander verteilt !!!
 
-        VehicleOffer vehicleOffer = new VehicleOffer();
-        // TODO set Offer-Attribute
-
         Vehicle vehicle = new Vehicle();
         // TODO set Vehicle-Attribute
-        vehicle.setOfferID(vehicleOffer.getID());
 
-        VehicleFeatures vehicleFeatures = new VehicleFeatures();
+        VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
         // TODO set VehicleFeatures-Attribute
-        vehicleFeatures.setVehicleID(vehicle.getID());
 
-        vehicle.setVehicleFeaturesID(vehicleFeatures.getID());
+        vehicle.setVehicleFeatures(vehicleFeatures);
 
-        vehicleOffer.setVehicleID(vehicle.getID());
+        Offer offer = new Offer(vehicle);
+        // TODO set Offer-Attribute
 
         // Objekte erstellt und IDs verteilt --> ab in die DB
 
         vehicleFeaturesRepository.save(vehicleFeatures);
         vehicleRepository.save(vehicle);
-        return OfferRepository.save(vehicleOffer);
+        return offerRepository.save(offer);
     }
 
 }
