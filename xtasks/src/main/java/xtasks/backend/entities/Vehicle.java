@@ -1,10 +1,7 @@
 package xtasks.backend.entities;
 
 import java.util.Arrays;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Vehicle {
@@ -13,24 +10,17 @@ public class Vehicle {
   @GeneratedValue
   private Long vehicleID;
 
-  // VehicleType lieber in VehicleFeatures?
-  private VehicleType vehicleType;
 
-  @OneToMany
+  @ManyToOne
   private VehicleFeatures vehicleFeatures;
 
-  // pictureURLs und particularities lieber in VehicleFeatures?
   private String[] pictureURLs;
   private String[] particularities;
 
-  public Vehicle(VehicleType vehicleType, VehicleFeatures vehicleFeatures) {
-    this.vehicleType = vehicleType;
+  public Vehicle(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
   }
 
-  public Vehicle(VehicleType vehicleType) {
-    this.vehicleType = vehicleType;
-  }
 
   public Vehicle() {
     super();
@@ -42,8 +32,6 @@ public class Vehicle {
       "Vehicle{" +
       "vehicleID=" +
       vehicleID +
-      ", vehicleType=" +
-      vehicleType +
       ", vehicleFeatures=" +
       vehicleFeatures +
       ", pictureURLs=" +
@@ -62,12 +50,12 @@ public class Vehicle {
     this.vehicleID = vehicleID;
   }
 
-  public VehicleType getVehicleType() {
-    return vehicleType;
+  public VehicleFeatures getVehicleFeatures() {
+    return vehicleFeatures;
   }
 
-  public void setVehicleType(VehicleType vehicleType) {
-    this.vehicleType = vehicleType;
+  public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
+    this.vehicleFeatures = vehicleFeatures;
   }
 
   public String[] getPictureURLs() {

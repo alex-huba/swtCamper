@@ -1,25 +1,87 @@
 package xtasks.backend.entities;
 
-public interface Offer {
-  //    enum definieren --> type = Type.VEHICLE;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-  //    public OfferedObject getOfferedObject();
-  //
-  //    public void setOfferedObject(OfferedObject offeredObject);
+@Entity
+public class Offer implements IOffer {
 
-  public Availability getAvailability();
+  @Id
+  @GeneratedValue
+  private Long offerID;
 
-  public void setAvailability(Availability availability);
+  private OfferedObjectType offeredObjectType;
+  Long offeredObjectID;
 
-  public Long getPrice();
+  private Availability availability;
 
-  public void setPrice(Long price);
+  private Long price;
 
-  public String getRentalStartDate();
+  private String rentalStartDate;
+  private String rentalReturnDate;
 
-  public void setRentalStartDate(String rentalStartDate);
 
-  public String getRentalReturnDate();
+  public Offer(Vehicle vehicle, Long price) {
+    this.offeredObjectType = OfferedObjectType.VEHICLE;
+    this.offeredObjectID = vehicle.getVehicleID();
+    this.price = price;
+    this.availability = Availability.AVAILABLE;
+  }
 
-  public void setRentalReturnDate(String rentalReturnDate);
+  public Offer(Vehicle vehicle) {
+    this.offeredObjectID = vehicle.getVehicleID();
+    this.offeredObjectType = OfferedObjectType.VEHICLE;
+  }
+
+  public Offer() {}
+
+
+  public Long getOfferedObjectID() {
+    return offeredObjectID;
+  }
+
+  public void setOfferedObjectID(Long vehicleID) {
+    this.offeredObjectID = vehicleID;
+  }
+
+  @Override
+  public Availability getAvailability() {
+    return availability;
+  }
+
+  @Override
+  public void setAvailability(Availability availability) {
+    this.availability = availability;
+  }
+
+  @Override
+  public Long getPrice() {
+    return price;
+  }
+
+  @Override
+  public void setPrice(Long price) {
+    this.price = price;
+  }
+
+  @Override
+  public String getRentalStartDate() {
+    return rentalStartDate;
+  }
+
+  @Override
+  public void setRentalStartDate(String rentalStartDate) {
+    this.rentalStartDate = rentalStartDate;
+  }
+
+  @Override
+  public String getRentalReturnDate() {
+    return rentalReturnDate;
+  }
+
+  @Override
+  public void setRentalReturnDate(String rentalReturnDate) {
+    this.rentalReturnDate = rentalReturnDate;
+  }
 }
