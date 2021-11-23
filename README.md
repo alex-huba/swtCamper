@@ -1,4 +1,4 @@
-# xTASKS (Serves as a skeleton.)
+# SWTCamper (Serves as a skeleton.)
 
 The purpose of the xTASKS demo project is to provide a working application that highlights a number of useful technologies for your SWL project.
 
