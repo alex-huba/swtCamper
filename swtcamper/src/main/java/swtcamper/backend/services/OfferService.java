@@ -1,13 +1,14 @@
-package xtasks.backend.services;
+package swtcamper.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xtasks.backend.entities.Offer;
-import xtasks.backend.entities.Vehicle;
-import xtasks.backend.entities.VehicleFeatures;
-import xtasks.backend.repositories.OfferRepository;
-import xtasks.backend.repositories.VehicleFeaturesRepository;
-import xtasks.backend.repositories.VehicleRepository;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.Vehicle;
+import swtcamper.backend.entities.VehicleFeatures;
+import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.repositories.OfferRepository;
+import swtcamper.backend.repositories.VehicleFeaturesRepository;
+import swtcamper.backend.repositories.VehicleRepository;
 
 @Service
 public class OfferService {
@@ -22,24 +23,70 @@ public class OfferService {
     private OfferRepository offerRepository;
 
     public Offer create(
-            // TODO eintragen:
-            //  alle Offer-Attribute
-            //  alle Vehicle-Attribute
-            //  alle VehicleFeatures-Attribute
-        ) {
+            // TODO validation
+
+            // Offer-Parameter
+            Long price,
+            String rentalStartDate,
+            String rentalReturnDate,
+
+            //Vehicle-Parameter
+            String[] pictureURLs,
+            String[] particularities,
+
+            //VehicleFeatures-Parameter
+            VehicleType vehicleType,
+            String make,
+            String model,
+            String year,
+            double length,
+            double width,
+            double height,
+            String engine,
+            String transmission,
+            int seats,
+            int beds,
+            boolean roofTent,
+            boolean roofRack,
+            boolean bikeRack,
+            boolean shower,
+            boolean toilet,
+            boolean kitchenUnit,
+            boolean fridge
+    ) {
 
         // !!! Hier werden die ganzen zusammenhängenden Objekte erstellt und die IDs untereinander verteilt !!!
 
         Vehicle vehicle = new Vehicle();
-        // TODO set Vehicle-Attribute
+        vehicle.setPictureURLs(pictureURLs);
+        vehicle.setParticularities(particularities);
 
         VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
-        // TODO set VehicleFeatures-Attribute
+        vehicleFeatures.setVehicleType(vehicleType);
+        vehicleFeatures.setMake(make);
+        vehicleFeatures.setModel(model);
+        vehicleFeatures.setYear(year);
+        vehicleFeatures.setLength(length);
+        vehicleFeatures.setWidth(width);
+        vehicleFeatures.setHeight(height);
+        vehicleFeatures.setEngine(engine);
+        vehicleFeatures.setTransmission(transmission);
+        vehicleFeatures.setSeats(seats);
+        vehicleFeatures.setBeds(beds);
+        vehicleFeatures.setRoofTent(roofTent);
+        vehicleFeatures.setRoofRack(roofRack);
+        vehicleFeatures.setBikeRack(bikeRack);
+        vehicleFeatures.setShower(shower);
+        vehicleFeatures.setToilet(toilet);
+        vehicleFeatures.setKitchenUnit(kitchenUnit);
+        vehicleFeatures.setFridge(fridge);
 
         vehicle.setVehicleFeatures(vehicleFeatures);
 
         Offer offer = new Offer(vehicle);
-        // TODO set Offer-Attribute
+        offer.setPrice(price);
+        offer.setRentalStartDate(rentalStartDate);
+        offer.setRentalReturnDate(rentalReturnDate);
 
         // Objekte erstellt und IDs verteilt --> ab in die DB
 

@@ -1,20 +1,20 @@
-package xtasks.backend.entities;
+package swtcamper.backend.entities;
 
 public interface IOffer {
 
-  public Availability getAvailability();
+    public Availability getAvailability();
 
-  public void setAvailability(Availability availability);
+    public void setAvailability(Availability availability);
 
-  public Long getPrice();
+    public Long getPrice();
 
-  public void setPrice(Long price);
+    public void setPrice(Long price);
 
-  public String getRentalStartDate();
+    public String getRentalStartDate();
 
-  public void setRentalStartDate(String rentalStartDate);
+    public void setRentalStartDate(String rentalStartDate);
 
-  public String getRentalReturnDate();
+    public String getRentalReturnDate();
 
-  public void setRentalReturnDate(String rentalReturnDate);
+    public void setRentalReturnDate(String rentalReturnDate);
 }

@@ -1,4 +1,4 @@
-package xtasks.backend.entities;
+package swtcamper.api.contract;
 
 /***
  * In this enum all objects are listed, that can be offered.

@@ -1,8 +1,8 @@
-package xtasks.backend.repositories;
+package swtcamper.backend.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import xtasks.backend.entities.VehicleFeatures;
+import swtcamper.backend.entities.VehicleFeatures;
 
 import java.util.List;
 

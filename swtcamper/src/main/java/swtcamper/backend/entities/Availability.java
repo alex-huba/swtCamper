@@ -1,4 +1,4 @@
-package xtasks.backend.entities;
+package swtcamper.backend.entities;
 
 public enum Availability {
     AVAILABLE, RENT, RESERVED,

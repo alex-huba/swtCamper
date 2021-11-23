@@ -1,4 +1,4 @@
-package xtasks.api.contract;
+package swtcamper.api.contract;
 
 import java.util.Arrays;
 
@@ -60,7 +60,9 @@ public class VehicleDTO {
 
     // Constructor
 
-    public VehicleDTO() { super(); }
+    public VehicleDTO() {
+        super();
+    }
 
     public VehicleDTO(
             Long vehicleID,

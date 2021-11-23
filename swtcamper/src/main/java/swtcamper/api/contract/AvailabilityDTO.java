@@ -1,4 +1,4 @@
-package xtasks.api.contract;
+package swtcamper.api.contract;
 
 public enum AvailabilityDTO {
     AVAILABLE, RENT, RESERVED,

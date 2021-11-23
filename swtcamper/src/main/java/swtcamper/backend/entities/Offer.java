@@ -1,4 +1,4 @@
-package xtasks.backend.entities;
+package swtcamper.backend.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,81 +7,97 @@ import javax.persistence.Id;
 @Entity
 public class Offer implements IOffer {
 
-  @Id
-  @GeneratedValue
-  private Long offerID;
+    @Id
+    @GeneratedValue
+    private Long offerID;
 
-  private OfferedObjectType offeredObjectType;
-  Long offeredObjectID;
+    private OfferedObjectType offeredObjectType;
+    Long offeredObjectID;
 
-  private Availability availability;
+    private Availability availability;
 
-  private Long price;
+    private Long price;
 
-  private String rentalStartDate;
-  private String rentalReturnDate;
-
-
-  public Offer(Vehicle vehicle, Long price) {
-    this.offeredObjectType = OfferedObjectType.VEHICLE;
-    this.offeredObjectID = vehicle.getVehicleID();
-    this.price = price;
-    this.availability = Availability.AVAILABLE;
-  }
-
-  public Offer(Vehicle vehicle) {
-    this.offeredObjectID = vehicle.getVehicleID();
-    this.offeredObjectType = OfferedObjectType.VEHICLE;
-  }
-
-  public Offer() {}
+    private String rentalStartDate;
+    private String rentalReturnDate;
 
 
-  public Long getOfferedObjectID() {
-    return offeredObjectID;
-  }
+    public Offer(Vehicle vehicle, Long price) {
+        this.offeredObjectType = OfferedObjectType.VEHICLE;
+        this.offeredObjectID = vehicle.getVehicleID();
+        this.price = price;
+        this.availability = Availability.AVAILABLE;
+    }
 
-  public void setOfferedObjectID(Long vehicleID) {
-    this.offeredObjectID = vehicleID;
-  }
+    public Offer(Vehicle vehicle) {
+        this.offeredObjectID = vehicle.getVehicleID();
+        this.offeredObjectType = OfferedObjectType.VEHICLE;
+    }
 
-  @Override
-  public Availability getAvailability() {
-    return availability;
-  }
+    public Offer() {
+    }
 
-  @Override
-  public void setAvailability(Availability availability) {
-    this.availability = availability;
-  }
+    public Long getOfferID() {
+        return offerID;
+    }
 
-  @Override
-  public Long getPrice() {
-    return price;
-  }
+    public void setOfferID(Long offerID) {
+        this.offerID = offerID;
+    }
 
-  @Override
-  public void setPrice(Long price) {
-    this.price = price;
-  }
+    public OfferedObjectType getOfferedObjectType() {
+        return offeredObjectType;
+    }
 
-  @Override
-  public String getRentalStartDate() {
-    return rentalStartDate;
-  }
+    public void setOfferedObjectType(OfferedObjectType offeredObjectType) {
+        this.offeredObjectType = offeredObjectType;
+    }
 
-  @Override
-  public void setRentalStartDate(String rentalStartDate) {
-    this.rentalStartDate = rentalStartDate;
-  }
+    public Long getOfferedObjectID() {
+        return offeredObjectID;
+    }
 
-  @Override
-  public String getRentalReturnDate() {
-    return rentalReturnDate;
-  }
+    public void setOfferedObjectID(Long vehicleID) {
+        this.offeredObjectID = vehicleID;
+    }
 
-  @Override
-  public void setRentalReturnDate(String rentalReturnDate) {
-    this.rentalReturnDate = rentalReturnDate;
-  }
+    @Override
+    public Availability getAvailability() {
+        return availability;
+    }
+
+    @Override
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
+
+    @Override
+    public Long getPrice() {
+        return price;
+    }
+
+    @Override
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    @Override
+    public String getRentalStartDate() {
+        return rentalStartDate;
+    }
+
+    @Override
+    public void setRentalStartDate(String rentalStartDate) {
+        this.rentalStartDate = rentalStartDate;
+    }
+
+    @Override
+    public String getRentalReturnDate() {
+        return rentalReturnDate;
+    }
+
+    @Override
+    public void setRentalReturnDate(String rentalReturnDate) {
+        this.rentalReturnDate = rentalReturnDate;
+    }
 }
