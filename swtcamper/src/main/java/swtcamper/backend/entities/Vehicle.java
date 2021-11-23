@@ -1,79 +1,77 @@
 package swtcamper.backend.entities;
 
+import java.util.Arrays;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.util.Arrays;
 
 @Entity
 public class Vehicle {
 
-    @Id
-    @GeneratedValue
-    private Long vehicleID;
+  @Id
+  @GeneratedValue
+  private Long vehicleID;
 
+  @ManyToOne
+  private VehicleFeatures vehicleFeatures;
 
-    @ManyToOne
-    private VehicleFeatures vehicleFeatures;
+  private String[] pictureURLs;
+  private String[] particularities;
 
-    private String[] pictureURLs;
-    private String[] particularities;
+  public Vehicle(VehicleFeatures vehicleFeatures) {
+    this.vehicleFeatures = vehicleFeatures;
+  }
 
-    public Vehicle(VehicleFeatures vehicleFeatures) {
-        this.vehicleFeatures = vehicleFeatures;
-    }
+  public Vehicle() {
+    super();
+  }
 
+  @Override
+  public String toString() {
+    return (
+      "Vehicle{" +
+      "vehicleID=" +
+      vehicleID +
+      ", vehicleFeatures=" +
+      vehicleFeatures +
+      ", pictureURLs=" +
+      Arrays.toString(pictureURLs) +
+      ", particularities=" +
+      Arrays.toString(particularities) +
+      '}'
+    );
+  }
 
-    public Vehicle() {
-        super();
-    }
+  public Long getVehicleID() {
+    return vehicleID;
+  }
 
-    @Override
-    public String toString() {
-        return (
-                "Vehicle{" +
-                        "vehicleID=" +
-                        vehicleID +
-                        ", vehicleFeatures=" +
-                        vehicleFeatures +
-                        ", pictureURLs=" +
-                        Arrays.toString(pictureURLs) +
-                        ", particularities=" +
-                        Arrays.toString(particularities) +
-                        '}'
-        );
-    }
+  public void setVehicleID(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public Long getVehicleID() {
-        return vehicleID;
-    }
+  public VehicleFeatures getVehicleFeatures() {
+    return vehicleFeatures;
+  }
 
-    public void setVehicleID(Long vehicleID) {
-        this.vehicleID = vehicleID;
-    }
+  public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
+    this.vehicleFeatures = vehicleFeatures;
+  }
 
-    public VehicleFeatures getVehicleFeatures() {
-        return vehicleFeatures;
-    }
+  public String[] getPictureURLs() {
+    return pictureURLs;
+  }
 
-    public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
-        this.vehicleFeatures = vehicleFeatures;
-    }
+  public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = pictureURLs;
+  }
 
-    public String[] getPictureURLs() {
-        return pictureURLs;
-    }
+  public String[] getParticularities() {
+    return particularities;
+  }
 
-    public void setPictureURLs(String[] pictureURLs) {
-        this.pictureURLs = pictureURLs;
-    }
-
-    public String[] getParticularities() {
-        return particularities;
-    }
-
-    public void setParticularities(String[] particularities) {
-        this.particularities = particularities;
-    }
+  public void setParticularities(String[] particularities) {
+    this.particularities = particularities;
+  }
 }

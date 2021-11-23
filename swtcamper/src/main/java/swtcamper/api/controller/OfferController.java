@@ -9,72 +9,69 @@ import swtcamper.backend.services.OfferService;
 
 public class OfferController implements IOfferController {
 
-    @Autowired
-    OfferService offerService;
+  @Autowired
+  OfferService offerService;
 
-    @Autowired
-    ModelMapper modelMapper;
+  @Autowired
+  ModelMapper modelMapper;
 
-    public OfferDTO create(
-            // Offer-Parameter
-            Long price,
-            String rentalStartDate,
-            String rentalReturnDate,
-
-            //Vehicle-Parameter
-            String[] pictureURLs,
-            String[] particularities,
-
-            //VehicleFeatures-Parameter
-            VehicleType vehicleType,
-            String make,
-            String model,
-            String year,
-            double length,
-            double width,
-            double height,
-            String engine,
-            String transmission,
-            int seats,
-            int beds,
-            boolean roofTent,
-            boolean roofRack,
-            boolean bikeRack,
-            boolean shower,
-            boolean toilet,
-            boolean kitchenUnit,
-            boolean fridge
-    )
-    // TODO throws Exception
-    {
-        return modelMapper.offerToOfferDTO(offerService.create(
-                price,
-                rentalStartDate,
-                rentalReturnDate,
-
-                //Vehicle-Parameter
-                pictureURLs,
-                particularities,
-
-                //VehicleFeatures-Parameter
-                vehicleType,
-                make,
-                model,
-                year,
-                length,
-                width,
-                height,
-                engine,
-                transmission,
-                seats,
-                beds,
-                roofTent,
-                roofRack,
-                bikeRack,
-                shower,
-                toilet,
-                kitchenUnit,
-                fridge
-        ));
-    }
+  public OfferDTO create(
+    // Offer-Parameter
+    Long price,
+    String rentalStartDate,
+    String rentalReturnDate,
+    //Vehicle-Parameter
+    String[] pictureURLs,
+    String[] particularities,
+    //VehicleFeatures-Parameter
+    VehicleType vehicleType,
+    String make,
+    String model,
+    String year,
+    double length,
+    double width,
+    double height,
+    String engine,
+    String transmission,
+    int seats,
+    int beds,
+    boolean roofTent,
+    boolean roofRack,
+    boolean bikeRack,
+    boolean shower,
+    boolean toilet,
+    boolean kitchenUnit,
+    boolean fridge
+  ) { // TODO throws Exception
+    return modelMapper.offerToOfferDTO(
+      offerService.create(
+        //Offer-Parameter
+        price,
+        rentalStartDate,
+        rentalReturnDate,
+        //Vehicle-Parameter
+        pictureURLs,
+        particularities,
+        //VehicleFeatures-Parameter
+        vehicleType,
+        make,
+        model,
+        year,
+        length,
+        width,
+        height,
+        engine,
+        transmission,
+        seats,
+        beds,
+        roofTent,
+        roofRack,
+        bikeRack,
+        shower,
+        toilet,
+        kitchenUnit,
+        fridge
+      )
+    );
+  }
 }

@@ -4,91 +4,98 @@ import java.util.Arrays;
 
 public class VehicleDTO {
 
-    private Long vehicleID;
+  private Long vehicleID;
 
-    private VehicleTypeDTO vehicleType;
+  private VehicleTypeDTO vehicleType;
 
-    private Long vehicleFeaturesID;
+  private Long vehicleFeaturesID;
 
-    private String[] pictureURLs;
+  private String[] pictureURLs;
 
-    private String[] particularities;
+  private String[] particularities;
 
-    private AvailabilityDTO availability;
+  private AvailabilityDTO availability;
 
-    // Getters & Setters
+  // Getters & Setters
 
-    public Long getVehicleID() {
-        return vehicleID;
-    }
+  public Long getVehicleID() {
+    return vehicleID;
+  }
 
-    public void setVehicleID(Long vehicleID) {
-        this.vehicleID = vehicleID;
-    }
+  public void setVehicleID(Long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public VehicleTypeDTO getVehicleType() {
-        return vehicleType;
-    }
+  public VehicleTypeDTO getVehicleType() {
+    return vehicleType;
+  }
 
-    public void setVehicleTypeDTO(VehicleTypeDTO vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+  public void setVehicleTypeDTO(VehicleTypeDTO vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public Long getVehicleFeaturesID() {
-        return vehicleFeaturesID;
-    }
+  public Long getVehicleFeaturesID() {
+    return vehicleFeaturesID;
+  }
 
-    public void setVehicleFeaturesID(long vehicleFeaturesID) {
-        this.vehicleFeaturesID = vehicleFeaturesID;
-    }
+  public void setVehicleFeaturesID(long vehicleFeaturesID) {
+    this.vehicleFeaturesID = vehicleFeaturesID;
+  }
 
-    public String[] getPictureURLs() {
-        return pictureURLs;
-    }
+  public String[] getPictureURLs() {
+    return pictureURLs;
+  }
 
-    public void setPictureURLs(String[] pictureURLs) {
-        this.pictureURLs = pictureURLs;
-    }
+  public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = pictureURLs;
+  }
 
-    public String[] getParticularities() {
-        return particularities;
-    }
+  public String[] getParticularities() {
+    return particularities;
+  }
 
-    public void setParticularities(String[] particularities) {
-        this.particularities = particularities;
-    }
+  public void setParticularities(String[] particularities) {
+    this.particularities = particularities;
+  }
 
-    // Constructor
+  // Constructor
 
-    public VehicleDTO() {
-        super();
-    }
+  public VehicleDTO() {
+    super();
+  }
 
-    public VehicleDTO(
-            Long vehicleID,
-            VehicleTypeDTO vehicleType,
-            Long vehicleFeaturesID,
-            String[] pictureURLs,
-            String[] particularities,
-            AvailabilityDTO availability
-    ) {
-        super();
-        this.vehicleID = vehicleID;
-        this.vehicleType = vehicleType;
-        this.vehicleFeaturesID = vehicleFeaturesID;
-        this.pictureURLs = pictureURLs;
-        this.particularities = particularities;
-        this.availability = availability;
-    }
+  public VehicleDTO(
+    Long vehicleID,
+    VehicleTypeDTO vehicleType,
+    Long vehicleFeaturesID,
+    String[] pictureURLs,
+    String[] particularities,
+    AvailabilityDTO availability
+  ) {
+    super();
+    this.vehicleID = vehicleID;
+    this.vehicleType = vehicleType;
+    this.vehicleFeaturesID = vehicleFeaturesID;
+    this.pictureURLs = pictureURLs;
+    this.particularities = particularities;
+    this.availability = availability;
+  }
 
-    @Override
-    public String toString() {
-        return "VehicleDTO{" +
-                "vehicleID=" + vehicleID +
-                ", vehicleType=" + vehicleType +
-                ", vehicleFeaturesID=" + vehicleFeaturesID +
-                ", pictureURLs=" + Arrays.toString(pictureURLs) +
-                ", particularities=" + Arrays.toString(particularities) +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return (
+      "VehicleDTO{" +
+      "vehicleID=" +
+      vehicleID +
+      ", vehicleType=" +
+      vehicleType +
+      ", vehicleFeaturesID=" +
+      vehicleFeaturesID +
+      ", pictureURLs=" +
+      Arrays.toString(pictureURLs) +
+      ", particularities=" +
+      Arrays.toString(particularities) +
+      '}'
+    );
+  }
 }
