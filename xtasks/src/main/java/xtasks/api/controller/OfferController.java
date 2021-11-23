@@ -3,14 +3,10 @@ package xtasks.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import xtasks.api.ModelMapper;
 import xtasks.api.contract.IOfferController;
-import xtasks.api.contract.IVehicleOfferController;
 import xtasks.api.contract.OfferDTO;
-import xtasks.backend.entities.Availability;
 import xtasks.backend.services.OfferService;
 
 public class OfferController implements IOfferController {
-
-    // TODO IVehicleOfferController to IOfferController
 
     @Autowired
     OfferService offerService;
@@ -27,4 +23,3 @@ public class OfferController implements IOfferController {
         ));
     }
 }
-// TODO OfferController
