@@ -9,7 +9,6 @@ public class VehicleFeatures {
   @GeneratedValue
   private Long vehicleFeaturesID;
 
-  @OneToMany
   Long vehicleID;
 
   private VehicleType vehicleType;
