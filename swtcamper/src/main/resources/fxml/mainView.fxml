@@ -11,6 +11,12 @@
       <fx:include source="navigationView.fxml" />
       <ScrollPane prefHeight="460.0" prefWidth="600.0">
          <content>
+<!--            TODO: schauen ob klappt-->
+<!--            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />-->
+<!--            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />-->
+<!--            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />-->
+<!--            <fx:include fx:id="loginViewBox" source="loginView.fxml" />-->
+
             <VBox prefHeight="316.0" prefWidth="579.0">
                <children>
                   <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
