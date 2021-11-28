@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="swtcamper.javafx.controller.MainViewController">
-    <children>
-        <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-            <items>
 
-            </items>
-        </SplitPane>
-    </children>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController" >
+   <children>
+      <fx:include source="navigationView.fxml" />
+      <ScrollPane prefHeight="460.0" prefWidth="600.0">
+         <content>
+            <VBox prefHeight="316.0" prefWidth="579.0">
+               <children>
+                  <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="My Offers" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Rent a Van" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Place Offer" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Login" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
 </VBox>
