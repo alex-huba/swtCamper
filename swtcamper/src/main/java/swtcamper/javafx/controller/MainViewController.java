@@ -67,5 +67,4 @@ public class MainViewController {
   public void handleException(Exception e) {
     handleExceptionMessage(e.getMessage());
   }
-
 }
