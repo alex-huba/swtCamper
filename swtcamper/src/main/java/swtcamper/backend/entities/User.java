@@ -5,125 +5,141 @@ import javax.persistence.*;
 @Entity
 public class User {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String username;
-    private String name;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-//    public String getSurname() {
-//        return surname;
-//    }
-//
-//    public void setSurname(String surname) {
-//        this.surname = surname;
-//    }
-//
-//    public String getPhone() {
-//        return phone;
-//    }
-//
-//    public void setPhone(String phone) {
-//        this.phone = phone;
-//    }
+  private String username;
+  private String name;
 
-    private String surname;
-    private String email;
-    private String phone;
-    private String password;
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+  //    public String getSurname() {
+  //        return surname;
+  //    }
+  //
+  //    public void setSurname(String surname) {
+  //        this.surname = surname;
+  //    }
+  //
+  //    public String getPhone() {
+  //        return phone;
+  //    }
+  //
+  //    public void setPhone(String phone) {
+  //        this.phone = phone;
+  //    }
 
-    private boolean locked;
-    private boolean enabled;
+  private String surname;
+  private String email;
+  private String phone;
+  private String password;
 
-    public User(Long id, String name, String username, String email, String password, UserRole userRole, boolean locked, boolean enabled) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
-    }
+  @Enumerated(EnumType.STRING)
+  private UserRole userRole;
 
-    public User(String name, String username, String email, String password, UserRole userRole, boolean locked, boolean enabled) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
-    }
+  private boolean locked;
+  private boolean enabled;
 
-    public User() {
-    }
+  public User(
+    Long id,
+    String name,
+    String username,
+    String email,
+    String password,
+    UserRole userRole,
+    boolean locked,
+    boolean enabled
+  ) {
+    this.id = id;
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.userRole = userRole;
+    this.locked = locked;
+    this.enabled = enabled;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public User(
+    String name,
+    String username,
+    String email,
+    String password,
+    UserRole userRole,
+    boolean locked,
+    boolean enabled
+  ) {
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.userRole = userRole;
+    this.locked = locked;
+    this.enabled = enabled;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public User() {}
 
-    public String getName() {
-        return name;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public UserRole getUserRole() {
-        return userRole;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public boolean isLocked() {
-        return locked;
-    }
+  public UserRole getUserRole() {
+    return userRole;
+  }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
+  public void setUserRole(UserRole userRole) {
+    this.userRole = userRole;
+  }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+  public boolean isLocked() {
+    return locked;
+  }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+  public void setLocked(boolean locked) {
+    this.locked = locked;
+  }
 
+  public boolean isEnabled() {
+    return enabled;
+  }
 
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 }
