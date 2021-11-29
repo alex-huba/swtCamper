@@ -29,7 +29,7 @@ public class MainViewController {
     myOffersViewBox.setVisible(false);
     rentVanViewBox.setVisible(false);
     placeOfferViewBox.setVisible(false);
-    loginViewBox.setVisible(false);
+    loginViewBox.setVisible(true);
 
     reloadData();
   }

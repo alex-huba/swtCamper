@@ -25,6 +25,13 @@ public class NavigationViewController {
 
     private String activeButtonString = "-fx-background-color:#333; -fx-text-fill:#FFF";
 
+    @FXML
+    private void initialize() {
+        myOfferButton.setCancelButton(true);
+        loginButton.setDefaultButton(true);
+        loginButton.setStyle(activeButtonString);
+    }
+
     private void resetStyle() {
         myOfferButton.setStyle("");
         rentCamperButton.setStyle("");
