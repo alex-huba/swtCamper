@@ -8,144 +8,181 @@ public class User {
   @Id
   @GeneratedValue
   private Long id;
+
   private String username;
   private String name;
   private String surname;
   private String email;
   private String phone;
   private String password;
+
   @Enumerated(EnumType.STRING)
   private UserRole userRole;
 
   private boolean locked;
   private boolean enabled;
 
+  public User(
+    Long id,
+    String username,
+    String name,
+    String surname,
+    String email,
+    String phone,
+    String password,
+    UserRole userRole,
+    boolean locked,
+    boolean enabled
+  ) {
+    this.id = id;
+    this.username = username;
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.phone = phone;
+    this.password = password;
+    this.userRole = userRole;
+    this.locked = locked;
+    this.enabled = enabled;
+  }
 
-    public User(Long id, String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
-    }
+  public User(
+    String username,
+    String name,
+    String surname,
+    String email,
+    String phone,
+    String password,
+    UserRole userRole,
+    boolean locked,
+    boolean enabled
+  ) {
+    this.username = username;
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.phone = phone;
+    this.password = password;
+    this.userRole = userRole;
+    this.locked = locked;
+    this.enabled = enabled;
+  }
 
-    public User(String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
-        this.username = username;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
-    }
+  public User() {
+    super();
+  }
 
-    public User() {
-        super();
-    }
+  @Override
+  public String toString() {
+    return (
+      "User{" +
+      "id=" +
+      id +
+      ", username='" +
+      username +
+      '\'' +
+      ", name='" +
+      name +
+      '\'' +
+      ", surname='" +
+      surname +
+      '\'' +
+      ", email='" +
+      email +
+      '\'' +
+      ", phone='" +
+      phone +
+      '\'' +
+      ", password='" +
+      password +
+      '\'' +
+      ", userRole=" +
+      userRole +
+      ", locked=" +
+      locked +
+      ", enabled=" +
+      enabled +
+      '}'
+    );
+  }
 
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", userRole=" + userRole +
-                ", locked=" + locked +
-                ", enabled=" + enabled +
-                '}';
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getSurname() {
+    return surname;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setSurname(String surname) {
+    this.surname = surname;
+  }
 
-    public String getSurname() {
-        return surname;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getPhone() {
+    return phone;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
 
-    public String getPhone() {
-        return phone;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public UserRole getUserRole() {
+    return userRole;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setUserRole(UserRole userRole) {
+    this.userRole = userRole;
+  }
 
-    public UserRole getUserRole() {
-        return userRole;
-    }
+  public boolean isLocked() {
+    return locked;
+  }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
+  public void setLocked(boolean locked) {
+    this.locked = locked;
+  }
 
-    public boolean isLocked() {
-        return locked;
-    }
+  public boolean isEnabled() {
+    return enabled;
+  }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 }

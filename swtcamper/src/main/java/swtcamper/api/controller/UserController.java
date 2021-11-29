@@ -7,11 +7,9 @@ import swtcamper.backend.services.UserService;
 
 public class UserController implements IUserController {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @Autowired
-    ModelMapper modelMapper;
-
-
+  @Autowired
+  ModelMapper modelMapper;
 }
