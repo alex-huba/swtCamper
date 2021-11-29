@@ -14,38 +14,6 @@ import swtcamper.backend.entities.OfferedObjectType;
 @Component
 public class ModelMapper {
 
-  //  public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
-  //    // TODO alt throws Exception {
-  //      switch (vehicleType) {
-  //        case BUS:
-  //          return VehicleTypeDTO.BUS;
-  //        case CAMPER:
-  //          return VehicleTypeDTO.CAMPER;
-  //        case TRAILER:
-  //          return VehicleTypeDTO.TRAILER;
-  ////      TODO alt remove return: null;
-  ////       implement default throws Exception
-  //        default: return null;
-  ////          throw new GenericServiceException("VehicleType is invalid.");
-  //      }
-  //  }
-  //
-  public AvailabilityDTO toAvailabilityDTO(Availability availability) {
-    switch (availability) {
-      case AVAILABLE:
-        return AvailabilityDTO.AVAILABLE;
-      case RENT:
-        return AvailabilityDTO.RENT;
-      case RESERVED:
-        return AvailabilityDTO.RESERVED;
-      //      TODO alt remove return: null;
-      //       implement default throws Exception
-      default:
-        return null;
-      // throw new GenericServiceException("Availability value is invalid.");
-    }
-  }
-
   public OfferedObjectTypeDTO toOfferedObjectTypeDTO(
     OfferedObjectType offeredObjectType
   ) {
@@ -63,12 +31,12 @@ public class ModelMapper {
   public OfferDTO offerToOfferDTO(Offer offer) {
     return new OfferDTO(
       offer.getOfferID(),
-      toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
-      offer.getOfferedObjectID(),
-      toAvailabilityDTO(offer.getAvailability()),
-      offer.getPrice(),
-      offer.getRentalStartDate(),
-      offer.getRentalReturnDate()
+            toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
+            offer.getOfferedObjectID(),
+            offer.getBookings(),
+            offer.getPrice(),
+            offer.getRentalConditions(),
+            offer.isActive()
     );
   }
 }

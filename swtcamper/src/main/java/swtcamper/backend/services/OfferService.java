@@ -27,11 +27,12 @@ public class OfferService {
 
     // Offer-Parameter
     Long price,
-    String rentalStartDate,
-    String rentalReturnDate,
+    String rentalConditions,
+
     //Vehicle-Parameter
     String[] pictureURLs,
     String[] particularities,
+
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -80,10 +81,7 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
 
-    Offer offer = new Offer(vehicle);
-    offer.setPrice(price);
-    offer.setRentalStartDate(rentalStartDate);
-    offer.setRentalReturnDate(rentalReturnDate);
+    Offer offer = new Offer(vehicle, price, rentalConditions);
 
     // Objekte erstellt und IDs verteilt --> ab in die DB
 
@@ -91,4 +89,6 @@ public class OfferService {
     vehicleRepository.save(vehicle);
     return offerRepository.save(offer);
   }
+
+
 }

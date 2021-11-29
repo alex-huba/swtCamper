@@ -1,34 +1,32 @@
 package swtcamper.api.contract;
 
+import java.util.ArrayList;
+
 public class OfferDTO {
 
   private Long offerID;
-
   private OfferedObjectTypeDTO offeredObjectType;
-  Long offeredObjectID;
-
-  private AvailabilityDTO availability;
-
+  private Long offeredObjectID;
+  private ArrayList<Long> bookings;
   private Long price;
-
-  private String rentalStartDate;
-  private String rentalReturnDate;
+  private String rentalConditions;
+  private boolean active;
 
   public OfferDTO(
-    Long offerID,
-    OfferedObjectTypeDTO offeredObjectType,
-    Long offeredObjectID,
-    AvailabilityDTO availability,
-    Long price,
-    String rentalStartDate,
-    String rentalReturnDate
-  ) {
+          Long offerID,
+          OfferedObjectTypeDTO offeredObjectType,
+          Long offeredObjectID,
+          ArrayList<Long> bookings,
+          Long price,
+          String rentalConditions,
+          boolean active)
+  {
     this.offerID = offerID;
     this.offeredObjectType = offeredObjectType;
     this.offeredObjectID = offeredObjectID;
-    this.availability = availability;
+    this.bookings = bookings;
     this.price = price;
-    this.rentalStartDate = rentalStartDate;
-    this.rentalReturnDate = rentalReturnDate;
+    this.rentalConditions = rentalConditions;
+    this.active = active;
   }
 }

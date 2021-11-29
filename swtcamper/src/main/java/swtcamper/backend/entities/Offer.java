@@ -3,6 +3,7 @@ package swtcamper.backend.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.ArrayList;
 
 @Entity
 public class Offer implements IOffer {
@@ -12,61 +13,71 @@ public class Offer implements IOffer {
   private Long offerID;
 
   private OfferedObjectType offeredObjectType;
-  Long offeredObjectID;
-
-  private Availability availability;
-
+  private Long offeredObjectID;
+  private ArrayList<Long> bookings;
   private Long price;
+  private String rentalConditions;
+  private boolean active;
 
-  private String rentalStartDate;
-  private String rentalReturnDate;
-
-  public Offer(Vehicle vehicle, Long price) {
+  public Offer(Vehicle vehicle, Long price, String rentalConditions) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObjectID = vehicle.getVehicleID();
+    this.bookings = new ArrayList<Long>();
     this.price = price;
-    this.availability = Availability.AVAILABLE;
+    this.rentalConditions = rentalConditions;
+    this.active = true;
   }
 
   public Offer(Vehicle vehicle) {
-    this.offeredObjectID = vehicle.getVehicleID();
     this.offeredObjectType = OfferedObjectType.VEHICLE;
+    this.offeredObjectID = vehicle.getVehicleID();
+    this.bookings = new ArrayList<Long>();
+    this.active = true;
   }
 
-  public Offer() {}
+  public Offer() {
+    super();
+    this.bookings = new ArrayList<Long>();
+  }
 
+  @Override
   public Long getOfferID() {
     return offerID;
   }
 
+  @Override
   public void setOfferID(Long offerID) {
     this.offerID = offerID;
   }
 
+  @Override
   public OfferedObjectType getOfferedObjectType() {
     return offeredObjectType;
   }
 
+  @Override
   public void setOfferedObjectType(OfferedObjectType offeredObjectType) {
     this.offeredObjectType = offeredObjectType;
   }
 
+  @Override
   public Long getOfferedObjectID() {
     return offeredObjectID;
   }
 
-  public void setOfferedObjectID(Long vehicleID) {
-    this.offeredObjectID = vehicleID;
+  @Override
+  public void setOfferedObjectID(Long offeredObjectID) {
+    this.offeredObjectID = offeredObjectID;
   }
 
   @Override
-  public Availability getAvailability() {
-    return availability;
+  public ArrayList<Long> getBookings() {
+    return bookings;
   }
 
   @Override
-  public void setAvailability(Availability availability) {
-    this.availability = availability;
+  public void setBookings(ArrayList<Long> bookings) {
+    this.bookings = bookings;
   }
 
   @Override
@@ -80,22 +91,22 @@ public class Offer implements IOffer {
   }
 
   @Override
-  public String getRentalStartDate() {
-    return rentalStartDate;
+  public String getRentalConditions() {
+    return rentalConditions;
   }
 
   @Override
-  public void setRentalStartDate(String rentalStartDate) {
-    this.rentalStartDate = rentalStartDate;
+  public void setRentalConditions(String rentalConditions) {
+    this.rentalConditions = rentalConditions;
   }
 
   @Override
-  public String getRentalReturnDate() {
-    return rentalReturnDate;
+  public boolean isActive() {
+    return active;
   }
 
   @Override
-  public void setRentalReturnDate(String rentalReturnDate) {
-    this.rentalReturnDate = rentalReturnDate;
+  public void setActive(boolean active) {
+    this.active = active;
   }
 }
