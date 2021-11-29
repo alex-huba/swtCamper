@@ -1,27 +1,22 @@
-package swtcamper.backend.entities;
+package swtcamper.api.contract;
 
-import javax.persistence.*;
+import swtcamper.backend.entities.UserRole;
 
-@Entity
-public class User {
+public class UserDTO {
 
-  @Id
-  @GeneratedValue
-  private Long id;
-  private String username;
-  private String name;
-  private String surname;
-  private String email;
-  private String phone;
-  private String password;
-  @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+    private Long id;
+    private String username;
+    private String name;
+    private String surname;
+    private String email;
+    private String phone;
+    private String password;
+    private UserRole userRole;
 
-  private boolean locked;
-  private boolean enabled;
+    private boolean locked;
+    private boolean enabled;
 
-
-    public User(Long id, String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
+    public UserDTO(Long id, String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -34,7 +29,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    public User(String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
+    public UserDTO(String username, String name, String surname, String email, String phone, String password, UserRole userRole, boolean locked, boolean enabled) {
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -46,25 +41,8 @@ public class User {
         this.enabled = enabled;
     }
 
-    public User() {
+    public UserDTO() {
         super();
-    }
-
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", userRole=" + userRole +
-                ", locked=" + locked +
-                ", enabled=" + enabled +
-                '}';
     }
 
     public Long getId() {
@@ -146,6 +124,5 @@ public class User {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
 
 }
