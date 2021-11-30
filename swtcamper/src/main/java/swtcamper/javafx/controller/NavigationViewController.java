@@ -80,19 +80,19 @@ public class NavigationViewController {
       navigationRoot.getChildren().add(navigationButtons);
       mainViewController.mainStage.setPrefWidth(677);
     }
-//    new EventHandler<ActionEvent>() {
-//      @Override
-//      public void handle(ActionEvent event) {
-//        root.getChildren().add(fileRoot);
-//        FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), editorRoot);
-//        hideEditorRootTransition.setFromValue(1.0);
-//        hideEditorRootTransition.setToValue(0.0);
-//
-//        FadeTransition showFileRootTransition = new FadeTransition(Duration.millis(500), fileRoot);
-//        showFileRootTransition.setFromValue(0.0);
-//        showFileRootTransition.setToValue(1.0);
-//        hideEditorRootTransition.play();
-//        showFileRootTransition.play();
-//      }
+    //    new EventHandler<ActionEvent>() {
+    //      @Override
+    //      public void handle(ActionEvent event) {
+    //        root.getChildren().add(fileRoot);
+    //        FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), editorRoot);
+    //        hideEditorRootTransition.setFromValue(1.0);
+    //        hideEditorRootTransition.setToValue(0.0);
+    //
+    //        FadeTransition showFileRootTransition = new FadeTransition(Duration.millis(500), fileRoot);
+    //        showFileRootTransition.setFromValue(0.0);
+    //        showFileRootTransition.setToValue(1.0);
+    //        hideEditorRootTransition.play();
+    //        showFileRootTransition.play();
+    //      }
   }
 }
