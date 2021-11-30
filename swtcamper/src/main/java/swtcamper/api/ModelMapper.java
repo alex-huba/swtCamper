@@ -31,12 +31,12 @@ public class ModelMapper {
   public OfferDTO offerToOfferDTO(Offer offer) {
     return new OfferDTO(
       offer.getOfferID(),
-            toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
-            offer.getOfferedObjectID(),
-            offer.getBookings(),
-            offer.getPrice(),
-            offer.getRentalConditions(),
-            offer.isActive()
+      toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
+      offer.getOfferedObjectID(),
+      offer.getBookings(),
+      offer.getPrice(),
+      offer.getRentalConditions(),
+      offer.isActive()
     );
   }
 }

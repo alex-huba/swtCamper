@@ -13,14 +13,14 @@ public class OfferDTO {
   private boolean active;
 
   public OfferDTO(
-          Long offerID,
-          OfferedObjectTypeDTO offeredObjectType,
-          Long offeredObjectID,
-          ArrayList<Long> bookings,
-          Long price,
-          String rentalConditions,
-          boolean active)
-  {
+    Long offerID,
+    OfferedObjectTypeDTO offeredObjectType,
+    Long offeredObjectID,
+    ArrayList<Long> bookings,
+    Long price,
+    String rentalConditions,
+    boolean active
+  ) {
     this.offerID = offerID;
     this.offeredObjectType = offeredObjectType;
     this.offeredObjectID = offeredObjectID;

@@ -28,11 +28,9 @@ public class OfferService {
     // Offer-Parameter
     Long price,
     String rentalConditions,
-
     //Vehicle-Parameter
     String[] pictureURLs,
     String[] particularities,
-
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -89,6 +87,4 @@ public class OfferService {
     vehicleRepository.save(vehicle);
     return offerRepository.save(offer);
   }
-
-
 }

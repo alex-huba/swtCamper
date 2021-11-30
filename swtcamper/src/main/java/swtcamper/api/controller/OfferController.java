@@ -19,11 +19,9 @@ public class OfferController implements IOfferController {
     // Offer-Parameter
     Long price,
     String rentalConditions,
-
     //Vehicle-Parameter
     String[] pictureURLs,
     String[] particularities,
-
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -46,15 +44,12 @@ public class OfferController implements IOfferController {
   ) { // TODO throws Exception
     return modelMapper.offerToOfferDTO(
       offerService.create(
-
         //Offer-Parameter
         price,
         rentalConditions,
-
         //Vehicle-Parameter
         pictureURLs,
         particularities,
-
         //VehicleFeatures-Parameter
         vehicleType,
         make,
