@@ -10,10 +10,14 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MainViewController {
+
+    @Autowired
+    public NavigationViewController navigationViewController;
 
     @FXML
     public Pane myOffersViewBox;
@@ -34,30 +38,26 @@ public class MainViewController {
     private void initialize() {
         reloadData();
 
-//    myOffersViewBox.setVisible(false);
-//    rentVanViewBox.setVisible(false);
-//    placeOfferViewBox.setVisible(false);
-//    loginViewBox.setVisible(true);
+        // TODO: schlecht!
+        navigationViewController.toggleNavigation();
+        navigationViewController.toggleNavigation();
         
-        mainStage.getChildren().removeAll();
-//        mainStage.getChildren().add(loginViewBox);
+        mainStage.getChildren().remove(myOffersViewBox);
+        mainStage.getChildren().remove(rentVanViewBox);
+        mainStage.getChildren().remove(placeOfferViewBox);
+        mainStage.getChildren().remove(loginViewBox);
+
+        mainStage.getChildren().add(loginViewBox);
     }
 
     public void reloadData() {
     }
 
     public void changeView(String switchTo) {
-//    myOffersViewBox.setVisible(false);
-//    rentVanViewBox.setVisible(false);
-//    placeOfferViewBox.setVisible(false);
-//    loginViewBox.setVisible(false);
-
-//    if (switchTo.equals("myOffers")) myOffersViewBox.setVisible(true);
-//    if (switchTo.equals("rentVan")) rentVanViewBox.setVisible(true);
-//    if (switchTo.equals("placeOffer")) placeOfferViewBox.setVisible(true);
-//    if (switchTo.equals("login")) loginViewBox.setVisible(true);
-
-        mainStage.getChildren().removeAll();
+        mainStage.getChildren().remove(myOffersViewBox);
+        mainStage.getChildren().remove(rentVanViewBox);
+        mainStage.getChildren().remove(placeOfferViewBox);
+        mainStage.getChildren().remove(loginViewBox);
 
         if (switchTo.equals("myOffers")) mainStage.getChildren().add(myOffersViewBox);
         if (switchTo.equals("rentVan")) mainStage.getChildren().add(rentVanViewBox);

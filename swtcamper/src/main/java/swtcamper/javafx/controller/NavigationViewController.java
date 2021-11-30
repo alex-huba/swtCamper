@@ -72,7 +72,7 @@ public class NavigationViewController {
     mainViewController.changeView("login");
   }
 
-  public void toggleNavigation(ActionEvent actionEvent) {
+  public void toggleNavigation() {
     if (navigationRoot.getChildren().contains(navigationButtons)) {
       navigationRoot.getChildren().remove(navigationButtons);
       mainViewController.mainStage.setPrefWidth(830);
