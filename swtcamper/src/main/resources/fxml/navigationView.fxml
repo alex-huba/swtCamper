@@ -5,10 +5,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="navigationRoot" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="104.0" minHeight="-Infinity" minWidth="28.0" prefHeight="600.0" prefWidth="28.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
+<VBox fx:id="navigationRoot" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="104.0" minHeight="-Infinity" minWidth="28.0" onMouseExited="#hoverToggleNavigationOff" prefHeight="600.0" prefWidth="28.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
     <children>
-        <Button mnemonicParsing="false" onAction="#toggleNavigation" text="☰" />
-      <VBox fx:id="navigationButtons" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+        <Button mnemonicParsing="false" onAction="#toggleNavigationControl" onMouseEntered="#hoverToggleNavigationOn" text="☰" />
+      <VBox fx:id="navigationButtons" fillWidth="false" minWidth="28.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
          <children>
               <Button fx:id="myOfferButton" mnemonicParsing="false" onAction="#showMyOffers" prefHeight="25.0" prefWidth="120.0" text="My Offers">
                   <cursor>

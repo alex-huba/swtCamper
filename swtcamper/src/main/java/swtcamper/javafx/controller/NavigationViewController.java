@@ -3,6 +3,7 @@ package swtcamper.javafx.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class NavigationViewController {
   @FXML
   public Button loginButton;
 
+  private boolean hoverLock = false;
   private final String activeButtonString =
     "-fx-background-color:#333; -fx-text-fill:#FFF";
 
@@ -72,29 +74,49 @@ public class NavigationViewController {
     mainViewController.changeView("login");
   }
 
-  public void toggleNavigation() {
-    if (navigationRoot.getChildren().contains(navigationButtons)) {
-      navigationRoot.getChildren().remove(navigationButtons);
-      //      mainViewController.mainStage.setPrefWidth(830);
-      navigationRoot.setPrefWidth(28);
-    } else {
+  /**
+   * Adds the NavigationBar to the Scene and sets it to its max. width defined in navigationView.fxml
+   */
+  public void showNavigation() {
+    if (!navigationRoot.getChildren().contains(navigationButtons)) {
       navigationRoot.getChildren().add(navigationButtons);
-      //      mainViewController.mainStage.setPrefWidth(677);
       navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
     }
-    //    new EventHandler<ActionEvent>() {
-    //      @Override
-    //      public void handle(ActionEvent event) {
-    //        root.getChildren().add(fileRoot);
-    //        FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), editorRoot);
-    //        hideEditorRootTransition.setFromValue(1.0);
-    //        hideEditorRootTransition.setToValue(0.0);
-    //
-    //        FadeTransition showFileRootTransition = new FadeTransition(Duration.millis(500), fileRoot);
-    //        showFileRootTransition.setFromValue(0.0);
-    //        showFileRootTransition.setToValue(1.0);
-    //        hideEditorRootTransition.play();
-    //        showFileRootTransition.play();
-    //      }
+  }
+
+  /**
+   * Removes the NavigationBar from the Scene and sets it to its max. width defined in navigationView.fxml
+   */
+  public void hideNavigation() {
+    if (navigationRoot.getChildren().contains(navigationButtons)) {
+      navigationRoot.getChildren().remove(navigationButtons);
+      navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
+    }
+  }
+
+  /**
+   * Sets a Boolean lock to handle hovering over the ToggleButton
+   */
+  public void toggleNavigationControl() {
+    if (hoverLock) {
+      hideNavigation();
+      hoverLock = false;
+    } else {
+      hoverLock = navigationRoot.getChildren().contains(navigationButtons);
+    }
+  }
+
+  /**
+   * Adds the NavigationBar to the Scene when the pointer enters the ToggleButton
+   */
+  public void hoverToggleNavigationOn() {
+    showNavigation();
+  }
+
+  /**
+   * Adds the NavigationBar to the Scene when the pointer leaves the ToggleButton - iff it was not clicked before
+   */
+  public void hoverToggleNavigationOff() {
+    if (!hoverLock) hideNavigation();
   }
 }
