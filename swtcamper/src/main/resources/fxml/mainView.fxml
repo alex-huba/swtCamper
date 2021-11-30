@@ -1,47 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+    <children>
+        <HBox prefHeight="401.0" prefWidth="569.0">
+            <fx:include source="navigationView.fxml" />
+            <Pane fx:id="mainStage" prefHeight="395.0" prefWidth="532.0">
+                <children>
+                    <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
+                        <children>
+                            <Label text="My Offers" />
+                        </children>
+                    </Pane>
+                    <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="189.0">
+                        <children>
+                            <Label text="Rent a Van" />
+                        </children>
+                    </Pane>
+                    <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                        <children>
+                            <Label text="Place Offer" />
+                        </children>
+                    </Pane>
+                    <Pane fx:id="loginViewBox" prefHeight="79.0" prefWidth="264.0">
+                        <children>
+                            <Label text="Login" />
+                        </children>
+                    </Pane>
+                </children>
+            </Pane>
+            <!--            <ScrollPane fx:id="mainStage" prefHeight="395.0" prefWidth="550.0">-->
+            <!--                <content>-->
+            <!--                    &lt;!&ndash;            TODO: schauen ob klappt&ndash;&gt;-->
+            <!--                    &lt;!&ndash;            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />&ndash;&gt;-->
+            <!--                    &lt;!&ndash;            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />&ndash;&gt;-->
+            <!--                    &lt;!&ndash;            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />&ndash;&gt;-->
+            <!--                    &lt;!&ndash;            <fx:include fx:id="loginViewBox" source="loginView.fxml" />&ndash;&gt;-->
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController" >
-   <children>
-      <fx:include source="navigationView.fxml" />
-      <ScrollPane prefHeight="460.0" prefWidth="600.0">
-         <content>
-<!--            TODO: schauen ob klappt-->
-<!--            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />-->
-<!--            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />-->
-<!--            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />-->
-<!--            <fx:include fx:id="loginViewBox" source="loginView.fxml" />-->
-
-            <VBox prefHeight="316.0" prefWidth="579.0">
-               <children>
-                  <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="My Offers" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Rent a Van" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Place Offer" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Login" />
-                     </children>
-                  </Pane>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-   </children>
+            <!--                    <VBox prefHeight="316.0" prefWidth="454.0">-->
+            <!--                        <children>-->
+            <!--                            <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">-->
+            <!--                                <children>-->
+            <!--                                    <Label text="My Offers" />-->
+            <!--                                </children>-->
+            <!--                            </Pane>-->
+            <!--                            <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="579.0">-->
+            <!--                                <children>-->
+            <!--                                    <Label text="Rent a Van" />-->
+            <!--                                </children>-->
+            <!--                            </Pane>-->
+            <!--                            <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">-->
+            <!--                                <children>-->
+            <!--                                    <Label text="Place Offer" />-->
+            <!--                                </children>-->
+            <!--                            </Pane>-->
+            <!--                            <Pane fx:id="loginViewBox" prefHeight="79.0" prefWidth="443.0">-->
+            <!--                                <children>-->
+            <!--                                    <Label text="Login" />-->
+            <!--                                </children>-->
+            <!--                            </Pane>-->
+            <!--                        </children>-->
+            <!--                    </VBox>-->
+            <!--                </content>-->
+            <!--            </ScrollPane>-->
+        </HBox>
+    </children>
+    <padding>
+        <Insets left="5.0" top="5.0" />
+    </padding>
 </VBox>

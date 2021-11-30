@@ -1,7 +1,10 @@
 package swtcamper.javafx.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +13,12 @@ public class NavigationViewController {
 
   @Autowired
   private MainViewController mainViewController;
+
+  @FXML
+  public VBox navigationRoot;
+
+  @FXML
+  public VBox navigationButtons;
 
   @FXML
   public Button myOfferButton;
@@ -23,14 +32,13 @@ public class NavigationViewController {
   @FXML
   public Button loginButton;
 
-  private String activeButtonString =
+  private final String activeButtonString =
     "-fx-background-color:#333; -fx-text-fill:#FFF";
 
   @FXML
   private void initialize() {
-    myOfferButton.setCancelButton(true);
-    loginButton.setDefaultButton(true);
     loginButton.setStyle(activeButtonString);
+    navigationRoot.getChildren().remove(navigationButtons);
   }
 
   private void resetStyle() {
@@ -62,5 +70,29 @@ public class NavigationViewController {
     resetStyle();
     loginButton.setStyle(activeButtonString);
     mainViewController.changeView("login");
+  }
+
+  public void toggleNavigation(ActionEvent actionEvent) {
+    if (navigationRoot.getChildren().contains(navigationButtons)) {
+      navigationRoot.getChildren().remove(navigationButtons);
+      mainViewController.mainStage.setPrefWidth(830);
+    } else {
+      navigationRoot.getChildren().add(navigationButtons);
+      mainViewController.mainStage.setPrefWidth(677);
+    }
+//    new EventHandler<ActionEvent>() {
+//      @Override
+//      public void handle(ActionEvent event) {
+//        root.getChildren().add(fileRoot);
+//        FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), editorRoot);
+//        hideEditorRootTransition.setFromValue(1.0);
+//        hideEditorRootTransition.setToValue(0.0);
+//
+//        FadeTransition showFileRootTransition = new FadeTransition(Duration.millis(500), fileRoot);
+//        showFileRootTransition.setFromValue(0.0);
+//        showFileRootTransition.setToValue(1.0);
+//        hideEditorRootTransition.play();
+//        showFileRootTransition.play();
+//      }
   }
 }
