@@ -38,10 +38,6 @@ public class MainViewController {
   private void initialize() {
     reloadData();
 
-    // TODO: schlecht!
-    navigationViewController.toggleNavigation();
-    navigationViewController.toggleNavigation();
-
     mainStage.getChildren().remove(myOffersViewBox);
     mainStage.getChildren().remove(rentVanViewBox);
     mainStage.getChildren().remove(placeOfferViewBox);

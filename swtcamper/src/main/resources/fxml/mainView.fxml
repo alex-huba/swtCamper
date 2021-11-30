@@ -9,29 +9,34 @@
     <children>
         <HBox prefHeight="401.0" prefWidth="569.0">
             <fx:include source="navigationView.fxml"/>
+            <Separator orientation="VERTICAL" prefHeight="200.0"/>
             <Pane fx:id="mainStage" prefHeight="395.0" prefWidth="532.0">
                 <children>
                     <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
                         <children>
                             <Label text="My Offers"/>
+                            <!--                            TODO after Merging: include-->
                             <!--                            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />-->
                         </children>
                     </Pane>
                     <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="189.0">
                         <children>
                             <Label text="Rent a Van"/>
+                            <!--                            TODO after Merging: include-->
                             <!--                            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />-->
                         </children>
                     </Pane>
                     <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
                         <children>
                             <Label text="Place Offer"/>
+                            <!--                            TODO after Merging: include-->
                             <!--                            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />-->
                         </children>
                     </Pane>
                     <Pane fx:id="loginViewBox" prefHeight="79.0" prefWidth="264.0">
                         <children>
                             <Label text="Login"/>
+                            <!--                            TODO after Merging: include-->
                             <!--                            <fx:include fx:id="loginViewBox" source="loginView.fxml" />-->
                         </children>
                     </Pane>

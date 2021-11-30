@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="navigationRoot" fillWidth="false" maxWidth="-Infinity" prefHeight="400.0" prefWidth="104.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
+<VBox fx:id="navigationRoot" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="104.0" minHeight="-Infinity" minWidth="28.0" prefHeight="600.0" prefWidth="28.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
     <children>
         <Button mnemonicParsing="false" onAction="#toggleNavigation" text="☰" />
       <VBox fx:id="navigationButtons" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
@@ -25,13 +25,13 @@
                       <Cursor fx:constant="HAND" />
                   </cursor>
               </Button>
-            <Pane maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+            <Pane maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="430.0" />
               <Button fx:id="loginButton" mnemonicParsing="false" onAction="#showLogin" prefHeight="25.0" prefWidth="120.0" text="Login">
                   <cursor>
                       <Cursor fx:constant="HAND" />
                   </cursor>
                <VBox.margin>
-                  <Insets top="400.0" />
+                  <Insets />
                </VBox.margin>
               </Button>
          </children>

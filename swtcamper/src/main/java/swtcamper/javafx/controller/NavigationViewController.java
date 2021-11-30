@@ -75,10 +75,12 @@ public class NavigationViewController {
   public void toggleNavigation() {
     if (navigationRoot.getChildren().contains(navigationButtons)) {
       navigationRoot.getChildren().remove(navigationButtons);
-      mainViewController.mainStage.setPrefWidth(830);
+      //      mainViewController.mainStage.setPrefWidth(830);
+      navigationRoot.setPrefWidth(28);
     } else {
       navigationRoot.getChildren().add(navigationButtons);
-      mainViewController.mainStage.setPrefWidth(677);
+      //      mainViewController.mainStage.setPrefWidth(677);
+      navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
     }
     //    new EventHandler<ActionEvent>() {
     //      @Override
