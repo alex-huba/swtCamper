@@ -34,16 +34,9 @@ public class App extends Application {
     Parent rootNode = fxmlLoader.load();
 
     primaryStage.setTitle("SWTCamper");
-    //    primaryStage.initStyle(StageStyle.UNDECORATED);
     primaryStage.setScene(new Scene(rootNode, 800, 600));
+    primaryStage.setResizable(false);
     primaryStage.show();
-
-    primaryStage.setOnCloseRequest(
-      e -> {
-        Platform.exit();
-        System.exit(0);
-      }
-    );
   }
 
   @Override

@@ -2,6 +2,7 @@ package swtcamper.javafx.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -56,6 +57,7 @@ public class NavigationViewController {
         )
       );
 
+      // actually only place to manually add a new tab
       myOfferButtonIcon.setFill(Color.valueOf("#FFF"));
       rentCamperButtonIcon.setFill(Color.valueOf("#FFF"));
       placeOfferButtonIcon.setFill(Color.valueOf("#FFF"));
@@ -77,22 +79,14 @@ public class NavigationViewController {
    * Removes background from buttons (and makes text white if mainViewController.darkMode is active)
    */
   private void makeButtonsTransparent() {
-    myOfferButton.setStyle(
-      "-fx-background-color: transparent;" +
-      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
-    );
-    rentCamperButton.setStyle(
-      "-fx-background-color: transparent;" +
-      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
-    );
-    placeOfferButton.setStyle(
-      "-fx-background-color: transparent;" +
-      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
-    );
-    loginButton.setStyle(
-      "-fx-background-color: transparent;" +
-      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
-    );
+    for (Object child : navigationRoot.getChildren()) {
+      if (child instanceof Button) {
+        ((Button) child).setStyle(
+            "-fx-background-color: transparent;" +
+            (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
+          );
+      }
+    }
   }
 
   /**
@@ -101,10 +95,11 @@ public class NavigationViewController {
   private void setShortTexts() {
     isShortText = true;
 
-    myOfferButton.setText("");
-    rentCamperButton.setText("");
-    placeOfferButton.setText("");
-    loginButton.setText("");
+    for (Object child : navigationRoot.getChildren()) {
+      if (child instanceof Button) {
+        ((Button) child).setText("");
+      }
+    }
 
     navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
   }
@@ -115,11 +110,14 @@ public class NavigationViewController {
   private void setLongTexts() {
     isShortText = false;
 
-    myOfferButton.setText("My Offers");
-    rentCamperButton.setText("Rent Van");
-    placeOfferButton.setText("New Offer");
-    loginButton.setText("Login");
+    for (Object child : navigationRoot.getChildren()) {
+      if (child instanceof Button) {
+        ((Button) child).setText(((Button) child).getAccessibleText());
+      }
+    }
 
+    // Pos.TOP_LEFT if you want buttons to be aligned
+    navigationRoot.setAlignment(Pos.TOP_CENTER);
     navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
   }
 
@@ -133,18 +131,7 @@ public class NavigationViewController {
         : mainViewController.lightActiveClass
     );
 
-    if (selectedButton.equals(myOfferButton)) mainViewController.changeView(
-      "myOffers"
-    );
-    if (selectedButton.equals(rentCamperButton)) mainViewController.changeView(
-      "rentVan"
-    );
-    if (selectedButton.equals(placeOfferButton)) mainViewController.changeView(
-      "placeOffer"
-    );
-    if (selectedButton.equals(loginButton)) mainViewController.changeView(
-      "login"
-    );
+    mainViewController.changeView(selectedButton.getAccessibleHelp());
   }
 
   /**
@@ -186,13 +173,5 @@ public class NavigationViewController {
    */
   public void hoverToggleNavigationOff() {
     if (!hoverLock) hideNavigation();
-  }
-
-  public void setActive(MouseEvent mouseEvent) {
-    //TODO
-  }
-
-  public void removeActive(MouseEvent mouseEvent) {
-    //TODO
   }
 }

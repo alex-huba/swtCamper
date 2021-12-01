@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
     <children>
       <HBox fx:id="headerHBox" alignment="CENTER_LEFT" prefHeight="5.0" prefWidth="635.0" spacing="5.0" style="-fx-background-color: lightgrey;">
          <children>
@@ -22,7 +25,7 @@
       </HBox>
         <HBox prefHeight="401.0" prefWidth="569.0">
             <fx:include source="navigationView.fxml" />
-            <Pane fx:id="mainStage" prefHeight="395.0" prefWidth="532.0">
+            <Pane fx:id="mainStage" prefHeight="600.0" prefWidth="597.0">
                 <children>
                     <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
                         <children>
