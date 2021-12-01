@@ -1,7 +1,10 @@
 package swtcamper.javafx.controller;
 
+import java.awt.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +16,9 @@ public class NavigationViewController {
    * change settings here
    */
   private boolean isShortText = false;
-  private final String activeButtonString =
-    "-fx-background-color:#333; -fx-text-fill:#FFF";
+  private final boolean darkMode = false;
+  private final String darkPrimary = "#383551";
+  private final String darkSecondary = "#FF4355";
 
   @Autowired
   private MainViewController mainViewController;
@@ -23,24 +27,55 @@ public class NavigationViewController {
   public VBox navigationRoot;
 
   @FXML
+  public VBox toggleBtnBg;
+
+  @FXML
   public VBox navigationButtons;
 
   @FXML
   public Button myOfferButton;
 
   @FXML
+  public ImageView myOfferButtonIcon;
+
+  @FXML
   public Button rentCamperButton;
+
+  @FXML
+  public ImageView rentCamperButtonIcon;
 
   @FXML
   public Button placeOfferButton;
 
   @FXML
+  public ImageView placeOfferButtonIcon;
+
+  @FXML
   public Button loginButton;
+
+  @FXML
+  public ImageView loginButtonIcon;
 
   private boolean hoverLock;
 
   @FXML
   private void initialize() {
+    if (darkMode) {
+      navigationRoot.setStyle(
+        String.format("-fx-background-color: %s;", darkPrimary)
+      );
+      toggleBtnBg.setStyle(
+        String.format("-fx-background-color: %s;", darkSecondary)
+      );
+
+      myOfferButtonIcon.setImage(new Image("./icons/list-ul_light.png"));
+      rentCamperButtonIcon.setImage(
+        new Image("./icons/comments-dollar_light.png")
+      );
+      placeOfferButtonIcon.setImage(new Image("./icons/plus-circle_light.png"));
+      loginButtonIcon.setImage(new Image("./icons/user-circle_light.png"));
+    }
+
     if (isShortText) {
       setShortTexts();
       hoverLock = false;
@@ -50,13 +85,31 @@ public class NavigationViewController {
     }
   }
 
+  /**
+   * Removes background from buttons (and makes text white if darkMode is active)
+   */
   private void makeButtonsTransparent() {
-    myOfferButton.setStyle("-fx-background-color: transparent;");
-    rentCamperButton.setStyle("-fx-background-color: transparent;");
-    placeOfferButton.setStyle("-fx-background-color: transparent;");
-    loginButton.setStyle("-fx-background-color: transparent;");
+    myOfferButton.setStyle(
+      "-fx-background-color: transparent;" +
+      (darkMode ? "-fx-text-fill: #FFF;" : "")
+    );
+    rentCamperButton.setStyle(
+      "-fx-background-color: transparent;" +
+      (darkMode ? "-fx-text-fill: #FFF;" : "")
+    );
+    placeOfferButton.setStyle(
+      "-fx-background-color: transparent;" +
+      (darkMode ? "-fx-text-fill: #FFF;" : "")
+    );
+    loginButton.setStyle(
+      "-fx-background-color: transparent;" +
+      (darkMode ? "-fx-text-fill: #FFF;" : "")
+    );
   }
 
+  /**
+   * Resets buttons' styles
+   */
   private void removeCustomStyling() {
     myOfferButton.setStyle("");
     rentCamperButton.setStyle("");
@@ -64,6 +117,9 @@ public class NavigationViewController {
     loginButton.setStyle("");
   }
 
+  /**
+   * Removes text from buttons
+   */
   private void setShortTexts() {
     isShortText = true;
     makeButtonsTransparent();
@@ -74,11 +130,20 @@ public class NavigationViewController {
     loginButton.setText("");
 
     navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
+    toggleBtnBg.setPrefWidth(navigationRoot.getPrefWidth());
   }
 
+  /**
+   * Adds text to buttons
+   */
   private void setLongTexts() {
     isShortText = false;
-    removeCustomStyling();
+
+    if (darkMode) {
+      makeButtonsTransparent();
+    } else {
+      removeCustomStyling();
+    }
 
     myOfferButton.setText("My Offers");
     rentCamperButton.setText("Rent Van");
@@ -86,6 +151,7 @@ public class NavigationViewController {
     loginButton.setText("Login");
 
     navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
+    toggleBtnBg.setPrefWidth(navigationRoot.getPrefWidth());
   }
 
   public void showMyOffers() {
@@ -129,7 +195,7 @@ public class NavigationViewController {
     if (hoverLock) {
       hoverLock = false;
     } else {
-      hoverLock = loginButton.getText().equals("Login");
+      hoverLock = !isShortText;
     }
   }
 
