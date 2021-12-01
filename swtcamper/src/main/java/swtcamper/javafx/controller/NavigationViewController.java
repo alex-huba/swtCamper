@@ -41,9 +41,6 @@ public class NavigationViewController {
 
   @FXML
   private void initialize() {
-    // set first button to be active
-    loginButton.setStyle(activeButtonString);
-
     if (isShortText) {
       setShortTexts();
       hoverLock = false;
@@ -53,7 +50,14 @@ public class NavigationViewController {
     }
   }
 
-  private void resetStyles() {
+  private void makeButtonsTransparent() {
+    myOfferButton.setStyle("-fx-background-color: transparent;");
+    rentCamperButton.setStyle("-fx-background-color: transparent;");
+    placeOfferButton.setStyle("-fx-background-color: transparent;");
+    loginButton.setStyle("-fx-background-color: transparent;");
+  }
+
+  private void removeCustomStyling() {
     myOfferButton.setStyle("");
     rentCamperButton.setStyle("");
     placeOfferButton.setStyle("");
@@ -62,20 +66,22 @@ public class NavigationViewController {
 
   private void setShortTexts() {
     isShortText = true;
+    makeButtonsTransparent();
 
-    myOfferButton.setText("O");
-    rentCamperButton.setText("R");
-    placeOfferButton.setText("N");
-    loginButton.setText("L");
+    myOfferButton.setText("");
+    rentCamperButton.setText("");
+    placeOfferButton.setText("");
+    loginButton.setText("");
 
     navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
   }
 
   private void setLongTexts() {
     isShortText = false;
+    removeCustomStyling();
 
     myOfferButton.setText("My Offers");
-    rentCamperButton.setText("Rent a Camper");
+    rentCamperButton.setText("Rent Van");
     placeOfferButton.setText("New Offer");
     loginButton.setText("Login");
 
@@ -83,26 +89,18 @@ public class NavigationViewController {
   }
 
   public void showMyOffers() {
-    resetStyles();
-    myOfferButton.setStyle(activeButtonString);
     mainViewController.changeView("myOffers");
   }
 
   public void showRentCamper() {
-    resetStyles();
-    rentCamperButton.setStyle(activeButtonString);
     mainViewController.changeView("rentVan");
   }
 
   public void showPlaceOffer() {
-    resetStyles();
-    placeOfferButton.setStyle(activeButtonString);
     mainViewController.changeView("placeOffer");
   }
 
   public void showLogin() {
-    resetStyles();
-    loginButton.setStyle(activeButtonString);
     mainViewController.changeView("login");
   }
 
