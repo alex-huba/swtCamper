@@ -1,24 +1,17 @@
 package swtcamper.javafx.controller;
 
-import java.awt.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NavigationViewController {
-
-  /**
-   * change settings here
-   */
-  private boolean isShortText = false;
-  private final boolean darkMode = false;
-  private final String darkPrimary = "#383551";
-  private final String darkSecondary = "#FF4355";
 
   @Autowired
   private MainViewController mainViewController;
@@ -27,94 +20,79 @@ public class NavigationViewController {
   public VBox navigationRoot;
 
   @FXML
-  public VBox toggleBtnBg;
-
-  @FXML
-  public VBox navigationButtons;
-
-  @FXML
   public Button myOfferButton;
 
   @FXML
-  public ImageView myOfferButtonIcon;
+  public SVGPath myOfferButtonIcon;
 
   @FXML
   public Button rentCamperButton;
 
   @FXML
-  public ImageView rentCamperButtonIcon;
+  public SVGPath rentCamperButtonIcon;
 
   @FXML
   public Button placeOfferButton;
 
   @FXML
-  public ImageView placeOfferButtonIcon;
+  public SVGPath placeOfferButtonIcon;
 
   @FXML
   public Button loginButton;
 
   @FXML
-  public ImageView loginButtonIcon;
+  public SVGPath loginButtonIcon;
 
+  private boolean isShortText = true;
   private boolean hoverLock;
 
   @FXML
   private void initialize() {
-    if (darkMode) {
+    if (mainViewController.darkMode) {
       navigationRoot.setStyle(
-        String.format("-fx-background-color: %s;", darkPrimary)
-      );
-      toggleBtnBg.setStyle(
-        String.format("-fx-background-color: %s;", darkSecondary)
+        String.format(
+          "-fx-background-color: %s;",
+          mainViewController.darkPrimaryColor
+        )
       );
 
-      myOfferButtonIcon.setImage(new Image("./icons/list-ul_light.png"));
-      rentCamperButtonIcon.setImage(
-        new Image("./icons/comments-dollar_light.png")
-      );
-      placeOfferButtonIcon.setImage(new Image("./icons/plus-circle_light.png"));
-      loginButtonIcon.setImage(new Image("./icons/user-circle_light.png"));
+      myOfferButtonIcon.setFill(Color.valueOf("#FFF"));
+      rentCamperButtonIcon.setFill(Color.valueOf("#FFF"));
+      placeOfferButtonIcon.setFill(Color.valueOf("#FFF"));
+      loginButtonIcon.setFill(Color.valueOf("#FFF"));
     }
 
-    if (isShortText) {
+    if (mainViewController.startNavigationHidden) {
       setShortTexts();
       hoverLock = false;
     } else {
       setLongTexts();
       hoverLock = true;
     }
+
+    makeButtonsTransparent();
   }
 
   /**
-   * Removes background from buttons (and makes text white if darkMode is active)
+   * Removes background from buttons (and makes text white if mainViewController.darkMode is active)
    */
   private void makeButtonsTransparent() {
     myOfferButton.setStyle(
       "-fx-background-color: transparent;" +
-      (darkMode ? "-fx-text-fill: #FFF;" : "")
+      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
     );
     rentCamperButton.setStyle(
       "-fx-background-color: transparent;" +
-      (darkMode ? "-fx-text-fill: #FFF;" : "")
+      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
     );
     placeOfferButton.setStyle(
       "-fx-background-color: transparent;" +
-      (darkMode ? "-fx-text-fill: #FFF;" : "")
+      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
     );
     loginButton.setStyle(
       "-fx-background-color: transparent;" +
-      (darkMode ? "-fx-text-fill: #FFF;" : "")
+      (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
     );
-  }
-
-  /**
-   * Resets buttons' styles
-   */
-  private void removeCustomStyling() {
-    myOfferButton.setStyle("");
-    rentCamperButton.setStyle("");
-    placeOfferButton.setStyle("");
-    loginButton.setStyle("");
   }
 
   /**
@@ -122,7 +100,6 @@ public class NavigationViewController {
    */
   private void setShortTexts() {
     isShortText = true;
-    makeButtonsTransparent();
 
     myOfferButton.setText("");
     rentCamperButton.setText("");
@@ -130,7 +107,6 @@ public class NavigationViewController {
     loginButton.setText("");
 
     navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
-    toggleBtnBg.setPrefWidth(navigationRoot.getPrefWidth());
   }
 
   /**
@@ -139,63 +115,62 @@ public class NavigationViewController {
   private void setLongTexts() {
     isShortText = false;
 
-    if (darkMode) {
-      makeButtonsTransparent();
-    } else {
-      removeCustomStyling();
-    }
-
     myOfferButton.setText("My Offers");
     rentCamperButton.setText("Rent Van");
     placeOfferButton.setText("New Offer");
     loginButton.setText("Login");
 
     navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
-    toggleBtnBg.setPrefWidth(navigationRoot.getPrefWidth());
   }
 
-  public void showMyOffers() {
-    mainViewController.changeView("myOffers");
-  }
+  @FXML
+  private void handleNavBarClick(ActionEvent e) {
+    makeButtonsTransparent();
+    Button selectedButton = (Button) e.getTarget();
+    selectedButton.setStyle(
+      mainViewController.darkMode
+        ? mainViewController.darkActiveClass
+        : mainViewController.lightActiveClass
+    );
 
-  public void showRentCamper() {
-    mainViewController.changeView("rentVan");
-  }
-
-  public void showPlaceOffer() {
-    mainViewController.changeView("placeOffer");
-  }
-
-  public void showLogin() {
-    mainViewController.changeView("login");
+    if (selectedButton.equals(myOfferButton)) mainViewController.changeView(
+      "myOffers"
+    );
+    if (selectedButton.equals(rentCamperButton)) mainViewController.changeView(
+      "rentVan"
+    );
+    if (selectedButton.equals(placeOfferButton)) mainViewController.changeView(
+      "placeOffer"
+    );
+    if (selectedButton.equals(loginButton)) mainViewController.changeView(
+      "login"
+    );
   }
 
   /**
    * Adds the NavigationBar to the Scene and sets it to its max. width defined in navigationView.fxml
    */
   public void showNavigation() {
-    if (isShortText) {
-      setLongTexts();
-    }
+    if (isShortText) setLongTexts();
   }
 
   /**
    * Removes the NavigationBar from the Scene and sets it to its max. width defined in navigationView.fxml
    */
   public void hideNavigation() {
-    if (!isShortText) {
-      setShortTexts();
-    }
+    if (!isShortText) setShortTexts();
   }
 
   /**
    * Sets a Boolean lock to handle hovering over the ToggleButton
    */
   public void toggleNavigationControl() {
-    if (hoverLock) {
-      hoverLock = false;
+    if (isShortText) {
+      showNavigation();
+      hoverLock = true;
     } else {
-      hoverLock = !isShortText;
+      hideNavigation();
+      hoverLock = false;
     }
   }
 
@@ -203,7 +178,7 @@ public class NavigationViewController {
    * Adds the NavigationBar to the Scene when the pointer enters the ToggleButton
    */
   public void hoverToggleNavigationOn() {
-    showNavigation();
+    if (mainViewController.openNavigationOnHover) showNavigation();
   }
 
   /**
@@ -211,5 +186,13 @@ public class NavigationViewController {
    */
   public void hoverToggleNavigationOff() {
     if (!hoverLock) hideNavigation();
+  }
+
+  public void setActive(MouseEvent mouseEvent) {
+    //TODO
+  }
+
+  public void removeActive(MouseEvent mouseEvent) {
+    //TODO
   }
 }

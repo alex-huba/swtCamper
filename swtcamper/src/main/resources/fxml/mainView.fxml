@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+<?import javafx.scene.Cursor?>
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
     <children>
+      <HBox fx:id="headerHBox" alignment="CENTER_LEFT" prefHeight="5.0" prefWidth="635.0" spacing="5.0" style="-fx-background-color: lightgrey;">
+         <children>
+            <Button defaultButton="true" mnemonicParsing="false" onMouseClicked="#toggleNavigationControl" style="-fx-background-color: transparent;" text="☰">
+               <font>
+                  <Font size="18.0" />
+               </font>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
+         </children>
+      </HBox>
         <HBox prefHeight="401.0" prefWidth="569.0">
             <fx:include source="navigationView.fxml" />
-            <Separator orientation="VERTICAL" prefHeight="200.0">
-            <HBox.margin>
-               <Insets left="4.0" />
-            </HBox.margin></Separator>
             <Pane fx:id="mainStage" prefHeight="395.0" prefWidth="532.0">
                 <children>
                     <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
@@ -46,10 +53,10 @@
                         </children>
                     </Pane>
                 </children>
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
             </Pane>
         </HBox>
     </children>
-    <padding>
-        <Insets left="5.0" top="5.0" />
-    </padding>
 </VBox>
