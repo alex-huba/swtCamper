@@ -1,16 +1,20 @@
 package swtcamper.javafx.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NavigationViewController {
+
+  /**
+   * change settings here
+   */
+  private boolean isShortText = false;
+  private final String activeButtonString =
+    "-fx-background-color:#333; -fx-text-fill:#FFF";
 
   @Autowired
   private MainViewController mainViewController;
@@ -33,43 +37,71 @@ public class NavigationViewController {
   @FXML
   public Button loginButton;
 
-  private boolean hoverLock = false;
-  private final String activeButtonString =
-    "-fx-background-color:#333; -fx-text-fill:#FFF";
+  private boolean hoverLock;
 
   @FXML
   private void initialize() {
+    // set first button to be active
     loginButton.setStyle(activeButtonString);
-    navigationRoot.getChildren().remove(navigationButtons);
+
+    if (isShortText) {
+      setShortTexts();
+      hoverLock = false;
+    } else {
+      setLongTexts();
+      hoverLock = true;
+    }
   }
 
-  private void resetStyle() {
+  private void resetStyles() {
     myOfferButton.setStyle("");
     rentCamperButton.setStyle("");
     placeOfferButton.setStyle("");
     loginButton.setStyle("");
   }
 
+  private void setShortTexts() {
+    isShortText = true;
+
+    myOfferButton.setText("O");
+    rentCamperButton.setText("R");
+    placeOfferButton.setText("N");
+    loginButton.setText("L");
+
+    navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
+  }
+
+  private void setLongTexts() {
+    isShortText = false;
+
+    myOfferButton.setText("My Offers");
+    rentCamperButton.setText("Rent a Camper");
+    placeOfferButton.setText("New Offer");
+    loginButton.setText("Login");
+
+    navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
+  }
+
   public void showMyOffers() {
-    resetStyle();
+    resetStyles();
     myOfferButton.setStyle(activeButtonString);
     mainViewController.changeView("myOffers");
   }
 
   public void showRentCamper() {
-    resetStyle();
+    resetStyles();
     rentCamperButton.setStyle(activeButtonString);
     mainViewController.changeView("rentVan");
   }
 
   public void showPlaceOffer() {
-    resetStyle();
+    resetStyles();
     placeOfferButton.setStyle(activeButtonString);
     mainViewController.changeView("placeOffer");
   }
 
   public void showLogin() {
-    resetStyle();
+    resetStyles();
     loginButton.setStyle(activeButtonString);
     mainViewController.changeView("login");
   }
@@ -78,9 +110,8 @@ public class NavigationViewController {
    * Adds the NavigationBar to the Scene and sets it to its max. width defined in navigationView.fxml
    */
   public void showNavigation() {
-    if (!navigationRoot.getChildren().contains(navigationButtons)) {
-      navigationRoot.getChildren().add(navigationButtons);
-      navigationRoot.setPrefWidth(navigationRoot.getMaxWidth());
+    if (isShortText) {
+      setLongTexts();
     }
   }
 
@@ -88,9 +119,8 @@ public class NavigationViewController {
    * Removes the NavigationBar from the Scene and sets it to its max. width defined in navigationView.fxml
    */
   public void hideNavigation() {
-    if (navigationRoot.getChildren().contains(navigationButtons)) {
-      navigationRoot.getChildren().remove(navigationButtons);
-      navigationRoot.setPrefWidth(navigationRoot.getMinWidth());
+    if (!isShortText) {
+      setShortTexts();
     }
   }
 
@@ -99,10 +129,9 @@ public class NavigationViewController {
    */
   public void toggleNavigationControl() {
     if (hoverLock) {
-      hideNavigation();
       hoverLock = false;
     } else {
-      hoverLock = navigationRoot.getChildren().contains(navigationButtons);
+      hoverLock = loginButton.getText().equals("Login");
     }
   }
 

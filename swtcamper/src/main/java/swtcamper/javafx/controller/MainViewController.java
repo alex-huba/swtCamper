@@ -5,11 +5,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,22 +41,20 @@ public class MainViewController {
   @FXML
   private void initialize() {
     reloadData();
-
-    mainStage.getChildren().remove(myOffersViewBox);
-    mainStage.getChildren().remove(rentVanViewBox);
-    mainStage.getChildren().remove(placeOfferViewBox);
-    mainStage.getChildren().remove(loginViewBox);
-
-    mainStage.getChildren().add(loginViewBox);
+    changeView("login");
   }
 
   public void reloadData() {}
 
-  public void changeView(String switchTo) {
+  public void clearView() {
     mainStage.getChildren().remove(myOffersViewBox);
     mainStage.getChildren().remove(rentVanViewBox);
     mainStage.getChildren().remove(placeOfferViewBox);
     mainStage.getChildren().remove(loginViewBox);
+  }
+
+  public void changeView(String switchTo) {
+    clearView();
 
     if (switchTo.equals("myOffers")) mainStage
       .getChildren()
