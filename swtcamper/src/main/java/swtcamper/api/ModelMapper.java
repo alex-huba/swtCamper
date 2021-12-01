@@ -1,12 +1,11 @@
 package swtcamper.api;
 
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.AvailabilityDTO;
-import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.contract.OfferedObjectTypeDTO;
-import swtcamper.backend.entities.Availability;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.OfferedObjectType;
+import swtcamper.api.contract.*;
+import swtcamper.backend.entities.*;
+import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.security.GeneralSecurityException;
 
 /**
  * Maps entities to DTOs.
@@ -70,5 +69,32 @@ public class ModelMapper {
       offer.getRentalStartDate(),
       offer.getRentalReturnDate()
     );
+  }
+
+  public UserDTO userToUserDTO(User user){
+    return new UserDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getName(),
+            user.getSurname(),
+            user.getEmail(),
+            user.getPhone(),
+            user.getPassword(),
+            user.getUserRole(),
+            user.isLocked(),
+            user.isEnabled()
+    );
+  }
+
+  public UserRoleDTO toUserRoleDTO(UserRole userRole)
+          throws GenericServiceException {
+    switch (userRole){
+      case USER:
+        return UserRoleDTO.USER;
+      case OPERATOR:
+        return UserRoleDTO.OPERATOR;
+      default:
+        throw new GenericServiceException("UserRole is invalid.");
+    }
   }
 }

@@ -3,6 +3,7 @@ package swtcamper.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -23,6 +24,9 @@ public class UserService {
    * @param email
    * @param phone
    * @param password
+   * @param userRole
+//   * @param locked
+//   * @param enabled
    * @return
    * @throws GenericServiceException if the username, name, surname, email, phone number or password is invalid
    */
@@ -32,7 +36,10 @@ public class UserService {
           String surname,
           String email,
           String phone,
-          String password
+          String password,
+          UserRole userRole
+//          boolean locked,
+//          boolean enabled
           ) throws GenericServiceException {
     validateUsername(username);
     validateName(name);
@@ -48,6 +55,8 @@ public class UserService {
     user.setEmail(email);
     user.setPhone(phone);
     user.setPassword(password);
+    user.setLocked(false);
+    user.setEnabled(true);
     return userRepository.save(user);
   }
 
@@ -87,16 +96,6 @@ public class UserService {
   public List<User> user(){
     // TODO: implement user listing
     return null;
-  }
-
-  public void login(){
-    // TODO: implement user login
-  }
-
-  public void register(User user){
-    // TODO: implement user registration
-    // muss hier User übergeben werden oder direkt die Attribute?
-
   }
 
   public void lock(User user){
