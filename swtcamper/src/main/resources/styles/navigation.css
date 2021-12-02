@@ -1,15 +1,18 @@
-#navigationRoot {
-    -fx-background-color: #383551;
+.navBar {
+    -fx-background-color: #36334f;
+}
+
+.hamburgerMenu {
+    -fx-background-color: transparent;
 }
 
 .navBtn {
-    -fx-background-color: transparent;
-    -fx-background-radius: 40;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color:  #393351;
+    -fx-background-radius:  30 0 0 30;
 }
 
 .navBtn.active {
-    -fx-background-color: #665fa0;
+    -fx-background-color: #2c2a3f;
 }
 
 .navBtn .icon {
@@ -17,9 +20,5 @@
 }
 
 .navBtn:hover {
-    -fx-background-color: #514d7c;
-}
-
-.navBtn:pressed {
-    -fx-background-color: #2F2B43;
+    -fx-background-color:  #2c2a3f;
 }

@@ -16,13 +16,9 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
-  public final boolean openNavigationOnHover = false;
 
   @Autowired
   public NavigationViewController navigationViewController;
-
-  @FXML
-  public HBox headerHBox;
 
   @FXML
   public AnchorPane mainStage;
@@ -85,9 +81,5 @@ public class MainViewController {
 
   public void handleException(Exception e) {
     handleExceptionMessage(e.getMessage());
-  }
-
-  public void toggleNavigationControl() {
-    navigationViewController.toggleNavigationControl();
   }
 }

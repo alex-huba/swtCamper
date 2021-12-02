@@ -1,8 +1,15 @@
-#header {
-    -fx-background-color: #ff4355;
+.rootNode {
+    -fx-background-color: #2c2a3f;
 }
 
-#hamburgerMenu {
-    -fx-background-color: transparent;
-    -fx-text-fill: #383551;
+.decoration {
+    -fx-background-radius: 30;
+}
+
+.upperDeco {
+    -fx-background-color: #ff6d3c;
+}
+
+.lowerDeco {
+    -fx-background-color: #ff4355;
 }

@@ -1,58 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@../styles/mainview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
-    <HBox fx:id="header" alignment="CENTER_LEFT" prefHeight="5.0" prefWidth="635.0" spacing="5.0">
-        <Button fx:id="hamburgerMenu" defaultButton="true" mnemonicParsing="false" onMouseClicked="#toggleNavigationControl" text="☰">
-            <font>
-                <Font size="18.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-        </Button>
-    </HBox>
-    <HBox prefHeight="401.0" prefWidth="569.0">
-        <fx:include source="navigationView.fxml" />
-      <AnchorPane fx:id="mainStage" prefHeight="600.0" prefWidth="596.0">
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController" styleClass="rootNode" stylesheets="@../styles/mainview.css">
+   <children>
+      <Pane layoutX="-43.0" layoutY="-161.0" prefHeight="200.0" prefWidth="396.0" rotate="40.0" styleClass="decoration,upperDeco">
          <children>
-               <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="My Offers" />
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />-->
-               </Pane>
-               <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="189.0">
-                   <Label text="Rent a Van" />
-                   <!--                            TODO after Merging: include-->
-   <!--                                            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />-->
-               </Pane>
-               <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <children>
-                       <Label text="Place Offer" />
-                       <!--                            TODO after Merging: include-->
-                       <!--                            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />-->
-                   </children>
-               </Pane>
-               <Pane fx:id="loginViewBox" prefHeight="79.0" prefWidth="264.0">
-                   <children>
-                       <Label text="Login" />
-                       <!--                            TODO after Merging: include-->
-                       <!--                            <fx:include fx:id="loginViewBox" source="loginView.fxml" />-->
-                   </children>
-               </Pane>
+            <Pane layoutX="100.0" layoutY="14.0" prefHeight="200.0" prefWidth="282.0" styleClass="decoration,lowerDeco" />
          </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </AnchorPane>
-    </HBox>
-</VBox>
+      </Pane>
+      <HBox prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <fx:include source="navigationView.fxml" />
+            <AnchorPane fx:id="mainStage" prefHeight="600.0" prefWidth="596.0">
+               <children>
+                  <Pane fx:id="myOffersViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <Label text="My Offers" />
+                     <!--                            TODO after Merging: include-->
+                     <!--                            <fx:include fx:id="myOffersViewBox" source="myOffersView.fxml" />-->
+                  </Pane>
+                  <Pane fx:id="rentVanViewBox" prefHeight="200.0" prefWidth="189.0">
+                     <Label text="Rent a Van" />
+                     <!--                            TODO after Merging: include-->
+                     <!--                                            <fx:include fx:id="rentVanViewBox" source="rentVanView.fxml" />-->
+                  </Pane>
+                  <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Place Offer" />
+                        <!--                            TODO after Merging: include-->
+                        <!--                            <fx:include fx:id="placeOfferViewBox" source="placeOfferView.fxml" />-->
+                     </children>
+                  </Pane>
+                  <Pane fx:id="loginViewBox" prefHeight="79.0" prefWidth="264.0">
+                     <children>
+                        <Label text="Login" />
+                        <!--                            TODO after Merging: include-->
+                        <!--                            <fx:include fx:id="loginViewBox" source="loginView.fxml" />-->
+                     </children>
+                  </Pane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
