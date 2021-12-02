@@ -49,43 +49,12 @@ public class NavigationViewController {
 
   @FXML
   private void initialize() {
-    if (mainViewController.darkMode) {
-      navigationRoot.setStyle(
-        String.format(
-          "-fx-background-color: %s;",
-          mainViewController.darkPrimaryColor
-        )
-      );
-
-      // actually only place to manually add a new tab
-      myOfferButtonIcon.setFill(Color.valueOf("#FFF"));
-      rentCamperButtonIcon.setFill(Color.valueOf("#FFF"));
-      placeOfferButtonIcon.setFill(Color.valueOf("#FFF"));
-      loginButtonIcon.setFill(Color.valueOf("#FFF"));
-    }
-
     if (mainViewController.startNavigationHidden) {
       setShortTexts();
       hoverLock = false;
     } else {
       setLongTexts();
       hoverLock = true;
-    }
-
-    makeButtonsTransparent();
-  }
-
-  /**
-   * Removes background from buttons (and makes text white if mainViewController.darkMode is active)
-   */
-  private void makeButtonsTransparent() {
-    for (Object child : navigationRoot.getChildren()) {
-      if (child instanceof Button) {
-        ((Button) child).setStyle(
-            "-fx-background-color: transparent;" +
-            (mainViewController.darkMode ? "-fx-text-fill: #FFF;" : "")
-          );
-      }
     }
   }
 
@@ -96,7 +65,10 @@ public class NavigationViewController {
     isShortText = true;
 
     for (Object child : navigationRoot.getChildren()) {
-      if (child instanceof Button) {
+      if (
+        child instanceof Button &&
+        ((Button) child).getStyleClass().contains("navBtn")
+      ) {
         ((Button) child).setText("");
       }
     }
@@ -111,7 +83,10 @@ public class NavigationViewController {
     isShortText = false;
 
     for (Object child : navigationRoot.getChildren()) {
-      if (child instanceof Button) {
+      if (
+        child instanceof Button &&
+        ((Button) child).getStyleClass().contains("navBtn")
+      ) {
         ((Button) child).setText(((Button) child).getAccessibleText());
       }
     }
@@ -122,15 +97,14 @@ public class NavigationViewController {
   }
 
   @FXML
-  private void handleNavBarClick(ActionEvent e) {
-    makeButtonsTransparent();
-    Button selectedButton = (Button) e.getTarget();
-    selectedButton.setStyle(
-      mainViewController.darkMode
-        ? mainViewController.darkActiveClass
-        : mainViewController.lightActiveClass
-    );
+  private void handleNavBtnClick(ActionEvent e) {
+    for (Object child : navigationRoot.getChildren()) {
+      if (child instanceof Button) ((Button) child).getStyleClass()
+        .removeIf(c -> c.contains("active"));
+    }
 
+    Button selectedButton = (Button) e.getTarget();
+    selectedButton.getStyleClass().add("active");
     mainViewController.changeView(selectedButton.getAccessibleHelp());
   }
 

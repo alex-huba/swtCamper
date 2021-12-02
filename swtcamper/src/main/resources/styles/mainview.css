@@ -1,0 +1,8 @@
+#header {
+    -fx-background-color: #ff4355;
+}
+
+#hamburgerMenu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #383551;
+}

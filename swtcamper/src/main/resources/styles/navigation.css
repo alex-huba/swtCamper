@@ -1,0 +1,25 @@
+#navigationRoot {
+    -fx-background-color: #383551;
+}
+
+.navBtn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 40;
+    -fx-text-fill: #FFFFFF;
+}
+
+.navBtn.active {
+    -fx-background-color: #665fa0;
+}
+
+.navBtn .icon {
+    -fx-fill: #FFFFFF;
+}
+
+.navBtn:hover {
+    -fx-background-color: #514d7c;
+}
+
+.navBtn:pressed {
+    -fx-background-color: #2F2B43;
+}

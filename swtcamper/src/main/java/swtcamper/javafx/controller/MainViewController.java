@@ -3,6 +3,7 @@ package swtcamper.javafx.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,6 @@ public class MainViewController {
   /**
    * Quick Settings
    */
-  public final boolean darkMode = true;
-  public final String darkPrimaryColor = "#383551";
-  public final String darkSecondaryColor = "#FF4355";
-  public final String lightActiveClass =
-    "-fx-background-color: lightgrey; -fx-background-radius: 50; -fx-text-fill: #000;";
-  public final String darkActiveClass =
-    "-fx-background-color: #514d7c; -fx-background-radius: 50; -fx-text-fill: #FFF;";
   public final boolean startNavigationHidden = true;
   public final boolean openNavigationOnHover = false;
 
@@ -31,7 +25,7 @@ public class MainViewController {
   public HBox headerHBox;
 
   @FXML
-  public Pane mainStage;
+  public AnchorPane mainStage;
 
   @FXML
   public Pane myOffersViewBox;
@@ -49,12 +43,6 @@ public class MainViewController {
   private void initialize() {
     reloadData();
     changeView("login");
-
-    if (darkMode) {
-      headerHBox.setStyle(
-        String.format("-fx-background-color: %s;", darkSecondaryColor)
-      );
-    }
   }
 
   public void reloadData() {}
