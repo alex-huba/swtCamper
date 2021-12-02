@@ -22,7 +22,7 @@ public class NavigationViewController {
   public AnchorPane navigationRoot;
 
   @FXML
-  public VBox navBarItems;
+  public AnchorPane navBarItems;
 
   @FXML
   public Button myOfferButton;
