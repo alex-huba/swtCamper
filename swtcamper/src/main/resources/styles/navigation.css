@@ -9,6 +9,7 @@
 .navBtn {
     -fx-background-color:  #393351;
     -fx-background-radius:  30 0 0 30;
+    -fx-cursor: hand;
 }
 
 .navBtn.active {
