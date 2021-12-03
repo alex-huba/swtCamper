@@ -31,17 +31,17 @@ public class UserController implements IUserController {
 //  }
 
 
-  public UserDTO register(
-          String username,
-          String name,
-          String surname,
-          String email,
-          String phone,
-          String password,
-          userRole userRole
-  ) throws GenericServiceException {
+  public UserDTO register(UserDTO userDTO) throws GenericServiceException {
+//          String username,
+//          String name,
+//          String surname,
+//          String email,
+//          String phone,
+//          String password,
+//          userRole userRole
     try {
-    return modelMapper.userToUserDTO(userService.create(username,name,surname,email,phone,password,userRole));
+//    return modelMapper.userToUserDTO(userService.create(username,name,surname,email,phone,password,userRole));
+        return modelMapper.userToUserDTO(userService.create(userDTO));
     } catch (GenericServiceException e){
       // TODO: Check exception handling
       throw new GenericServiceException("Could not register user.");

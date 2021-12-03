@@ -2,6 +2,7 @@ package swtcamper.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.userRole;
 import swtcamper.backend.repositories.UserRepository;
@@ -31,32 +32,44 @@ public class UserService {
    * @throws GenericServiceException if the username, name, surname, email, phone number or password is invalid
    */
   public User create(
-          String username,
-          String name,
-          String surname,
-          String email,
-          String phone,
-          String password,
-          userRole userRole
+          UserDTO userDTO
+//          String username,
+//          String name,
+//          String surname,
+//          String email,
+//          String phone,
+//          String password,
+//          userRole userRole
 //          boolean locked,
 //          boolean enabled
           ) throws GenericServiceException {
-    validateUsername(username);
-    validateName(name);
-    validateSurname(surname);
-    validateEmail(email);
-    validatePhone(phone);
-    validatePassword(password);
+
+//    validateUsername(username);
+//    validateName(name);
+//    validateSurname(surname);
+//    validateEmail(email);
+//    validatePhone(phone);
+//    validatePassword(password);
 
     User user = new User();
-    user.setUsername(username);
-    user.setName(name);
-    user.setSurname(surname);
-    user.setEmail(email);
-    user.setPhone(phone);
-    user.setPassword(password);
-    user.setLocked(false);
-    user.setEnabled(true);
+    user.setUsername(userDTO.getUsername());
+    user.setName(userDTO.getName());
+    user.setSurname(userDTO.getSurname());
+    user.setEmail(userDTO.getEmail());
+    user.setPhone(userDTO.getPhone());
+    user.setPassword(userDTO.getPassword());
+    user.setUserRole(userDTO.getUserRole());
+    user.setLocked(userDTO.isLocked());
+    user.setEnabled(userDTO.isEnabled());
+
+//    user.setUsername(username);
+//    user.setName(name);
+//    user.setSurname(surname);
+//    user.setEmail(email);
+//    user.setPhone(phone);
+//    user.setPassword(password);
+//    user.setLocked(false);
+//    user.setEnabled(true);
     return userRepository.save(user);
   }
 

@@ -8,6 +8,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserDTO;
+import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.userRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -67,6 +69,15 @@ public class RegisterViewController {
         String name = nameTf.getText();
         String surname = surnameTf.getText();
 
+        // UserDTO erstellen mit Attributen username, name etc.
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(username);
+        userDTO.setPassword(password);
+        userDTO.setEmail(email);
+        userDTO.setPhone(phone);
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
         if (username.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Fill in your username please!");
@@ -103,12 +114,13 @@ public class RegisterViewController {
             alert.show();
         }
         if(operatorRb.isSelected()){
-            userRoleRb = OPERATOR;
+            userDTO.setUserRole(OPERATOR);
         }else{
-            userRoleRb = USER;
+            userDTO.setUserRole(USER);
         }
         try{
-            userController.register(username, name, surname, email, phone, password, userRoleRb);
+//            userController.register(username, name, surname, email, phone, password, userRoleRb);
+            userController.register(userDTO);
         } catch (GenericServiceException e){
             e.printStackTrace();
         }

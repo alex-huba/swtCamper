@@ -34,7 +34,7 @@
             <TextField promptText="surname" fx:id="surnameTf"/>
         </HBox>
         <HBox layoutX="110" layoutY="405" styleClass="hBoxField">
-            <RadioButton text="I'm an operator" styleClass="operatorRb"/>
+            <RadioButton text="I'm an operator" fx:id="operatorRb" styleClass="operatorRb"/>
         </HBox>
         <HBox layoutX="110" layoutY="480" styleClass="hBoxField">
             <Button text="cancel" fx:id="cancelBtn" onAction="#handleCancelBtn" styleClass="cancelBtn"/>
