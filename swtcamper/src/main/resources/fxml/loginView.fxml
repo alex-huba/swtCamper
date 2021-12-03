@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="swtcamper.javafx.controller.LoginViewController" prefHeight="600.0" prefWidth="800.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" minHeight="-Infinity" styleClass="rootNode" stylesheets="/styles/loginview.css">
+    <children>
+        <Label text="Login"  layoutX="225" layoutY="10" styleClass="header"/>
+        <HBox layoutX="110" layoutY="135" styleClass="hBoxField">
+            <Label text="Username" styleClass="usernameLabel"/>
+            <TextField promptText="username"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="200" styleClass="hBoxField">
+            <Label text="Password" styleClass="passwordLabel"/>
+            <PasswordField promptText="password"/>
+        </HBox>
+        <Button text="login" layoutX="250" layoutY="275" styleClass="btnLogin"/>
+        <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
+            <Label text="Have no account yet?" />
+            <Button text="register" styleClass="btnRegister"/>
+        </VBox>
+    </children>
+</AnchorPane>

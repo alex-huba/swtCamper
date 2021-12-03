@@ -1,0 +1,15 @@
+.rootNode {
+    -fx-background-color: #2c2a3f;
+}
+
+.decoration {
+    -fx-background-radius: 30;
+}
+
+.upperDeco {
+    -fx-background-color: #ff6d3c;
+}
+
+.lowerDeco {
+    -fx-background-color: #ff4355;
+}
