@@ -14,7 +14,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <VBox fx:id="navBarItems" layoutX="6.0" layoutY="102.0" prefHeight="478.0" prefWidth="172.0" spacing="5.0">
+      <VBox fx:id="navBarItems" layoutX="6.0" layoutY="102.0" prefHeight="478.0" spacing="5.0">
          <children>
             <Button fx:id="homeButton" accessibleHelp="home" accessibleText="Homepage" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Homepage" textFill="WHITE">
                <graphic>
