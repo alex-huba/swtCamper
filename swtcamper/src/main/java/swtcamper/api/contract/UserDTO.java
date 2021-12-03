@@ -1,7 +1,5 @@
 package swtcamper.api.contract;
 
-import swtcamper.backend.entities.UserRole;
-
 public class UserDTO {
 
   private Long id;
@@ -11,7 +9,7 @@ public class UserDTO {
   private String email;
   private String phone;
   private String password;
-  private UserRole userRole;
+  private swtcamper.backend.entities.userRole userRole;
 
   private boolean locked;
   private boolean enabled;
@@ -24,7 +22,7 @@ public class UserDTO {
     String email,
     String phone,
     String password,
-    UserRole userRole,
+    swtcamper.backend.entities.userRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -47,7 +45,7 @@ public class UserDTO {
     String email,
     String phone,
     String password,
-    UserRole userRole,
+    swtcamper.backend.entities.userRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -122,11 +120,11 @@ public class UserDTO {
     this.password = password;
   }
 
-  public UserRole getUserRole() {
+  public swtcamper.backend.entities.userRole getUserRole() {
     return userRole;
   }
 
-  public void setUserRole(UserRole userRole) {
+  public void setUserRole(swtcamper.backend.entities.userRole userRole) {
     this.userRole = userRole;
   }
 

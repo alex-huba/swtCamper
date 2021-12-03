@@ -1,16 +1,15 @@
 package swtcamper.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
-import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserRole;
-import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.userRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+@Component
 public class UserController implements IUserController {
 
   @Autowired
@@ -39,7 +38,7 @@ public class UserController implements IUserController {
           String email,
           String phone,
           String password,
-          UserRole userRole
+          userRole userRole
   ) throws GenericServiceException {
     try {
     return modelMapper.userToUserDTO(userService.create(username,name,surname,email,phone,password,userRole));

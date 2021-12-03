@@ -17,7 +17,7 @@ public class User {
   private String password;
 
   @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private swtcamper.backend.entities.userRole userRole;
 
   private boolean locked;
   private boolean enabled;
@@ -30,7 +30,7 @@ public class User {
     String email,
     String phone,
     String password,
-    UserRole userRole,
+    swtcamper.backend.entities.userRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -53,7 +53,7 @@ public class User {
     String email,
     String phone,
     String password,
-    UserRole userRole,
+    swtcamper.backend.entities.userRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -162,11 +162,11 @@ public class User {
     this.password = password;
   }
 
-  public UserRole getUserRole() {
+  public swtcamper.backend.entities.userRole getUserRole() {
     return userRole;
   }
 
-  public void setUserRole(UserRole userRole) {
+  public void setUserRole(swtcamper.backend.entities.userRole userRole) {
     this.userRole = userRole;
   }
 

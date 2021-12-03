@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="swtcamper.javafx.controller.RegisterViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.Label?>
 
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="swtcamper.javafx.controller.RegisterViewController" prefHeight="600.0" prefWidth="800.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" minHeight="-Infinity" styleClass="rootNode" stylesheets="/styles/registerview.css">
+    <children>
+        <Label text="Register"  layoutX="225" layoutY="10" styleClass="header"/>
+        <HBox layoutX="110" layoutY="135" styleClass="hBoxField">
+            <Label text="Username" styleClass="usernameLabel"/>
+            <TextField promptText="username" fx:id="inputLabel"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="180" styleClass="hBoxField">
+            <Label text="Password" styleClass="inputPasswordLabel"/>
+            <TextField promptText="password" fx:id="passwordTf"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="225" styleClass="hBoxField">
+            <Label text="Email" styleClass="inputEmailLabel"/>
+            <TextField promptText="email" fx:id="emailTf"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="270" styleClass="hBoxField">
+            <Label text="Phone" styleClass="inputPhoneLabel"/>
+            <TextField promptText="phone" fx:id="phoneTf"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="315" styleClass="hBoxField">
+            <Label text="Name" styleClass="inputNameLabel"/>
+            <TextField promptText="name" fx:id="nameTf"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="360" styleClass="hBoxField">
+            <Label text="Surname" styleClass="inputSurnameLabel"/>
+            <TextField promptText="surname" fx:id="surnameTf"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="405" styleClass="hBoxField">
+            <RadioButton text="I'm an operator" styleClass="operatorRb"/>
+        </HBox>
+        <HBox layoutX="110" layoutY="480" styleClass="hBoxField">
+            <Button text="cancel" fx:id="cancelBtn" onAction="#handleCancelBtn" styleClass="cancelBtn"/>
+            <Button text="register" fx:id="registerBtn" onAction="#handleRegisterBtn" styleClass="registerBtn"/>
+        </HBox>
+
+
+
+    </children>
 </AnchorPane>
+

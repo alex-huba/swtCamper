@@ -1,0 +1,61 @@
+.rootNode {
+    -fx-background-color: #D6CFCD;
+}
+.header {
+    -fx-text-fill: #040759;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 50px;
+}
+.hBoxField {
+    -fx-spacing: 20px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
+}
+.inputLabel {
+    -fx-padding: 7 0 0 0;
+}
+.inputPasswordLabel {
+    -fx-padding: 7 3 0 0;
+}
+.inputEmailLabel {
+    -fx-padding: 7 46 0 0;
+}
+.inputPhoneLabel {
+    -fx-padding: 7 39 0 0;
+}
+.inputNameLabel {
+    -fx-padding: 7 44 0 0;
+}
+.inputSurnameLabel {
+    -fx-padding: 7 13 0 0;
+}
+.operatorRb {
+    -fx-padding: 7 0 0 190;
+}
+.cancelBtn {
+    -fx-background-color: #E17575;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 25px;
+    -fx-cursor: hand;
+    -fx-pref-width: 125px;
+    -fx-pref-height: 50px;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+.registerBtn {
+    -fx-background-color: #AADDA9;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 25px;
+    -fx-cursor: hand;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 50px;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-padding: 0 0 0 0;
+}
+
+

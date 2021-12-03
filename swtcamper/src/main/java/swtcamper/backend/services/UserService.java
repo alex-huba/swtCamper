@@ -3,7 +3,7 @@ package swtcamper.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.entities.userRole;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -37,7 +37,7 @@ public class UserService {
           String email,
           String phone,
           String password,
-          UserRole userRole
+          userRole userRole
 //          boolean locked,
 //          boolean enabled
           ) throws GenericServiceException {

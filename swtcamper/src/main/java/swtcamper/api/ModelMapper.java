@@ -5,8 +5,6 @@ import swtcamper.api.contract.*;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
-import java.security.GeneralSecurityException;
-
 /**
  * Maps entities to DTOs.
  */
@@ -86,7 +84,7 @@ public class ModelMapper {
     );
   }
 
-  public UserRoleDTO toUserRoleDTO(UserRole userRole)
+  public UserRoleDTO toUserRoleDTO(userRole userRole)
           throws GenericServiceException {
     switch (userRole){
       case USER:
