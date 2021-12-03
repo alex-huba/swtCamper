@@ -84,13 +84,13 @@ public class MainViewController {
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
         navigationViewController.setButtonActive(
-          navigationViewController.homeButton
+          navigationViewController.newOfferButton
         );
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
         navigationViewController.setButtonActive(
-          navigationViewController.homeButton
+          navigationViewController.activeOffersButton
         );
         break;
       case "history":
