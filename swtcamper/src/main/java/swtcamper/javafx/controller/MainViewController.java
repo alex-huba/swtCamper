@@ -1,5 +1,8 @@
 package swtcamper.javafx.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -24,16 +27,31 @@ public class MainViewController {
   public AnchorPane mainStage;
 
   @FXML
-  public Pane myOffersViewBox;
-
-  @FXML
-  public Pane rentVanViewBox;
+  public Pane homeViewBox;
 
   @FXML
   public Pane placeOfferViewBox;
 
   @FXML
+  public Pane activeOffersViewBox;
+
+  @FXML
+  public Pane dealHistoryViewBox;
+
+  @FXML
+  public Pane excludeRenterViewBox;
+
+  @FXML
+  public Pane approveDealViewBox;
+
+  @FXML
+  public Pane myBookingsViewBox;
+
+  @FXML
   public Pane loginViewBox;
+
+  @FXML
+  public Pane accountViewBox;
 
   @FXML
   private void initialize() {
@@ -44,23 +62,47 @@ public class MainViewController {
   public void reloadData() {}
 
   public void clearView() {
-    mainStage.getChildren().remove(myOffersViewBox);
-    mainStage.getChildren().remove(rentVanViewBox);
-    mainStage.getChildren().remove(placeOfferViewBox);
-    mainStage.getChildren().remove(loginViewBox);
+    List<Pane> toRemove = new ArrayList<>();
+    for (Object child : mainStage.getChildren()) {
+      if (child instanceof Pane) {
+        toRemove.add((Pane) child);
+      }
+    }
+    mainStage.getChildren().removeAll(toRemove);
   }
 
   public void changeView(String switchTo) {
     clearView();
 
-    if (switchTo.equals("myOffers")) mainStage
-      .getChildren()
-      .add(myOffersViewBox);
-    if (switchTo.equals("rentVan")) mainStage.getChildren().add(rentVanViewBox);
-    if (switchTo.equals("placeOffer")) mainStage
-      .getChildren()
-      .add(placeOfferViewBox);
-    if (switchTo.equals("login")) mainStage.getChildren().add(loginViewBox);
+    switch (switchTo) {
+      case "home":
+        mainStage.getChildren().add(homeViewBox);
+        break;
+      case "placeOffer":
+        mainStage.getChildren().add(placeOfferViewBox);
+        break;
+      case "activeOffers":
+        mainStage.getChildren().add(activeOffersViewBox);
+        break;
+      case "history":
+        mainStage.getChildren().add(dealHistoryViewBox);
+        break;
+      case "exclude":
+        mainStage.getChildren().add(excludeRenterViewBox);
+        break;
+      case "approve":
+        mainStage.getChildren().add(approveDealViewBox);
+        break;
+      case "myBookings":
+        mainStage.getChildren().add(myBookingsViewBox);
+        break;
+      case "login":
+        mainStage.getChildren().add(loginViewBox);
+        break;
+      case "account":
+        mainStage.getChildren().add(accountViewBox);
+        break;
+    }
   }
 
   public void handleExceptionMessage(String message) {
@@ -81,5 +123,13 @@ public class MainViewController {
 
   public void handleException(Exception e) {
     handleExceptionMessage(e.getMessage());
+  }
+
+  public void login() {
+    navigationViewController.login();
+  }
+
+  public void logout() {
+    navigationViewController.logout();
   }
 }
