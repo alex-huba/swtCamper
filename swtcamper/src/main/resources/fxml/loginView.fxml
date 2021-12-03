@@ -10,16 +10,16 @@
         <Label text="Login"  layoutX="225" layoutY="10" styleClass="header"/>
         <HBox layoutX="110" layoutY="135" styleClass="hBoxField">
             <Label text="Username" styleClass="usernameLabel"/>
-            <TextField promptText="username"/>
+            <TextField promptText="username" fx:id="usernameTf"/>
         </HBox>
         <HBox layoutX="110" layoutY="200" styleClass="hBoxField">
             <Label text="Password" styleClass="passwordLabel"/>
-            <PasswordField promptText="password"/>
+            <PasswordField promptText="password" fx:id="passwordPf"/>
         </HBox>
-        <Button text="login" layoutX="250" layoutY="275" styleClass="btnLogin"/>
+        <Button text="login" fx:id="loginButton" layoutX="250" layoutY="275" styleClass="btnLogin" onAction="#handleLogin"/>
         <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
             <Label text="Have no account yet?" />
-            <Button text="register" styleClass="btnRegister"/>
+            <Button text="register" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>
         </VBox>
     </children>
 </AnchorPane>
