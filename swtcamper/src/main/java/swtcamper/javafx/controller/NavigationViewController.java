@@ -1,9 +1,12 @@
 package swtcamper.javafx.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -22,31 +25,34 @@ public class NavigationViewController {
   public AnchorPane navigationRoot;
 
   @FXML
-  public AnchorPane navBarItems;
+  public VBox navBarItems;
 
   @FXML
-  public Button myOfferButton;
+  public Button homeButton;
 
   @FXML
-  public SVGPath myOfferButtonIcon;
+  public Button newOfferButton;
 
   @FXML
-  public Button rentCamperButton;
+  public Button activeOffersButton;
 
   @FXML
-  public SVGPath rentCamperButtonIcon;
+  public Button dealHistoryButton;
 
   @FXML
-  public Button placeOfferButton;
+  public Button excludeButton;
 
   @FXML
-  public SVGPath placeOfferButtonIcon;
+  public Button approveButton;
+
+  @FXML
+  public Button myBookingsButton;
 
   @FXML
   public Button loginButton;
 
   @FXML
-  public SVGPath loginButtonIcon;
+  public Button accountButton;
 
   private boolean isShortText = true;
 
@@ -57,6 +63,14 @@ public class NavigationViewController {
     } else {
       setLongTexts();
     }
+
+    setStartButtons();
+  }
+
+  private void setStartButtons() {
+    navBarItems.getChildren().removeIf(b -> true);
+    navBarItems.getChildren().add(homeButton);
+    navBarItems.getChildren().add(loginButton);
   }
 
   @FXML
@@ -70,6 +84,37 @@ public class NavigationViewController {
     selectedButton.getStyleClass().add("active");
 
     mainViewController.changeView(selectedButton.getAccessibleHelp());
+  }
+
+  public void login() {
+    navBarItems.getChildren().removeIf(b -> true);
+    Button[] toAdd = {
+      homeButton,
+      newOfferButton,
+      activeOffersButton,
+      dealHistoryButton,
+      excludeButton,
+      approveButton,
+      myBookingsButton,
+      accountButton,
+    };
+    navBarItems.getChildren().addAll(toAdd);
+    mainViewController.changeView("account");
+    if (isShortText) {
+      setShortTexts();
+    } else {
+      setLongTexts();
+    }
+  }
+
+  public void logout() {
+    setStartButtons();
+    mainViewController.changeView("home");
+    if (isShortText) {
+      setShortTexts();
+    } else {
+      setLongTexts();
+    }
   }
 
   public void toggleNavBar() {
