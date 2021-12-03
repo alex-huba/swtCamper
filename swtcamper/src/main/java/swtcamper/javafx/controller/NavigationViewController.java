@@ -75,15 +75,18 @@ public class NavigationViewController {
 
   @FXML
   private void handleNavBtnClick(ActionEvent e) {
+    Button selectedButton = (Button) e.getTarget();
+    mainViewController.changeView(selectedButton.getAccessibleHelp());
+  }
+
+  public void setButtonActive(Button btn) {
+    // remove all active classes first
     for (Object child : navBarItems.getChildren()) {
       if (child instanceof Button) ((Button) child).getStyleClass()
         .removeIf(c -> c.contains("active"));
     }
 
-    Button selectedButton = (Button) e.getTarget();
-    selectedButton.getStyleClass().add("active");
-
-    mainViewController.changeView(selectedButton.getAccessibleHelp());
+    btn.getStyleClass().add("active");
   }
 
   public void login() {

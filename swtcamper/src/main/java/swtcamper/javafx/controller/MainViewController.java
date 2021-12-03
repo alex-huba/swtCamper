@@ -56,7 +56,7 @@ public class MainViewController {
   @FXML
   private void initialize() {
     reloadData();
-    changeView("login");
+    changeView("home");
   }
 
   public void reloadData() {}
@@ -77,30 +77,57 @@ public class MainViewController {
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.homeButton
+        );
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.homeButton
+        );
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.homeButton
+        );
         break;
       case "history":
         mainStage.getChildren().add(dealHistoryViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.dealHistoryButton
+        );
         break;
       case "exclude":
         mainStage.getChildren().add(excludeRenterViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.excludeButton
+        );
         break;
       case "approve":
         mainStage.getChildren().add(approveDealViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.approveButton
+        );
         break;
       case "myBookings":
         mainStage.getChildren().add(myBookingsViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.myBookingsButton
+        );
         break;
       case "login":
         mainStage.getChildren().add(loginViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.loginButton
+        );
         break;
       case "account":
         mainStage.getChildren().add(accountViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.accountButton
+        );
         break;
     }
   }
