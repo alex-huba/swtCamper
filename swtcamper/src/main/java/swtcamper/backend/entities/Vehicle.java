@@ -11,7 +11,7 @@ public class Vehicle {
 
   @Id
   @GeneratedValue
-  private Long vehicleID;
+  private long vehicleID;
 
   @ManyToOne
   private VehicleFeatures vehicleFeatures;
@@ -43,11 +43,11 @@ public class Vehicle {
     );
   }
 
-  public Long getVehicleID() {
+  public long getVehicleID() {
     return vehicleID;
   }
 
-  public void setVehicleID(Long vehicleID) {
+  public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 

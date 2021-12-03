@@ -4,25 +4,23 @@ import java.util.Arrays;
 
 public class VehicleDTO {
 
-  private Long vehicleID;
+  private long vehicleID;
 
   private VehicleTypeDTO vehicleType;
 
-  private Long vehicleFeaturesID;
+  private long vehicleFeaturesID;
 
   private String[] pictureURLs;
 
   private String[] particularities;
 
-  private AvailabilityDTO availability;
-
   // Getters & Setters
 
-  public Long getVehicleID() {
+  public long getVehicleID() {
     return vehicleID;
   }
 
-  public void setVehicleID(Long vehicleID) {
+  public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 
@@ -34,7 +32,7 @@ public class VehicleDTO {
     this.vehicleType = vehicleType;
   }
 
-  public Long getVehicleFeaturesID() {
+  public long getVehicleFeaturesID() {
     return vehicleFeaturesID;
   }
 
@@ -65,12 +63,11 @@ public class VehicleDTO {
   }
 
   public VehicleDTO(
-    Long vehicleID,
+    long vehicleID,
     VehicleTypeDTO vehicleType,
-    Long vehicleFeaturesID,
+    long vehicleFeaturesID,
     String[] pictureURLs,
-    String[] particularities,
-    AvailabilityDTO availability
+    String[] particularities
   ) {
     super();
     this.vehicleID = vehicleID;
@@ -78,7 +75,6 @@ public class VehicleDTO {
     this.vehicleFeaturesID = vehicleFeaturesID;
     this.pictureURLs = pictureURLs;
     this.particularities = particularities;
-    this.availability = availability;
   }
 
   @Override

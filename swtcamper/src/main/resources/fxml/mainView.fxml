@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="swtcamper.javafx.controller.MainViewController">
-    <children>
-        <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-            <items>
+<?import javafx.scene.layout.*?>
 
-            </items>
-        </SplitPane>
-    </children>
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+  <children>
+    <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+         <items>
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab fx:id="loginTab" text="Login">
+                      <content>
+                          <fx:include source="loginView.fxml" />
+                      </content>
+                  </Tab>
+                  <Tab fx:id="offersTab" disable="true" text="My Offers">
+                      <content>
+                          <fx:include source="myOffersView.fxml" />
+                      </content>
+                  </Tab>
+                  <Tab fx:id="rentCamperTab" text="Rent a Camper">
+                      <content>
+                          <fx:include source="rentingView.fxml" />
+                      </content>
+                  </Tab>
+                  <Tab fx:id="placeOfferTab" disable="true" text="Place Offer">
+                      <content>
+                          <fx:include source="placeOfferView.fxml" />
+                      </content>
+                  </Tab>
+                  <Tab fx:id="updateOfferTab" disable="true" text="Update Offer">
+                      <content>
+                          <fx:include source="updateOfferView.fxml" />
+                      </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </items>
+    </SplitPane>
+  </children>
 </VBox>

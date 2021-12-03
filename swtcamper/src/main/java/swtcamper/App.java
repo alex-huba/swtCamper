@@ -31,7 +31,7 @@ public class App extends Application {
     fxmlLoader.setLocation(getClass().getResource("/fxml/mainView.fxml"));
     Parent rootNode = fxmlLoader.load();
 
-    primaryStage.setTitle("SWTCamper");
+    primaryStage.setTitle("SWT Camper");
     primaryStage.setScene(new Scene(rootNode, 800, 600));
     primaryStage.show();
   }

@@ -10,22 +10,39 @@ public class Offer implements IOffer {
 
   @Id
   @GeneratedValue
-  private Long offerID;
+  private long offerID;
 
   private OfferedObjectType offeredObjectType;
-  private Long offeredObjectID;
+  private long offeredObjectID;
   private ArrayList<Long> bookings;
-  private Long price;
-  private String rentalConditions;
+  private long price;
   private boolean active;
 
-  public Offer(Vehicle vehicle, Long price, String rentalConditions) {
+  // Rental Conditions
+  boolean minAge25;
+  boolean borderCrossingAllowed;
+  boolean depositInCash;
+
+  public Offer(Vehicle vehicle, long price, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObjectID = vehicle.getVehicleID();
     this.bookings = new ArrayList<Long>();
     this.price = price;
-    this.rentalConditions = rentalConditions;
+    this.minAge25= minAge25;
+    this.borderCrossingAllowed = borderCrossingAllowed;
+    this.depositInCash = depositInCash;
     this.active = true;
+  }
+
+  public Offer(Vehicle vehicle, ArrayList<Long> bookings, long price, boolean active, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
+    this.offeredObjectType = OfferedObjectType.VEHICLE;
+    this.offeredObjectID = vehicle.getVehicleID();
+    this.bookings = bookings;
+    this.price = price;
+    this.minAge25 = minAge25;
+    this.borderCrossingAllowed = borderCrossingAllowed;
+    this.depositInCash = depositInCash;
+    this.active = active;
   }
 
   public Offer(Vehicle vehicle) {
@@ -41,12 +58,12 @@ public class Offer implements IOffer {
   }
 
   @Override
-  public Long getOfferID() {
+  public long getOfferID() {
     return offerID;
   }
 
   @Override
-  public void setOfferID(Long offerID) {
+  public void setOfferID(long offerID) {
     this.offerID = offerID;
   }
 
@@ -61,12 +78,12 @@ public class Offer implements IOffer {
   }
 
   @Override
-  public Long getOfferedObjectID() {
+  public long getOfferedObjectID() {
     return offeredObjectID;
   }
 
   @Override
-  public void setOfferedObjectID(Long offeredObjectID) {
+  public void setOfferedObjectID(long offeredObjectID) {
     this.offeredObjectID = offeredObjectID;
   }
 
@@ -81,23 +98,37 @@ public class Offer implements IOffer {
   }
 
   @Override
-  public Long getPrice() {
+  public long getPrice() {
     return price;
   }
 
   @Override
-  public void setPrice(Long price) {
+  public void setPrice(long price) {
     this.price = price;
   }
 
-  @Override
-  public String getRentalConditions() {
-    return rentalConditions;
+  public boolean isMinAge25() {
+    return minAge25;
   }
 
-  @Override
-  public void setRentalConditions(String rentalConditions) {
-    this.rentalConditions = rentalConditions;
+  public void setMinAge25(boolean minAge25) {
+    this.minAge25 = minAge25;
+  }
+
+  public boolean isBorderCrossingAllowed() {
+    return borderCrossingAllowed;
+  }
+
+  public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
+    this.borderCrossingAllowed = borderCrossingAllowed;
+  }
+
+  public boolean isDepositInCash() {
+    return depositInCash;
+  }
+
+  public void setDepositInCash(boolean depositInCash) {
+    this.depositInCash = depositInCash;
   }
 
   @Override

@@ -7,9 +7,9 @@ public class VehicleFeatures {
 
   @Id
   @GeneratedValue
-  private Long vehicleFeaturesID;
+  private long vehicleFeaturesID;
 
-  private Long vehicleID;
+  private long vehicleID;
 
   private VehicleType vehicleType;
 
@@ -39,19 +39,19 @@ public class VehicleFeatures {
     this.vehicleID = vehicle.getVehicleID();
   }
 
-  public Long getVehicleFeaturesID() {
+  public long getVehicleFeaturesID() {
     return vehicleFeaturesID;
   }
 
-  public void setVehicleFeaturesID(Long vehicleFeaturesID) {
+  public void setVehicleFeaturesID(long vehicleFeaturesID) {
     this.vehicleFeaturesID = vehicleFeaturesID;
   }
 
-  public Long getVehicleID() {
+  public long getVehicleID() {
     return vehicleID;
   }
 
-  public void setVehicleID(Long vehicleID) {
+  public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 
