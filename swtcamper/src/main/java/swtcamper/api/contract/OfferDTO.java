@@ -1,8 +1,7 @@
 package swtcamper.api.contract;
 
-import swtcamper.backend.entities.Vehicle;
-
 import java.util.ArrayList;
+import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
 
@@ -32,7 +31,7 @@ public class OfferDTO {
     this.offeredObject = offeredObject;
     this.bookings = bookings;
     this.price = price;
-    this.minAge25= minAge25;
+    this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
     this.depositInCash = depositInCash;
     this.active = active;

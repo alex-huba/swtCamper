@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.Optional;
 
 @Component
 public class RentingViewController {
@@ -27,7 +26,4 @@ public class RentingViewController {
 
   @FXML
   public ListView<OfferDTO> offersList;
-
 }
-
-

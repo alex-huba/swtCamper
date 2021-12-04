@@ -3,8 +3,8 @@ package swtcamper.javafx.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,30 +133,30 @@ public class PlaceOfferViewController {
     String[] particularities = null;
     VehicleType vehicleType = null;
     OfferDTO offerDTO = offerController.create(
-            longStringConverter.fromString(priceTextField.getText()),
-            minAgeCheckBox.isSelected(),
-            borderCrossingCheckBox.isSelected(),
-            depositCheckBox.isSelected(),
-            pictureURLs,
-            particularities,
-            vehicleType,
-            brandTextField.getText(),
-            modelTextField.getText(),
-            constructionYearTextField.getText(),
-            doubleStringConverter.fromString(lengthTextField.getText()),
-            doubleStringConverter.fromString(widthTextField.getText()),
-            doubleStringConverter.fromString(heightTextField.getText()),
-            engineTextField.getText(),
-            transmissionTextField.getText(),
-            Integer.parseInt(seatsTextField.getText()),
-            Integer.parseInt(bedsTextField.getText()),
-            roofTentCheckBox.isSelected(),
-            roofRackCheckBox.isSelected(),
-            bikeRackCheckBox.isSelected(),
-            showerCheckBox.isSelected(),
-            toiletCheckBox.isSelected(),
-            kitchenUnitCheckBox.isSelected(),
-            fridgeCheckBox.isSelected()
+      longStringConverter.fromString(priceTextField.getText()),
+      minAgeCheckBox.isSelected(),
+      borderCrossingCheckBox.isSelected(),
+      depositCheckBox.isSelected(),
+      pictureURLs,
+      particularities,
+      vehicleType,
+      brandTextField.getText(),
+      modelTextField.getText(),
+      constructionYearTextField.getText(),
+      doubleStringConverter.fromString(lengthTextField.getText()),
+      doubleStringConverter.fromString(widthTextField.getText()),
+      doubleStringConverter.fromString(heightTextField.getText()),
+      engineTextField.getText(),
+      transmissionTextField.getText(),
+      Integer.parseInt(seatsTextField.getText()),
+      Integer.parseInt(bedsTextField.getText()),
+      roofTentCheckBox.isSelected(),
+      roofRackCheckBox.isSelected(),
+      bikeRackCheckBox.isSelected(),
+      showerCheckBox.isSelected(),
+      toiletCheckBox.isSelected(),
+      kitchenUnitCheckBox.isSelected(),
+      fridgeCheckBox.isSelected()
     );
 
     mainViewController.handleInformationMessage(

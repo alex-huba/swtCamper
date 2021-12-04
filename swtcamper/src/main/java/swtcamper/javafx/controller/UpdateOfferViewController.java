@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -127,31 +126,55 @@ public class UpdateOfferViewController {
   public void initialize(OfferDTO offer) {
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
+    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
+      offeredObject.getVehicleID()
+    );
     Vehicle vehicle = vehicleResponse.get();
     // TODO felder füllen
     this.brandTextField.setText(vehicle.getVehicleFeatures().getMake());
     this.modelTextField.setText(vehicle.getVehicleFeatures().getModel());
-    this.constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
+    this.constructionYearTextField.setText(
+        vehicle.getVehicleFeatures().getYear()
+      );
     this.minAgeCheckBox.setSelected(offer.isMinAge25());
     this.borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
     this.depositCheckBox.setSelected(offer.isDepositInCash());
     this.priceTextField.setText(longStringConverter.toString(offer.getPrice()));
     this.activeCheckBox.setSelected(offer.isActive());
-    this.widthTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
-    this.lengthTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
-    this.heightTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
+    this.widthTextField.setText(
+        doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth())
+      );
+    this.lengthTextField.setText(
+        doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength())
+      );
+    this.heightTextField.setText(
+        doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight())
+      );
     this.engineTextField.setText(vehicle.getVehicleFeatures().getEngine());
-    this.transmissionTextField.setText(vehicle.getVehicleFeatures().getTransmission());
-    this.roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
-    this.roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
-    this.bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
+    this.transmissionTextField.setText(
+        vehicle.getVehicleFeatures().getTransmission()
+      );
+    this.roofTentCheckBox.setSelected(
+        vehicle.getVehicleFeatures().isRoofTent()
+      );
+    this.roofRackCheckBox.setSelected(
+        vehicle.getVehicleFeatures().isRoofRack()
+      );
+    this.bikeRackCheckBox.setSelected(
+        vehicle.getVehicleFeatures().isBikeRack()
+      );
     this.showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
     this.toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
-    this.kitchenUnitCheckBox.setSelected(vehicle.getVehicleFeatures().isKitchenUnit());
+    this.kitchenUnitCheckBox.setSelected(
+        vehicle.getVehicleFeatures().isKitchenUnit()
+      );
     this.fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
-    this.seatsTextField.setText(Integer.toString(vehicle.getVehicleFeatures().getSeats()));
-    this.bedsTextField.setText(Integer.toString(vehicle.getVehicleFeatures().getBeds()));
+    this.seatsTextField.setText(
+        Integer.toString(vehicle.getVehicleFeatures().getSeats())
+      );
+    this.bedsTextField.setText(
+        Integer.toString(vehicle.getVehicleFeatures().getBeds())
+      );
   }
 
   @FXML
@@ -162,34 +185,34 @@ public class UpdateOfferViewController {
     VehicleType vehicleType = null;
     ArrayList<Long> bookings = null;
     offerController.update(
-            offerID,
-            offeredObject,
-            bookings,
-            longStringConverter.fromString(priceTextField.getText()),
-            activeCheckBox.isSelected(),
-            minAgeCheckBox.isSelected(),
-            borderCrossingCheckBox.isSelected(),
-            depositCheckBox.isSelected(),
-            pictureURLs,
-            particularities,
-            vehicleType,
-            brandTextField.getText(),
-            modelTextField.getText(),
-            constructionYearTextField.getText(),
-            doubleStringConverter.fromString(lengthTextField.getText()),
-            doubleStringConverter.fromString(widthTextField.getText()),
-            doubleStringConverter.fromString(heightTextField.getText()),
-            engineTextField.getText(),
-            transmissionTextField.getText(),
-            Integer.parseInt(seatsTextField.getText()),
-            Integer.parseInt(bedsTextField.getText()),
-            roofTentCheckBox.isSelected(),
-            roofRackCheckBox.isSelected(),
-            bikeRackCheckBox.isSelected(),
-            showerCheckBox.isSelected(),
-            toiletCheckBox.isSelected(),
-            kitchenUnitCheckBox.isSelected(),
-            fridgeCheckBox.isSelected()
+      offerID,
+      offeredObject,
+      bookings,
+      longStringConverter.fromString(priceTextField.getText()),
+      activeCheckBox.isSelected(),
+      minAgeCheckBox.isSelected(),
+      borderCrossingCheckBox.isSelected(),
+      depositCheckBox.isSelected(),
+      pictureURLs,
+      particularities,
+      vehicleType,
+      brandTextField.getText(),
+      modelTextField.getText(),
+      constructionYearTextField.getText(),
+      doubleStringConverter.fromString(lengthTextField.getText()),
+      doubleStringConverter.fromString(widthTextField.getText()),
+      doubleStringConverter.fromString(heightTextField.getText()),
+      engineTextField.getText(),
+      transmissionTextField.getText(),
+      Integer.parseInt(seatsTextField.getText()),
+      Integer.parseInt(bedsTextField.getText()),
+      roofTentCheckBox.isSelected(),
+      roofRackCheckBox.isSelected(),
+      bikeRackCheckBox.isSelected(),
+      showerCheckBox.isSelected(),
+      toiletCheckBox.isSelected(),
+      kitchenUnitCheckBox.isSelected(),
+      fridgeCheckBox.isSelected()
     );
     mainViewController.updateOfferTab.setDisable(true);
     mainViewController.jumpToTab("offers");

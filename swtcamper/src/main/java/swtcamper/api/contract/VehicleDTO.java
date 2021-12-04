@@ -76,22 +76,4 @@ public class VehicleDTO {
     this.pictureURLs = pictureURLs;
     this.particularities = particularities;
   }
-
-//  @Override
-//  public String toString() {
-//    return (
-//      "VehicleDTO{" +
-//      "vehicleID=" +
-//      vehicleID +
-//      ", vehicleType=" +
-//      vehicleType +
-//      ", vehicleFeaturesID=" +
-//      vehicleFeaturesID +
-//      ", pictureURLs=" +
-//      Arrays.toString(pictureURLs) +
-//      ", particularities=" +
-//      Arrays.toString(particularities) +
-//      '}'
-//    );
-//  }
 }

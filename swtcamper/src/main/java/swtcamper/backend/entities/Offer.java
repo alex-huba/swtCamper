@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import javax.persistence.*;
 
-
-
-
 @Entity
 public class Offer implements IOffer {
 
@@ -18,6 +15,7 @@ public class Offer implements IOffer {
 
   @OneToOne
   private Vehicle offeredObject;
+
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
@@ -27,18 +25,32 @@ public class Offer implements IOffer {
   boolean borderCrossingAllowed;
   boolean depositInCash;
 
-  public Offer(Vehicle vehicle, long price, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
+  public Offer(
+    Vehicle vehicle,
+    long price,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash
+  ) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
     this.price = price;
-    this.minAge25= minAge25;
+    this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
     this.depositInCash = depositInCash;
     this.active = true;
   }
 
-  public Offer(Vehicle vehicle, ArrayList<Long> bookings, long price, boolean active, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
+  public Offer(
+    Vehicle vehicle,
+    ArrayList<Long> bookings,
+    long price,
+    boolean active,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash
+  ) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = bookings;
@@ -156,11 +168,16 @@ public class Offer implements IOffer {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Offer offer = (Offer) o;
-    return offerID == offer.offerID && price == offer.price && active == offer.active && minAge25 == offer.minAge25 && borderCrossingAllowed == offer.borderCrossingAllowed && depositInCash == offer.depositInCash && offeredObjectType == offer.offeredObjectType && Objects.equals(offeredObject, offer.offeredObject) && Objects.equals(bookings, offer.bookings);
+    return (
+      offerID == offer.offerID &&
+      price == offer.price &&
+      active == offer.active &&
+      minAge25 == offer.minAge25 &&
+      borderCrossingAllowed == offer.borderCrossingAllowed &&
+      depositInCash == offer.depositInCash &&
+      offeredObjectType == offer.offeredObjectType &&
+      Objects.equals(offeredObject, offer.offeredObject) &&
+      Objects.equals(bookings, offer.bookings)
+    );
   }
-
-//  @Override
-//  public int hashCode() {
-//    return Objects.hash(offerID, offeredObjectType, offeredObject, bookings, price, active, minAge25, borderCrossingAllowed, depositInCash);
-//  }
 }
