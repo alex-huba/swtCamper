@@ -11,9 +11,9 @@ public interface IOffer {
 
   public void setOfferedObjectType(OfferedObjectType offeredObjectType);
 
-  public long getOfferedObjectID();
+  public Vehicle getOfferedObject();
 
-  public void setOfferedObjectID(long offeredObjectID);
+  public void setOfferedObject(Vehicle offeredObject);
 
   public ArrayList<Long> getBookings();
 

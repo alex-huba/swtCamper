@@ -66,8 +66,7 @@ public class OfferService {
         // !!! Hier werden die ganzen zusammenhängenden Objekte erstellt und die IDs untereinander verteilt !!!
 
         Vehicle vehicle = new Vehicle();
-        vehicle.setPictureURLs(pictureURLs);
-        vehicle.setParticularities(particularities);
+        vehicleRepository.save(vehicle);
 
         VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
         vehicleFeatures.setVehicleType(vehicleType);
@@ -88,21 +87,20 @@ public class OfferService {
         vehicleFeatures.setToilet(toilet);
         vehicleFeatures.setKitchenUnit(kitchenUnit);
         vehicleFeatures.setFridge(fridge);
+        vehicleFeaturesRepository.save(vehicleFeatures);
 
         vehicle.setVehicleFeatures(vehicleFeatures);
+        vehicle.setPictureURLs(pictureURLs);
+        vehicle.setParticularities(particularities);
 
         Offer offer = new Offer(vehicle, price, minAge25, borderCrossingAllowed, depositInCash);
-
-        // Objekte erstellt und IDs verteilt --> ab in die DB
-
-        vehicleFeaturesRepository.save(vehicleFeatures);
         vehicleRepository.save(vehicle);
         return offerRepository.save(offer);
     }
 
     public Offer update(
             long offerId,
-            long offeredObjectId,
+            Vehicle offeredObject,
 
             // Offer-Parameter
             ArrayList<Long> bookings,
@@ -139,7 +137,7 @@ public class OfferService {
         Optional<Offer> offerResponse = offerRepository.findById(offerId);
         Offer offer = offerResponse.get();
 
-        Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObjectId);
+        Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
         Vehicle vehicle = vehicleResponse.get();
 
         Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(

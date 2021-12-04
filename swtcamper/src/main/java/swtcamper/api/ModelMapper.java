@@ -34,7 +34,7 @@ public class ModelMapper {
         return new OfferDTO(
                 offer.getOfferID(),
                 toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
-                offer.getOfferedObjectID(),
+                offer.getOfferedObject(),
                 offer.getBookings(),
                 offer.getPrice(),
                 offer.isMinAge25(),

@@ -44,7 +44,7 @@ public class UpdateOfferViewController {
 
   private long offerID;
 
-  private long offeredObjectID;
+  private Vehicle offeredObject;
 
   @FXML
   public ComboBox typeBox;
@@ -126,8 +126,8 @@ public class UpdateOfferViewController {
 
   public void initialize(OfferDTO offer) {
     this.offerID = offer.getID();
-    this.offeredObjectID = offer.getOfferedObjectID();
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObjectID);
+    this.offeredObject = offer.getOfferedObject();
+    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
     Vehicle vehicle = vehicleResponse.get();
     // TODO felder füllen
     this.brandTextField.setText(vehicle.getVehicleFeatures().getMake());
@@ -163,7 +163,7 @@ public class UpdateOfferViewController {
     ArrayList<Long> bookings = null;
     offerController.update(
             offerID,
-            offeredObjectID,
+            offeredObject,
             bookings,
             longStringConverter.fromString(priceTextField.getText()),
             activeCheckBox.isSelected(),

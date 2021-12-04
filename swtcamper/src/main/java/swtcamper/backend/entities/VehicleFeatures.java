@@ -1,15 +1,21 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
+
+@SequenceGenerator(name="vehiclefeaturesseq", initialValue=1, allocationSize=1000)
+
 
 @Entity
 public class VehicleFeatures {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vehiclefeaturesseq")
   private long vehicleFeaturesID;
 
-  private long vehicleID;
+  @ManyToOne(cascade=CascadeType.MERGE)
+  @JoinColumn(name = "vehicle_id")
+  private Vehicle vehicle;
 
   private VehicleType vehicleType;
 
@@ -35,8 +41,10 @@ public class VehicleFeatures {
   private boolean kitchenUnit;
   private boolean fridge;
 
+  public VehicleFeatures(){};
+
   public VehicleFeatures(Vehicle vehicle) {
-    this.vehicleID = vehicle.getVehicleID();
+    this.vehicle = vehicle;
   }
 
   public long getVehicleFeaturesID() {
@@ -47,12 +55,12 @@ public class VehicleFeatures {
     this.vehicleFeaturesID = vehicleFeaturesID;
   }
 
-  public long getVehicleID() {
-    return vehicleID;
+  public Vehicle getVehicle() {
+    return vehicle;
   }
 
-  public void setVehicleID(long vehicleID) {
-    this.vehicleID = vehicleID;
+  public void setVehicle(Vehicle vehicle) {
+    this.vehicle = vehicle;
   }
 
   public VehicleType getVehicleType() {
@@ -206,4 +214,17 @@ public class VehicleFeatures {
   public void setFridge(boolean fridge) {
     this.fridge = fridge;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    VehicleFeatures that = (VehicleFeatures) o;
+    return vehicleFeaturesID == that.vehicleFeaturesID && Double.compare(that.length, length) == 0 && Double.compare(that.width, width) == 0 && Double.compare(that.height, height) == 0 && seats == that.seats && beds == that.beds && roofTent == that.roofTent && roofRack == that.roofRack && bikeRack == that.bikeRack && shower == that.shower && toilet == that.toilet && kitchenUnit == that.kitchenUnit && fridge == that.fridge && Objects.equals(vehicle, that.vehicle) && vehicleType == that.vehicleType && Objects.equals(make, that.make) && Objects.equals(model, that.model) && Objects.equals(year, that.year) && Objects.equals(engine, that.engine) && Objects.equals(transmission, that.transmission);
+  }
+
+//  @Override
+//  public int hashCode() {
+//    return Objects.hash(vehicleFeaturesID, vehicle, vehicleType, make, model, year, length, width, height, engine, transmission, seats, beds, roofTent, roofRack, bikeRack, shower, toilet, kitchenUnit, fridge);
+//  }
 }

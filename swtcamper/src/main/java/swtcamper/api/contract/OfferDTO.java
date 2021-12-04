@@ -1,12 +1,14 @@
 package swtcamper.api.contract;
 
+import swtcamper.backend.entities.Vehicle;
+
 import java.util.ArrayList;
 
 public class OfferDTO {
 
   private long offerID;
   private OfferedObjectTypeDTO offeredObjectType;
-  private long offeredObjectID;
+  private Vehicle offeredObject;
   private ArrayList<Long> bookings;
   private long price;
   boolean minAge25;
@@ -17,7 +19,7 @@ public class OfferDTO {
   public OfferDTO(
     long offerID,
     OfferedObjectTypeDTO offeredObjectType,
-    long offeredObjectID,
+    Vehicle offeredObject,
     ArrayList<Long> bookings,
     long price,
     boolean minAge25,
@@ -27,7 +29,7 @@ public class OfferDTO {
   ) {
     this.offerID = offerID;
     this.offeredObjectType = offeredObjectType;
-    this.offeredObjectID = offeredObjectID;
+    this.offeredObject = offeredObject;
     this.bookings = bookings;
     this.price = price;
     this.minAge25= minAge25;
@@ -52,12 +54,12 @@ public class OfferDTO {
     this.offeredObjectType = offeredObjectType;
   }
 
-  public long getOfferedObjectID() {
-    return offeredObjectID;
+  public Vehicle getOfferedObject() {
+    return offeredObject;
   }
 
-  public void setOfferedObjectID(long offeredObjectID) {
-    this.offeredObjectID = offeredObjectID;
+  public void setOfferedObjectID(Vehicle offeredObject) {
+    this.offeredObject = offeredObject;
   }
 
   public ArrayList<Long> getBookings() {

@@ -2,6 +2,7 @@ package swtcamper.api.contract;
 
 import org.springframework.stereotype.Component;
 import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -43,7 +44,7 @@ public interface IOfferController {
 
   OfferDTO update(
           long offerId,
-          long offeredObjectId,
+          Vehicle offeredObject,
 
           // Offer-Parameter
           ArrayList<Long> bookings,

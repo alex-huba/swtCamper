@@ -1,19 +1,23 @@
 package swtcamper.backend.entities;
 
 import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.Objects;
+import javax.persistence.*;
+
+@SequenceGenerator(name="offerseq", initialValue=1, allocationSize=1000)
+
 
 @Entity
 public class Offer implements IOffer {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue (strategy=GenerationType.SEQUENCE, generator="offerseq")
   private long offerID;
 
   private OfferedObjectType offeredObjectType;
-  private long offeredObjectID;
+
+  @OneToOne
+  private Vehicle offeredObject;
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
@@ -25,7 +29,7 @@ public class Offer implements IOffer {
 
   public Offer(Vehicle vehicle, long price, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
-    this.offeredObjectID = vehicle.getVehicleID();
+    this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
     this.price = price;
     this.minAge25= minAge25;
@@ -36,7 +40,7 @@ public class Offer implements IOffer {
 
   public Offer(Vehicle vehicle, ArrayList<Long> bookings, long price, boolean active, boolean minAge25, boolean borderCrossingAllowed, boolean depositInCash) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
-    this.offeredObjectID = vehicle.getVehicleID();
+    this.offeredObject = vehicle;
     this.bookings = bookings;
     this.price = price;
     this.minAge25 = minAge25;
@@ -47,7 +51,7 @@ public class Offer implements IOffer {
 
   public Offer(Vehicle vehicle) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
-    this.offeredObjectID = vehicle.getVehicleID();
+    this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
     this.active = true;
   }
@@ -78,13 +82,13 @@ public class Offer implements IOffer {
   }
 
   @Override
-  public long getOfferedObjectID() {
-    return offeredObjectID;
+  public Vehicle getOfferedObject() {
+    return offeredObject;
   }
 
   @Override
-  public void setOfferedObjectID(long offeredObjectID) {
-    this.offeredObjectID = offeredObjectID;
+  public void setOfferedObject(Vehicle offeredObject) {
+    this.offeredObject = offeredObject;
   }
 
   @Override
@@ -107,26 +111,32 @@ public class Offer implements IOffer {
     this.price = price;
   }
 
+  @Override
   public boolean isMinAge25() {
     return minAge25;
   }
 
+  @Override
   public void setMinAge25(boolean minAge25) {
     this.minAge25 = minAge25;
   }
 
+  @Override
   public boolean isBorderCrossingAllowed() {
     return borderCrossingAllowed;
   }
 
+  @Override
   public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
     this.borderCrossingAllowed = borderCrossingAllowed;
   }
 
+  @Override
   public boolean isDepositInCash() {
     return depositInCash;
   }
 
+  @Override
   public void setDepositInCash(boolean depositInCash) {
     this.depositInCash = depositInCash;
   }
@@ -140,4 +150,17 @@ public class Offer implements IOffer {
   public void setActive(boolean active) {
     this.active = active;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Offer offer = (Offer) o;
+    return offerID == offer.offerID && price == offer.price && active == offer.active && minAge25 == offer.minAge25 && borderCrossingAllowed == offer.borderCrossingAllowed && depositInCash == offer.depositInCash && offeredObjectType == offer.offeredObjectType && Objects.equals(offeredObject, offer.offeredObject) && Objects.equals(bookings, offer.bookings);
+  }
+
+//  @Override
+//  public int hashCode() {
+//    return Objects.hash(offerID, offeredObjectType, offeredObject, bookings, price, active, minAge25, borderCrossingAllowed, depositInCash);
+//  }
 }

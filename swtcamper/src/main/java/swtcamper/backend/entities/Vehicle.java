@@ -1,19 +1,19 @@
 package swtcamper.backend.entities;
 
 import java.util.Arrays;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.util.Objects;
+import javax.persistence.*;
+
+@SequenceGenerator(name="vehicleseq", initialValue=1, allocationSize=1000)
 
 @Entity
 public class Vehicle {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vehicleseq")
   private long vehicleID;
 
-  @ManyToOne
+  @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE})
   private VehicleFeatures vehicleFeatures;
 
   private String[] pictureURLs;
@@ -27,21 +27,21 @@ public class Vehicle {
     super();
   }
 
-  @Override
-  public String toString() {
-    return (
-      "Vehicle{" +
-      "vehicleID=" +
-      vehicleID +
-      ", vehicleFeatures=" +
-      vehicleFeatures +
-      ", pictureURLs=" +
-      Arrays.toString(pictureURLs) +
-      ", particularities=" +
-      Arrays.toString(particularities) +
-      '}'
-    );
-  }
+//  @Override
+//  public String toString() {
+//    return (
+//      "Vehicle{" +
+//      "vehicleID=" +
+//      vehicleID +
+//      ", vehicleFeatures=" +
+//      vehicleFeatures +
+//      ", pictureURLs=" +
+//      Arrays.toString(pictureURLs) +
+//      ", particularities=" +
+//      Arrays.toString(particularities) +
+//      '}'
+//    );
+//  }
 
   public long getVehicleID() {
     return vehicleID;
@@ -74,4 +74,20 @@ public class Vehicle {
   public void setParticularities(String[] particularities) {
     this.particularities = particularities;
   }
+
+//  @Override
+//  public boolean equals(Object o) {
+//    if (this == o) return true;
+//    if (o == null || getClass() != o.getClass()) return false;
+//    Vehicle vehicle = (Vehicle) o;
+//    return vehicleID == vehicle.vehicleID && Objects.equals(vehicleFeatures, vehicle.vehicleFeatures) && Arrays.equals(pictureURLs, vehicle.pictureURLs) && Arrays.equals(particularities, vehicle.particularities);
+//  }
+
+//  @Override
+//  public int hashCode() {
+//    int result = Objects.hash(vehicleID, vehicleFeatures);
+//    result = 31 * result + Arrays.hashCode(pictureURLs);
+//    result = 31 * result + Arrays.hashCode(particularities);
+//    return result;
+//  }
 }

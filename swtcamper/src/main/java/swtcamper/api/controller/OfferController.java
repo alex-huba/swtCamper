@@ -106,7 +106,7 @@ public class OfferController implements IOfferController {
 
   public OfferDTO update(
           long offerId,
-          long offeredObjectId,
+          Vehicle offeredObject,
 
           // Offer-Parameter
           ArrayList<Long> bookings,
@@ -143,7 +143,7 @@ public class OfferController implements IOfferController {
           throws GenericServiceException {
     return modelMapper.offerToOfferDTO(offerService.update(
             offerId,
-            offeredObjectId,
+            offeredObject,
 
             //Offer-Parameter
             bookings,
