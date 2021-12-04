@@ -24,6 +24,10 @@
                         <TextField fx:id="locationTextField"/>
                     </VBox>
                     <VBox prefHeight="50.0" prefWidth="170.0">
+
+                        <CheckBox fx:id="activeCheckBox" text="Offer active?:"/>
+                    </VBox>
+                    <VBox prefHeight="50.0" prefWidth="170.0">
                         <Label text="Unavailable from: "/>
 
                         <HBox prefHeight="100.0" prefWidth="200.0">

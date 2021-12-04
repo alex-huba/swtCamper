@@ -76,7 +76,7 @@ public class MyOffersViewController {
       Optional<ButtonType> result = confirmDelete.showAndWait();
 
       if (result.isPresent() && result.get() == ButtonType.OK) {
-        offerController.delete(selectedOffer.getId());
+        offerController.delete(selectedOffer.getID());
         reloadData();
       }
     } else {
@@ -109,7 +109,7 @@ public class MyOffersViewController {
     Alert alert = new Alert(
       Alert.AlertType.INFORMATION,
       "ID: " +
-      offerItem.getId() +
+      offerItem.getID() +
       "\nTitle: " +
       offerItem.getPrice() +
       "\nPrice per day: " +

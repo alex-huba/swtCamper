@@ -38,12 +38,16 @@ public class UpdateOfferViewController {
   @Autowired
   private VehicleRepository vehicleRepository;
 
+  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+
+  LongStringConverter longStringConverter = new LongStringConverter();
+
   private long offerID;
 
   private long offeredObjectID;
 
   @FXML
-  public ComboBox typebox;
+  public ComboBox typeBox;
 
   @FXML
   public TextField brandTextField;
@@ -64,27 +68,25 @@ public class UpdateOfferViewController {
   public CheckBox depositCheckBox;
 
   @FXML
-  public TextField price;
-  LongStringConverter longStringConverter;
+  public TextField priceTextField;
 
   @FXML
   public CheckBox activeCheckBox;
 
   @FXML
-  public TextField width;
-  DoubleStringConverter doubleStringConverter;
+  public TextField widthTextField;
 
   @FXML
-  public TextField length;
+  public TextField lengthTextField;
 
   @FXML
-  public TextField height;
+  public TextField heightTextField;
 
   @FXML
-  public TextField engine;
+  public TextField engineTextField;
 
   @FXML
-  public TextField transmission;
+  public TextField transmissionTextField;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -107,6 +109,15 @@ public class UpdateOfferViewController {
   @FXML
   public CheckBox fridgeCheckBox;
 
+  /*@FXML
+  public TextField contactTextField;
+
+  @FXML
+  public TextField locationTextField;
+
+  @FXML
+  public TextField descriptionTextField;*/
+
   @FXML
   public TextField seatsTextField;
 
@@ -114,7 +125,7 @@ public class UpdateOfferViewController {
   public TextField bedsTextField;
 
   public void initialize(OfferDTO offer) {
-    this.offerID = offer.getId();
+    this.offerID = offer.getID();
     this.offeredObjectID = offer.getOfferedObjectID();
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObjectID);
     Vehicle vehicle = vehicleResponse.get();
@@ -125,13 +136,13 @@ public class UpdateOfferViewController {
     this.minAgeCheckBox.setSelected(offer.isMinAge25());
     this.borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
     this.depositCheckBox.setSelected(offer.isDepositInCash());
-    this.price.setText(longStringConverter.toString(offer.getPrice()));
+    this.priceTextField.setText(longStringConverter.toString(offer.getPrice()));
     this.activeCheckBox.setSelected(offer.isActive());
-    this.width.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
-    this.length.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
-    this.height.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
-    this.engine.setText(vehicle.getVehicleFeatures().getEngine());
-    this.transmission.setText(vehicle.getVehicleFeatures().getTransmission());
+    this.widthTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
+    this.lengthTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
+    this.heightTextField.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
+    this.engineTextField.setText(vehicle.getVehicleFeatures().getEngine());
+    this.transmissionTextField.setText(vehicle.getVehicleFeatures().getTransmission());
     this.roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
     this.roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
     this.bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
@@ -154,7 +165,7 @@ public class UpdateOfferViewController {
             offerID,
             offeredObjectID,
             bookings,
-            longStringConverter.fromString(price.getText()),
+            longStringConverter.fromString(priceTextField.getText()),
             activeCheckBox.isSelected(),
             minAgeCheckBox.isSelected(),
             borderCrossingCheckBox.isSelected(),
@@ -165,11 +176,11 @@ public class UpdateOfferViewController {
             brandTextField.getText(),
             modelTextField.getText(),
             constructionYearTextField.getText(),
-            doubleStringConverter.fromString(length.getText()),
-            doubleStringConverter.fromString(width.getText()),
-            doubleStringConverter.fromString(height.getText()),
-            engine.getText(),
-            transmission.getText(),
+            doubleStringConverter.fromString(lengthTextField.getText()),
+            doubleStringConverter.fromString(widthTextField.getText()),
+            doubleStringConverter.fromString(heightTextField.getText()),
+            engineTextField.getText(),
+            transmissionTextField.getText(),
             Integer.parseInt(seatsTextField.getText()),
             Integer.parseInt(bedsTextField.getText()),
             roofTentCheckBox.isSelected(),

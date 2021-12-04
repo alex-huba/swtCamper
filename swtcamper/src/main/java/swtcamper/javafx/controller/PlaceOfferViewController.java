@@ -160,7 +160,7 @@ public class PlaceOfferViewController {
     );
 
     mainViewController.handleInformationMessage(
-      String.format("New offer \"%s\" has been created.", offerDTO.getId())
+      String.format("New offer \"%s\" has been created.", offerDTO.getID())
     );
     resetFields();
     mainViewController.jumpToTab("offers");
