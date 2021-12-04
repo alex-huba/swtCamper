@@ -9,3 +9,11 @@
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
+
+.heading {
+    -fx-text-fill: #FFFFFF;
+}
+
+CheckBox {
+    -fx-text-fill: #FFFFFF;
+}

@@ -30,6 +30,9 @@ public class MainViewController {
   public Pane homeViewBox;
 
   @FXML
+  public Pane filterOptionsViewBox;
+
+  @FXML
   public Pane placeOfferViewBox;
 
   @FXML
@@ -81,6 +84,8 @@ public class MainViewController {
           navigationViewController.homeButton
         );
         break;
+      case "filterOptions":
+        mainStage.getChildren().add(filterOptionsViewBox);
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
         navigationViewController.setButtonActive(

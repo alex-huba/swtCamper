@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
    <children>
       <HBox layoutX="178.0" layoutY="89.0" prefHeight="247.0" spacing="5.0">
          <children>
@@ -40,8 +40,8 @@
             </VBox>
          </children>
       </HBox>
-      <Button layoutX="478.0" layoutY="336.0" mnemonicParsing="false" onAction="#applyFilters" styleClass="btn" stylesheets="@../styles/rentingview.css" text="Apply filters" />
-      <Label layoutX="237.0" layoutY="50.0" text="Filter options">
+      <Button layoutX="478.0" layoutY="336.0" mnemonicParsing="false" onAction="#applyFilters" styleClass="btn" text="Apply filters" />
+      <Label layoutX="237.0" layoutY="50.0" text="Filter options" styleClass="heading">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
