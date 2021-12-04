@@ -1,6 +1,10 @@
 package swtcamper.api.contract;
 
+import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.List;
 
 public interface IOfferController {
   OfferDTO create(
@@ -31,4 +35,6 @@ public interface IOfferController {
     boolean kitchenUnit,
     boolean fridge
   ); // TODO throws Exception
+
+    List<OfferDTO> getFilteredOffers(Filter filter) throws GenericServiceException;
 }

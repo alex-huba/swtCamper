@@ -2,6 +2,7 @@ package swtcamper.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleFeatures;
@@ -9,6 +10,9 @@ import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OfferService {
@@ -90,5 +94,9 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
     vehicleRepository.save(vehicle);
     return offerRepository.save(offer);
+  }
+
+  public List<OfferDTO> getFilteredOffers() {
+    return new ArrayList<>();
   }
 }
