@@ -44,24 +44,24 @@
                     <!--   Marke, Modell, Baujahr-->
                     <VBox prefHeight="50.0" prefWidth="170.0">
                         <Label text="Brand: "/>
-                        <TextField fx:id="brandTextfield"/>
+                        <TextField fx:id="brandTextField"/>
                     </VBox>
                     <VBox prefHeight="50.0" prefWidth="170.0">
                         <Label text="Model: "/>
-                        <TextField fx:id="modelTextfield"/>
+                        <TextField fx:id="modelTextField"/>
                     </VBox>
                     <VBox prefHeight="50.0" prefWidth="170.0">
                         <Label text="Year of construction: "/>
-                        <TextField fx:id="constructionYearTextfield"/>
+                        <TextField fx:id="constructionYearTextField"/>
                     </VBox>
                     <!--   Features-->
                     <VBox layoutX="15.0" layoutY="160.0" prefHeight="90.0" prefWidth="350.0">
                         <children>
                             <Label text="Features:"/>
-                            <CheckBox fx:id="dachzeltCheckbox" text="Dachzelt"/>
-                            <CheckBox fx:id="dachgepäckträgerCheckbox" text="Dachgepäckträger"/>
-                            <CheckBox fx:id="duschecheckbox" text="Dusche"/>
-                            <CheckBox fx:id="fahrradstaenderCheckbox" text="Fahrradstaender"/>
+                            <CheckBox fx:id="dachzeltCheckBox" text="Dachzelt"/>
+                            <CheckBox fx:id="dachgepäckträgerCheckBox" text="Dachgepäckträger"/>
+                            <CheckBox fx:id="duscheCheckBox" text="Dusche"/>
+                            <CheckBox fx:id="fahrradstaenderCheckBox" text="Fahrradstaender"/>
                         </children>
                     </VBox>
                     <!--   Pictures-->

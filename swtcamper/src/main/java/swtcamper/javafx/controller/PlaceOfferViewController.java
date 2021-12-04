@@ -22,8 +22,12 @@ public class PlaceOfferViewController {
   @Autowired
   private OfferController offerController;
 
+  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+
+  LongStringConverter longStringConverter = new LongStringConverter();
+
   @FXML
-  public ComboBox typebox;
+  public ComboBox typeBox;
 
   @FXML
   public TextField brandTextField;
@@ -35,110 +39,132 @@ public class PlaceOfferViewController {
   public TextField constructionYearTextField;
 
   @FXML
-  public CheckBox minAgeCheckbox;
+  public CheckBox minAgeCheckBox;
 
   @FXML
-  public CheckBox borderCrossingCheckbox;
+  public CheckBox borderCrossingCheckBox;
 
   @FXML
-  public CheckBox depositCheckbox;
+  public CheckBox depositCheckBox;
 
   @FXML
-  public TextField price;
-  LongStringConverter longStringConverter;
+  public TextField priceTextField;
 
   @FXML
-  public TextField width;
-  DoubleStringConverter doubleStringConverter;
+  public TextField widthTextField;
 
   @FXML
-  public TextField length;
+  public TextField lengthTextField;
 
   @FXML
-  public TextField height;
+  public TextField heightTextField;
 
   @FXML
-  public TextField engine;
+  public TextField engineTextField;
 
   @FXML
-  public TextField transmission;
+  public TextField transmissionTextField;
 
   @FXML
-  public CheckBox roofTentCheckbox;
+  public CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckbox;
+  public CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackcheckbox;
+  public CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckbox;
+  public CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckbox;
+  public CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenUnitCheckbox;
+  public CheckBox kitchenUnitCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckbox;
+  public CheckBox fridgeCheckBox;
 
   /*@FXML
-  public TextField contactTextfield;
+  public TextField contactTextField;
 
   @FXML
-  public TextField locationTextfield;
+  public TextField locationTextField;
 
   @FXML
-  public TextField descriptionTextfield;*/
+  public TextField descriptionTextField;*/
 
   @FXML
-  public TextField seatsTextfield;
+  public TextField seatsTextField;
 
   @FXML
-  public TextField bedsTextfield;
+  public TextField bedsTextField;
 
   private void resetFields() {
+    //typeBox
+    brandTextField.clear();
+    modelTextField.clear();
+    constructionYearTextField.clear();
+    minAgeCheckBox.setSelected(false);
+    borderCrossingCheckBox.setSelected(false);
+    depositCheckBox.setSelected(false);
+    priceTextField.clear();
+    widthTextField.clear();
+    lengthTextField.clear();
+    heightTextField.clear();
+    engineTextField.clear();
+    transmissionTextField.clear();
+    roofTentCheckBox.setSelected(false);
+    roofRackCheckBox.setSelected(false);
+    bikeRackCheckBox.setSelected(false);
+    showerCheckBox.setSelected(false);
+    toiletCheckBox.setSelected(false);
+    kitchenUnitCheckBox.setSelected(false);
+    fridgeCheckBox.setSelected(false);
+    seatsTextField.clear();
+    bedsTextField.clear();
   }
 
   @FXML
   public void placeOfferAction() {
+    // TODO entsprechende Felder noch anlegen
     String[] pictureURLs = null;
     String[] particularities = null;
     VehicleType vehicleType = null;
     OfferDTO offerDTO = offerController.create(
-            longStringConverter.fromString(price.getText()),
-            minAgeCheckbox.isSelected(),
-            borderCrossingCheckbox.isSelected(),
-            depositCheckbox.isSelected(),
+            longStringConverter.fromString(priceTextField.getText()),
+            minAgeCheckBox.isSelected(),
+            borderCrossingCheckBox.isSelected(),
+            depositCheckBox.isSelected(),
             pictureURLs,
             particularities,
             vehicleType,
             brandTextField.getText(),
             modelTextField.getText(),
             constructionYearTextField.getText(),
-            doubleStringConverter.fromString(length.getText()),
-            doubleStringConverter.fromString(width.getText()),
-            doubleStringConverter.fromString(height.getText()),
-            engine.getText(),
-            transmission.getText(),
-            Integer.parseInt(seatsTextfield.getText()),
-            Integer.parseInt(bedsTextfield.getText()),
-            roofTentCheckbox.isSelected(),
-            roofRackCheckbox.isSelected(),
-            bikeRackcheckbox.isSelected(),
-            showerCheckbox.isSelected(),
-            toiletCheckbox.isSelected(),
-            kitchenUnitCheckbox.isSelected(),
-            fridgeCheckbox.isSelected()
+            doubleStringConverter.fromString(lengthTextField.getText()),
+            doubleStringConverter.fromString(widthTextField.getText()),
+            doubleStringConverter.fromString(heightTextField.getText()),
+            engineTextField.getText(),
+            transmissionTextField.getText(),
+            Integer.parseInt(seatsTextField.getText()),
+            Integer.parseInt(bedsTextField.getText()),
+            roofTentCheckBox.isSelected(),
+            roofRackCheckBox.isSelected(),
+            bikeRackCheckBox.isSelected(),
+            showerCheckBox.isSelected(),
+            toiletCheckBox.isSelected(),
+            kitchenUnitCheckBox.isSelected(),
+            fridgeCheckBox.isSelected()
     );
-    //resetFields();
+
     mainViewController.handleInformationMessage(
-      String.format("New offer \"%s\" has been created.", offerDTO)
+      String.format("New offer \"%s\" has been created.", offerDTO.getId())
     );
-    //mainViewController.jumpToTab("offers");
-    //mainViewController.reloadData();
+    resetFields();
+    mainViewController.jumpToTab("offers");
+    mainViewController.reloadData();
   }
 
   @FXML

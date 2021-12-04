@@ -11,25 +11,25 @@
          <VBox>
             <VBox prefHeight="50.0" prefWidth="170.0">
                <Label layoutY="200.0" prefHeight="6.0" text="Price per Night: "/>
-               <TextField fx:id="price"/>
+               <TextField fx:id="priceTextField"/>
             </VBox>
             <!--<VBox prefHeight="50.0" prefWidth="170.0">
                <Label text="Location:"/>
-               <TextField fx:id="locationTextfield"/>
+               <TextField fx:id="locationTextField"/>
             </VBox>-->
             <!--<VBox prefHeight="50.0">
                <Label text="Contact: "/>
-               <TextField fx:id="contactTextfield"/>
+               <TextField fx:id="contactTextField"/>
             </VBox>-->
             <VBox prefHeight="50.0">
                <Label text="Rental Conditions: "/>
-               <CheckBox fx:id="minAgeCheckbox" text="Do you want a Minimum Age?"/>
-               <CheckBox fx:id="borderCrossingCheckbox" text="Can the renter cross borders?"/>
-               <CheckBox fx:id="depositCheckbox" text="Do you want a deposit before renting?"/>
+               <CheckBox fx:id="minAgeCheckBox" text="Do you want a Minimum Age?"/>
+               <CheckBox fx:id="borderCrossingCheckBox" text="Can the renter cross borders?"/>
+               <CheckBox fx:id="depositCheckBox" text="Do you want a deposit before renting?"/>
             </VBox>
             <!--<VBox>
                <Label text="Description:"/>
-               <TextField prefHeight="200.0" fx:id="descriptionTextfield"/>
+               <TextField prefHeight="200.0" fx:id="descriptionTextField"/>
             </VBox>-->
          </VBox>
       </VBox>
@@ -45,62 +45,62 @@
             <HBox>
                <VBox prefWidth="185">
                   <Label text="Brand: "/>
-                  <TextField fx:id="brandTextfield"/>
+                  <TextField fx:id="brandTextField"/>
                </VBox>
                <VBox prefWidth="185">
                   <Label text="Model: "/>
-                  <TextField fx:id="modelTextfield"/>
+                  <TextField fx:id="modelTextField"/>
                </VBox>
             </HBox>
             <VBox prefHeight="50.0" prefWidth="170.0">
                <Label text="Year of construction: "/>
-               <TextField fx:id="constructionYearTextfield"/>
+               <TextField fx:id="constructionYearTextField"/>
             </VBox>
             <HBox>
                <VBox>
                   <Label text="length: "/>
-                  <TextField fx:id="lengthTextfield"/>
+                  <TextField fx:id="lengthTextField"/>
                </VBox>
                <VBox>
                   <Label text="width: "/>
-                  <TextField fx:id="widthTextfield"/>
+                  <TextField fx:id="widthTextField"/>
                </VBox>
                <VBox>
                   <Label text="height: "/>
-                  <TextField fx:id="heightTextfield"/>
+                  <TextField fx:id="heightTextField"/>
                </VBox>
             </HBox>
             <HBox>
                <VBox prefWidth="185">
                   <Label text="engine: "/>
-                  <TextField fx:id="engineTextfield"/>
+                  <TextField fx:id="engineTextField"/>
                </VBox>
                <VBox prefWidth="185">
                   <Label text="transmission: "/>
-                  <TextField fx:id="transmissionTextfield"/>
+                  <TextField fx:id="transmissionTextField"/>
                </VBox>
             </HBox>
             <HBox>
                <VBox prefWidth="185">
                   <Label text="seats: "/>
-                  <TextField fx:id="seatsTextfield"/>
+                  <TextField fx:id="seatsTextField"/>
                </VBox>
                <VBox prefWidth="185">
                   <Label text="beds: "/>
-                  <TextField fx:id="bedsTextfield"/>
+                  <TextField fx:id="bedsTextField"/>
                </VBox>
             </HBox>
             <!--   Features-->
             <VBox layoutX="15.0" layoutY="160.0" prefHeight="90.0" prefWidth="350.0">
                <children>
                   <Label text="Features:"/>
-                  <CheckBox fx:id="roofTentCheckbox" text="roof tent?"/>
-                  <CheckBox fx:id="roofRackCheckbox" text="roof rack?"/>
-                  <CheckBox fx:id="bikeRackcheckbox" text="bike rack?"/>
-                  <CheckBox fx:id="showerCheckbox" text="shower?"/>
-                  <CheckBox fx:id="toiletCheckbox" text="toilet?"/>
-                  <CheckBox fx:id="kitchenUnitCheckbox" text="kitchen unit?"/>
-                  <CheckBox fx:id="fridgeCheckbox" text="fridge?"/>
+                  <CheckBox fx:id="roofTentCheckBox" text="roof tent?"/>
+                  <CheckBox fx:id="roofRackCheckBox" text="roof rack?"/>
+                  <CheckBox fx:id="bikeRackCheckBox" text="bike rack?"/>
+                  <CheckBox fx:id="showerCheckBox" text="shower?"/>
+                  <CheckBox fx:id="toiletCheckBox" text="toilet?"/>
+                  <CheckBox fx:id="kitchenUnitCheckBox" text="kitchen unit?"/>
+                  <CheckBox fx:id="fridgeCheckBox" text="fridge?"/>
                </children>
             </VBox>
             <!--   Pictures-->

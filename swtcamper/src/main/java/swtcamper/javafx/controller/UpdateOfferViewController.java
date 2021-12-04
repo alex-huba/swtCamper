@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,12 +22,8 @@ import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleFeatures;
 import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -39,11 +36,11 @@ public class UpdateOfferViewController {
   private OfferController offerController;
 
   @Autowired
-  OfferService offerService;
+  private VehicleRepository vehicleRepository;
 
-  private long offerId;
+  private long offerID;
 
-  private long offeredObjectId;
+  private long offeredObjectID;
 
   @FXML
   public ComboBox typebox;
@@ -58,20 +55,20 @@ public class UpdateOfferViewController {
   public TextField constructionYearTextField;
 
   @FXML
-  public CheckBox minAgeCheckbox;
+  public CheckBox minAgeCheckBox;
 
   @FXML
-  public CheckBox borderCrossingCheckbox;
+  public CheckBox borderCrossingCheckBox;
 
   @FXML
-  public CheckBox depositCheckbox;
+  public CheckBox depositCheckBox;
 
   @FXML
   public TextField price;
   LongStringConverter longStringConverter;
 
   @FXML
-  public CheckBox activeCheckbox;
+  public CheckBox activeCheckBox;
 
   @FXML
   public TextField width;
@@ -90,59 +87,78 @@ public class UpdateOfferViewController {
   public TextField transmission;
 
   @FXML
-  public CheckBox roofTentCheckbox;
+  public CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckbox;
+  public CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackcheckbox;
+  public CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckbox;
+  public CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckbox;
+  public CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenUnitCheckbox;
+  public CheckBox kitchenUnitCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckbox;
+  public CheckBox fridgeCheckBox;
 
   @FXML
-  public TextField seatsTextfield;
+  public TextField seatsTextField;
 
   @FXML
-  public TextField bedsTextfield;
-
-
+  public TextField bedsTextField;
 
   public void initialize(OfferDTO offer) {
-    this.offerId = offer.getID();
-    this.offeredObjectId = offer.getOfferedObjectID();
-    // TODO alle Inhalte der Felder setten
-//    this.titleTextField.setText(offer.getTitle());
-//    this.pricePerDayTextField.setText(offer.getPricePerDay());
-
+    this.offerID = offer.getId();
+    this.offeredObjectID = offer.getOfferedObjectID();
+    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObjectID);
+    Vehicle vehicle = vehicleResponse.get();
+    // TODO felder füllen
+    this.brandTextField.setText(vehicle.getVehicleFeatures().getMake());
+    this.modelTextField.setText(vehicle.getVehicleFeatures().getModel());
+    this.constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
+    this.minAgeCheckBox.setSelected(offer.isMinAge25());
+    this.borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
+    this.depositCheckBox.setSelected(offer.isDepositInCash());
+    this.price.setText(longStringConverter.toString(offer.getPrice()));
+    this.activeCheckBox.setSelected(offer.isActive());
+    this.width.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
+    this.length.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
+    this.height.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
+    this.engine.setText(vehicle.getVehicleFeatures().getEngine());
+    this.transmission.setText(vehicle.getVehicleFeatures().getTransmission());
+    this.roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
+    this.roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
+    this.bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
+    this.showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
+    this.toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
+    this.kitchenUnitCheckBox.setSelected(vehicle.getVehicleFeatures().isKitchenUnit());
+    this.fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
+    this.seatsTextField.setText(Integer.toString(vehicle.getVehicleFeatures().getSeats()));
+    this.bedsTextField.setText(Integer.toString(vehicle.getVehicleFeatures().getBeds()));
   }
+
   @FXML
   public void updateOfferAction() throws GenericServiceException {
-    // TODO Boxen dafür anlegen
+    // TODO entsprechende Felder noch anlegen
     String[] pictureURLs = null;
     String[] particularities = null;
     VehicleType vehicleType = null;
     ArrayList<Long> bookings = null;
-
     offerController.update(
-            offerId,
-            offeredObjectId,
+            offerID,
+            offeredObjectID,
             bookings,
             longStringConverter.fromString(price.getText()),
-            activeCheckbox.isSelected(),
-            minAgeCheckbox.isSelected(),
-            borderCrossingCheckbox.isSelected(),
-            depositCheckbox.isSelected(),
+            activeCheckBox.isSelected(),
+            minAgeCheckBox.isSelected(),
+            borderCrossingCheckBox.isSelected(),
+            depositCheckBox.isSelected(),
             pictureURLs,
             particularities,
             vehicleType,
@@ -154,18 +170,16 @@ public class UpdateOfferViewController {
             doubleStringConverter.fromString(height.getText()),
             engine.getText(),
             transmission.getText(),
-            Integer.parseInt(seatsTextfield.getText()),
-            Integer.parseInt(bedsTextfield.getText()),
-            roofTentCheckbox.isSelected(),
-            roofRackCheckbox.isSelected(),
-            bikeRackcheckbox.isSelected(),
-            showerCheckbox.isSelected(),
-            toiletCheckbox.isSelected(),
-            kitchenUnitCheckbox.isSelected(),
-            fridgeCheckbox.isSelected()
-            // TODO alle sachen aus den boxen
+            Integer.parseInt(seatsTextField.getText()),
+            Integer.parseInt(bedsTextField.getText()),
+            roofTentCheckBox.isSelected(),
+            roofRackCheckBox.isSelected(),
+            bikeRackCheckBox.isSelected(),
+            showerCheckBox.isSelected(),
+            toiletCheckBox.isSelected(),
+            kitchenUnitCheckBox.isSelected(),
+            fridgeCheckBox.isSelected()
     );
-
     mainViewController.updateOfferTab.setDisable(true);
     mainViewController.jumpToTab("offers");
     mainViewController.reloadData();
@@ -225,7 +239,6 @@ public class UpdateOfferViewController {
       return;
     }
     try {
-      //            personController.importPeopleFromJSON(json);
       mainViewController.handleInformationMessage("The import was successful!");
       mainViewController.reloadData();
     } catch (Exception e) {
