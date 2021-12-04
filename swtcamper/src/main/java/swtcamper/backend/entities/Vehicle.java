@@ -4,16 +4,17 @@ import java.util.Arrays;
 import java.util.Objects;
 import javax.persistence.*;
 
-@SequenceGenerator(name="vehicleseq", initialValue=1, allocationSize=1000)
+
 
 @Entity
 public class Vehicle {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vehicleseq")
+  @GeneratedValue
   private long vehicleID;
 
   @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+  @JoinColumn(name="vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
 
   private String[] pictureURLs;

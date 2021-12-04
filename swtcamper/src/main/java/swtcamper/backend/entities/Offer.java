@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 import javax.persistence.*;
 
-@SequenceGenerator(name="offerseq", initialValue=1, allocationSize=1000)
+
 
 
 @Entity
 public class Offer implements IOffer {
 
   @Id
-  @GeneratedValue (strategy=GenerationType.SEQUENCE, generator="offerseq")
+  @GeneratedValue
   private long offerID;
 
   private OfferedObjectType offeredObjectType;

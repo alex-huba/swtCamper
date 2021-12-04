@@ -3,14 +3,14 @@ package swtcamper.backend.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
-@SequenceGenerator(name="vehiclefeaturesseq", initialValue=1, allocationSize=1000)
+
 
 
 @Entity
 public class VehicleFeatures {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vehiclefeaturesseq")
+  @GeneratedValue
   private long vehicleFeaturesID;
 
   @ManyToOne(cascade=CascadeType.MERGE)
