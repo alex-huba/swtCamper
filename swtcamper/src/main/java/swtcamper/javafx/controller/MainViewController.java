@@ -1,10 +1,14 @@
 package swtcamper.javafx.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.OfferController;
@@ -13,30 +17,48 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MainViewController {
 
+  /**
+   * Quick Settings
+   */
+  public final boolean startNavigationHidden = true;
+
   @Autowired
-  private MyOffersViewController myOffersViewController;
+  public NavigationViewController navigationViewController;
 
   @FXML
-  public TabPane tabPane;
+  public AnchorPane mainStage;
 
   @FXML
-  public Tab loginTab;
+  public Pane homeViewBox;
 
   @FXML
-  public Tab offersTab;
+  public Pane placeOfferViewBox;
 
   @FXML
-  public Tab rentCamperTab;
+  public Pane activeOffersViewBox;
 
   @FXML
-  public Tab placeOfferTab;
+  public Pane dealHistoryViewBox;
 
   @FXML
-  public Tab updateOfferTab;
+  public Pane excludeRenterViewBox;
+
+  @FXML
+  public Pane approveDealViewBox;
+
+  @FXML
+  public Pane myBookingsViewBox;
+
+  @FXML
+  public Pane loginViewBox;
+
+  @FXML
+  public Pane accountViewBox;
 
   @FXML
   private void initialize() {
     reloadData();
+    changeView("home");
   }
 
   public void reloadData() {
@@ -59,6 +81,77 @@ public class MainViewController {
       .select(placeOfferTab);
   }
 
+  public void clearView() {
+    List<Pane> toRemove = new ArrayList<>();
+    for (Object child : mainStage.getChildren()) {
+      if (child instanceof Pane) {
+        toRemove.add((Pane) child);
+      }
+    }
+    mainStage.getChildren().removeAll(toRemove);
+  }
+
+  public void changeView(String switchTo) {
+    clearView();
+
+    switch (switchTo) {
+      case "home":
+        mainStage.getChildren().add(homeViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.homeButton
+        );
+        break;
+      case "placeOffer":
+        mainStage.getChildren().add(placeOfferViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.newOfferButton
+        );
+        break;
+      case "activeOffers":
+        mainStage.getChildren().add(activeOffersViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.activeOffersButton
+        );
+        break;
+      case "history":
+        mainStage.getChildren().add(dealHistoryViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.dealHistoryButton
+        );
+        break;
+      case "exclude":
+        mainStage.getChildren().add(excludeRenterViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.excludeButton
+        );
+        break;
+      case "approve":
+        mainStage.getChildren().add(approveDealViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.approveButton
+        );
+        break;
+      case "myBookings":
+        mainStage.getChildren().add(myBookingsViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.myBookingsButton
+        );
+        break;
+      case "login":
+        mainStage.getChildren().add(loginViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.loginButton
+        );
+        break;
+      case "account":
+        mainStage.getChildren().add(accountViewBox);
+        navigationViewController.setButtonActive(
+          navigationViewController.accountButton
+        );
+        break;
+    }
+  }
+
   public void handleExceptionMessage(String message) {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle("Exception");
@@ -77,5 +170,13 @@ public class MainViewController {
 
   public void handleException(Exception e) {
     handleExceptionMessage(e.getMessage());
+  }
+
+  public void login() {
+    navigationViewController.login();
+  }
+
+  public void logout() {
+    navigationViewController.logout();
   }
 }
