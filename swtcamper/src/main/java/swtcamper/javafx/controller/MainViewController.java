@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.controller.OfferController;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class MainViewController {
@@ -19,6 +21,9 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
+
+  @Autowired
+  public MyOffersViewController myOffersViewController;
 
   @Autowired
   public NavigationViewController navigationViewController;
@@ -31,6 +36,9 @@ public class MainViewController {
 
   @FXML
   public Pane placeOfferViewBox;
+
+  @FXML
+  public Pane updateOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -55,11 +63,17 @@ public class MainViewController {
 
   @FXML
   private void initialize() {
-    reloadData();
+    //    reloadData();
     changeView("home");
   }
 
-  public void reloadData() {}
+  public void reloadData() {
+    try {
+      myOffersViewController.reloadData();
+    } catch (GenericServiceException e) {
+      handleException(e);
+    }
+  }
 
   public void clearView() {
     List<Pane> toRemove = new ArrayList<>();
@@ -86,6 +100,9 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
+        break;
+      case "updateOffer":
+        mainStage.getChildren().add(updateOfferViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
