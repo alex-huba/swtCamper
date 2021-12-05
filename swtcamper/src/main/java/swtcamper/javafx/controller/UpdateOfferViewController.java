@@ -225,7 +225,7 @@ public class UpdateOfferViewController {
   }
 
   @FXML
-  public void cancelUpdateAction() {
+  public void cancelUpdateAction() throws GenericServiceException {
     Alert confirmDelete = new Alert(
       Alert.AlertType.WARNING,
       "Willst du den Updateprozess wirklich abbrechen? Alle Änderungen gehen verloren!"

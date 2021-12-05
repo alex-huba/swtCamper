@@ -67,12 +67,15 @@ public class RentingViewController {
 
     @FXML
     private void initialize() throws GenericServiceException {
+    }
+
+    public void getOffers() throws GenericServiceException {
         offersList.setItems(
                 FXCollections.observableArrayList(offerController.offers())
         );
     }
 
-    public void openFilterView() throws IOException {
+    public void openFilterView() throws GenericServiceException {
         mainViewController.changeView("filterOptions");
 
         vehicleTypeComboBox.setItems(FXCollections.observableArrayList(VehicleType.values()));
@@ -105,7 +108,7 @@ public class RentingViewController {
         );
     }
 
-    public void applyFilters() {
+    public void applyFilters() throws GenericServiceException {
         mainViewController.changeView("home");
     }
 }

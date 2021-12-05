@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class PlaceOfferViewController {
@@ -133,7 +134,7 @@ public class PlaceOfferViewController {
   }
 
   @FXML
-  public void placeOfferAction() {
+  public void placeOfferAction() throws GenericServiceException {
     String[] pictureURLs = null;
     String[] particularities = null;
     VehicleType vehicleType = null;
@@ -173,7 +174,7 @@ public class PlaceOfferViewController {
   }
 
   @FXML
-  public void cancelAction() {
+  public void cancelAction() throws GenericServiceException {
     mainViewController.changeView("activeOffers");
   }
 

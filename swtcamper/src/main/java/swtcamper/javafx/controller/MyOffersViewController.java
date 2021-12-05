@@ -36,7 +36,7 @@ public class MyOffersViewController {
   }
 
   @FXML
-  public void placeOfferAction(ActionEvent event) {
+  public void placeOfferAction(ActionEvent event) throws GenericServiceException {
     mainViewController.changeView("placeOffer");
   }
 
@@ -59,7 +59,7 @@ public class MyOffersViewController {
   }
 
   @FXML
-  public void updateOfferAction() {
+  public void updateOfferAction() throws GenericServiceException {
     OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
       mainViewController.changeView("updateOffer");

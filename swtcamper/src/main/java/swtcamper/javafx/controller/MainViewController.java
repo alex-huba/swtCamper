@@ -28,6 +28,9 @@ public class MainViewController {
   @Autowired
   public NavigationViewController navigationViewController;
 
+  @Autowired
+  public RentingViewController rentingViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -65,7 +68,7 @@ public class MainViewController {
   public Pane accountViewBox;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws GenericServiceException {
     //    reloadData();
     changeView("home");
   }
@@ -88,12 +91,13 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
-  public void changeView(String switchTo) {
+  public void changeView(String switchTo) throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        rentingViewController.getOffers();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
@@ -174,11 +178,11 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login() {
+  public void login() throws GenericServiceException {
     navigationViewController.login();
   }
 
-  public void logout() {
+  public void logout() throws GenericServiceException {
     navigationViewController.logout();
   }
 }

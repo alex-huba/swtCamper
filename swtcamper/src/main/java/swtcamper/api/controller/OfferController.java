@@ -20,6 +20,8 @@ import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Component
 public class OfferController implements IOfferController {
@@ -188,24 +190,25 @@ public class OfferController implements IOfferController {
   @Override
     public List<OfferDTO> getFilteredOffers(Filter filter) throws GenericServiceException {
         return offers().stream().filter(offerDTO ->
-                offerDTO.getLocation == filter.getLocation()
-                        && offerDTO.getAvailableFrom().isBefore(filter.getPickUpDate())
-                        && offerDTO.getAvailableUntil().isAfter(filter.getReturnDate())
-                        && offerDTO.getVehicleType().equals(filter.getVehicleType())
-                        && offerDTO.getVehicleBrand().equals(filter.getVehicleBrand())
-                        && offerDTO.getConstructionYear() >= filter.getConstructionYear()
-                        && offerDTO.getPricePerDay() <= filter.getMaxPricePerDay()
-                        && offerDTO.getEngine().equals(filter.getEngine())
-                        && offerDTO.getTransmissionType.equals(filter.getTransmissionType())
-                        && offerDTO.getSeatAmount() >= filter.getSeatAmount()
-                        && offerDTO.getBedAmount() >= filter.getBedAmount()
-                        && offerDTO.isRoofTent() == filter.isRoofTent()
-                        && offerDTO.isRoofRack() == filter.isRoofRack()
-                        && offerDTO.isBikeRack() == filter.isBikeRack()
-                        && offerDTO.isShower() == filter.isShower()
-                        && offerDTO.isToilet() == filter.isToilet()
-                        && offerDTO.isKitchen() == filter.isKitchen()
-                        && offerDTO.isFridge() == filter.isFridge()
-        );
+//                offerDTO.getLocation() == filter.getLocation()
+//                        && offerDTO.getAvailableFrom().isBefore(filter.getPickUpDate())
+//                        && offerDTO.getAvailableUntil().isAfter(filter.getReturnDate())
+//                        &&
+                        offerDTO.getOfferedObject().getVehicleFeatures().getVehicleType().equals(filter.getVehicleType())
+                        && offerDTO.getOfferedObject().getVehicleFeatures().getMake().equals(filter.getVehicleBrand())
+                        && Integer.parseInt(offerDTO.getOfferedObject().getVehicleFeatures().getYear()) >= filter.getConstructionYear()
+                        && offerDTO.getPrice() <= filter.getMaxPricePerDay()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().getEngine().equals(filter.getEngine())
+                        && offerDTO.getOfferedObject().getVehicleFeatures().getTransmission().toUpperCase().equals(filter.getTransmissionType().toString())
+                        && offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >= filter.getSeatAmount()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >= filter.getBedAmount()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent() == filter.isRoofTent()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack() == filter.isRoofRack()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack() == filter.isBikeRack()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isShower() == filter.isShower()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isToilet() == filter.isToilet()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit() == filter.isKitchen()
+                        && offerDTO.getOfferedObject().getVehicleFeatures().isFridge() == filter.isFridge()
+        ).collect(Collectors.toList());
     }
 }
