@@ -170,7 +170,7 @@ public class OfferController implements IOfferController {
 
   public void delete(long id) throws GenericServiceException {
     try {
-      offerRepository.deleteById(id);
+      offerService.delete(id);
       // TODO was passiert mit dem Vehicle des Offers
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);

@@ -2,8 +2,6 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Component;
-import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
