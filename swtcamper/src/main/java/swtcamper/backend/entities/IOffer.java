@@ -1,19 +1,41 @@
 package swtcamper.backend.entities;
 
+import java.util.ArrayList;
+
 public interface IOffer {
-  public Availability getAvailability();
+  public long getOfferID();
 
-  public void setAvailability(Availability availability);
+  public void setOfferID(long offerID);
 
-  public Long getPrice();
+  public OfferedObjectType getOfferedObjectType();
 
-  public void setPrice(Long price);
+  public void setOfferedObjectType(OfferedObjectType offeredObjectType);
 
-  public String getRentalStartDate();
+  public Vehicle getOfferedObject();
 
-  public void setRentalStartDate(String rentalStartDate);
+  public void setOfferedObject(Vehicle offeredObject);
 
-  public String getRentalReturnDate();
+  public ArrayList<Long> getBookings();
 
-  public void setRentalReturnDate(String rentalReturnDate);
+  public void setBookings(ArrayList<Long> bookings);
+
+  public long getPrice();
+
+  public void setPrice(long price);
+
+  public boolean isMinAge25();
+
+  public void setMinAge25(boolean minAge25);
+
+  public boolean isBorderCrossingAllowed();
+
+  public void setBorderCrossingAllowed(boolean borderCrossingAllowed);
+
+  public boolean isDepositInCash();
+
+  public void setDepositInCash(boolean depositInCash);
+
+  public boolean isActive();
+
+  public void setActive(boolean active);
 }
