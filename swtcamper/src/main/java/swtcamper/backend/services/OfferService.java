@@ -64,7 +64,27 @@ public class OfferService {
     vehicleRepository.save(vehicle);
 
     VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
-    setVehicleFeatures(vehicleFeatures, vehicleType, make, model, year, length, width, height, engine, transmission, seats, beds, roofTent, roofRack, bikeRack, shower, toilet, kitchenUnit, fridge);
+    setVehicleFeatures(
+      vehicleFeatures,
+      vehicleType,
+      make,
+      model,
+      year,
+      length,
+      width,
+      height,
+      engine,
+      transmission,
+      seats,
+      beds,
+      roofTent,
+      roofRack,
+      bikeRack,
+      shower,
+      toilet,
+      kitchenUnit,
+      fridge
+    );
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
@@ -128,7 +148,27 @@ public class OfferService {
     );
     VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
 
-    setVehicleFeatures(vehicleFeatures,vehicleType, make, model, year, length, width, height, engine, transmission, seats, beds, roofTent, roofRack, bikeRack, shower, toilet, kitchenUnit, fridge);
+    setVehicleFeatures(
+      vehicleFeatures,
+      vehicleType,
+      make,
+      model,
+      year,
+      length,
+      width,
+      height,
+      engine,
+      transmission,
+      seats,
+      beds,
+      roofTent,
+      roofRack,
+      bikeRack,
+      shower,
+      toilet,
+      kitchenUnit,
+      fridge
+    );
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
@@ -147,7 +187,27 @@ public class OfferService {
     return offerRepository.save(offer);
   }
 
-  private void setVehicleFeatures(VehicleFeatures vehicleFeatures, VehicleType vehicleType, String make, String model, String year, double length, double width, double height, String engine, String transmission, int seats, int beds, boolean roofTent, boolean roofRack, boolean bikeRack, boolean shower, boolean toilet, boolean kitchenUnit, boolean fridge) {
+  private void setVehicleFeatures(
+    VehicleFeatures vehicleFeatures,
+    VehicleType vehicleType,
+    String make,
+    String model,
+    String year,
+    double length,
+    double width,
+    double height,
+    String engine,
+    String transmission,
+    int seats,
+    int beds,
+    boolean roofTent,
+    boolean roofRack,
+    boolean bikeRack,
+    boolean shower,
+    boolean toilet,
+    boolean kitchenUnit,
+    boolean fridge
+  ) {
     vehicleFeatures.setVehicleType(vehicleType);
     vehicleFeatures.setMake(make);
     vehicleFeatures.setModel(model);
