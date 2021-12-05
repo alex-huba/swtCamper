@@ -8,6 +8,7 @@ import swtcamper.backend.entities.userRole;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -19,13 +20,14 @@ public class UserService {
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
-   * @param username
-   * @param name
-   * @param surname
-   * @param email
-   * @param phone
-   * @param password
-   * @param userRole
+   * @param userDTO
+//   * @param username
+//   * @param name
+//   * @param surname
+//   * @param email
+//   * @param phone
+//   * @param password
+//   * @param userRole
 //   * @param locked
 //   * @param enabled
    * @return
@@ -106,9 +108,12 @@ public class UserService {
     // TODO: implement user update
   }
 
-  public List<User> user(){
+  public List<User> user() throws GenericServiceException {
     // TODO: implement user listing
-    return null;
+    if (userRepository.findAll().isEmpty()){
+      throw new GenericServiceException("No users found. User database is empty.");
+    }
+    return userRepository.findAll();
   }
 
   public void lock(User user){
