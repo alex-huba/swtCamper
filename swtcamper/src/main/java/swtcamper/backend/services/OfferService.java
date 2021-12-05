@@ -60,30 +60,11 @@ public class OfferService {
     boolean kitchenUnit,
     boolean fridge
   ) {
-    // !!! Hier werden die ganzen zusammenhängenden Objekte erstellt und die IDs untereinander verteilt !!!
-
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
 
     VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
-    vehicleFeatures.setVehicleType(vehicleType);
-    vehicleFeatures.setMake(make);
-    vehicleFeatures.setModel(model);
-    vehicleFeatures.setYear(year);
-    vehicleFeatures.setLength(length);
-    vehicleFeatures.setWidth(width);
-    vehicleFeatures.setHeight(height);
-    vehicleFeatures.setEngine(engine);
-    vehicleFeatures.setTransmission(transmission);
-    vehicleFeatures.setSeats(seats);
-    vehicleFeatures.setBeds(beds);
-    vehicleFeatures.setRoofTent(roofTent);
-    vehicleFeatures.setRoofRack(roofRack);
-    vehicleFeatures.setBikeRack(bikeRack);
-    vehicleFeatures.setShower(shower);
-    vehicleFeatures.setToilet(toilet);
-    vehicleFeatures.setKitchenUnit(kitchenUnit);
-    vehicleFeatures.setFridge(fridge);
+    setVehicleFeatures(vehicleFeatures, vehicleType, make, model, year, length, width, height, engine, transmission, seats, beds, roofTent, roofRack, bikeRack, shower, toilet, kitchenUnit, fridge);
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
@@ -147,6 +128,26 @@ public class OfferService {
     );
     VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
 
+    setVehicleFeatures(vehicleFeatures,vehicleType, make, model, year, length, width, height, engine, transmission, seats, beds, roofTent, roofRack, bikeRack, shower, toilet, kitchenUnit, fridge);
+
+    vehicle.setVehicleFeatures(vehicleFeatures);
+    vehicle.setPictureURLs(pictureURLs);
+    vehicle.setParticularities(particularities);
+
+    vehicleRepository.save(vehicle);
+
+    offer.setOfferedObject(vehicle);
+    offer.setBookings(bookings);
+    offer.setPrice(price);
+    offer.setActive(active);
+    offer.setMinAge25(minAge25);
+    offer.setBorderCrossingAllowed(borderCrossingAllowed);
+    offer.setDepositInCash(depositInCash);
+
+    return offerRepository.save(offer);
+  }
+
+  private void setVehicleFeatures(VehicleFeatures vehicleFeatures, VehicleType vehicleType, String make, String model, String year, double length, double width, double height, String engine, String transmission, int seats, int beds, boolean roofTent, boolean roofRack, boolean bikeRack, boolean shower, boolean toilet, boolean kitchenUnit, boolean fridge) {
     vehicleFeatures.setVehicleType(vehicleType);
     vehicleFeatures.setMake(make);
     vehicleFeatures.setModel(model);
@@ -165,26 +166,6 @@ public class OfferService {
     vehicleFeatures.setToilet(toilet);
     vehicleFeatures.setKitchenUnit(kitchenUnit);
     vehicleFeatures.setFridge(fridge);
-
-    vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
-    vehicle.setParticularities(particularities);
-
-    vehicleRepository.save(vehicle);
-
-    Offer updatedOffer = new Offer(
-      vehicle,
-      bookings,
-      price,
-      active,
-      minAge25,
-      borderCrossingAllowed,
-      depositInCash
-    );
-    updatedOffer.setOfferID(offerId);
-    return offerRepository.save(updatedOffer);
-    // TODO replaced save das objekt anhand der ID?
-    //  Oder gibt es was wie replaceById?
   }
 
   /**
