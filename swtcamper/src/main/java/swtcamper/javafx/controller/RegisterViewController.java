@@ -6,6 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
@@ -13,6 +15,8 @@ import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.userRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.ArrayList;
 
 import static swtcamper.backend.entities.userRole.OPERATOR;
 import static swtcamper.backend.entities.userRole.USER;
@@ -62,6 +66,8 @@ public class RegisterViewController {
 
     @FXML
     public void handleRegisterBtn(ActionEvent actionEvent) {
+        boolean isInputValid = true;
+
         String username = inputLabel.getText();
         String password = passwordTf.getText();
         String email = emailTf.getText();
@@ -124,8 +130,44 @@ public class RegisterViewController {
         } catch (GenericServiceException e){
             e.printStackTrace();
         }
-
-
+        if (isInputValid){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Your data will be checked by operator shortly.");
+            alert.setTitle("Thank you for signing up!");
+            alert.setHeaderText("We've got your sign up request.");
+            alert.show();
+        }
+        //
 
     }
+    /*
+    private void checkInput(
+            String username,
+            String password,
+            String email,
+            String phone,
+            String name,
+            String surname
+    ) {
+        UserDTO userDTO = new UserDTO();
+
+        if(username.isEmpty() || username.length() < 5){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You can't create such username. Try again!");
+            alert.show();
+        } else {
+            userDTO.setUsername(username);
+        }
+
+        if (password.isEmpty() || password.length() < 5){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You can't create such password. Try again!");
+            alert.show();
+        } else{
+            userDTO.setPassword(password);
+        }
+    }
+    */
+
+
 }
