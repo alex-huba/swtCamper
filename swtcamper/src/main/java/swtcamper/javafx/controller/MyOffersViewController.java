@@ -31,8 +31,13 @@ public class MyOffersViewController {
   public ListView<OfferDTO> offersList;
 
   @FXML
+  public void initialize() throws GenericServiceException {
+    reloadData();
+  }
+
+  @FXML
   public void placeOfferAction(ActionEvent event) {
-    mainViewController.jumpToTab("placeOffer");
+    mainViewController.changeView("placeOffer");
   }
 
   @FXML
@@ -57,9 +62,8 @@ public class MyOffersViewController {
   public void updateOfferAction() {
     OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
+      mainViewController.changeView("updateOffer");
       updateOfferViewController.initialize(selectedOffer);
-      mainViewController.updateOfferTab.setDisable(false);
-      mainViewController.jumpToTab("update");
     } else {
       showSelectOfferFirstInfo();
     }

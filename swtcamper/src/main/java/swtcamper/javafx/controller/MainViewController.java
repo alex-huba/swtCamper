@@ -2,6 +2,7 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,166 +18,163 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MainViewController {
 
-  /**
-   * Quick Settings
-   */
-  public final boolean startNavigationHidden = true;
+    /**
+     * Quick Settings
+     */
+    public final boolean startNavigationHidden = true;
 
-  @Autowired
-  public NavigationViewController navigationViewController;
+    @Autowired
+    public MyOffersViewController myOffersViewController;
 
-  @FXML
-  public AnchorPane mainStage;
+    @Autowired
+    public NavigationViewController navigationViewController;
 
-  @FXML
-  public Pane homeViewBox;
+    @FXML
+    public AnchorPane mainStage;
 
-  @FXML
-  public Pane placeOfferViewBox;
+    @FXML
+    public Pane homeViewBox;
 
-  @FXML
-  public Pane activeOffersViewBox;
+    @FXML
+    public Pane placeOfferViewBox;
 
-  @FXML
-  public Pane dealHistoryViewBox;
+    @FXML
+    public Pane updateOfferViewBox;
 
-  @FXML
-  public Pane excludeRenterViewBox;
+    @FXML
+    public Pane activeOffersViewBox;
 
-  @FXML
-  public Pane approveDealViewBox;
+    @FXML
+    public Pane dealHistoryViewBox;
 
-  @FXML
-  public Pane myBookingsViewBox;
+    @FXML
+    public Pane excludeRenterViewBox;
 
-  @FXML
-  public Pane loginViewBox;
+    @FXML
+    public Pane approveDealViewBox;
 
-  @FXML
-  public Pane accountViewBox;
+    @FXML
+    public Pane myBookingsViewBox;
 
-  @FXML
-  private void initialize() {
-    reloadData();
-    changeView("home");
-  }
+    @FXML
+    public Pane loginViewBox;
 
-  public void reloadData() {
-    try {
-      myOffersViewController.reloadData();
-    } catch (GenericServiceException e) {
-      handleException(e);
+    @FXML
+    public Pane accountViewBox;
+
+    @FXML
+    private void initialize() {
+//    reloadData();
+        changeView("home");
     }
-  }
 
-  public void jumpToTab(String tabSpecifier) {
-    if (tabSpecifier.equals("offers")) tabPane
-      .getSelectionModel()
-      .select(offersTab);
-    if (tabSpecifier.equals("update")) tabPane
-      .getSelectionModel()
-      .select(updateOfferTab);
-    if (tabSpecifier.equals("placeOffer")) tabPane
-      .getSelectionModel()
-      .select(placeOfferTab);
-  }
-
-  public void clearView() {
-    List<Pane> toRemove = new ArrayList<>();
-    for (Object child : mainStage.getChildren()) {
-      if (child instanceof Pane) {
-        toRemove.add((Pane) child);
-      }
+    public void reloadData() {
+        try {
+            myOffersViewController.reloadData();
+        } catch (GenericServiceException e) {
+            handleException(e);
+        }
     }
-    mainStage.getChildren().removeAll(toRemove);
-  }
 
-  public void changeView(String switchTo) {
-    clearView();
-
-    switch (switchTo) {
-      case "home":
-        mainStage.getChildren().add(homeViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.homeButton
-        );
-        break;
-      case "placeOffer":
-        mainStage.getChildren().add(placeOfferViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.newOfferButton
-        );
-        break;
-      case "activeOffers":
-        mainStage.getChildren().add(activeOffersViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.activeOffersButton
-        );
-        break;
-      case "history":
-        mainStage.getChildren().add(dealHistoryViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.dealHistoryButton
-        );
-        break;
-      case "exclude":
-        mainStage.getChildren().add(excludeRenterViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.excludeButton
-        );
-        break;
-      case "approve":
-        mainStage.getChildren().add(approveDealViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.approveButton
-        );
-        break;
-      case "myBookings":
-        mainStage.getChildren().add(myBookingsViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.myBookingsButton
-        );
-        break;
-      case "login":
-        mainStage.getChildren().add(loginViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.loginButton
-        );
-        break;
-      case "account":
-        mainStage.getChildren().add(accountViewBox);
-        navigationViewController.setButtonActive(
-          navigationViewController.accountButton
-        );
-        break;
+    public void clearView() {
+        List<Pane> toRemove = new ArrayList<>();
+        for (Object child : mainStage.getChildren()) {
+            if (child instanceof Pane) {
+                toRemove.add((Pane) child);
+            }
+        }
+        mainStage.getChildren().removeAll(toRemove);
     }
-  }
 
-  public void handleExceptionMessage(String message) {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Exception");
-    alert.setHeaderText("There has been an error processing your request");
-    alert.setContentText(String.format("Message: %s", message));
-    alert.showAndWait();
-  }
+    public void changeView(String switchTo) {
+        clearView();
 
-  public void handleInformationMessage(String message) {
-    Alert alert = new Alert(AlertType.INFORMATION);
-    alert.setTitle("Information");
-    alert.setHeaderText("Note the following");
-    alert.setContentText(String.format("Message: %s", message));
-    alert.showAndWait();
-  }
+        switch (switchTo) {
+            case "home":
+                mainStage.getChildren().add(homeViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.homeButton
+                );
+                break;
+            case "placeOffer":
+                mainStage.getChildren().add(placeOfferViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.newOfferButton
+                );
+                break;
+            case "updateOffer":
+                mainStage.getChildren().add(updateOfferViewBox);
+                break;
+            case "activeOffers":
+                mainStage.getChildren().add(activeOffersViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.activeOffersButton
+                );
+                break;
+            case "history":
+                mainStage.getChildren().add(dealHistoryViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.dealHistoryButton
+                );
+                break;
+            case "exclude":
+                mainStage.getChildren().add(excludeRenterViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.excludeButton
+                );
+                break;
+            case "approve":
+                mainStage.getChildren().add(approveDealViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.approveButton
+                );
+                break;
+            case "myBookings":
+                mainStage.getChildren().add(myBookingsViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.myBookingsButton
+                );
+                break;
+            case "login":
+                mainStage.getChildren().add(loginViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.loginButton
+                );
+                break;
+            case "account":
+                mainStage.getChildren().add(accountViewBox);
+                navigationViewController.setButtonActive(
+                        navigationViewController.accountButton
+                );
+                break;
+        }
+    }
 
-  public void handleException(Exception e) {
-    handleExceptionMessage(e.getMessage());
-  }
+    public void handleExceptionMessage(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Exception");
+        alert.setHeaderText("There has been an error processing your request");
+        alert.setContentText(String.format("Message: %s", message));
+        alert.showAndWait();
+    }
 
-  public void login() {
-    navigationViewController.login();
-  }
+    public void handleInformationMessage(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText("Note the following");
+        alert.setContentText(String.format("Message: %s", message));
+        alert.showAndWait();
+    }
 
-  public void logout() {
-    navigationViewController.logout();
-  }
+    public void handleException(Exception e) {
+        handleExceptionMessage(e.getMessage());
+    }
+
+    public void login() {
+        navigationViewController.login();
+    }
+
+    public void logout() {
+        navigationViewController.logout();
+    }
 }

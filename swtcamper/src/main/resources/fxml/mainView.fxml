@@ -18,19 +18,17 @@
                 <AnchorPane fx:id="mainStage" prefHeight="600.0" prefWidth="596.0">
                     <children>
                         <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Home" style="-fx-text-fill: #FFF"/>
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="homeView.fxml" />-->
+                            <fx:include source="rentingView.fxml"/>
                         </Pane>
                         <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="placeOfferView.fxml"/>
+                        </Pane>
+                        <Pane fx:id="updateOfferViewBox" prefHeight="200.0" prefWidth="200.0">
                             <Label text="Place Offer" style="-fx-text-fill: #FFF"/>
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="placeOfferView.fxml" />-->
+                            <fx:include source="updateOfferView.fxml"/>
                         </Pane>
                         <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Active Offers" style="-fx-text-fill: #FFF"/>
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="activeOffersView.fxml" />-->
+                            <fx:include source="myOffersView.fxml"/>
                         </Pane>
                         <Pane fx:id="dealHistoryViewBox" prefHeight="200.0" prefWidth="200.0">
                             <Label text="Deal History" style="-fx-text-fill: #FFF"/>
