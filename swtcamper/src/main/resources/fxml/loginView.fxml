@@ -19,7 +19,7 @@
         <Button text="login" fx:id="loginButton" layoutX="250" layoutY="275" styleClass="btnLogin" onAction="#handleLogin"/>
         <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
             <Label text="Have no account yet?" />
-            <Button text="register" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>
+            <Button text="sign up" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>
         </VBox>
     </children>
 </AnchorPane>
