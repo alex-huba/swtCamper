@@ -42,4 +42,8 @@ public class LoginViewController {
     public void handleRegister(ActionEvent actionEvent) {
         mainViewController.changeView("register");
     }
+
+    public void handleForgotPassword(ActionEvent actionEvent) {
+        mainViewController.changeView("forgotPassword");
+    }
 }

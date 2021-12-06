@@ -39,6 +39,11 @@
                                 <fx:include source="registerView.fxml"/>
                             </children>
                         </Pane>
+                        <Pane fx:id="forgotPasswordViewBox" prefHeight="79.0" prefWidth="264.0">
+                            <children>
+                                <fx:include source="resetPasswordView.fxml"/>
+                            </children>
+                        </Pane>
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>

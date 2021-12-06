@@ -16,7 +16,8 @@
             <Label text="Password" styleClass="passwordLabel"/>
             <PasswordField promptText="password" fx:id="passwordPf"/>
         </HBox>
-        <Button text="login" fx:id="loginButton" layoutX="250" layoutY="275" styleClass="btnLogin" onAction="#handleLogin"/>
+        <Button text="login" layoutX="250" layoutY="275" fx:id="loginButton" styleClass="btnLogin" onAction="#handleLogin"/>
+        <Button text="Forgot your password?" layoutX="190" layoutY="330" fx:id="forgotPasswordButton" styleClass="btnForgotPassword" onAction="#handleForgotPassword"/>
         <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
             <Label text="Have no account yet?" />
             <Button text="sign up" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>

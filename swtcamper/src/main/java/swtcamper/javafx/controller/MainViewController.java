@@ -32,6 +32,9 @@ public class MainViewController {
   public Pane loginViewBox;
 
   @FXML
+  public Pane forgotPasswordViewBox;
+
+  @FXML
   private void initialize() {
     reloadData();
     changeView("login");
@@ -44,6 +47,7 @@ public class MainViewController {
     mainStage.getChildren().remove(rentVanViewBox);
     mainStage.getChildren().remove(placeOfferViewBox);
     mainStage.getChildren().remove(loginViewBox);
+    mainStage.getChildren().remove(forgotPasswordViewBox);
   }
 
   public void changeView(String switchTo) {
@@ -61,6 +65,9 @@ public class MainViewController {
     if (switchTo.equals("login")) mainStage
             .getChildren()
             .add(loginViewBox);
+    if (switchTo.equals("forgotPassword")) mainStage
+            .getChildren()
+            .add(forgotPasswordViewBox);
   }
 
   public void handleExceptionMessage(String message) {

@@ -1,28 +1,28 @@
 package swtcamper.javafx.controller;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.userRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
-import java.util.ArrayList;
 
 import static swtcamper.backend.entities.userRole.OPERATOR;
 import static swtcamper.backend.entities.userRole.USER;
 
 @Component
-public class RegisterViewController {
+public class RegisterViewController implements EventHandler<KeyEvent> {
 
     @Autowired
     private MainViewController mainViewController;
@@ -31,7 +31,7 @@ public class RegisterViewController {
     private UserController userController;
 
     @FXML
-    public TextField inputLabel;
+    public TextField usernameTf;
 
     @FXML
     public TextField passwordTf;
@@ -58,6 +58,9 @@ public class RegisterViewController {
     public Button registerBtn;
 
     @FXML
+    public Label errorMessage;
+
+    @FXML
     public void handleCancelBtn(ActionEvent actionEvent) {
         mainViewController.changeView("login");
     }
@@ -65,10 +68,120 @@ public class RegisterViewController {
     public userRole userRoleRb;
 
     @FXML
+    private void initialize(){
+        usernameTf.setOnKeyTyped(this);
+        passwordTf.setOnKeyTyped(this);
+        emailTf.setOnKeyTyped(this);
+        phoneTf.setOnKeyTyped(this);
+        nameTf.setOnKeyTyped(this);
+        surnameTf.setOnKeyTyped(this);
+    }
+
+    @Override
+    public void handle(KeyEvent event) {
+        String source = "";
+        source = event.getSource().toString();
+        if (source.contains("usernameTf")) {
+            source = "username";
+        }
+        if (source.contains("passwordTf")) {
+            source = "password";
+        }
+        if (source.contains("emailTf")) {
+            source = "email";
+        }
+        if (source.contains("phoneTf")) {
+            source = "phone";
+        }
+        if(source.contains("sur")) {
+            source = "surnameTf";
+        }
+        if(source.contains("nameTf")) {
+            if (source.equals("surnameTf")){
+                return;
+            } else {
+                source = "name";
+            }
+        }
+
+
+        switch (source){
+            case "username":
+                String inputUsername = usernameTf.getText();
+                if(inputUsername.length() < 5 || inputUsername.matches(" ")) {
+                    errorMessage.setText("Invalid username: 5 characters minimum");
+                    usernameTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    usernameTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+            case "password":
+                String inputPassword = passwordTf.getText();
+                if(inputPassword.length() < 5 || inputPassword.matches(" ")) {
+                    errorMessage.setText("Invalid password");
+                    passwordTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    passwordTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+            case "email":
+                String inputEmail = emailTf.getText();
+                if(inputEmail.length() < 5 || inputEmail.matches(" ")) {
+                    errorMessage.setText("Invalid email");
+                    emailTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    emailTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+            case "phone":
+                String inputPhone = phoneTf.getText();
+                if (inputPhone.matches("[a-zA-Z]+")) {
+                    errorMessage.setText("Invalid phone number");
+                    phoneTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    phoneTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+            case "name":
+                String inputName = nameTf.getText();
+                if (!inputName.matches("[a-zA-Z]+") || inputName.length() < 3) {
+                    errorMessage.setText("Invalid name");
+                    nameTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    nameTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+            case "surnameTf":
+                String inputSurname = surnameTf.getText();
+                if (!inputSurname.matches("[a-zA-Z]+") || inputSurname.length() < 3) {
+                    errorMessage.setText("Invalid surname");
+                    surnameTf.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    errorMessage.setText("");
+                    surnameTf.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                break;
+
+        }
+    }
+
+
+
+    @FXML
     public void handleRegisterBtn(ActionEvent actionEvent) {
         boolean isInputValid = true;
 
-        String username = inputLabel.getText();
+        String username = usernameTf.getText();
         String password = passwordTf.getText();
         String email = emailTf.getText();
         String phone = phoneTf.getText();
@@ -137,37 +250,6 @@ public class RegisterViewController {
             alert.setHeaderText("We've got your sign up request.");
             alert.show();
         }
-        //
-
     }
-    /*
-    private void checkInput(
-            String username,
-            String password,
-            String email,
-            String phone,
-            String name,
-            String surname
-    ) {
-        UserDTO userDTO = new UserDTO();
-
-        if(username.isEmpty() || username.length() < 5){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("You can't create such username. Try again!");
-            alert.show();
-        } else {
-            userDTO.setUsername(username);
-        }
-
-        if (password.isEmpty() || password.length() < 5){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("You can't create such password. Try again!");
-            alert.show();
-        } else{
-            userDTO.setPassword(password);
-        }
-    }
-    */
-
 
 }
