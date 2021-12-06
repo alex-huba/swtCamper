@@ -91,7 +91,7 @@ public class ModifyOfferViewController {
   public TextField engineTextField;
 
   @FXML
-  public ComboBox<String> transmissionComboBox;
+  public ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
   public TextField seatsTextField;
@@ -185,7 +185,13 @@ public class ModifyOfferViewController {
       offer.getOfferedObject().getVehicleFeatures().getEngine()
     );
     transmissionComboBox.setValue(
-      offer.getOfferedObject().getVehicleFeatures().getTransmission()
+      offer
+          .getOfferedObject()
+          .getVehicleFeatures()
+          .getTransmission()
+          .equals(TransmissionType.AUTOMATIC.toString())
+        ? TransmissionType.AUTOMATIC
+        : TransmissionType.MANUAL
     );
     seatsTextField.setText(
       String.valueOf(offer.getOfferedObject().getVehicleFeatures().getSeats())
@@ -235,9 +241,7 @@ public class ModifyOfferViewController {
     heightTextField.clear();
     engineTextField.clear();
     transmissionComboBox.setItems(
-      FXCollections.observableArrayList(
-        Arrays.toString(TransmissionType.values())
-      )
+      FXCollections.observableArrayList(TransmissionType.values())
     );
     seatsTextField.clear();
     bedsTextField.clear();
