@@ -108,4 +108,27 @@ public class OfferDTO {
   public void setActive(boolean active) {
     this.active = active;
   }
+
+  @Override
+  public String toString() {
+    return (
+      "offerID: " +
+      offerID +
+      ", Fahrzeug: " +
+      offeredObject.getVehicleFeatures().getMake() +
+      " " +
+      offeredObject.getVehicleFeatures().getModel() +
+      " (" +
+      offeredObject.getVehicleFeatures().getVehicleType() +
+      ") (Bj. " +
+      offeredObject.getVehicleFeatures().getYear() +
+      ")" +
+      ", Sitzplätze: " +
+      offeredObject.getVehicleFeatures().getSeats() +
+      ", Preis pro Tag: " +
+      price +
+      ", aktiv: " +
+      active
+    );
+  }
 }

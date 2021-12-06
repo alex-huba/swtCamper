@@ -21,11 +21,7 @@
                             <fx:include source="rentingView.fxml"/>
                         </Pane>
                         <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="placeOfferView.fxml"/>
-                        </Pane>
-                        <Pane fx:id="updateOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Place Offer" style="-fx-text-fill: #FFF"/>
-                            <fx:include source="updateOfferView.fxml"/>
+                            <fx:include source="modifyOfferView.fxml"/>
                         </Pane>
                         <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="myOffersView.fxml"/>

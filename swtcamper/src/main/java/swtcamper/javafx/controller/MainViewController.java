@@ -28,6 +28,9 @@ public class MainViewController {
   @Autowired
   public NavigationViewController navigationViewController;
 
+  @Autowired
+  public ModifyOfferViewController modifyOfferViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -36,9 +39,6 @@ public class MainViewController {
 
   @FXML
   public Pane placeOfferViewBox;
-
-  @FXML
-  public Pane updateOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -63,7 +63,6 @@ public class MainViewController {
 
   @FXML
   private void initialize() {
-    //    reloadData();
     changeView("home");
   }
 
@@ -97,12 +96,10 @@ public class MainViewController {
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
+        modifyOfferViewController.initialize();
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
-        break;
-      case "updateOffer":
-        mainStage.getChildren().add(updateOfferViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);

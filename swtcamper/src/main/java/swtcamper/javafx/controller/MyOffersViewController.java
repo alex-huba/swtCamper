@@ -25,7 +25,7 @@ public class MyOffersViewController {
   private OfferController offerController;
 
   @Autowired
-  private UpdateOfferViewController updateOfferViewController;
+  private ModifyOfferViewController modifyOfferViewController;
 
   @FXML
   public ListView<OfferDTO> offersList;
@@ -62,8 +62,8 @@ public class MyOffersViewController {
   public void updateOfferAction() {
     OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
-      mainViewController.changeView("updateOffer");
-      updateOfferViewController.initialize(selectedOffer);
+      mainViewController.changeView("placeOffer");
+      modifyOfferViewController.initialize(selectedOffer);
     } else {
       showSelectOfferFirstInfo();
     }
@@ -106,15 +106,7 @@ public class MyOffersViewController {
   }
 
   private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(
-      Alert.AlertType.INFORMATION,
-      "ID: " +
-      offerItem.getID() +
-      "\nTitle: " +
-      offerItem.getPrice() +
-      "\nPrice per day: " +
-      offerItem.getPrice()
-    );
+    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
     alert.showAndWait();
   }
 }
