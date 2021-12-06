@@ -92,18 +92,23 @@ public class MainViewController {
   }
 
   public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo,true);
+  }
+
+  public void changeView(String switchTo, boolean reloadData) throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
-        rentingViewController.getOffers();
+        if (reloadData) rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
         break;
       case "filterOptions":
         mainStage.getChildren().add(filterOptionsViewBox);
+        break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
         navigationViewController.setButtonActive(
@@ -155,6 +160,8 @@ public class MainViewController {
           navigationViewController.accountButton
         );
         break;
+      default:
+        System.out.println("gibts nicht");
     }
   }
 

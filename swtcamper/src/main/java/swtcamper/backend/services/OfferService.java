@@ -247,8 +247,4 @@ public class OfferService {
   public List<Offer> offers() {
     return offerRepository.findAll();
   }
-
-  public List<OfferDTO> getFilteredOffers() {
-    return new ArrayList<>();
-  }
 }

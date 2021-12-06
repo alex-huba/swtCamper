@@ -33,6 +33,17 @@ public class MyOffersViewController {
   @FXML
   public void initialize() throws GenericServiceException {
     reloadData();
+    offersList.setOnMouseClicked(click -> {
+      OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
+      //Listener for right click
+      if (click.isSecondaryButtonDown()) {
+        //ignore
+      }
+      //Listener for double click
+      if (click.getClickCount() == 2) {
+        showInfoAlert(selectedItem);
+      }
+    });
   }
 
   @FXML
@@ -92,28 +103,12 @@ public class MyOffersViewController {
     offersList.setItems(
       FXCollections.observableArrayList(offerController.offers())
     );
-    offersList.setOnMouseClicked(click -> {
-      OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-      //Listener for right click
-      if (click.isSecondaryButtonDown()) {
-        //ignore
-      }
-      //Listener for double click
-      if (click.getClickCount() == 2) {
-        showInfoAlert(selectedItem);
-      }
-    });
   }
 
   private void showInfoAlert(OfferDTO offerItem) {
     Alert alert = new Alert(
       Alert.AlertType.INFORMATION,
-      "ID: " +
-      offerItem.getID() +
-      "\nTitle: " +
-      offerItem.getPrice() +
-      "\nPrice per day: " +
-      offerItem.getPrice()
+      offerItem.toString()
     );
     alert.showAndWait();
   }

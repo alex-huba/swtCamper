@@ -82,7 +82,7 @@
                </VBox>
                <VBox prefWidth="185">
                   <Label text="transmission: " />
-                  <TextField fx:id="transmissionTextField" />
+                  <ComboBox fx:id="transmissionTextField" />
                </VBox>
             </HBox>
             <HBox>

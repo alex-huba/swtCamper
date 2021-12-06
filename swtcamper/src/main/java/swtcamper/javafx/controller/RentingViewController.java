@@ -63,16 +63,37 @@ public class RentingViewController {
     @FXML
     public ListView<OfferDTO> offersList;
 
+    @Autowired
     private OfferController offerController;
 
     @FXML
     private void initialize() throws GenericServiceException {
+        reloadData();
+        offersList.setOnMouseClicked(click -> {
+            OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
+            //Listener for right click
+            if (click.isSecondaryButtonDown()) {
+                //ignore
+            }
+            //Listener for double click
+            if (click.getClickCount() == 2) {
+                showInfoAlert(selectedItem);
+            }
+        });
     }
 
-    public void getOffers() throws GenericServiceException {
+    public void reloadData() throws GenericServiceException {
         offersList.setItems(
                 FXCollections.observableArrayList(offerController.offers())
         );
+    }
+
+    private void showInfoAlert(OfferDTO offerItem) {
+        Alert alert = new Alert(
+                Alert.AlertType.INFORMATION,
+                offerItem.toString()
+        );
+        alert.showAndWait();
     }
 
     public void openFilterView() throws GenericServiceException {
@@ -109,7 +130,7 @@ public class RentingViewController {
     }
 
     public void applyFilters() throws GenericServiceException {
-        mainViewController.changeView("home");
+        mainViewController.changeView("home", false);
     }
 }
 

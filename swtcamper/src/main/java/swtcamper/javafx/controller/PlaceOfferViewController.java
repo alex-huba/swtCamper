@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -65,7 +66,7 @@ public class PlaceOfferViewController {
   public TextField engineTextField;
 
   @FXML
-  public TextField transmissionTextField;
+  public ComboBox<TransmissionType> transmissionTextField;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -104,9 +105,7 @@ public class PlaceOfferViewController {
   public TextField bedsTextField;
 
   @FXML
-  public void initialize() {
-    resetFields();
-  }
+  public void initialize() { resetFields();}
 
   private void resetFields() {
     typeBox.setItems(FXCollections.observableArrayList(VehicleType.values()));
@@ -121,7 +120,7 @@ public class PlaceOfferViewController {
     lengthTextField.clear();
     heightTextField.clear();
     engineTextField.clear();
-    transmissionTextField.clear();
+    transmissionTextField.setItems(FXCollections.observableArrayList(TransmissionType.values()));
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -137,15 +136,18 @@ public class PlaceOfferViewController {
   public void placeOfferAction() throws GenericServiceException {
     String[] pictureURLs = null;
     String[] particularities = null;
-    VehicleType vehicleType = null;
+
     OfferDTO offerDTO = offerController.create(
+            // Offer-Parameter
       longStringConverter.fromString(priceTextField.getText()),
       minAgeCheckBox.isSelected(),
       borderCrossingCheckBox.isSelected(),
       depositCheckBox.isSelected(),
+            //Vehicle-Parameter
       pictureURLs,
       particularities,
-      vehicleType,
+            //VehicleFeatures-Parameter
+      typeBox.getValue(),
       brandTextField.getText(),
       modelTextField.getText(),
       constructionYearTextField.getText(),
@@ -153,7 +155,7 @@ public class PlaceOfferViewController {
       doubleStringConverter.fromString(widthTextField.getText()),
       doubleStringConverter.fromString(heightTextField.getText()),
       engineTextField.getText(),
-      transmissionTextField.getText(),
+      transmissionTextField.getValue().toString(),
       Integer.parseInt(seatsTextField.getText()),
       Integer.parseInt(bedsTextField.getText()),
       roofTentCheckBox.isSelected(),
