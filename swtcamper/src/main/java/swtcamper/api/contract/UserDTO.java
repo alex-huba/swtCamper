@@ -38,26 +38,13 @@ public class UserDTO {
     this.enabled = enabled;
   }
 
-  public UserDTO(
-    String username,
-    String name,
-    String surname,
-    String email,
-    String phone,
-    String password,
-    swtcamper.backend.entities.userRole userRole,
-    boolean locked,
-    boolean enabled
-  ) {
+  public UserDTO(String username, String password) {
     this.username = username;
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.phone = phone;
     this.password = password;
-    this.userRole = userRole;
-    this.locked = locked;
-    this.enabled = enabled;
+  }
+
+  public UserDTO(String username) {
+    this.username = username;
   }
 
   public UserDTO() {

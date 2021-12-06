@@ -52,41 +52,82 @@ public class UserController implements IUserController {
     }
   }
 
-  public void login(
-          String username,
-          String password
-  ) throws GenericServiceException {
-    boolean loginSuccessfull = false;
 
+  public boolean login(UserDTO userDTO) throws GenericServiceException {
     try {
-
-
-      // Get list of all users in database
-      List<User> allUser = new LinkedList<>();
-      allUser = userService.user();
-
-      User user;
-
-      // Search for user in database
-      for (User searchedUser : allUser){
-        if(searchedUser.getUsername() == username){
-          user = searchedUser;
-          if(user.getPassword() == password){
-            loginSuccessfull = true;
-          } else {
-            throw new GenericServiceException("Wrong password.");
-          }
-        } else {
-          throw new GenericServiceException("Username " + username + " not found. Please register.");
-        }
-      }
-
-      // Login successfull
-      // TODO: implement successfull login
-      // View-Wechsel?
+    return userService.login(userDTO);
     } catch (GenericServiceException e){
-      // TODO: Check exception handling
-      throw new GenericServiceException("No users found. Please register.");
+      throw new GenericServiceException("User doesn't exist.");
     }
   }
+
+  public void resetPassword(UserDTO userDTO) throws GenericServiceException {
+    try {
+      userService.changePassword(userDTO);
+    } catch (GenericServiceException e){
+      throw new GenericServiceException(e.getMessage());
+    }
+  }
+
+//  // Methode muss in UserService!
+//  public void login(
+//          String username,
+//          String password
+//  ) throws GenericServiceException {
+//
+//
+//    boolean successfullLogin = false;
+//    try {
+//      // Get list of all users in database
+//      List<User> allUser = new LinkedList<>();
+//      allUser = userService.user();
+//
+//      User user;
+//
+//      // Search for user in database
+//      for (User searchedUser : allUser){
+//
+//        // For debugging
+//        String searchedUsersUsername = searchedUser.getUsername();
+//        System.out.println(searchedUsersUsername);
+//        System.out.println(username);
+//
+//        boolean sameUserNames = (searchedUsersUsername.equals(username));
+//
+//        if(sameUserNames){
+//          user = searchedUser;
+//          if(user.getPassword().equals(password)){
+//            successfullLogin = true;
+//          } else {
+//            throw new GenericServiceException("Wrong password.");
+//          }
+//        } else {
+//          continue;
+//        }
+//
+//        // Code from before
+//        if(searchedUsersUsername.equals(username)){
+//          user = searchedUser;
+//          if(user.getPassword() == password){
+//            successfullLogin = true;
+//          } else {
+//            throw new GenericServiceException("Wrong password.");
+//          }
+//        } else {
+//          continue;
+//        }
+//      }
+//      // Login successfull
+//      // TODO: implement successfull login
+//      // View-Wechsel?
+//      if(successfullLogin){
+//        return;
+//      }
+//      throw new GenericServiceException("Username " + username + " not found. Please register.");
+//    } catch (GenericServiceException e){
+//      // TODO: Check exception handling
+//      throw new GenericServiceException("No users found. Please register.");
+//    }
+//  }
+
 }

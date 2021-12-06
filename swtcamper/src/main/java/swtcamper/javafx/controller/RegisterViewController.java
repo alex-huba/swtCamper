@@ -2,10 +2,7 @@ package swtcamper.javafx.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,7 @@ public class RegisterViewController {
     public TextField inputLabel;
 
     @FXML
-    public TextField passwordTf;
+    public PasswordField passwordTf;
 
     @FXML
     public TextField emailTf;
@@ -119,6 +116,7 @@ public class RegisterViewController {
             alert.setContentText("Fill in your surname please!");
             alert.show();
         }
+
         if(operatorRb.isSelected()){
             userDTO.setUserRole(OPERATOR);
         }else{
@@ -128,6 +126,7 @@ public class RegisterViewController {
 //            userController.register(username, name, surname, email, phone, password, userRoleRb);
             userController.register(userDTO);
         } catch (GenericServiceException e){
+            // TODO: Implement exception handling
             e.printStackTrace();
         }
         if (isInputValid){

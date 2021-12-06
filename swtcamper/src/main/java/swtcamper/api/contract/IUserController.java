@@ -6,6 +6,8 @@ public interface IUserController {
 
     public UserDTO register(UserDTO userDTO) throws GenericServiceException;
 
-    public void login(String username, String password) throws GenericServiceException;
+    public boolean login(UserDTO userDTO) throws GenericServiceException;
+
+    public void resetPassword(UserDTO userDTO) throws GenericServiceException;
 
 }
