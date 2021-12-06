@@ -10,6 +10,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -109,11 +110,28 @@ public class UserService {
   }
 
   public List<User> user() throws GenericServiceException {
-    // TODO: implement user listing
     if (userRepository.findAll().isEmpty()){
       throw new GenericServiceException("No users found. User database is empty.");
     }
     return userRepository.findAll();
+  }
+
+  public boolean login(UserDTO userDTO) throws GenericServiceException{
+    return userRepository.existsByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+  }
+
+  public void changePassword(UserDTO userDTO) throws GenericServiceException{
+    if(userRepository.existsByUsername(userDTO.getUsername())){
+
+      // Get user if it exists in database
+      Optional<User> userOptional = userRepository.findByUsername(userDTO.getUsername());
+      User user = userOptional.get();
+
+      // Change password
+      user.setPassword(userDTO.getPassword());
+      return;
+    }
+    throw new GenericServiceException("Couldn't change password. Please try again.");
   }
 
   public void lock(User user){
@@ -124,7 +142,8 @@ public class UserService {
     // TODO: implement user activation
   }
 
-  public void checkIfUserAlreadyExists(){
+  public void checkIfUserExists(User user){
     // TODO: implement check if user already exists in database
+
   }
 }
