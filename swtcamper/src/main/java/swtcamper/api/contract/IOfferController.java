@@ -1,13 +1,13 @@
 package swtcamper.api.contract;
 
-import swtcamper.backend.entities.Filter;
-import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.services.exceptions.GenericServiceException;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
+import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 public interface IOfferController {
@@ -79,5 +79,6 @@ public interface IOfferController {
 
   void delete(long id) throws GenericServiceException;
 
-  List<OfferDTO> getFilteredOffers(Filter filter) throws GenericServiceException;
+  List<OfferDTO> getFilteredOffers(Filter filter)
+    throws GenericServiceException;
 }

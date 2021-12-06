@@ -1,6 +1,8 @@
 package swtcamper.backend.services;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,6 @@ import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OfferService {

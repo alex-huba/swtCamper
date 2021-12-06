@@ -105,7 +105,9 @@ public class PlaceOfferViewController {
   public TextField bedsTextField;
 
   @FXML
-  public void initialize() { resetFields();}
+  public void initialize() {
+    resetFields();
+  }
 
   private void resetFields() {
     typeBox.setItems(FXCollections.observableArrayList(VehicleType.values()));
@@ -120,7 +122,9 @@ public class PlaceOfferViewController {
     lengthTextField.clear();
     heightTextField.clear();
     engineTextField.clear();
-    transmissionTextField.setItems(FXCollections.observableArrayList(TransmissionType.values()));
+    transmissionTextField.setItems(
+      FXCollections.observableArrayList(TransmissionType.values())
+    );
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -138,15 +142,15 @@ public class PlaceOfferViewController {
     String[] particularities = null;
 
     OfferDTO offerDTO = offerController.create(
-            // Offer-Parameter
+      // Offer-Parameter
       longStringConverter.fromString(priceTextField.getText()),
       minAgeCheckBox.isSelected(),
       borderCrossingCheckBox.isSelected(),
       depositCheckBox.isSelected(),
-            //Vehicle-Parameter
+      //Vehicle-Parameter
       pictureURLs,
       particularities,
-            //VehicleFeatures-Parameter
+      //VehicleFeatures-Parameter
       typeBox.getValue(),
       brandTextField.getText(),
       modelTextField.getText(),

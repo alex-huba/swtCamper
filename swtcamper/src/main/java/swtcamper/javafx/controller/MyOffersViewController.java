@@ -47,7 +47,8 @@ public class MyOffersViewController {
   }
 
   @FXML
-  public void placeOfferAction(ActionEvent event) throws GenericServiceException {
+  public void placeOfferAction(ActionEvent event)
+    throws GenericServiceException {
     mainViewController.changeView("placeOffer");
   }
 
@@ -106,10 +107,7 @@ public class MyOffersViewController {
   }
 
   private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(
-      Alert.AlertType.INFORMATION,
-      offerItem.toString()
-    );
+    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
     alert.showAndWait();
   }
 }

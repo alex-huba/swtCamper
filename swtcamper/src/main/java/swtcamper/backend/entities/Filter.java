@@ -3,187 +3,225 @@ package swtcamper.backend.entities;
 import java.time.LocalDate;
 
 public class Filter {
-    private String location;
-    private LocalDate pickUpDate;
-    private LocalDate returnDate;
-    private VehicleType vehicleType;
-    private String vehicleBrand;
-    private int constructionYear;
-    private int maxPricePerDay;
-    private String engine;
-    private TransmissionType transmissionType;
-    private int seatAmount;
-    private int bedAmount;
-    private boolean roofTent;
-    private boolean roofRack;
-    private boolean bikeRack;
-    private boolean shower;
-    private boolean toilet;
-    private boolean kitchen;
-    private boolean fridge;
 
-    public String getLocation() {
-        return location;
-    }
+  private String location;
+  private LocalDate pickUpDate;
+  private LocalDate returnDate;
+  private VehicleType vehicleType;
+  private String vehicleBrand;
+  private int constructionYear;
+  private int maxPricePerDay;
+  private String engine;
+  private TransmissionType transmissionType;
+  private int seatAmount;
+  private int bedAmount;
+  private boolean roofTent;
+  private boolean roofRack;
+  private boolean bikeRack;
+  private boolean shower;
+  private boolean toilet;
+  private boolean kitchen;
+  private boolean fridge;
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+  public String getLocation() {
+    return location;
+  }
 
-    public LocalDate getPickUpDate() {
-        return pickUpDate;
-    }
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
-    public void setPickUpDate(LocalDate pickUpDate) {
-        this.pickUpDate = pickUpDate;
-    }
+  public LocalDate getPickUpDate() {
+    return pickUpDate;
+  }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
+  public void setPickUpDate(LocalDate pickUpDate) {
+    this.pickUpDate = pickUpDate;
+  }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
+  public LocalDate getReturnDate() {
+    return returnDate;
+  }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
+  public void setReturnDate(LocalDate returnDate) {
+    this.returnDate = returnDate;
+  }
 
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+  public VehicleType getVehicleType() {
+    return vehicleType;
+  }
 
-    public String getVehicleBrand() {
-        return vehicleBrand;
-    }
+  public void setVehicleType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
 
-    public void setVehicleBrand(String vehicleBrand) {
-        this.vehicleBrand = vehicleBrand;
-    }
+  public String getVehicleBrand() {
+    return vehicleBrand;
+  }
 
-    public int getConstructionYear() {
-        return constructionYear;
-    }
+  public void setVehicleBrand(String vehicleBrand) {
+    this.vehicleBrand = vehicleBrand;
+  }
 
-    public void setConstructionYear(int constructionYear) {
-        this.constructionYear = constructionYear;
-    }
+  public int getConstructionYear() {
+    return constructionYear;
+  }
 
-    public int getMaxPricePerDay() {
-        return maxPricePerDay;
-    }
+  public void setConstructionYear(int constructionYear) {
+    this.constructionYear = constructionYear;
+  }
 
-    public void setMaxPricePerDay(int maxPricePerDay) {
-        this.maxPricePerDay = maxPricePerDay;
-    }
+  public int getMaxPricePerDay() {
+    return maxPricePerDay;
+  }
 
-    public String getEngine() {
-        return engine;
-    }
+  public void setMaxPricePerDay(int maxPricePerDay) {
+    this.maxPricePerDay = maxPricePerDay;
+  }
 
-    public void setEngine(String engine) {
-        this.engine = engine;
-    }
+  public String getEngine() {
+    return engine;
+  }
 
-    public TransmissionType getTransmissionType() {
-        return transmissionType;
-    }
+  public void setEngine(String engine) {
+    this.engine = engine;
+  }
 
-    public void setTransmissionType(TransmissionType transmissionType) {
-        this.transmissionType = transmissionType;
-    }
+  public TransmissionType getTransmissionType() {
+    return transmissionType;
+  }
 
-    public int getSeatAmount() {
-        return seatAmount;
-    }
+  public void setTransmissionType(TransmissionType transmissionType) {
+    this.transmissionType = transmissionType;
+  }
 
-    public void setSeatAmount(int seatAmount) {
-        this.seatAmount = seatAmount;
-    }
+  public int getSeatAmount() {
+    return seatAmount;
+  }
 
-    public int getBedAmount() {
-        return bedAmount;
-    }
+  public void setSeatAmount(int seatAmount) {
+    this.seatAmount = seatAmount;
+  }
 
-    public void setBedAmount(int bedAmount) {
-        this.bedAmount = bedAmount;
-    }
+  public int getBedAmount() {
+    return bedAmount;
+  }
 
-    public boolean isRoofTent() {
-        return roofTent;
-    }
+  public void setBedAmount(int bedAmount) {
+    this.bedAmount = bedAmount;
+  }
 
-    public void setRoofTent(boolean roofTent) {
-        this.roofTent = roofTent;
-    }
+  public boolean isRoofTent() {
+    return roofTent;
+  }
 
-    public boolean isRoofRack() {
-        return roofRack;
-    }
+  public void setRoofTent(boolean roofTent) {
+    this.roofTent = roofTent;
+  }
 
-    public void setRoofRack(boolean roofRack) {
-        this.roofRack = roofRack;
-    }
+  public boolean isRoofRack() {
+    return roofRack;
+  }
 
-    public boolean isBikeRack() {
-        return bikeRack;
-    }
+  public void setRoofRack(boolean roofRack) {
+    this.roofRack = roofRack;
+  }
 
-    public void setBikeRack(boolean bikeRack) {
-        this.bikeRack = bikeRack;
-    }
+  public boolean isBikeRack() {
+    return bikeRack;
+  }
 
-    public boolean isShower() {
-        return shower;
-    }
+  public void setBikeRack(boolean bikeRack) {
+    this.bikeRack = bikeRack;
+  }
 
-    public void setShower(boolean shower) {
-        this.shower = shower;
-    }
+  public boolean isShower() {
+    return shower;
+  }
 
-    public boolean isToilet() {
-        return toilet;
-    }
+  public void setShower(boolean shower) {
+    this.shower = shower;
+  }
 
-    public void setToilet(boolean toilet) {
-        this.toilet = toilet;
-    }
+  public boolean isToilet() {
+    return toilet;
+  }
 
-    public boolean isKitchen() {
-        return kitchen;
-    }
+  public void setToilet(boolean toilet) {
+    this.toilet = toilet;
+  }
 
-    public void setKitchen(boolean kitchen) {
-        this.kitchen = kitchen;
-    }
+  public boolean isKitchen() {
+    return kitchen;
+  }
 
-    public boolean isFridge() {
-        return fridge;
-    }
+  public void setKitchen(boolean kitchen) {
+    this.kitchen = kitchen;
+  }
 
-    public void setFridge(boolean fridge) {
-        this.fridge = fridge;
-    }
+  public boolean isFridge() {
+    return fridge;
+  }
 
-    public String toString() {
-        return "location: " + location + "\n" +
-                "pickUpDate: " + pickUpDate + "\n" +
-                "returnDate: " + returnDate + "\n" +
-                "vehicleType: " + vehicleType + "\n" +
-                "vehicleBrand: " + vehicleBrand + "\n" +
-                "constructionYear: " + constructionYear + "\n" +
-                "maxPricePerDay: " + maxPricePerDay + "\n" +
-                "engine: " + engine + "\n" +
-                "transmission: " + transmissionType + "\n" +
-                "seatAmount: " + seatAmount + "\n" +
-                "bedAmount: " + bedAmount + "\n" +
-                "roofTent: " + roofTent + "\n" +
-                "roofRack: " + roofRack + "\n" +
-                "bikeRack: " + bikeRack + "\n" +
-                "shower: " + shower + "\n" +
-                "toilet: " + toilet + "\n" +
-                "kitchen: " + kitchen + "\n" +
-                "fridge: " + fridge;
-    }
+  public void setFridge(boolean fridge) {
+    this.fridge = fridge;
+  }
+
+  public String toString() {
+    return (
+      "location: " +
+      location +
+      "\n" +
+      "pickUpDate: " +
+      pickUpDate +
+      "\n" +
+      "returnDate: " +
+      returnDate +
+      "\n" +
+      "vehicleType: " +
+      vehicleType +
+      "\n" +
+      "vehicleBrand: " +
+      vehicleBrand +
+      "\n" +
+      "constructionYear: " +
+      constructionYear +
+      "\n" +
+      "maxPricePerDay: " +
+      maxPricePerDay +
+      "\n" +
+      "engine: " +
+      engine +
+      "\n" +
+      "transmission: " +
+      transmissionType +
+      "\n" +
+      "seatAmount: " +
+      seatAmount +
+      "\n" +
+      "bedAmount: " +
+      bedAmount +
+      "\n" +
+      "roofTent: " +
+      roofTent +
+      "\n" +
+      "roofRack: " +
+      roofRack +
+      "\n" +
+      "bikeRack: " +
+      bikeRack +
+      "\n" +
+      "shower: " +
+      shower +
+      "\n" +
+      "toilet: " +
+      toilet +
+      "\n" +
+      "kitchen: " +
+      kitchen +
+      "\n" +
+      "fridge: " +
+      fridge
+    );
+  }
 }

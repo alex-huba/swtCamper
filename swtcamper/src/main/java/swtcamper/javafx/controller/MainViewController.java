@@ -92,10 +92,11 @@ public class MainViewController {
   }
 
   public void changeView(String switchTo) throws GenericServiceException {
-    changeView(switchTo,true);
+    changeView(switchTo, true);
   }
 
-  public void changeView(String switchTo, boolean reloadData) throws GenericServiceException {
+  public void changeView(String switchTo, boolean reloadData)
+    throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
