@@ -7,18 +7,19 @@
 }
 
 .navBtn {
-    -fx-background-color: #393351;
-    -fx-background-radius: 30 0 0 30;
+    -fx-background-color:  #393351;
+    -fx-background-radius:  30 0 0 30;
+    -fx-cursor: hand;
 }
 
 .navBtn.active {
     -fx-background-color: #2c2a3f;
 }
 
-.navBtn.icon {
+.navBtn .icon {
     -fx-fill: #FFFFFF;
 }
 
 .navBtn:hover {
-    -fx-background-color: #2c2a3f;
+    -fx-background-color:  #2c2a3f;
 }

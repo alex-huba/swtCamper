@@ -48,3 +48,8 @@
     -fx-underline: true;
     -fx-cursor: hand;
 }
+.errorMessage {
+    -fx-text-fill: RED;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 15px;
+}

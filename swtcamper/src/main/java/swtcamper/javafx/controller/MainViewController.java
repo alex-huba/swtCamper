@@ -32,6 +32,9 @@ public class MainViewController {
   public Pane loginViewBox;
 
   @FXML
+  public Pane registerViewBox;
+
+  @FXML
   public Pane forgotPasswordViewBox;
 
   @FXML
@@ -47,6 +50,7 @@ public class MainViewController {
     mainStage.getChildren().remove(rentVanViewBox);
     mainStage.getChildren().remove(placeOfferViewBox);
     mainStage.getChildren().remove(loginViewBox);
+    mainStage.getChildren().remove(registerViewBox);
     mainStage.getChildren().remove(forgotPasswordViewBox);
   }
 
@@ -65,6 +69,9 @@ public class MainViewController {
     if (switchTo.equals("login")) mainStage
             .getChildren()
             .add(loginViewBox);
+    if(switchTo.equals("register")) mainStage
+            .getChildren()
+            .add(registerViewBox);
     if (switchTo.equals("forgotPassword")) mainStage
             .getChildren()
             .add(forgotPasswordViewBox);
