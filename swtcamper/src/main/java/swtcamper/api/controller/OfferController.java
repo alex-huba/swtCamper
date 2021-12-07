@@ -204,109 +204,116 @@ public class OfferController implements IOfferController {
 
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
-    return offers()
-      .stream()
-      .filter(offerDTO ->
-        filter.getLocation() != null
-          ? offerDTO.getLocation().equals(filter.getLocation())
-          : true && filter.getVehicleType() != null
-            ? offerDTO
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getVehicleType()
-              .equals(filter.getVehicleType())
-            : true && filter.getVehicleBrand() != null
+    return filter.isEmpty()
+      ? offers()
+      : offers()
+        .stream()
+        .filter(offerDTO ->
+          (
+            filter.getLocation() != null
+              ? offerDTO.getLocation().equals(filter.getLocation())
+              : true
+          ) &&
+          (
+            filter.getVehicleType() != null
+              ? offerDTO
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getVehicleType()
+                .equals(filter.getVehicleType())
+              : true
+          ) &&
+          (
+            filter.getVehicleBrand() != null
               ? offerDTO
                 .getOfferedObject()
                 .getVehicleFeatures()
                 .getMake()
                 .equals(filter.getVehicleBrand())
-              : true && filter.getConstructionYear() != 0
-                ? Integer.parseInt(
-                  offerDTO.getOfferedObject().getVehicleFeatures().getYear()
-                ) >=
-                filter.getConstructionYear()
-                : true && filter.getMaxPricePerDay() != 0
-                  ? offerDTO.getPrice() <= filter.getMaxPricePerDay()
-                  : true && filter.getEngine() != null
-                    ? offerDTO
-                      .getOfferedObject()
-                      .getVehicleFeatures()
-                      .getEngine()
-                      .equals(filter.getEngine())
-                    : true && filter.getTransmissionType() != null
-                      ? offerDTO
-                        .getOfferedObject()
-                        .getVehicleFeatures()
-                        .getTransmission()
-                        .toUpperCase()
-                        .equals(filter.getTransmissionType().toString())
-                      : true && filter.getSeatAmount() != 0
-                        ? offerDTO
-                          .getOfferedObject()
-                          .getVehicleFeatures()
-                          .getSeats() >=
-                        filter.getSeatAmount()
-                        : true && filter.getBedAmount() != 0
-                          ? offerDTO
-                            .getOfferedObject()
-                            .getVehicleFeatures()
-                            .getBeds() >=
-                          filter.getBedAmount()
-                          : true && !filter.getKeywords().isEmpty()
-                            ? searchForKeywords(offerDTO, filter)
-                            : true && evalCheckBoxes(offerDTO, filter)
-      )
-      .collect(Collectors.toList());
+              : true
+          ) &&
+          (
+            filter.getConstructionYear() != 0
+              ? Integer.parseInt(
+                offerDTO.getOfferedObject().getVehicleFeatures().getYear()
+              ) >=
+              filter.getConstructionYear()
+              : true
+          ) &&
+          (
+            filter.getMaxPricePerDay() != 0
+              ? offerDTO.getPrice() <= filter.getMaxPricePerDay()
+              : true
+          ) &&
+          (
+            filter.getEngine() != null
+              ? offerDTO
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getEngine()
+                .equals(filter.getEngine())
+              : true
+          ) &&
+          (
+            filter.getTransmissionType() != null
+              ? offerDTO
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getTransmission()
+                .toUpperCase()
+                .equals(filter.getTransmissionType().toString())
+              : true
+          ) &&
+          (
+            filter.getSeatAmount() != 0
+              ? offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >=
+              filter.getSeatAmount()
+              : true
+          ) &&
+          (
+            filter.getBedAmount() != 0
+              ? offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >=
+              filter.getBedAmount()
+              : true
+          ) &&
+          evalCheckBoxes(offerDTO, filter)
+        //                                && (filter.getKeywords().length > 0 ? true : searchForKeywords(offerDTO, filter))
+        )
+        .collect(Collectors.toList());
   }
 
-  private boolean searchForKeywords(OfferDTO offerDTO, Filter filter) {
-    List<Boolean> booleanList = new ArrayList<>();
-
-    for (String keyword : filter.getKeywords()) {
-      if (
-        offerDTO.getTitle().contains(keyword) ||
-        offerDTO.getContact().contains(keyword) ||
-        offerDTO.getDescription().contains(keyword)
-      ) {
-        booleanList.add(true);
-      } else {
-        booleanList.add(false);
-      }
-    }
-
-    return booleanList.contains(true);
-  }
+  //    private boolean searchForKeywords(OfferDTO offerDTO, Filter filter) {
+  //        for (String keyword : filter.getKeywords()) {
+  //            if(offerDTO.getTitle().contains(keyword) ||
+  //                    offerDTO.getContact().contains(keyword) ||
+  //                    offerDTO.getDescription().contains(keyword)) return true;
+  //        }
+  //
+  //        return false;
+  //    }
 
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
     List<Boolean> booleanList = new ArrayList<>();
 
     if (filter.isRoofTent()) booleanList.add(
-      filter.isRoofTent() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
     );
     if (filter.isRoofRack()) booleanList.add(
-      filter.isRoofRack() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
     );
     if (filter.isBikeRack()) booleanList.add(
-      filter.isBikeRack() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
     );
     if (filter.isShower()) booleanList.add(
-      filter.isShower() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isShower()
     );
     if (filter.isToilet()) booleanList.add(
-      filter.isToilet() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
     );
     if (filter.isKitchen()) booleanList.add(
-      filter.isKitchen() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
     );
     if (filter.isFridge()) booleanList.add(
-      filter.isFridge() &&
       offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
 

@@ -106,9 +106,6 @@ public class MainViewController {
           navigationViewController.homeButton
         );
         break;
-      case "filterOptions":
-        mainStage.getChildren().add(filterOptionsViewBox);
-        break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
         modifyOfferViewController.initialize();

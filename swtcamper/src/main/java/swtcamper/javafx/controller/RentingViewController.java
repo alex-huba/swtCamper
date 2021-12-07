@@ -67,9 +67,6 @@ public class RentingViewController {
   @FXML
   public CheckBox fridgeCheckBox;
 
-  @Autowired
-  private MainViewController mainViewController;
-
   @FXML
   public ListView<OfferDTO> offersList;
 
@@ -96,15 +93,6 @@ public class RentingViewController {
     offersList.setItems(
       FXCollections.observableArrayList(offerController.offers())
     );
-  }
-
-  private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
-    alert.showAndWait();
-  }
-
-  public void openFilterView() throws GenericServiceException {
-    mainViewController.changeView("filterOptions");
 
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -114,14 +102,19 @@ public class RentingViewController {
     );
   }
 
+  private void showInfoAlert(OfferDTO offerItem) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
+    alert.showAndWait();
+  }
+
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
       locationTextField.getText()
     );
-    if (!keywordTextField.getText().isEmpty()) newFilter.setKeywords(
-      Arrays.asList(keywordTextField.getText().split(","))
-    );
+    //    if (!keywordTextField.getText().isEmpty()) newFilter.setKeywords(
+    //      keywordTextField.getText().split(",")
+    //    );
     if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
       vehicleTypeComboBox.getValue()
     );
@@ -163,9 +156,5 @@ public class RentingViewController {
         offerController.getFilteredOffers(newFilter)
       )
     );
-  }
-
-  public void applyFilters() throws GenericServiceException {
-    mainViewController.changeView("home", false);
   }
 }

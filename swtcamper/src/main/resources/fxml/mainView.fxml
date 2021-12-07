@@ -13,7 +13,7 @@
     <children>
       <ImageView fitHeight="757.0" fitWidth="1073.0" layoutX="-136.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../pictures/campervan-camper-motorhome-vw.jpg" />
+            <Image url="@../pictures/campervan-wallpaper.jpg" />
          </image>
       </ImageView>
         <HBox prefHeight="600.0" prefWidth="800.0">
@@ -23,9 +23,6 @@
                     <children>
                         <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="rentingView.fxml" />
-                        </Pane>
-                        <Pane fx:id="filterOptionsViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="filterOptionsView.fxml" />
                         </Pane>
                         <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="modifyOfferView.fxml" />

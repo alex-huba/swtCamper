@@ -2,7 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -15,47 +16,41 @@
    <children>
       <HBox layoutX="50.0" layoutY="84.0" prefHeight="100.0" prefWidth="446.0" styleClass="searchBar">
          <children>
-            <VBox alignment="CENTER" prefHeight="90.0" prefWidth="337.0" spacing="5.0">
+            <HBox layoutX="178.0" layoutY="89.0" prefHeight="247.0" spacing="5.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
                      <children>
-                        <Label prefWidth="120.0" text="pick-up location:">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="locationTextFieldStart" />
+                        <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" promptText="Vehicle Type" />
+                        <TextField fx:id="vehicleBrandTextField" promptText="Vehicle Brand" />
+                        <TextField fx:id="constructionYearTextField" promptText="Construction year" />
+                        <TextField fx:id="maxPricePerDayTextField" promptText="Max. price per day" />
+                        <TextField fx:id="locationTextField" promptText="Location" />
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
                      <children>
-                        <Label prefWidth="120.0" text="pick-up date:">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="pickUpDatePicker" />
+                        <TextField fx:id="engineTextField" promptText="Engine" />
+                        <ComboBox fx:id="transmissionComboBox" prefWidth="150.0" promptText="Transmission" />
+                        <TextField fx:id="seatAmountTextField" promptText="Nr. of seats" />
+                        <TextField fx:id="bedAmountTextField" promptText="Nr. of beds" />
+<!--                        <TextField fx:id="keywordTextField" promptText="Keywords" />-->
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
-                        <Label prefWidth="120.0" text="return date:">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="returnDatePicker" />
+                        <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" text="Roof tent" />
+                        <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" text="Roof rack" />
+                        <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" text="Bike rack" />
+                        <CheckBox fx:id="showerCheckBox" mnemonicParsing="false" text="Shower" />
+                        <CheckBox fx:id="toiletCheckBox" mnemonicParsing="false" text="Toilet" />
+                        <CheckBox fx:id="kitchenCheckBox" mnemonicParsing="false" text="Kitchen" />
+                        <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" text="Fridge" />
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            </HBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#openFilterView" prefWidth="60.0" styleClass="btn" text="filters">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
                   <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" prefWidth="60.0" styleClass="btn" text="search">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -65,7 +60,7 @@
             </VBox>
          </children>
          <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="10.0" left="20.0" top="10.0" />
          </padding>
       </HBox>
       <Label layoutX="50.0" layoutY="36.0" styleClass="heading" text="Let's find a perfect camper van for You!">
@@ -73,6 +68,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="200.0" prefHeight="376.0" prefWidth="496.0" />
+      <ListView fx:id="offersList" layoutX="50.0" layoutY="287.0" prefHeight="287.0" prefWidth="496.0" />
    </children>
 </Pane>

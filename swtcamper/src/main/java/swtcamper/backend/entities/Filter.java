@@ -1,11 +1,9 @@
 package swtcamper.backend.entities;
 
-import java.util.List;
-
 public class Filter {
 
   private String location;
-  private List<String> keywords;
+  //    private String[] keywords;
   private VehicleType vehicleType;
   private String vehicleBrand;
   private int constructionYear;
@@ -30,13 +28,13 @@ public class Filter {
     this.location = location;
   }
 
-  public List<String> getKeywords() {
-    return keywords;
-  }
-
-  public void setKeywords(List<String> keywords) {
-    this.keywords = keywords;
-  }
+  //    public String[] getKeywords() {
+  //        return keywords;
+  //    }
+  //
+  //    public void setKeywords(String[] keywords) {
+  //        this.keywords = keywords;
+  //    }
 
   public VehicleType getVehicleType() {
     return vehicleType;
@@ -158,15 +156,38 @@ public class Filter {
     this.fridge = fridge;
   }
 
+  public boolean isEmpty() {
+    return (
+      location == null &&
+      //                keywords == null &&
+      vehicleType ==
+      null &&
+      vehicleBrand == null &&
+      constructionYear == 0 &&
+      maxPricePerDay == 0 &&
+      engine == null &&
+      transmissionType == null &&
+      seatAmount == 0 &&
+      bedAmount == 0 &&
+      !roofTent &&
+      !roofRack &&
+      !bikeRack &&
+      !shower &&
+      !toilet &&
+      !kitchen &&
+      !fridge
+    );
+  }
+
   @Override
   public String toString() {
     return (
       "Filter{" +
       "location='" +
       location +
-      '\'' +
-      ", keywords=" +
-      keywords +
+      //                        '\'' +
+      //                        ", keywords=" +
+      //                        keywords +
       ", vehicleType=" +
       vehicleType +
       ", vehicleBrand='" +
