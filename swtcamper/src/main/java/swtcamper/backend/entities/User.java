@@ -1,8 +1,7 @@
 package swtcamper.backend.entities;
 
-import org.springframework.context.annotation.Primary;
-
 import javax.persistence.*;
+import org.springframework.context.annotation.Primary;
 
 @Entity
 public class User {
@@ -11,8 +10,9 @@ public class User {
   @GeneratedValue
   private Long id;
 
-  @Column (unique=true)
+  @Column(unique = true)
   private String username;
+
   private String name;
   private String surname;
   private String email;

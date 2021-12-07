@@ -6,8 +6,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResetPasswordViewController {
 
-
-    public void handleLogin(ActionEvent actionEvent) {
-    }
-
+  public void handleLogin(ActionEvent actionEvent) {}
 }

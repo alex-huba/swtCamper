@@ -42,7 +42,7 @@ public class ModelMapper {
   }
 
   public List<OfferDTO> offersToOfferDTOs(List<Offer> offers)
-          throws GenericServiceException {
+    throws GenericServiceException {
     List<OfferDTO> offerDTOs = new ArrayList<>();
     for (Offer offer : offers) {
       offerDTOs.add(offerToOfferDTO(offer));
@@ -50,24 +50,24 @@ public class ModelMapper {
     return offerDTOs;
   }
 
-  public UserDTO userToUserDTO(User user){
+  public UserDTO userToUserDTO(User user) {
     return new UserDTO(
-            user.getId(),
-            user.getUsername(),
-            user.getName(),
-            user.getSurname(),
-            user.getEmail(),
-            user.getPhone(),
-            user.getPassword(),
-            user.getUserRole(),
-            user.isLocked(),
-            user.isEnabled()
+      user.getId(),
+      user.getUsername(),
+      user.getName(),
+      user.getSurname(),
+      user.getEmail(),
+      user.getPhone(),
+      user.getPassword(),
+      user.getUserRole(),
+      user.isLocked(),
+      user.isEnabled()
     );
   }
 
   public UserRoleDTO toUserRoleDTO(userRole userRole)
-          throws GenericServiceException {
-    switch (userRole){
+    throws GenericServiceException {
+    switch (userRole) {
       case USER:
         return UserRoleDTO.USER;
       case OPERATOR:

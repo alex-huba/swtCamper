@@ -159,49 +159,49 @@ public class MainViewController {
       case "register":
         mainStage.getChildren().add(registerViewBox);
         navigationViewController.setButtonActive(
-                navigationViewController.accountButton
+          navigationViewController.accountButton
         );
         break;
       case "forgotPassword":
         mainStage.getChildren().add(forgotPasswordViewBox);
         navigationViewController.setButtonActive(
-                navigationViewController.accountButton
+          navigationViewController.accountButton
         );
         break;
     }
   }
 
-//  public void clearView() {
-//    mainStage.getChildren().remove(activeOffersViewBox);
-//    mainStage.getChildren().remove(homeViewBox);
-//    mainStage.getChildren().remove(placeOfferViewBox);
-//    mainStage.getChildren().remove(loginViewBox);
-//    mainStage.getChildren().remove(registerViewBox);
-//    mainStage.getChildren().remove(forgotPasswordViewBox);
-//  }
+  //  public void clearView() {
+  //    mainStage.getChildren().remove(activeOffersViewBox);
+  //    mainStage.getChildren().remove(homeViewBox);
+  //    mainStage.getChildren().remove(placeOfferViewBox);
+  //    mainStage.getChildren().remove(loginViewBox);
+  //    mainStage.getChildren().remove(registerViewBox);
+  //    mainStage.getChildren().remove(forgotPasswordViewBox);
+  //  }
 
-//  public void changeView(String switchTo) {
-//    clearView();
-//
-//    if (switchTo.equals("MyOffers")) mainStage
-//            .getChildren()
-//            .add(activeOffersViewBox);
-//    if (switchTo.equals("rentVan")) mainStage
-//            .getChildren()
-//            .add(homeViewBox);
-//    if (switchTo.equals("placeOffer")) mainStage
-//            .getChildren()
-//            .add(placeOfferViewBox);
-//    if (switchTo.equals("login")) mainStage
-//            .getChildren()
-//            .add(loginViewBox);
-//    if(switchTo.equals("register")) mainStage
-//            .getChildren()
-//            .add(registerViewBox);
-//    if (switchTo.equals("forgotPassword")) mainStage
-//            .getChildren()
-//            .add(forgotPasswordViewBox);
-//  }
+  //  public void changeView(String switchTo) {
+  //    clearView();
+  //
+  //    if (switchTo.equals("MyOffers")) mainStage
+  //            .getChildren()
+  //            .add(activeOffersViewBox);
+  //    if (switchTo.equals("rentVan")) mainStage
+  //            .getChildren()
+  //            .add(homeViewBox);
+  //    if (switchTo.equals("placeOffer")) mainStage
+  //            .getChildren()
+  //            .add(placeOfferViewBox);
+  //    if (switchTo.equals("login")) mainStage
+  //            .getChildren()
+  //            .add(loginViewBox);
+  //    if(switchTo.equals("register")) mainStage
+  //            .getChildren()
+  //            .add(registerViewBox);
+  //    if (switchTo.equals("forgotPassword")) mainStage
+  //            .getChildren()
+  //            .add(forgotPasswordViewBox);
+  //  }
 
   public void handleExceptionMessage(String message) {
     Alert alert = new Alert(AlertType.ERROR);
