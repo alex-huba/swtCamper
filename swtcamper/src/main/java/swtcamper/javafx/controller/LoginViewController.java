@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -19,6 +16,8 @@ import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.util.Optional;
+
 @Component
 public class LoginViewController implements EventHandler<KeyEvent> {
 
@@ -27,6 +26,9 @@ public class LoginViewController implements EventHandler<KeyEvent> {
 
     @Autowired
     private UserController userController;
+
+    @Autowired
+    private RegisterViewController registerViewController;
 
     @FXML
     public Button loginButton;
@@ -46,8 +48,6 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     @FXML
     public Label errorLabel;
 
-    boolean isUsernameOk = false;
-    boolean isPasswordOk = false;
 
     @FXML
     public void initialize() {
@@ -62,6 +62,10 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     }
 
     private void validateInput(KeyEvent event) {
+
+    boolean isUsernameOk = false;
+    boolean isPasswordOk = false;
+
         String source = "";
         source = event.getSource().toString();
         if (source.contains("usernameTf")) {
@@ -111,23 +115,24 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         String username =  usernameTf.getText();
         String password = passwordPf.getText();
 
-        // Validate user input
-
         // Create temporary userDTO to compare it with user database
         UserDTO userDTO = new UserDTO(username, password);
 
-        // Try to login if user data matches data in database
-        boolean userExists = false;
-
+        // Try to login if user input matches data in database
         try {
-            userExists = userController.login(userDTO);
+            userController.login(userDTO);
+            mainViewController.login();
         } catch (GenericServiceException e){
-            mainViewController.handleException(e);
-            return;
-        }
-
-        if (userExists){
-            mainViewController.changeView("MyOffers");
+            // Inform that user doesn't exists and forward to registration view if user agrees
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Want to sign up instead? Click ok.");
+            alert.setTitle("Authentication failed");
+            alert.setHeaderText(e.getMessage());
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && (result.get() == ButtonType.OK)){
+                mainViewController.changeView("register");
+                registerViewController.usernameTf.setText(username);
+                registerViewController.passwordTf.setText(password);
+            }
         }
     }
 
@@ -143,5 +148,13 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         mainViewController.changeView("forgotPassword");
     }
 
+//    @FXML
+//    public void handleEnter(KeyEvent keyEvent) {
+//        // TODO: implement handleenter
+//    }
 
+    public void resetInputfields(){
+        usernameTf.clear();
+        passwordPf.clear();
+    }
 }

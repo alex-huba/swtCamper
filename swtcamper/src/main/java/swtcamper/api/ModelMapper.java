@@ -1,5 +1,7 @@
 package swtcamper.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.*;
 import swtcamper.backend.entities.*;
@@ -10,38 +12,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
  */
 @Component
 public class ModelMapper {
-
-  //  public VehicleTypeDTO vehicleTypeToVehicleTypeDTO(VehicleType vehicleType) {
-  //    // TODO alt throws Exception {
-  //      switch (vehicleType) {
-  //        case BUS:
-  //          return VehicleTypeDTO.BUS;
-  //        case CAMPER:
-  //          return VehicleTypeDTO.CAMPER;
-  //        case TRAILER:
-  //          return VehicleTypeDTO.TRAILER;
-  ////      TODO alt remove return: null;
-  ////       implement default throws Exception
-  //        default: return null;
-  ////          throw new GenericServiceException("VehicleType is invalid.");
-  //      }
-  //  }
-  //
-  public AvailabilityDTO toAvailabilityDTO(Availability availability) {
-    switch (availability) {
-      case AVAILABLE:
-        return AvailabilityDTO.AVAILABLE;
-      case RENT:
-        return AvailabilityDTO.RENT;
-      case RESERVED:
-        return AvailabilityDTO.RESERVED;
-      //      TODO alt remove return: null;
-      //       implement default throws Exception
-      default:
-        return null;
-      // throw new GenericServiceException("Availability value is invalid.");
-    }
-  }
 
   public OfferedObjectTypeDTO toOfferedObjectTypeDTO(
     OfferedObjectType offeredObjectType
@@ -61,12 +31,23 @@ public class ModelMapper {
     return new OfferDTO(
       offer.getOfferID(),
       toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
-      offer.getOfferedObjectID(),
-      toAvailabilityDTO(offer.getAvailability()),
+      offer.getOfferedObject(),
+      offer.getBookings(),
       offer.getPrice(),
-      offer.getRentalStartDate(),
-      offer.getRentalReturnDate()
+      offer.isMinAge25(),
+      offer.isBorderCrossingAllowed(),
+      offer.isDepositInCash(),
+      offer.isActive()
     );
+  }
+
+  public List<OfferDTO> offersToOfferDTOs(List<Offer> offers)
+          throws GenericServiceException {
+    List<OfferDTO> offerDTOs = new ArrayList<>();
+    for (Offer offer : offers) {
+      offerDTOs.add(offerToOfferDTO(offer));
+    }
+    return offerDTOs;
   }
 
   public UserDTO userToUserDTO(User user){

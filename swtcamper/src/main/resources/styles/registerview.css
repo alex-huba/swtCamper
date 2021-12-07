@@ -4,7 +4,7 @@
 .header {
     -fx-text-fill: #040759;
     -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 50px;
+    -fx-font-size: 30px;
 }
 .errorMessageLabel {
     -fx-text-fill: RED;
@@ -16,6 +16,21 @@
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-font-size: 20px;
 }
+
+.descriptionLabel, .checkBoxLabel {
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+
+.descriptionLabel {
+    -fx-pref-width: 200px;
+}
+
+.inputField {
+   -fx-font-size: 15px;
+}
+
 .inputLabel {
     -fx-padding: 7 0 0 0;
 }
@@ -43,30 +58,25 @@
 .providerCb {
     -fx-padding: 7 0 0 0;
 }
-.cancelBtn {
-    -fx-background-color: #E17575;
+
+.Button {
     -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 25px;
+    -fx-font-size: 15px;
     -fx-cursor: hand;
-    -fx-pref-width: 125px;
-    -fx-pref-height: 50px;
+    -fx-pref-width: 80px;
+    -fx-pref-height: 30px;
     -fx-border-width: 1px;
     -fx-border-color: black;
     -fx-background-radius: 15px;
     -fx-border-radius: 15px;
 }
+
+.cancelBtn {
+    -fx-background-color: #E17575;
+
+}
 .registerBtn {
     -fx-background-color: #AADDA9;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 25px;
-    -fx-cursor: hand;
-    -fx-pref-width: 125px;
-    -fx-pref-height: 50px;
-    -fx-border-width: 1px;
-    -fx-border-color: black;
-    -fx-background-radius: 15px;
-    -fx-border-radius: 15px;
-    -fx-padding: 0 0 0 0;
 }
 .vBoxField {
     -fx-spacing: 20px;

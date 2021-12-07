@@ -117,7 +117,11 @@ public class UserService {
   }
 
   public boolean login(UserDTO userDTO) throws GenericServiceException{
-    return userRepository.existsByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+    if(userRepository.existsByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword())){
+      return true;
+    }
+    throw new GenericServiceException("User doesn't exist.");
+//    return userRepository.existsByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
   }
 
   public void changePassword(UserDTO userDTO) throws GenericServiceException{

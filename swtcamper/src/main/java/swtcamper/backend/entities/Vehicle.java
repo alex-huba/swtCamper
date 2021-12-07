@@ -1,19 +1,16 @@
 package swtcamper.backend.entities;
 
-import java.util.Arrays;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Vehicle {
 
   @Id
   @GeneratedValue
-  private Long vehicleID;
+  private long vehicleID;
 
-  @ManyToOne
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+  @JoinColumn(name = "vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
 
   private String[] pictureURLs;
@@ -27,27 +24,11 @@ public class Vehicle {
     super();
   }
 
-  @Override
-  public String toString() {
-    return (
-      "Vehicle{" +
-      "vehicleID=" +
-      vehicleID +
-      ", vehicleFeatures=" +
-      vehicleFeatures +
-      ", pictureURLs=" +
-      Arrays.toString(pictureURLs) +
-      ", particularities=" +
-      Arrays.toString(particularities) +
-      '}'
-    );
-  }
-
-  public Long getVehicleID() {
+  public long getVehicleID() {
     return vehicleID;
   }
 
-  public void setVehicleID(Long vehicleID) {
+  public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 

@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Button?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="swtcamper.javafx.controller.LoginViewController" prefHeight="600.0" prefWidth="800.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" minHeight="-Infinity" styleClass="rootNode" stylesheets="/styles/loginview.css">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="rootNode" stylesheets="/styles/loginview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
     <children>
-        <Label text="Login"  layoutX="225" layoutY="10" styleClass="header"/>
-        <Label text=""  layoutX="140" layoutY="90" styleClass="errorMessage" fx:id="errorLabel"/>
-        <HBox layoutX="110" layoutY="135" styleClass="hBoxField">
-            <Label text="Username" styleClass="usernameLabel"/>
-            <TextField promptText="username" fx:id="usernameTf"/>
-        </HBox>
-        <HBox layoutX="110" layoutY="200" styleClass="hBoxField">
-            <Label text="Password" styleClass="passwordLabel"/>
-            <PasswordField promptText="password" fx:id="passwordPf"/>
-        </HBox>
-        <Button text="login" layoutX="250" layoutY="275" fx:id="loginButton" styleClass="btnLogin" onAction="#handleLogin"/>
-        <Button text="Forgot your password?" layoutX="190" layoutY="330" fx:id="forgotPasswordButton" styleClass="btnForgotPassword" onAction="#handleForgotPassword"/>
-        <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
-            <Label text="Have no account yet?" />
-            <Button text="sign up" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>
-        </VBox>
+        <Label layoutX="225.0" layoutY="10.0" styleClass="header" text="Login" />
+        <Label fx:id="errorLabel" layoutX="140" layoutY="90" styleClass="errorMessage" text="" />
+      <VBox prefHeight="200.0" prefWidth="100.0" />
+      <VBox layoutX="50.0" layoutY="147.0" spacing="10.0">
+         <children>
+              <HBox styleClass="hBoxField">
+                  <Label styleClass="usernameLabel,descriptionLabel" text="Username" />
+                  <TextField fx:id="usernameTf" promptText="username" styleClass="inputField" />
+<!--                             onKeyPressed="#handleEnter"-->
+              </HBox>
+              <HBox styleClass="hBoxField">
+                  <Label styleClass="passwordLabel,descriptionLabel" text="Password" />
+                  <PasswordField fx:id="passwordPf" promptText="password" styleClass="inputField" />
+              </HBox>
+              <Button fx:id="loginButton" onAction="#handleLogin" styleClass="btnLogin,Button" text="login" />
+              <Button fx:id="forgotPasswordButton" onAction="#handleForgotPassword" styleClass="btnForgotPassword" text="Forgot your password?" />
+              <VBox styleClass="vBoxField">
+                  <Label styleClass="descriptionLabel" text="Have no account yet?" />
+                  <Button fx:id="registerButton" onAction="#handleRegister" styleClass="btnRegister" text="sign up" />
+              </VBox>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

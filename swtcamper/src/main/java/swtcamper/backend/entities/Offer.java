@@ -1,101 +1,183 @@
 package swtcamper.backend.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.Objects;
+import javax.persistence.*;
 
 @Entity
 public class Offer implements IOffer {
 
   @Id
   @GeneratedValue
-  private Long offerID;
+  private long offerID;
 
   private OfferedObjectType offeredObjectType;
-  Long offeredObjectID;
 
-  private Availability availability;
+  @OneToOne
+  private Vehicle offeredObject;
 
-  private Long price;
+  private ArrayList<Long> bookings;
+  private long price;
+  private boolean active;
 
-  private String rentalStartDate;
-  private String rentalReturnDate;
+  // Rental Conditions
+  boolean minAge25;
+  boolean borderCrossingAllowed;
+  boolean depositInCash;
 
-  public Offer(Vehicle vehicle, Long price) {
+  public Offer(
+    Vehicle vehicle,
+    long price,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash
+  ) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
-    this.offeredObjectID = vehicle.getVehicleID();
+    this.offeredObject = vehicle;
+    this.bookings = new ArrayList<Long>();
     this.price = price;
-    this.availability = Availability.AVAILABLE;
+    this.minAge25 = minAge25;
+    this.borderCrossingAllowed = borderCrossingAllowed;
+    this.depositInCash = depositInCash;
+    this.active = true;
+  }
+
+  public Offer(
+    Vehicle vehicle,
+    ArrayList<Long> bookings,
+    long price,
+    boolean active,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash
+  ) {
+    this.offeredObjectType = OfferedObjectType.VEHICLE;
+    this.offeredObject = vehicle;
+    this.bookings = bookings;
+    this.price = price;
+    this.minAge25 = minAge25;
+    this.borderCrossingAllowed = borderCrossingAllowed;
+    this.depositInCash = depositInCash;
+    this.active = active;
   }
 
   public Offer(Vehicle vehicle) {
-    this.offeredObjectID = vehicle.getVehicleID();
     this.offeredObjectType = OfferedObjectType.VEHICLE;
+    this.offeredObject = vehicle;
+    this.bookings = new ArrayList<Long>();
+    this.active = true;
   }
 
-  public Offer() {}
+  public Offer() {
+    super();
+    this.bookings = new ArrayList<Long>();
+  }
 
-  public Long getOfferID() {
+  @Override
+  public long getOfferID() {
     return offerID;
   }
 
-  public void setOfferID(Long offerID) {
+  @Override
+  public void setOfferID(long offerID) {
     this.offerID = offerID;
   }
 
+  @Override
   public OfferedObjectType getOfferedObjectType() {
     return offeredObjectType;
   }
 
+  @Override
   public void setOfferedObjectType(OfferedObjectType offeredObjectType) {
     this.offeredObjectType = offeredObjectType;
   }
 
-  public Long getOfferedObjectID() {
-    return offeredObjectID;
-  }
-
-  public void setOfferedObjectID(Long vehicleID) {
-    this.offeredObjectID = vehicleID;
+  @Override
+  public Vehicle getOfferedObject() {
+    return offeredObject;
   }
 
   @Override
-  public Availability getAvailability() {
-    return availability;
+  public void setOfferedObject(Vehicle offeredObject) {
+    this.offeredObject = offeredObject;
   }
 
   @Override
-  public void setAvailability(Availability availability) {
-    this.availability = availability;
+  public ArrayList<Long> getBookings() {
+    return bookings;
   }
 
   @Override
-  public Long getPrice() {
+  public void setBookings(ArrayList<Long> bookings) {
+    this.bookings = bookings;
+  }
+
+  @Override
+  public long getPrice() {
     return price;
   }
 
   @Override
-  public void setPrice(Long price) {
+  public void setPrice(long price) {
     this.price = price;
   }
 
   @Override
-  public String getRentalStartDate() {
-    return rentalStartDate;
+  public boolean isMinAge25() {
+    return minAge25;
   }
 
   @Override
-  public void setRentalStartDate(String rentalStartDate) {
-    this.rentalStartDate = rentalStartDate;
+  public void setMinAge25(boolean minAge25) {
+    this.minAge25 = minAge25;
   }
 
   @Override
-  public String getRentalReturnDate() {
-    return rentalReturnDate;
+  public boolean isBorderCrossingAllowed() {
+    return borderCrossingAllowed;
   }
 
   @Override
-  public void setRentalReturnDate(String rentalReturnDate) {
-    this.rentalReturnDate = rentalReturnDate;
+  public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
+    this.borderCrossingAllowed = borderCrossingAllowed;
+  }
+
+  @Override
+  public boolean isDepositInCash() {
+    return depositInCash;
+  }
+
+  @Override
+  public void setDepositInCash(boolean depositInCash) {
+    this.depositInCash = depositInCash;
+  }
+
+  @Override
+  public boolean isActive() {
+    return active;
+  }
+
+  @Override
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Offer offer = (Offer) o;
+    return (
+      offerID == offer.offerID &&
+      price == offer.price &&
+      active == offer.active &&
+      minAge25 == offer.minAge25 &&
+      borderCrossingAllowed == offer.borderCrossingAllowed &&
+      depositInCash == offer.depositInCash &&
+      offeredObjectType == offer.offeredObjectType &&
+      Objects.equals(offeredObject, offer.offeredObject) &&
+      Objects.equals(bookings, offer.bookings)
+    );
   }
 }
