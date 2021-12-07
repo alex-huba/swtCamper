@@ -1,10 +1,13 @@
 package swtcamper.backend.services;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleFeatures;

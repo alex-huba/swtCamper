@@ -29,13 +29,16 @@ public class MainViewController {
   public NavigationViewController navigationViewController;
 
   @Autowired
-  public ModifyOfferViewController modifyOfferViewController;
+  public RentingViewController rentingViewController;
 
   @FXML
   public AnchorPane mainStage;
 
   @FXML
   public Pane homeViewBox;
+
+  @FXML
+  public Pane filterOptionsViewBox;
 
   @FXML
   public Pane placeOfferViewBox;
@@ -62,7 +65,8 @@ public class MainViewController {
   public Pane accountViewBox;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws GenericServiceException {
+    //    reloadData();
     changeView("home");
   }
 
@@ -84,15 +88,24 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
-  public void changeView(String switchTo) {
+  public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo, true);
+  }
+
+  public void changeView(String switchTo, boolean reloadData)
+    throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        if (reloadData) rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
+        break;
+      case "filterOptions":
+        mainStage.getChildren().add(filterOptionsViewBox);
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
@@ -143,6 +156,8 @@ public class MainViewController {
           navigationViewController.accountButton
         );
         break;
+      default:
+        System.out.println("gibts nicht");
     }
   }
 
@@ -166,11 +181,11 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login() {
+  public void login() throws GenericServiceException {
     navigationViewController.login();
   }
 
-  public void logout() {
+  public void logout() throws GenericServiceException {
     navigationViewController.logout();
   }
 }

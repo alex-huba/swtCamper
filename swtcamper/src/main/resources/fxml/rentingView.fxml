@@ -1,18 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
-   <HBox layoutX="10" layoutY="100.0" prefHeight="490.0" prefWidth="780.0">
-      <VBox prefWidth="280.0">
-         <Label text="Features" />
-         <CheckBox text="CheckBox" />
-         <CheckBox text="CheckBox" />
-         <CheckBox text="CheckBox" />
-         <CheckBox text="CheckBox" />
-         <Label text="Price " />
-      </VBox>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="100" prefHeight="400" prefWidth="700" />
-   </HBox>
+<Pane prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+   <children>
+      <ListView fx:id="offersList" layoutX="50.0" layoutY="191.0" prefHeight="376.0" prefWidth="700" />
+      <HBox layoutX="50.0" layoutY="84.0" prefHeight="100.0" prefWidth="446.0" styleClass="searchBar">
+         <children>
+            <VBox alignment="CENTER" prefHeight="90.0" prefWidth="337.0" spacing="5.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefWidth="120.0" text="pick-up location:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="locationTextField" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefWidth="120.0" text="pick-up date:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="pickUpDatePicker" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefWidth="120.0" text="return date:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="returnDatePicker" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+               <children>
+                  <Button fx:id="filterButton" mnemonicParsing="false" prefWidth="60.0" styleClass="btn" text="filters" onAction="#openFilterView">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="60.0" styleClass="btn" text="search" onAction="#startSearch">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <Label layoutX="50.0" layoutY="36.0" text="Let's find a perfect camper van for You!" styleClass="heading">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
 </Pane>

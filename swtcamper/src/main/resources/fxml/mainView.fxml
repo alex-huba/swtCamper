@@ -20,6 +20,9 @@
                         <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="rentingView.fxml"/>
                         </Pane>
+                        <Pane fx:id="filterOptionsViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="filterOptionsView.fxml"/>
+                        </Pane>
                         <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="modifyOfferView.fxml"/>
                         </Pane>
