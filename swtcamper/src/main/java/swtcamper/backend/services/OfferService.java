@@ -1,13 +1,10 @@
 package swtcamper.backend.services;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleFeatures;
@@ -184,6 +181,7 @@ public class OfferService {
       kitchenUnit,
       fridge
     );
+    vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
@@ -193,6 +191,10 @@ public class OfferService {
 
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
+    offer.setTitle(title);
+    offer.setLocation(location);
+    offer.setContact(contact);
+    offer.setDescription(description);
     offer.setPrice(price);
     offer.setActive(active);
     offer.setMinAge25(minAge25);
