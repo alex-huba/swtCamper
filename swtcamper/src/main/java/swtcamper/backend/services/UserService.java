@@ -33,25 +33,7 @@ public class UserService {
    * @return
    * @throws GenericServiceException if the username, name, surname, email, phone number or password is invalid
    */
-  public User create(
-    UserDTO userDTO
-    //          String username,
-    //          String name,
-    //          String surname,
-    //          String email,
-    //          String phone,
-    //          String password,
-    //          userRole userRole
-    //          boolean locked,
-    //          boolean enabled
-  ) throws GenericServiceException {
-    //    validateUsername(username);
-    //    validateName(name);
-    //    validateSurname(surname);
-    //    validateEmail(email);
-    //    validatePhone(phone);
-    //    validatePassword(password);
-
+  public User create(UserDTO userDTO) throws GenericServiceException {
     User user = new User();
     user.setUsername(userDTO.getUsername());
     user.setName(userDTO.getName());
@@ -62,40 +44,7 @@ public class UserService {
     user.setUserRole(userDTO.getUserRole());
     user.setLocked(userDTO.isLocked());
     user.setEnabled(userDTO.isEnabled());
-
-    //    user.setUsername(username);
-    //    user.setName(name);
-    //    user.setSurname(surname);
-    //    user.setEmail(email);
-    //    user.setPhone(phone);
-    //    user.setPassword(password);
-    //    user.setLocked(false);
-    //    user.setEnabled(true);
     return userRepository.save(user);
-  }
-
-  private void validateUsername(String username) {
-    // TODO: validate username
-  }
-
-  private void validateName(String name) {
-    // TODO: validate name
-  }
-
-  private void validateSurname(String surname) {
-    // TODO: validate surname
-  }
-
-  private void validateEmail(String email) {
-    // TODO: validate email
-  }
-
-  private void validatePhone(String phone) {
-    // TODO: validate phone
-  }
-
-  private void validatePassword(String password) {
-    // TODO: validate password
   }
 
   public void delete(User user) {
@@ -125,7 +74,20 @@ public class UserService {
       return true;
     }
     throw new GenericServiceException("User doesn't exist.");
-    //    return userRepository.existsByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+  }
+
+  /**
+   * Method to check if username is free
+   * @param userDTO
+   * @return
+   * @throws GenericServiceException when the username is already taken
+   */
+  public boolean isUsernameFree(UserDTO userDTO)
+    throws GenericServiceException {
+    if (userRepository.existsByUsername(userDTO.getUsername())) {
+      throw new GenericServiceException("Username is already taken!");
+    }
+    return true;
   }
 
   public void changePassword(UserDTO userDTO) throws GenericServiceException {

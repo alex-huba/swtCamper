@@ -79,7 +79,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @Override
   public void handle(KeyEvent event) {
-    // TODO: Add comment
     String source = "";
     source = event.getSource().toString();
     if (source.contains("usernameTf")) {
@@ -91,7 +90,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     if (source.contains("repeatPasswordTf")) {
       source = "repeatPassword";
     }
-
     if (source.contains("emailTf")) {
       source = "email";
     }
@@ -233,7 +231,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       case "phone":
         String inputPhone = phoneTf.getText();
         if (inputPhone.matches("[a-zA-Z]+")) {
-          errorLabel.setText("Invalid phone number");
+          errorLabel.setText("Invalid phone number. No letters allowed.");
           phoneTf.setBackground(
             new Background(
               new BackgroundFill(
@@ -257,7 +255,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       case "name":
         String inputName = nameTf.getText();
         if (!inputName.matches("[a-zA-Z]+") || inputName.length() < 3) {
-          errorLabel.setText("Invalid name");
+          errorLabel.setText("Invalid name: 2 letters minimum");
           nameTf.setBackground(
             new Background(
               new BackgroundFill(
@@ -281,7 +279,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       case "surnameTf":
         String inputSurname = surnameTf.getText();
         if (!inputSurname.matches("[a-zA-Z]+") || inputSurname.length() < 3) {
-          errorLabel.setText("Invalid surname");
+          errorLabel.setText("Invalid surname: 2 letters minimum");
           surnameTf.setBackground(
             new Background(
               new BackgroundFill(
@@ -336,50 +334,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     userDTO.setName(name);
     userDTO.setSurname(surname);
 
-    // TODO: implement handleInformationMessage
-    //        if (username.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your username please!");
-    //            alert.show();
-    //        }
-    //        if (password.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your password please!");
-    //            alert.show();
-    //        }
-    //        if(repeatPassword.isEmpty()){
-    //            mainViewController.handleInformationMessage("Please repeat your password!");
-    //        }
-    //        if(!repeatPassword.equals(password)){
-    //            mainViewController.handleInformationMessage("Passwords are not the same!");
-    //        }
-    //
-    //        if (password.length() <= 5){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Password is too short!");
-    //            alert.show();
-    //        }
-    //        if (email.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your email please!");
-    //            alert.show();
-    //        }
-    //        if (phone.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your phone please!");
-    //            alert.show();
-    //        }
-    //        if (name.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your name please!");
-    //            alert.show();
-    //        }
-    //        if (surname.isEmpty()){
-    //            Alert alert = new Alert(Alert.AlertType.ERROR);
-    //            alert.setContentText("Fill in your surname please!");
-    //            alert.show();
-    //        }
-
+    // TODO: implement user roles (Provider and Renter instead of User)
     if (operatorRb.isSelected()) {
       userDTO.setUserRole(OPERATOR);
     } else {
@@ -397,11 +352,10 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       //            alert.show();
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
-      // TODO: implement exception handling
-      e.printStackTrace();
+      mainViewController.handleExceptionMessage(e.getMessage());
     }
     //        if (isInputValid){
-    //
+    //        Alert
     //        }
   }
 }

@@ -145,7 +145,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       userController.login(userDTO);
       mainViewController.login();
     } catch (GenericServiceException e) {
-      // Inform that user doesn't exists and forward to registration view if user agrees
+      // Inform user that user doesn't exist in database and forward to registration view if user agrees
       Alert alert = new Alert(
         Alert.AlertType.CONFIRMATION,
         "Want to sign up instead? Click ok."
@@ -170,11 +170,6 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   public void handleForgotPassword(ActionEvent actionEvent) {
     mainViewController.changeView("forgotPassword");
   }
-
-  //    @FXML
-  //    public void handleEnter(KeyEvent keyEvent) {
-  //        // TODO: implement handleenter
-  //    }
 
   public void resetInputfields() {
     usernameTf.clear();
