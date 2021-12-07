@@ -73,6 +73,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="200.0" prefHeight="376.0" prefWidth="575.0" />
+      <ListView fx:id="offersList" layoutX="50.0" layoutY="200.0" prefHeight="376.0" prefWidth="496.0" />
    </children>
 </Pane>
