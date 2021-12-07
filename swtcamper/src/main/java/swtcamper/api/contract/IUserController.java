@@ -7,5 +7,7 @@ public interface IUserController {
 
   public boolean login(UserDTO userDTO) throws GenericServiceException;
 
+  public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException;
+
   public void resetPassword(UserDTO userDTO) throws GenericServiceException;
 }

@@ -114,9 +114,4 @@ public class UserService {
   public void enable(User user) {
     // TODO: implement user activation
   }
-
-  public void checkIfUserExists(User user) {
-    // TODO: implement check if user already exists in database
-
-  }
 }
