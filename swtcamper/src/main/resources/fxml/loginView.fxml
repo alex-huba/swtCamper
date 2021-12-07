@@ -8,6 +8,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="swtcamper.javafx.controller.LoginViewController" prefHeight="600.0" prefWidth="800.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" minHeight="-Infinity" styleClass="rootNode" stylesheets="/styles/loginview.css">
     <children>
         <Label text="Login"  layoutX="225" layoutY="10" styleClass="header"/>
+        <Label text=""  layoutX="140" layoutY="90" styleClass="errorMessage" fx:id="errorLabel"/>
         <HBox layoutX="110" layoutY="135" styleClass="hBoxField">
             <Label text="Username" styleClass="usernameLabel"/>
             <TextField promptText="username" fx:id="usernameTf"/>
@@ -16,7 +17,8 @@
             <Label text="Password" styleClass="passwordLabel"/>
             <PasswordField promptText="password" fx:id="passwordPf"/>
         </HBox>
-        <Button text="login" fx:id="loginButton" layoutX="250" layoutY="275" styleClass="btnLogin" onAction="#handleLogin"/>
+        <Button text="login" layoutX="250" layoutY="275" fx:id="loginButton" styleClass="btnLogin" onAction="#handleLogin"/>
+        <Button text="Forgot your password?" layoutX="190" layoutY="330" fx:id="forgotPasswordButton" styleClass="btnForgotPassword" onAction="#handleForgotPassword"/>
         <VBox layoutX="370" layoutY="500" styleClass="vBoxField">
             <Label text="Have no account yet?" />
             <Button text="sign up" fx:id="registerButton" styleClass="btnRegister" onAction="#handleRegister"/>
