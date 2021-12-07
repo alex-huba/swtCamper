@@ -1,0 +1,88 @@
+.rootNode {
+    -fx-background-color: #D6CFCD;
+}
+.header {
+    -fx-text-fill: #040759;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 30px;
+}
+.errorMessageLabel {
+    -fx-text-fill: RED;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 15px;
+}
+.hBoxField {
+    -fx-spacing: 20px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
+}
+
+.descriptionLabel, .checkBoxLabel {
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+
+.descriptionLabel {
+    -fx-pref-width: 200px;
+}
+
+.inputField {
+   -fx-font-size: 15px;
+}
+
+.inputLabel {
+    -fx-padding: 7 0 0 0;
+}
+.inputPasswordLabel {
+    -fx-padding: 7 3 0 0;
+}
+.inputEmailLabel {
+    -fx-padding: 7 46 0 0;
+}
+.inputPhoneLabel {
+    -fx-padding: 7 39 0 0;
+}
+.inputNameLabel {
+    -fx-padding: 7 44 0 0;
+}
+.inputSurnameLabel {
+    -fx-padding: 7 13 0 0;
+}
+.operatorRb {
+    -fx-padding: 7 0 0 0;
+}
+.renterCb {
+    -fx-padding: 7 0 0 0;
+}
+.providerCb {
+    -fx-padding: 7 0 0 0;
+}
+
+.Button {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+    -fx-pref-width: 80px;
+    -fx-pref-height: 30px;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.cancelBtn {
+    -fx-background-color: #E17575;
+
+}
+.registerBtn {
+    -fx-background-color: #AADDA9;
+}
+.vBoxField {
+    -fx-spacing: 20px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
+}
+
+
+
