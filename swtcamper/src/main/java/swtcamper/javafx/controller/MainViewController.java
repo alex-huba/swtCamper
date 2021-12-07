@@ -29,6 +29,9 @@ public class MainViewController {
   public NavigationViewController navigationViewController;
 
   @Autowired
+  public ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
   public RentingViewController rentingViewController;
 
   @FXML

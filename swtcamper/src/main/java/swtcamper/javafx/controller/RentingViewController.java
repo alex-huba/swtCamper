@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
@@ -96,6 +98,7 @@ public class RentingViewController {
       }
     });
   }
+
 
   public void reloadData() throws GenericServiceException {
     offersList.setItems(

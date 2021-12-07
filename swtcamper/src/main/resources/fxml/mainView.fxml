@@ -1,69 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="swtcamper.javafx.controller.MainViewController" styleClass="rootNode"
-            stylesheets="@../styles/mainview.css">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="rootNode" stylesheets="@../styles/mainview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
     <children>
+      <ImageView fitHeight="757.0" fitWidth="1073.0" layoutX="-136.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../pictures/campervan-camper-motorhome-vw.jpg" />
+         </image>
+      </ImageView>
         <HBox prefHeight="600.0" prefWidth="800.0">
             <children>
-                <fx:include source="navigationView.fxml"/>
+                <fx:include source="navigationView.fxml" />
                 <AnchorPane fx:id="mainStage" prefHeight="600.0" prefWidth="596.0">
                     <children>
                         <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="rentingView.fxml"/>
+                            <fx:include source="rentingView.fxml" />
                         </Pane>
                         <Pane fx:id="filterOptionsViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="filterOptionsView.fxml"/>
+                            <fx:include source="filterOptionsView.fxml" />
                         </Pane>
                         <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="modifyOfferView.fxml"/>
+                            <fx:include source="modifyOfferView.fxml" />
                         </Pane>
                         <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <fx:include source="myOffersView.fxml"/>
+                            <fx:include source="myOffersView.fxml" />
                         </Pane>
                         <Pane fx:id="dealHistoryViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Deal History" style="-fx-text-fill: #FFF"/>
+                            <Label style="-fx-text-fill: #FFF" text="Deal History" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="dealHistoryView.fxml" />-->
                         </Pane>
                         <Pane fx:id="excludeRenterViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Exclude Renters" style="-fx-text-fill: #FFF"/>
+                            <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="excludeRenterView.fxml" />-->
                         </Pane>
                         <Pane fx:id="approveDealViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Approve Deal" style="-fx-text-fill: #FFF"/>
+                            <Label style="-fx-text-fill: #FFF" text="Approve Deal" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="approveDealView.fxml" />-->
                         </Pane>
                         <Pane fx:id="myBookingsViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="My Bookings" style="-fx-text-fill: #FFF"/>
+                            <Label style="-fx-text-fill: #FFF" text="My Bookings" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="myBookingsView.fxml" />-->
                         </Pane>
                         <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Login" style="-fx-text-fill: #FFF"/>
-                            <Button onAction="#login" text="Login"/>
+                            <Label style="-fx-text-fill: #FFF" text="Login" />
+                            <Button onAction="#login" text="Login" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="loginView.fxml" />-->
                         </Pane>
                         <Pane fx:id="accountViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Account" style="-fx-text-fill: #FFF"/>
-                            <Button onAction="#logout" text="Logout"/>
+                            <Label style="-fx-text-fill: #FFF" text="Account" />
+                            <Button onAction="#logout" text="Logout" />
                             <!--                            TODO after Merging: include-->
                             <!--                            <fx:include source="accountView.fxml" />-->
                         </Pane>
                     </children>
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </AnchorPane>
             </children>

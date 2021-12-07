@@ -13,7 +13,6 @@
 
 <Pane prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
    <children>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="191.0" prefHeight="376.0" prefWidth="700" />
       <HBox layoutX="50.0" layoutY="84.0" prefHeight="100.0" prefWidth="446.0" styleClass="searchBar">
          <children>
             <VBox alignment="CENTER" prefHeight="90.0" prefWidth="337.0" spacing="5.0">
@@ -52,12 +51,12 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <Button fx:id="filterButton" mnemonicParsing="false" prefWidth="60.0" styleClass="btn" text="filters" onAction="#openFilterView">
+                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#openFilterView" prefWidth="60.0" styleClass="btn" text="filters">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="60.0" styleClass="btn" text="search" onAction="#startSearch">
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" prefWidth="60.0" styleClass="btn" text="search">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -69,10 +68,11 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Label layoutX="50.0" layoutY="36.0" text="Let's find a perfect camper van for You!" styleClass="heading">
+      <Label layoutX="50.0" layoutY="36.0" styleClass="heading" text="Let's find a perfect camper van for You!">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
+      <ListView fx:id="offersList" layoutX="50.0" layoutY="200.0" prefHeight="376.0" prefWidth="575.0" />
    </children>
 </Pane>

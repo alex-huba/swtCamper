@@ -338,7 +338,7 @@ public class ModifyOfferViewController {
   }
 
   @FXML
-  public void cancelAction() {
+  public void cancelAction() throws GenericServiceException {
     Alert confirmDelete = new Alert(
       Alert.AlertType.WARNING,
       "Willst du wirklich abbrechen? Alle Änderungen gehen verloren!"
