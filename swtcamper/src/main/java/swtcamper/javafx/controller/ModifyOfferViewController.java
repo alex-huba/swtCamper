@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -40,6 +41,9 @@ public class ModifyOfferViewController {
   LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
+  public VBox offerDetailsVBox;
+
+  @FXML
   public TextField titleTextField;
 
   @FXML
@@ -48,14 +52,20 @@ public class ModifyOfferViewController {
   @FXML
   public TextField locationTextField;
 
-  @FXML
-  public DatePicker availableFromDatePicker;
-
-  @FXML
-  public DatePicker availableUntilDatePicker;
+  //  @FXML
+  //  public DatePicker availableFromDatePicker;
+  //
+  //  @FXML
+  //  public DatePicker availableUntilDatePicker;
 
   @FXML
   public TextField contactTextField;
+
+  @FXML
+  public TextArea descriptionTextArea;
+
+  @FXML
+  public CheckBox activeCheckBox;
 
   @FXML
   public CheckBox minAgeCheckBox;
@@ -135,12 +145,14 @@ public class ModifyOfferViewController {
   @FXML
   public void initialize() {
     placeOfferButton.setText("Place Offer");
+    offerDetailsVBox.getChildren().remove(activeCheckBox);
     resetFields();
   }
 
   @FXML
   public void initialize(OfferDTO offer) {
     placeOfferButton.setText("Update Offer");
+    offerDetailsVBox.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
@@ -151,12 +163,14 @@ public class ModifyOfferViewController {
 
     // TODO implement new fields
 
-    //      titleTextField.setText(offer.getTitle());
+    titleTextField.setText(offer.getTitle());
     priceTextField.setText(String.valueOf(offer.getPrice()));
-    //      locationTextField.setText(offer.getLocation());
+    locationTextField.setText(offer.getLocation());
     //      availableFromDatePicker.setValue(offer.getAvailableFrom());
     //      availableUntilDatePicker.setValue(offer.getAvailableUntil());
-    //      contactTextField.setText(offer.getContact());
+    contactTextField.setText(offer.getContact());
+    descriptionTextArea.setText(offer.getDescription());
+    activeCheckBox.setSelected(offer.isActive());
     minAgeCheckBox.setSelected(offer.isMinAge25());
     borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
     depositCheckBox.setSelected(offer.isDepositInCash());
@@ -226,9 +240,10 @@ public class ModifyOfferViewController {
     titleTextField.clear();
     priceTextField.clear();
     locationTextField.clear();
-    availableFromDatePicker.setValue(LocalDate.now());
-    availableUntilDatePicker.setValue(LocalDate.now());
+    //    availableFromDatePicker.setValue(LocalDate.now());
+    //    availableUntilDatePicker.setValue(LocalDate.now());
     contactTextField.clear();
+    descriptionTextArea.clear();
     minAgeCheckBox.setSelected(false);
     borderCrossingCheckBox.setSelected(false);
     depositCheckBox.setSelected(false);
@@ -263,6 +278,10 @@ public class ModifyOfferViewController {
 
       OfferDTO offerDTO = offerController.create(
         // TODO add missing fields
+        titleTextField.getText(),
+        locationTextField.getText(),
+        contactTextField.getText(),
+        descriptionTextArea.getText(),
         longStringConverter.fromString(priceTextField.getText()),
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
@@ -298,20 +317,24 @@ public class ModifyOfferViewController {
       // TODO entsprechende Felder noch anlegen
       String[] pictureURLs = null;
       String[] particularities = null;
-      VehicleType vehicleType = null;
       ArrayList<Long> bookings = null;
+
       offerController.update(
         offerID,
         offeredObject,
+        titleTextField.getText(),
+        locationTextField.getText(),
+        contactTextField.getText(),
+        descriptionTextArea.getText(),
         bookings,
         longStringConverter.fromString(priceTextField.getText()),
-        true,
+        activeCheckBox.isSelected(),
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
         pictureURLs,
         particularities,
-        vehicleType,
+        typeBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
         constructionYearTextField.getText(),

@@ -15,6 +15,10 @@ public interface IOfferController {
 
   OfferDTO create(
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -47,6 +51,10 @@ public interface IOfferController {
     long offerId,
     Vehicle offeredObject,
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     ArrayList<Long> bookings,
     long price,
     boolean active,

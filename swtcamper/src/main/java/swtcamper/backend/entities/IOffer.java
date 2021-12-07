@@ -19,6 +19,22 @@ public interface IOffer {
 
   public void setBookings(ArrayList<Long> bookings);
 
+  public String getTitle();
+
+  public void setTitle(String title);
+
+  public String getLocation();
+
+  public void setLocation(String location);
+
+  public String getContact();
+
+  public void setContact(String contact);
+
+  public String getDescription();
+
+  public void setDescription(String description);
+
   public long getPrice();
 
   public void setPrice(long price);

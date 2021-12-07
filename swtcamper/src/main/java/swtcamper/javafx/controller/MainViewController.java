@@ -69,7 +69,6 @@ public class MainViewController {
 
   @FXML
   private void initialize() throws GenericServiceException {
-    //    reloadData();
     changeView("home");
   }
 

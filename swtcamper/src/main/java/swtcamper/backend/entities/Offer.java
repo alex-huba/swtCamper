@@ -16,6 +16,10 @@ public class Offer implements IOffer {
   @OneToOne
   private Vehicle offeredObject;
 
+  private String title;
+  private String location;
+  private String contact;
+  private String description;
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
@@ -27,6 +31,10 @@ public class Offer implements IOffer {
 
   public Offer(
     Vehicle vehicle,
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -35,6 +43,10 @@ public class Offer implements IOffer {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
+    this.title = title;
+    this.location = location;
+    this.contact = contact;
+    this.description = description;
     this.price = price;
     this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
@@ -45,6 +57,10 @@ public class Offer implements IOffer {
   public Offer(
     Vehicle vehicle,
     ArrayList<Long> bookings,
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean active,
     boolean minAge25,
@@ -54,6 +70,10 @@ public class Offer implements IOffer {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = bookings;
+    this.title = title;
+    this.location = location;
+    this.contact = contact;
+    this.description = description;
     this.price = price;
     this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
@@ -111,6 +131,46 @@ public class Offer implements IOffer {
   @Override
   public void setBookings(ArrayList<Long> bookings) {
     this.bookings = bookings;
+  }
+
+  @Override
+  public String getTitle() {
+    return title;
+  }
+
+  @Override
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  @Override
+  public String getLocation() {
+    return location;
+  }
+
+  @Override
+  public void setLocation(String location) {
+    this.location = Offer.this.location;
+  }
+
+  @Override
+  public String getContact() {
+    return contact;
+  }
+
+  @Override
+  public void setContact(String contact) {
+    this.contact = contact;
+  }
+
+  @Override
+  public String getDescription() {
+    return description;
+  }
+
+  @Override
+  public void setDescription(String description) {
+    this.description = Offer.this.description;
   }
 
   @Override

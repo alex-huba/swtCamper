@@ -2,7 +2,9 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,204 +22,276 @@ import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
 @Component
 public class OfferController implements IOfferController {
 
-    @Autowired
-    private OfferService offerService;
+  @Autowired
+  private OfferService offerService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+  @Autowired
+  private ModelMapper modelMapper;
 
-    @Autowired
-    private OfferRepository offerRepository;
+  @Autowired
+  private OfferRepository offerRepository;
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
+  @Autowired
+  private VehicleRepository vehicleRepository;
 
-    @Autowired
-    VehicleFeaturesRepository vehicleFeaturesRepository;
+  @Autowired
+  VehicleFeaturesRepository vehicleFeaturesRepository;
 
-    @Override
-    public List<OfferDTO> offers() throws GenericServiceException {
-        return modelMapper.offersToOfferDTOs(offerService.offers());
+  @Override
+  public List<OfferDTO> offers() throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(offerService.offers());
+  }
+
+  public OfferDTO create(
+    // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
+    long price,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash,
+    //Vehicle-Parameter
+    String[] pictureURLs,
+    String[] particularities,
+    //VehicleFeatures-Parameter
+    VehicleType vehicleType,
+    String make,
+    String model,
+    String year,
+    double length,
+    double width,
+    double height,
+    String engine,
+    String transmission,
+    int seats,
+    int beds,
+    boolean roofTent,
+    boolean roofRack,
+    boolean bikeRack,
+    boolean shower,
+    boolean toilet,
+    boolean kitchenUnit,
+    boolean fridge
+  ) { // TODO throws Exception
+    return modelMapper.offerToOfferDTO(
+      offerService.create(
+        //Offer-Parameter
+        title,
+        location,
+        contact,
+        description,
+        price,
+        minAge25,
+        borderCrossingAllowed,
+        depositInCash,
+        //Vehicle-Parameter
+        pictureURLs,
+        particularities,
+        //VehicleFeatures-Parameter
+        vehicleType,
+        make,
+        model,
+        year,
+        length,
+        width,
+        height,
+        engine,
+        transmission,
+        seats,
+        beds,
+        roofTent,
+        roofRack,
+        bikeRack,
+        shower,
+        toilet,
+        kitchenUnit,
+        fridge
+      )
+    );
+  }
+
+  public OfferDTO update(
+    long offerId,
+    Vehicle offeredObject,
+    // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
+    ArrayList<Long> bookings,
+    long price,
+    boolean active,
+    boolean minAge25,
+    boolean borderCrossingAllowed,
+    boolean depositInCash,
+    //Vehicle-Parameter
+    String[] pictureURLs,
+    String[] particularities,
+    //VehicleFeatures-Parameter
+    VehicleType vehicleType,
+    String make,
+    String model,
+    String year,
+    double length,
+    double width,
+    double height,
+    String engine,
+    String transmission,
+    int seats,
+    int beds,
+    boolean roofTent,
+    boolean roofRack,
+    boolean bikeRack,
+    boolean shower,
+    boolean toilet,
+    boolean kitchenUnit,
+    boolean fridge
+  ) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(
+      offerService.update(
+        offerId,
+        offeredObject,
+        //Offer-Parameter
+        title,
+        location,
+        contact,
+        description,
+        bookings,
+        price,
+        active,
+        minAge25,
+        borderCrossingAllowed,
+        depositInCash,
+        //Vehicle-Parameter
+        pictureURLs,
+        particularities,
+        //VehicleFeatures-Parameter
+        vehicleType,
+        make,
+        model,
+        year,
+        length,
+        width,
+        height,
+        engine,
+        transmission,
+        seats,
+        beds,
+        roofTent,
+        roofRack,
+        bikeRack,
+        shower,
+        toilet,
+        kitchenUnit,
+        fridge
+      )
+    );
+  }
+
+  public void delete(long id) throws GenericServiceException {
+    try {
+      offerService.delete(id);
+      // TODO was passiert mit dem Vehicle des Offers
+    } catch (IllegalArgumentException e) {
+      throw new GenericServiceException("The passed ID is not available: " + e);
     }
+  }
 
-    public OfferDTO create(
-            // Offer-Parameter
-            long price,
-            boolean minAge25,
-            boolean borderCrossingAllowed,
-            boolean depositInCash,
-            //Vehicle-Parameter
-            String[] pictureURLs,
-            String[] particularities,
-            //VehicleFeatures-Parameter
-            VehicleType vehicleType,
-            String make,
-            String model,
-            String year,
-            double length,
-            double width,
-            double height,
-            String engine,
-            String transmission,
-            int seats,
-            int beds,
-            boolean roofTent,
-            boolean roofRack,
-            boolean bikeRack,
-            boolean shower,
-            boolean toilet,
-            boolean kitchenUnit,
-            boolean fridge
-    ) { // TODO throws Exception
-        return modelMapper.offerToOfferDTO(
-                offerService.create(
-                        //Offer-Parameter
-                        price,
-                        minAge25,
-                        borderCrossingAllowed,
-                        depositInCash,
-                        //Vehicle-Parameter
-                        pictureURLs,
-                        particularities,
-                        //VehicleFeatures-Parameter
-                        vehicleType,
-                        make,
-                        model,
-                        year,
-                        length,
-                        width,
-                        height,
-                        engine,
-                        transmission,
-                        seats,
-                        beds,
-                        roofTent,
-                        roofRack,
-                        bikeRack,
-                        shower,
-                        toilet,
-                        kitchenUnit,
-                        fridge
-                )
-        );
-    }
+  public List<OfferDTO> getFilteredOffers(Filter filter)
+    throws GenericServiceException {
+    // TODO simplify via IntelliJ after missing fields are added
+    return offers()
+      .stream()
+      .filter(offerDTO ->
+        //                offerDTO.getLocation() == filter.getLocation() &&
+        //                offerDTO.getAvailableFrom().isBefore(filter.getPickUpDate()) &&
+        //                offerDTO.getAvailableUntil().isAfter(filter.getReturnDate()) &&
+        filter.getVehicleType() != null
+          ? offerDTO
+            .getOfferedObject()
+            .getVehicleFeatures()
+            .getVehicleType()
+            .equals(filter.getVehicleType())
+          : true && filter.getVehicleBrand() != null
+            ? offerDTO
+              .getOfferedObject()
+              .getVehicleFeatures()
+              .getMake()
+              .equals(filter.getVehicleBrand())
+            : true && filter.getConstructionYear() != 0
+              ? Integer.parseInt(
+                offerDTO.getOfferedObject().getVehicleFeatures().getYear()
+              ) >=
+              filter.getConstructionYear()
+              : true && filter.getMaxPricePerDay() != 0
+                ? offerDTO.getPrice() <= filter.getMaxPricePerDay()
+                : true && filter.getEngine() != null
+                  ? offerDTO
+                    .getOfferedObject()
+                    .getVehicleFeatures()
+                    .getEngine()
+                    .equals(filter.getEngine())
+                  : true && filter.getTransmissionType() != null
+                    ? offerDTO
+                      .getOfferedObject()
+                      .getVehicleFeatures()
+                      .getTransmission()
+                      .toUpperCase()
+                      .equals(filter.getTransmissionType().toString())
+                    : true && filter.getSeatAmount() != 0
+                      ? offerDTO
+                        .getOfferedObject()
+                        .getVehicleFeatures()
+                        .getSeats() >=
+                      filter.getSeatAmount()
+                      : true && filter.getBedAmount() != 0
+                        ? offerDTO
+                          .getOfferedObject()
+                          .getVehicleFeatures()
+                          .getBeds() >=
+                        filter.getBedAmount()
+                        : true && evalCheckBoxes(offerDTO, filter)
+      )
+      .collect(Collectors.toList());
+  }
 
-    public OfferDTO update(
-            long offerId,
-            Vehicle offeredObject,
-            // Offer-Parameter
-            ArrayList<Long> bookings,
-            long price,
-            boolean active,
-            boolean minAge25,
-            boolean borderCrossingAllowed,
-            boolean depositInCash,
-            //Vehicle-Parameter
-            String[] pictureURLs,
-            String[] particularities,
-            //VehicleFeatures-Parameter
-            VehicleType vehicleType,
-            String make,
-            String model,
-            String year,
-            double length,
-            double width,
-            double height,
-            String engine,
-            String transmission,
-            int seats,
-            int beds,
-            boolean roofTent,
-            boolean roofRack,
-            boolean bikeRack,
-            boolean shower,
-            boolean toilet,
-            boolean kitchenUnit,
-            boolean fridge
-    ) throws GenericServiceException {
-        return modelMapper.offerToOfferDTO(
-                offerService.update(
-                        offerId,
-                        offeredObject,
-                        //Offer-Parameter
-                        bookings,
-                        price,
-                        active,
-                        minAge25,
-                        borderCrossingAllowed,
-                        depositInCash,
-                        //Vehicle-Parameter
-                        pictureURLs,
-                        particularities,
-                        //VehicleFeatures-Parameter
-                        vehicleType,
-                        make,
-                        model,
-                        year,
-                        length,
-                        width,
-                        height,
-                        engine,
-                        transmission,
-                        seats,
-                        beds,
-                        roofTent,
-                        roofRack,
-                        bikeRack,
-                        shower,
-                        toilet,
-                        kitchenUnit,
-                        fridge
-                )
-        );
-    }
+  private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
+    List<Boolean> booleanList = new ArrayList<>();
 
-    public void delete(long id) throws GenericServiceException {
-        try {
-            offerService.delete(id);
-            // TODO was passiert mit dem Vehicle des Offers
-        } catch (IllegalArgumentException e) {
-            throw new GenericServiceException("The passed ID is not available: " + e);
-        }
-    }
+    if (filter.isRoofTent()) booleanList.add(
+      filter.isRoofTent() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
+    );
+    if (filter.isRoofRack()) booleanList.add(
+      filter.isRoofRack() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
+    );
+    if (filter.isBikeRack()) booleanList.add(
+      filter.isBikeRack() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
+    );
+    if (filter.isShower()) booleanList.add(
+      filter.isShower() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
+    );
+    if (filter.isToilet()) booleanList.add(
+      filter.isToilet() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
+    );
+    if (filter.isKitchen()) booleanList.add(
+      filter.isKitchen() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
+    );
+    if (filter.isFridge()) booleanList.add(
+      filter.isFridge() &&
+      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
+    );
 
-    public List<OfferDTO> getFilteredOffers(Filter filter) throws GenericServiceException {
-        // TODO simplify via IntelliJ after missing fields are added
-        return offers().stream().filter(offerDTO ->
-//                offerDTO.getLocation() == filter.getLocation() &&
-//                offerDTO.getAvailableFrom().isBefore(filter.getPickUpDate()) &&
-//                offerDTO.getAvailableUntil().isAfter(filter.getReturnDate()) &&
-                        filter.getVehicleType() != null ? offerDTO.getOfferedObject().getVehicleFeatures().getVehicleType().equals(filter.getVehicleType()) : true &&
-                        filter.getVehicleBrand() != null ? offerDTO.getOfferedObject().getVehicleFeatures().getMake().equals(filter.getVehicleBrand()) : true &&
-                        filter.getConstructionYear() != 0 ? Integer.parseInt(offerDTO.getOfferedObject().getVehicleFeatures().getYear()) >= filter.getConstructionYear() : true &&
-                        filter.getMaxPricePerDay() != 0 ? offerDTO.getPrice() <= filter.getMaxPricePerDay() : true &&
-                        filter.getEngine() != null ? offerDTO.getOfferedObject().getVehicleFeatures().getEngine().equals(filter.getEngine()) : true &&
-                        filter.getTransmissionType() != null ? offerDTO.getOfferedObject().getVehicleFeatures().getTransmission().toUpperCase().equals(filter.getTransmissionType().toString()) : true &&
-                        filter.getSeatAmount() != 0 ? offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >= filter.getSeatAmount() : true &&
-                        filter.getBedAmount() != 0 ? offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >= filter.getBedAmount() : true &&
-
-                        evalCheckBoxes(offerDTO, filter)
-        ).collect(Collectors.toList());
-    }
-
-    private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
-        List<Boolean> booleanList = new ArrayList<>();
-
-        if(filter.isRoofTent()) booleanList.add(filter.isRoofTent() && offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent());
-        if(filter.isRoofRack()) booleanList.add(filter.isRoofRack() && offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack());
-        if(filter.isBikeRack()) booleanList.add(filter.isBikeRack() && offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack());
-        if(filter.isShower()) booleanList.add(filter.isShower() && offerDTO.getOfferedObject().getVehicleFeatures().isShower());
-        if(filter.isToilet()) booleanList.add(filter.isToilet() && offerDTO.getOfferedObject().getVehicleFeatures().isToilet());
-        if(filter.isKitchen()) booleanList.add(filter.isKitchen() && offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit());
-        if(filter.isFridge()) booleanList.add(filter.isFridge() && offerDTO.getOfferedObject().getVehicleFeatures().isFridge());
-
-        return !booleanList.contains(false);
-    }
+    return !booleanList.contains(false);
+  }
 }
