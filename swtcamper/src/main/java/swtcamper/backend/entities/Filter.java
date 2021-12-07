@@ -1,12 +1,11 @@
 package swtcamper.backend.entities;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public class Filter {
 
   private String location;
-  private LocalDate pickUpDate;
-  private LocalDate returnDate;
+  private List<String> keywords;
   private VehicleType vehicleType;
   private String vehicleBrand;
   private int constructionYear;
@@ -31,20 +30,12 @@ public class Filter {
     this.location = location;
   }
 
-  public LocalDate getPickUpDate() {
-    return pickUpDate;
+  public List<String> getKeywords() {
+    return keywords;
   }
 
-  public void setPickUpDate(LocalDate pickUpDate) {
-    this.pickUpDate = pickUpDate;
-  }
-
-  public LocalDate getReturnDate() {
-    return returnDate;
-  }
-
-  public void setReturnDate(LocalDate returnDate) {
-    this.returnDate = returnDate;
+  public void setKeywords(List<String> keywords) {
+    this.keywords = keywords;
   }
 
   public VehicleType getVehicleType() {
@@ -167,61 +158,48 @@ public class Filter {
     this.fridge = fridge;
   }
 
+  @Override
   public String toString() {
     return (
-      "location: " +
+      "Filter{" +
+      "location='" +
       location +
-      "\n" +
-      "pickUpDate: " +
-      pickUpDate +
-      "\n" +
-      "returnDate: " +
-      returnDate +
-      "\n" +
-      "vehicleType: " +
+      '\'' +
+      ", keywords=" +
+      keywords +
+      ", vehicleType=" +
       vehicleType +
-      "\n" +
-      "vehicleBrand: " +
+      ", vehicleBrand='" +
       vehicleBrand +
-      "\n" +
-      "constructionYear: " +
+      '\'' +
+      ", constructionYear=" +
       constructionYear +
-      "\n" +
-      "maxPricePerDay: " +
+      ", maxPricePerDay=" +
       maxPricePerDay +
-      "\n" +
-      "engine: " +
+      ", engine='" +
       engine +
-      "\n" +
-      "transmission: " +
+      '\'' +
+      ", transmissionType=" +
       transmissionType +
-      "\n" +
-      "seatAmount: " +
+      ", seatAmount=" +
       seatAmount +
-      "\n" +
-      "bedAmount: " +
+      ", bedAmount=" +
       bedAmount +
-      "\n" +
-      "roofTent: " +
+      ", roofTent=" +
       roofTent +
-      "\n" +
-      "roofRack: " +
+      ", roofRack=" +
       roofRack +
-      "\n" +
-      "bikeRack: " +
+      ", bikeRack=" +
       bikeRack +
-      "\n" +
-      "shower: " +
+      ", shower=" +
       shower +
-      "\n" +
-      "toilet: " +
+      ", toilet=" +
       toilet +
-      "\n" +
-      "kitchen: " +
+      ", kitchen=" +
       kitchen +
-      "\n" +
-      "fridge: " +
-      fridge
+      ", fridge=" +
+      fridge +
+      '}'
     );
   }
 }

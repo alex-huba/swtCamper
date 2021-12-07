@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,10 +20,7 @@ public class RentingViewController {
   public TextField locationTextField;
 
   @FXML
-  public DatePicker pickUpDatePicker;
-
-  @FXML
-  public DatePicker returnDatePicker;
+  public TextField keywordTextField;
 
   @FXML
   public ComboBox<VehicleType> vehicleTypeComboBox;
@@ -121,11 +119,8 @@ public class RentingViewController {
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
       locationTextField.getText()
     );
-    if (pickUpDatePicker.getValue() != null) newFilter.setPickUpDate(
-      pickUpDatePicker.getValue()
-    );
-    if (returnDatePicker.getValue() != null) newFilter.setReturnDate(
-      returnDatePicker.getValue()
+    if (!keywordTextField.getText().isEmpty()) newFilter.setKeywords(
+      Arrays.asList(keywordTextField.getText().split(","))
     );
     if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
       vehicleTypeComboBox.getValue()
