@@ -36,7 +36,7 @@
             <TextField promptText="surname" fx:id="surnameTf"/>
         </HBox>
         <VBox layoutX="110" layoutY="405" styleClass="vBoxField">
-            <RadioButton text="I'm an operator" fx:id="operatorRb" styleClass="operatorRb"/>
+            <CheckBox text="I'm an operator" fx:id="operatorRb" styleClass="operatorRb"/>
             <CheckBox text="I'm a renter" fx:id="renterCb" styleClass="renterCb"/>
             <CheckBox text="I'm a provider" fx:id="providerCb" styleClass="providerCb"/>
         </VBox>

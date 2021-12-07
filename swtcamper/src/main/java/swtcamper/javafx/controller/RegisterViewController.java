@@ -49,7 +49,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     public TextField surnameTf;
 
     @FXML
-    public RadioButton operatorRb;
+    public CheckBox operatorRb;
 
     @FXML
     public Button cancelBtn;
