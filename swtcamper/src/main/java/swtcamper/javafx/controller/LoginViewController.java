@@ -55,7 +55,7 @@ public class LoginViewController {
         }
 
         if (userExists){
-            mainViewController.changeView("myOffers");
+            mainViewController.changeView("MyOffers");
         }
     }
 
