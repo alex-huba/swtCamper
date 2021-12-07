@@ -129,10 +129,12 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     if (isUsernameOk && isPasswordOk) {
       loginButton.setDisable(false);
     }
+    // TODO: remove
+    loginButton.setDisable(false);
   }
 
   @FXML
-  public void handleLogin(ActionEvent actionEvent) {
+  public void handleLogin(ActionEvent actionEvent) throws GenericServiceException {
     // Get user input
     String username = usernameTf.getText();
     String password = passwordPf.getText();
@@ -162,12 +164,12 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleRegister(ActionEvent actionEvent) {
+  public void handleRegister(ActionEvent actionEvent) throws GenericServiceException {
     mainViewController.changeView("register");
   }
 
   @FXML
-  public void handleForgotPassword(ActionEvent actionEvent) {
+  public void handleForgotPassword(ActionEvent actionEvent) throws GenericServiceException {
     mainViewController.changeView("forgotPassword");
   }
 

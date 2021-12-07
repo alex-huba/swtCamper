@@ -62,7 +62,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public Label errorLabel;
 
   @FXML
-  public void handleCancelBtn(ActionEvent actionEvent) {
+  public void handleCancelBtn(ActionEvent actionEvent) throws GenericServiceException {
     mainViewController.changeView("login");
   }
 
@@ -312,6 +312,8 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     ) {
       registerBtn.setDisable(false);
     }
+    // TODO: remove
+    registerBtn.setDisable(false);
   }
 
   @FXML

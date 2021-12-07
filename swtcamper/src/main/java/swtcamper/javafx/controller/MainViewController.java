@@ -78,7 +78,7 @@ public class MainViewController {
   public Pane forgotPasswordViewBox;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws GenericServiceException {
     changeView("home");
   }
 
