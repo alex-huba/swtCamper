@@ -85,7 +85,8 @@ public class MyOffersViewController {
             root.setStyle("-fx-background-color: #36334f; -fx-background-radius: 20");
             HBox imageSeperated = new HBox();
 
-            Image image = new Image("pictures/campervan-wallpaper.jpg");
+//            Image image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
+            Image image = new Image("pictures/vw_california.jpg");
             ImageView thumbnail = new ImageView(image);
             thumbnail.setFitWidth(120);
             thumbnail.setFitHeight(80);
@@ -100,7 +101,6 @@ public class MyOffersViewController {
             Label modelLabel = new Label(offer.getOfferedObject().getVehicleFeatures().getModel());
             Label yearLabel = new Label("(" + offer.getOfferedObject().getVehicleFeatures().getYear() + ")");
             Label priceLabel = new Label(String.valueOf(offer.getPrice()) + " €");
-
 
             titleLabel.setStyle("-fx-text-fill: #FFFFFF");
             brandLabel.setStyle("-fx-text-fill: #FFFFFF");
