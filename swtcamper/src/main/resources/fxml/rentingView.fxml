@@ -18,7 +18,7 @@
          <children>
             <HBox layoutX="178.0" layoutY="89.0" prefHeight="247.0" spacing="5.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
                      <children>
                         <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" promptText="Vehicle Type" />
                         <TextField fx:id="vehicleBrandTextField" promptText="Vehicle Brand" />
@@ -27,7 +27,7 @@
                         <TextField fx:id="locationTextField" promptText="Location" />
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
                      <children>
                         <TextField fx:id="engineTextField" promptText="Engine" />
                         <ComboBox fx:id="transmissionComboBox" prefWidth="150.0" promptText="Transmission" />
