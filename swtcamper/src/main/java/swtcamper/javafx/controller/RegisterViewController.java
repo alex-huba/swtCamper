@@ -98,7 +98,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleCancelBtn(ActionEvent actionEvent) {
+  public void handleCancelBtn(ActionEvent actionEvent) throws GenericServiceException {
     mainViewController.changeView("login");
   }
 
@@ -251,7 +251,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateEmailTf() {
     String input = emailTf.getText();
-    if (input.length() < 5 || !input.matches(String.valueOf(Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE)))) {
+    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
       errorLabel.setText("Invalid email. Enter a correct email");
       emailTf.setBackground(
               new Background(
