@@ -45,6 +45,13 @@ public class OfferController implements IOfferController {
     return modelMapper.offersToOfferDTOs(offerService.offers());
   }
 
+  public OfferDTO getOffer(long id) throws GenericServiceException {
+    for (OfferDTO offer : offers()) {
+      if (offer.getID() == id) return offer;
+    }
+    return null;
+  }
+
   public OfferDTO create(
     // Offer-Parameter
     String title,

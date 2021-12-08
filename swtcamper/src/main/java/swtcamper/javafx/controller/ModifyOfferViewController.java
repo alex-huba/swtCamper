@@ -142,7 +142,7 @@ public class ModifyOfferViewController {
   @Autowired
   private VehicleRepository vehicleRepository;
 
-  private SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
   public void initialize() {

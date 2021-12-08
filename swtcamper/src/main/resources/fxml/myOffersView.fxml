@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MyOffersViewController">
+<Pane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MyOffersViewController">
    <children>
-      <!--   Buttons for Place-, View-, Update-, Remove Offer -->
-      <HBox layoutX="50.0" layoutY="50.0">
-      <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Place Offer" />
-      <Button fx:id="viewOfferButton" onAction="#viewOfferAction" text="View Offer" />
-      <Button fx:id="updateOfferButton" onAction="#updateOfferAction" text="Update Offer" />
-      <Button fx:id="removeButton" onAction="#removeOfferAction" text="Remove Offer" />
-      </HBox>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="100" prefHeight="400" prefWidth="700" />
+      <ScrollPane layoutX="14.0" layoutY="137.0" prefHeight="453.0" prefWidth="377.0" style="-fx-background-color: transparent;">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="offersList" prefWidth="576.0" spacing="10.0" />
+               </children>
+            </AnchorPane>
+        </content>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </ScrollPane>
    </children>
 </Pane>
