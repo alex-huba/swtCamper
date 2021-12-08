@@ -8,74 +8,70 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="rootNode" stylesheets="/styles/registerview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RegisterViewController">
     <children>
-        <Label layoutX="225" layoutY="10" styleClass="header" text="Sign up" />
-        <Label fx:id="errorLabel" layoutX="200" layoutY="90" styleClass="errorMessageLabel" text="" />
-      <VBox layoutX="51.0" layoutY="166.0" spacing="10.0">
-         <children>
-              <HBox styleClass="hBoxField">
-               <children>
-                     <Label styleClass="usernameLabel,descriptionLabel" text="Username" />
-                     <TextField fx:id="usernameTf" promptText="username" styleClass="inputField" />
-               </children>
-              </HBox>
-            <HBox>
-               <children>
-                     <Label styleClass="descriptionLabel" text="Password" />
-                     <PasswordField fx:id="passwordTf" promptText="password" styleClass="inputField" />
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label styleClass="descriptionLabel" text="Repeat Password" />
-                  <PasswordField fx:id="repeatPasswordTf" promptText="password" styleClass="inputField" />
-               </children>
-            </HBox>
-              <HBox styleClass="hBoxField">
-               <children>
-                     <Label styleClass="inputEmailLabel,descriptionLabel" text="Email" />
-                     <TextField fx:id="emailTf" promptText="email" styleClass="inputField" />
-               </children>
-              </HBox>
-              <HBox styleClass="hBoxField">
-                  <Label styleClass="inputPhoneLabel,,descriptionLabel" text="Phone" />
-                  <TextField fx:id="phoneTf" promptText="phone" styleClass="inputField" />
-              </HBox>
-              <HBox styleClass="hBoxField">
-                  <Label styleClass="inputNameLabel,descriptionLabel" text="Name" />
-                  <TextField fx:id="nameTf" promptText="name" styleClass="inputField" />
-              </HBox>
-              <HBox styleClass="hBoxField">
-                  <Label styleClass="inputSurnameLabel,descriptionLabel" text="Surname" />
-                  <TextField fx:id="surnameTf" promptText="surname" styleClass="inputField" />
-              </HBox>
-              <VBox styleClass="vBoxField">
-               <HBox prefHeight="41.0" prefWidth="240.0" spacing="15.0">
-                  <children>
-                        <CheckBox fx:id="operatorRb" styleClass="operatorRb,checkBoxLabel" text="I'm an operator" />
-                        <CheckBox fx:id="renterCb" text="I'm a renter">
-                        <styleClass>
-                           <String fx:value="renterCb" />
-                           <String fx:value="checkBoxLabel" />
-                        </styleClass>
-                     </CheckBox>
-                        <CheckBox fx:id="providerCb" text="I'm a provider">
-                        <styleClass>
-                           <String fx:value="providerCb" />
-                           <String fx:value="checkBoxLabel" />
-                        </styleClass>
-                     </CheckBox>
-                  </children>
-               </HBox>
-              </VBox>
-              <HBox styleClass="hBoxField">
-                  <Button fx:id="cancelBtn" onAction="#handleCancelBtn" styleClass="cancelBtn,Button" text="cancel" />
-                  <Button fx:id="registerBtn" onAction="#handleRegisterBtn" styleClass="registerBtn,Button" text="sign up" />
-              </HBox>
-         </children>
-      </VBox>
+        <Label layoutX="315" layoutY="10" styleClass="header" text="Sign up" />
+        <Label fx:id="errorLabel" layoutX="250" layoutY="70" styleClass="errorMessageLabel"/>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="100">
+            <children>
+                <Label styleClass="usernameLabel" text="Username"/>
+                <TextField fx:id="usernameTf" promptText="username" styleClass="inputField"/>
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="150">
+            <children>
+                <Label styleClass="passwordLabel" text="Password" />
+                <PasswordField fx:id="passwordPf" promptText="password" styleClass="inputField" />
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="200">
+            <children>
+                <Label styleClass="repeatPasswordLabel" text="Repeat Password" />
+                <PasswordField fx:id="repeatPasswordPf" promptText="password" styleClass="inputField" />
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="250">
+            <children>
+                <Label styleClass="emailLabel" text="Email" />
+                <TextField fx:id="emailTf" promptText="email" styleClass="inputField" />
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="300">
+            <children>
+                <Label styleClass="phoneLabel" text="Phone" />
+                <TextField fx:id="phoneTf" promptText="phone" styleClass="inputField" />
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="350">
+            <children>
+                <Label styleClass="nameLabel" text="Name" />
+                <TextField fx:id="nameTf" promptText="name" styleClass="inputField" />
+            </children>
+        </HBox>
+
+        <HBox styleClass="hBoxField" layoutX="180" layoutY="400">
+            <children>
+                <Label styleClass="surnameLabel" text="Surname" />
+                <TextField fx:id="surnameTf" promptText="surname" styleClass="inputField"/>
+            </children>
+        </HBox>
+
+        <HBox spacing="15.0" layoutX="100" layoutY="480">
+            <children>
+                <CheckBox fx:id="operatorCb" styleClass="operatorRb" text="I'm an operator"/>
+                <CheckBox fx:id="renterCb" styleClass="renterCb" text="I'm a renter"/>
+                <CheckBox fx:id="providerCb" styleClass="providerCb" text="I'm a provider"/>
+            </children>
+        </HBox>
+
+        <Button fx:id="cancelBtn" onAction="#handleCancelBtn" styleClass="cancelBtn" text="cancel" layoutX="250" layoutY="535"/>
+        <Button fx:id="registerBtn" onAction="#handleRegisterBtn" styleClass="registerBtn" text="sign up" layoutX="430" layoutY="535"/>
     </children>
 </AnchorPane>

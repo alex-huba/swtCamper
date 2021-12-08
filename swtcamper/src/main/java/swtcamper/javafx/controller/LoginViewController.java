@@ -158,7 +158,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("register");
         registerViewController.usernameTf.setText(username);
-        registerViewController.passwordTf.setText(password);
+        registerViewController.passwordPf.setText(password);
       }
     }
   }
