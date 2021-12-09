@@ -12,25 +12,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+<Pane prefHeight="505.0" prefWidth="644.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
    <children>
-      <HBox layoutX="50.0" layoutY="84.0" prefHeight="100.0" prefWidth="446.0" styleClass="searchBar">
+      <HBox prefHeight="169.0" prefWidth="644.0" styleClass="searchBar">
          <children>
             <HBox layoutX="178.0" layoutY="89.0" prefHeight="247.0" spacing="5.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
+                  <VBox alignment="TOP_CENTER" prefWidth="140.0" spacing="5.0">
                      <children>
-                        <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" promptText="Vehicle Type" />
+                        <HBox spacing="2.0">
+                           <children>
+                              <ComboBox fx:id="vehicleTypeComboBox" promptText="Vehicle Type" />
+                              <Button mnemonicParsing="false" onAction="#resetVehicleTypeComboBox" text="X" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="vehicleBrandTextField" promptText="Vehicle Brand" />
                         <TextField fx:id="constructionYearTextField" promptText="Construction year" />
                         <TextField fx:id="maxPricePerDayTextField" promptText="Max. price per day" />
                         <TextField fx:id="locationTextField" promptText="Location" />
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="247.0" prefWidth="120.0" spacing="5.0">
+                  <VBox alignment="TOP_CENTER" prefWidth="140.0" spacing="5.0">
                      <children>
                         <TextField fx:id="engineTextField" promptText="Engine" />
-                        <ComboBox fx:id="transmissionComboBox" prefWidth="150.0" promptText="Transmission" />
+                        <HBox spacing="2.0">
+                           <children>
+                              <ComboBox fx:id="transmissionComboBox" promptText="Transmission" />
+                              <Button mnemonicParsing="false" onAction="#resetTransmissionTypeComboBox" text="X" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="seatAmountTextField" promptText="Nr. of seats" />
                         <TextField fx:id="bedAmountTextField" promptText="Nr. of beds" />
 <!--                        <TextField fx:id="keywordTextField" promptText="Keywords" />-->
@@ -63,11 +73,11 @@
             <Insets bottom="10.0" left="20.0" top="10.0" />
          </padding>
       </HBox>
-      <Label layoutX="50.0" layoutY="36.0" styleClass="heading" text="Let's find a perfect camper van for You!">
+      <Label layoutX="14.0" layoutY="181.0" styleClass="heading" text="Let's find a perfect camper van for You!">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="offersList" layoutX="50.0" layoutY="287.0" prefHeight="287.0" prefWidth="496.0" />
+      <ListView fx:id="offersList" layoutY="218.0" prefHeight="287.0" prefWidth="644.0" />
    </children>
 </Pane>

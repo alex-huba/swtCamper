@@ -2,6 +2,7 @@ package swtcamper.javafx.controller;
 
 import java.util.Arrays;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ public class RentingViewController {
 
   @FXML
   public TextField locationTextField;
-
-  @FXML
-  public TextField keywordTextField;
 
   @FXML
   public ComboBox<VehicleType> vehicleTypeComboBox;
@@ -97,8 +95,34 @@ public class RentingViewController {
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
+    vehicleTypeComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(VehicleType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(vehicleTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
     transmissionComboBox.setItems(
       FXCollections.observableArrayList(TransmissionType.values())
+    );
+    transmissionComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(TransmissionType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(transmissionComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
   }
 
@@ -112,9 +136,6 @@ public class RentingViewController {
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
       locationTextField.getText()
     );
-    //    if (!keywordTextField.getText().isEmpty()) newFilter.setKeywords(
-    //      keywordTextField.getText().split(",")
-    //    );
     if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
       vehicleTypeComboBox.getValue()
     );
@@ -156,5 +177,13 @@ public class RentingViewController {
         offerController.getFilteredOffers(newFilter)
       )
     );
+  }
+
+  public void resetVehicleTypeComboBox() {
+    vehicleTypeComboBox.valueProperty().set(null);
+  }
+
+  public void resetTransmissionTypeComboBox() {
+    transmissionComboBox.valueProperty().set(null);
   }
 }
