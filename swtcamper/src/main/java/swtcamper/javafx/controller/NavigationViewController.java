@@ -103,7 +103,7 @@ public class NavigationViewController {
       accountButton,
     };
     navBarItems.getChildren().addAll(toAdd);
-    mainViewController.changeView("account");
+    mainViewController.changeView("home");
     if (isShortText) {
       setShortTexts();
     } else {

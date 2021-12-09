@@ -5,6 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,12 +56,6 @@ public class ModifyOfferViewController {
 
   @FXML
   public TextField locationTextField;
-
-  //  @FXML
-  //  public DatePicker availableFromDatePicker;
-  //
-  //  @FXML
-  //  public DatePicker availableUntilDatePicker;
 
   @FXML
   public TextField contactTextField;
@@ -142,16 +141,24 @@ public class ModifyOfferViewController {
   @Autowired
   private VehicleRepository vehicleRepository;
 
+  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
+
   @FXML
   public void initialize() {
-    placeOfferButton.setText("Place Offer");
+    isEditMode.addListener((observable, oldValue, newValue) ->
+      placeOfferButton.setText(
+        String.format("%s Offer", newValue ? "Update " : "Place")
+      )
+    );
+    isEditMode.set(false);
+
     offerDetailsVBox.getChildren().remove(activeCheckBox);
     resetFields();
   }
 
   @FXML
   public void initialize(OfferDTO offer) {
-    placeOfferButton.setText("Update Offer");
+    isEditMode.set(true);
     offerDetailsVBox.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
@@ -166,8 +173,6 @@ public class ModifyOfferViewController {
     titleTextField.setText(offer.getTitle());
     priceTextField.setText(String.valueOf(offer.getPrice()));
     locationTextField.setText(offer.getLocation());
-    //      availableFromDatePicker.setValue(offer.getAvailableFrom());
-    //      availableUntilDatePicker.setValue(offer.getAvailableUntil());
     contactTextField.setText(offer.getContact());
     descriptionTextArea.setText(offer.getDescription());
     activeCheckBox.setSelected(offer.isActive());
@@ -240,8 +245,6 @@ public class ModifyOfferViewController {
     titleTextField.clear();
     priceTextField.clear();
     locationTextField.clear();
-    //    availableFromDatePicker.setValue(LocalDate.now());
-    //    availableUntilDatePicker.setValue(LocalDate.now());
     contactTextField.clear();
     descriptionTextArea.clear();
     minAgeCheckBox.setSelected(false);
@@ -272,7 +275,7 @@ public class ModifyOfferViewController {
 
   @FXML
   public void placeOfferAction() throws GenericServiceException {
-    if (placeOfferButton.getText().equals("Place Offer")) {
+    if (!isEditMode.get()) {
       String[] pictureURLs = null;
       String[] particularities = null;
 
@@ -313,7 +316,7 @@ public class ModifyOfferViewController {
       );
     }
 
-    if (placeOfferButton.getText().equals("Update Offer")) {
+    if (isEditMode.get()) {
       // TODO entsprechende Felder noch anlegen
       String[] pictureURLs = null;
       String[] particularities = null;
@@ -368,9 +371,9 @@ public class ModifyOfferViewController {
     );
     Optional<ButtonType> result = confirmDelete.showAndWait();
 
-    if (result.isPresent() && result.get() == ButtonType.OK) {
-      mainViewController.changeView("activeOffers");
-    }
+    if (
+      result.isPresent() && result.get() == ButtonType.OK
+    ) mainViewController.changeView("activeOffers");
   }
 
   public void importFileChooserAction(ActionEvent event) {
@@ -380,9 +383,7 @@ public class ModifyOfferViewController {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Open Resource File");
     File file = fileChooser.showOpenDialog(window);
-    if (file == null) {
-      return;
-    }
+    if (file == null) return;
     importPath.setText(file.getAbsolutePath().toString());
   }
 
