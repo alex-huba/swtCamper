@@ -1,0 +1,13 @@
+.idea
+*.iml
+local.properties
+/build
+.gradle
+out
+/node_modules/
+/bin/
+/lib
+
+.classpath
+.project
+/.settings/

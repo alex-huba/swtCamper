@@ -1,0 +1,14 @@
+spring:
+    datasource:
+        continue-on-error: false
+        driver-class-name: org.mariadb.jdbc.Driver
+        initialization-mode: always
+        url: jdbc:mariadb://localhost:3306/SWTCamper?createDatabaseIfNotExist=true
+        username: username
+        password: password
+    jackson:
+        serialization:
+            fail-on-empty-beans: false
+    jpa:
+        hibernate:
+            ddl-auto: update
