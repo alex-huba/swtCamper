@@ -34,7 +34,8 @@ public class UserController implements IUserController {
     }
   }
 
-  public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException {
+  public boolean isUsernameFree(UserDTO userDTO)
+    throws GenericServiceException {
     return userService.isUsernameFree(userDTO);
   }
 

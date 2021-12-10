@@ -1,7 +1,6 @@
 package swtcamper.javafx.controller;
 
 import java.util.Optional;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -72,24 +71,20 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
         errorLabel.setText(
-                "Invalid username: 5 characters minimum and no spaces"
+          "Invalid username: 5 characters minimum and no spaces"
         );
         usernameTf.setBackground(
-                new Background(
-                        new BackgroundFill(
-                                Color.LIGHTPINK,
-                                CornerRadii.EMPTY,
-                                Insets.EMPTY
-                        )
-                )
+          new Background(
+            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+          )
         );
         isUsernameOk.setValue(false);
       } else {
         errorLabel.setText("");
         usernameTf.setBackground(
-                new Background(
-                        new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-                )
+          new Background(
+            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+          )
         );
         isUsernameOk.setValue(true);
       }
@@ -97,24 +92,20 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
         errorLabel.setText(
-                "Invalid password: 5 characters minimum and no spaces"
+          "Invalid password: 5 characters minimum and no spaces"
         );
         passwordPf.setBackground(
-                new Background(
-                        new BackgroundFill(
-                                Color.LIGHTPINK,
-                                CornerRadii.EMPTY,
-                                Insets.EMPTY
-                        )
-                )
+          new Background(
+            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+          )
         );
         isPasswordOk.setValue(false);
       } else {
         errorLabel.setText("");
         passwordPf.setBackground(
-                new Background(
-                        new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-                )
+          new Background(
+            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+          )
         );
         isPasswordOk.setValue(true);
       }
@@ -137,8 +128,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (GenericServiceException e) {
       // Inform user that user doesn't exist in database and forward to registration view if user agrees
       Alert alert = new Alert(
-              Alert.AlertType.CONFIRMATION,
-              "Want to sign up instead? Click ok."
+        Alert.AlertType.CONFIRMATION,
+        "Want to sign up instead? Click ok."
       );
       alert.setTitle("Authentication failed");
       alert.setHeaderText(e.getMessage());

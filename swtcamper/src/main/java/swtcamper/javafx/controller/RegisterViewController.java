@@ -1,9 +1,9 @@
 package swtcamper.javafx.controller;
 
-
 import static swtcamper.backend.entities.UserRole.OPERATOR;
 import static swtcamper.backend.entities.UserRole.RENTER;
 
+import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -22,87 +22,50 @@ import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
-
-
-import java.util.ArrayList;
-
-
-
 @Component
 public class RegisterViewController implements EventHandler<KeyEvent> {
-
-
 
   @Autowired
   private MainViewController mainViewController;
 
-
-
   @Autowired
   private UserController userController;
-
-
 
   @FXML
   public TextField usernameTf;
 
-
-
   @FXML
   public PasswordField passwordPf;
-
-
 
   @FXML
   public PasswordField repeatPasswordPf;
 
-
-
   @FXML
   public TextField emailTf;
-
-
 
   @FXML
   public TextField phoneTf;
 
-
-
   @FXML
   public TextField nameTf;
-
-
 
   @FXML
   public TextField surnameTf;
 
-
-
-
   @FXML
   public CheckBox renterCb;
-
-
 
   @FXML
   public CheckBox providerCb;
 
-
-
   @FXML
   public Button cancelBtn;
-
-
 
   @FXML
   public Button registerBtn;
 
-
-
   @FXML
   public Label errorLabel;
-
-
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
@@ -112,25 +75,17 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private BooleanProperty isNameOk;
   private BooleanProperty isSurnameOk;
 
-
-
   private Background errorBackground = new Background(
-          new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
   );
-
-
 
   private Background neutralBackground = new Background(
-          new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
   );
-
-
 
   private Background successBackground = new Background(
-          new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
+    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
   );
-
-
 
   @FXML
   private void initialize() {
@@ -142,8 +97,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     nameTf.setOnKeyTyped(this);
     surnameTf.setOnKeyTyped(this);
 
-
-
     isUsernameOk = new SimpleBooleanProperty(false);
     isPasswordOk = new SimpleBooleanProperty(false);
     isRepeatPasswordOk = new SimpleBooleanProperty(false);
@@ -152,45 +105,44 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     isNameOk = new SimpleBooleanProperty(false);
     isSurnameOk = new SimpleBooleanProperty(false);
 
-
-
-    registerBtn.disableProperty().bind(isUsernameOk.and(isPasswordOk).and(isRepeatPasswordOk).and(isEmailOk).and(isPhoneOk).and(isNameOk).and(isSurnameOk).and(renterCb.selectedProperty().or(providerCb.selectedProperty())).not());
+    registerBtn
+      .disableProperty()
+      .bind(
+        isUsernameOk
+          .and(isPasswordOk)
+          .and(isRepeatPasswordOk)
+          .and(isEmailOk)
+          .and(isPhoneOk)
+          .and(isNameOk)
+          .and(isSurnameOk)
+          .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
+          .not()
+      );
   }
-
-
 
   @FXML
   public void handleCancelBtn(ActionEvent actionEvent) {
     mainViewController.changeView("login");
   }
 
-
-
   @Override
   public void handle(KeyEvent event) {
-// Validate input and disable login button if input of one field is invalid
+    // Validate input and disable login button if input of one field is invalid
     Object source = event.getSource();
     if (usernameTf.equals(source)) {
       try {
         validateUsernameTf();
-      } catch (GenericServiceException e) {
-      }
-    }
-    else if (passwordPf.equals(source)) validatePasswordPf();
-    else if (repeatPasswordPf.equals(source)) validateRepeatPasswordPf();
-    else if (emailTf.equals(source)) {
+      } catch (GenericServiceException e) {}
+    } else if (passwordPf.equals(source)) validatePasswordPf(); else if (
+      repeatPasswordPf.equals(source)
+    ) validateRepeatPasswordPf(); else if (emailTf.equals(source)) {
       try {
         validateEmailTf();
-      } catch (GenericServiceException e) {
-      }
-    }
-    else if (phoneTf.equals(source)) validatePhoneTf();
-    else if (nameTf.equals(source)) validateNameTf();
-    else if (surnameTf.equals(source)) validateSurnameTf();
+      } catch (GenericServiceException e) {}
+    } else if (phoneTf.equals(source)) validatePhoneTf(); else if (
+      nameTf.equals(source)
+    ) validateNameTf(); else if (surnameTf.equals(source)) validateSurnameTf();
   }
-
-
-
 
   private void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
@@ -198,7 +150,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Invalid username: 5 characters minimum");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input,null))) {
+    } else if (!userController.isUsernameFree(new UserDTO(input, null))) {
       errorLabel.setText("Invalid username: username already taken");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
@@ -208,8 +160,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       isUsernameOk.setValue(true);
     }
   }
-
-
 
   private void validatePasswordPf() {
     String input = passwordPf.getText();
@@ -224,8 +174,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
-
-
   private void validateRepeatPasswordPf() {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
@@ -239,15 +187,20 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
-
-
   private void validateEmailTf() throws GenericServiceException {
     String input = emailTf.getText();
-    if (!userController.isEmailFree(new UserDTO(input,null)) || input.length() < 5 || !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+
+    UserDTO userWithEmail = new UserDTO();
+    userWithEmail.setEmail(input);
+
+    if (
+      input.length() < 5 ||
+      !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+    ) {
       errorLabel.setText("Invalid email. Enter a correct email");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(new UserDTO(input,null))) {
+    } else if (!userController.isEmailFree(userWithEmail)) {
       errorLabel.setText("Invalid email: email already taken");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);
@@ -257,8 +210,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       isEmailOk.setValue(true);
     }
   }
-
-
 
   private void validatePhoneTf() {
     String input = phoneTf.getText();
@@ -273,8 +224,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
-
-
   private void validateNameTf() {
     String input = nameTf.getText();
     if (input.length() < 3 || !input.matches("^[a-zA-Z]*")) {
@@ -287,8 +236,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       isNameOk.setValue(true);
     }
   }
-
-
 
   private void validateSurnameTf() {
     String input = surnameTf.getText();
@@ -303,8 +250,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
-
-
   @FXML
   public void handleRegisterBtn(ActionEvent actionEvent) {
     String username = usernameTf.getText();
@@ -315,8 +260,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String name = nameTf.getText();
     String surname = surnameTf.getText();
 
-
-
     UserDTO userDTO = new UserDTO();
     userDTO.setUsername(username);
     userDTO.setPassword(password);
@@ -325,9 +268,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     userDTO.setName(name);
     userDTO.setSurname(surname);
 
-
-
-// TODO: implement user roles (Provider and Renter instead of User)
+    // TODO: implement user roles (Provider and Renter instead of User)
     if (providerCb.isSelected()) {
       userDTO.setUserRole(OPERATOR);
     } else if (renterCb.isSelected()) {
@@ -336,19 +277,19 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     try {
       userController.register(userDTO);
       mainViewController.handleInformationMessage(
-              "Your data will be checked by operator shortly."
+        "Your data will be checked by operator shortly."
       );
-// Alert alert = new Alert(Alert.AlertType.INFORMATION);
-// alert.setContentText("Your data will be checked by operator shortly.");
-// alert.setTitle("Thank you for signing up!");
-// alert.setHeaderText("We've got your sign up request.");
-// alert.show();
+      // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      // alert.setContentText("Your data will be checked by operator shortly.");
+      // alert.setTitle("Thank you for signing up!");
+      // alert.setHeaderText("We've got your sign up request.");
+      // alert.show();
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());
     }
-// if (isInputValid){
-// Alert
-// }
+    // if (isInputValid){
+    // Alert
+    // }
   }
 }

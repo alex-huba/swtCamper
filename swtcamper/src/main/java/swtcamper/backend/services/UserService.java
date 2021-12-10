@@ -58,7 +58,7 @@ public class UserService {
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
-              "No users found. User database is empty."
+        "No users found. User database is empty."
       );
     }
     return userRepository.findAll();
@@ -66,10 +66,10 @@ public class UserService {
 
   public boolean login(UserDTO userDTO) throws GenericServiceException {
     if (
-            userRepository.existsByUsernameAndPassword(
-                    userDTO.getUsername(),
-                    userDTO.getPassword()
-            )
+      userRepository.existsByUsernameAndPassword(
+        userDTO.getUsername(),
+        userDTO.getPassword()
+      )
     ) {
       return true;
     }
@@ -83,12 +83,11 @@ public class UserService {
    * @throws GenericServiceException when the username is already taken
    */
   public boolean isUsernameFree(UserDTO userDTO)
-          throws GenericServiceException {
+    throws GenericServiceException {
     return !userRepository.existsByUsername(userDTO.getUsername());
   }
 
-  public boolean isEmailFree(UserDTO userDTO)
-          throws GenericServiceException {
+  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
     return !userRepository.existsByEmail(userDTO.getEmail());
   }
 
@@ -101,7 +100,12 @@ public class UserService {
   }
 
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
-      if(userRepository.existsByUsernameAndEmail(userDTO.getUsername(), userDTO.getEmail())){
+    if (
+      userRepository.existsByUsernameAndEmail(
+        userDTO.getUsername(),
+        userDTO.getEmail()
+      )
+    ) {
       // Get user if it exists in database
 
       User user = userRepository.findByUsername(userDTO.getUsername()).get();
@@ -109,10 +113,10 @@ public class UserService {
       user.setPassword(userDTO.getPassword());
 
       userRepository.save(user);
-      } else {
-        throw new GenericServiceException(
-                "Couldn't change password. Username or password is not correct."
-        );
-      }
+    } else {
+      throw new GenericServiceException(
+        "Couldn't change password. Username or password is not correct."
+      );
+    }
   }
 }
