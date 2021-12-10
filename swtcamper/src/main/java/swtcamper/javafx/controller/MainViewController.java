@@ -94,6 +94,7 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
+
   public void changeView(String switchTo) {
     clearView();
 

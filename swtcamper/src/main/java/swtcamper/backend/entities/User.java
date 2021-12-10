@@ -1,7 +1,6 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
-import org.springframework.context.annotation.Primary;
 
 @Entity
 public class User {
@@ -20,7 +19,7 @@ public class User {
   private String password;
 
   @Enumerated(EnumType.STRING)
-  private swtcamper.backend.entities.userRole userRole;
+  private UserRole userRole;
 
   private boolean locked;
   private boolean enabled;
@@ -33,7 +32,7 @@ public class User {
     String email,
     String phone,
     String password,
-    swtcamper.backend.entities.userRole userRole,
+    UserRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -56,7 +55,7 @@ public class User {
     String email,
     String phone,
     String password,
-    swtcamper.backend.entities.userRole userRole,
+    UserRole userRole,
     boolean locked,
     boolean enabled
   ) {
@@ -165,11 +164,11 @@ public class User {
     this.password = password;
   }
 
-  public swtcamper.backend.entities.userRole getUserRole() {
+  public UserRole getUserRole() {
     return userRole;
   }
 
-  public void setUserRole(swtcamper.backend.entities.userRole userRole) {
+  public void setUserRole(UserRole userRole) {
     this.userRole = userRole;
   }
 

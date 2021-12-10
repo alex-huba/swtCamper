@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.userRole;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -21,15 +21,15 @@ public class UserService {
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
    * @param userDTO
-//   * @param username
-//   * @param name
-//   * @param surname
-//   * @param email
-//   * @param phone
-//   * @param password
-//   * @param userRole
-//   * @param locked
-//   * @param enabled
+  //   * @param username
+  //   * @param name
+  //   * @param surname
+  //   * @param email
+  //   * @param phone
+  //   * @param password
+  //   * @param userRole
+  //   * @param locked
+  //   * @param enabled
    * @return
    * @throws GenericServiceException if the username, name, surname, email, phone number or password is invalid
    */
@@ -58,7 +58,7 @@ public class UserService {
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
-        "No users found. User database is empty."
+              "No users found. User database is empty."
       );
     }
     return userRepository.findAll();
@@ -66,10 +66,10 @@ public class UserService {
 
   public boolean login(UserDTO userDTO) throws GenericServiceException {
     if (
-      userRepository.existsByUsernameAndPassword(
-        userDTO.getUsername(),
-        userDTO.getPassword()
-      )
+            userRepository.existsByUsernameAndPassword(
+                    userDTO.getUsername(),
+                    userDTO.getPassword()
+            )
     ) {
       return true;
     }
@@ -83,28 +83,13 @@ public class UserService {
    * @throws GenericServiceException when the username is already taken
    */
   public boolean isUsernameFree(UserDTO userDTO)
-    throws GenericServiceException {
-    if (userRepository.existsByUsername(userDTO.getUsername())) {
-      throw new GenericServiceException("Username is already taken!");
-    }
-    return true;
+          throws GenericServiceException {
+    return !userRepository.existsByUsername(userDTO.getUsername());
   }
 
-  public void changePassword(UserDTO userDTO) throws GenericServiceException {
-    if (userRepository.existsByUsername(userDTO.getUsername())) {
-      // Get user if it exists in database
-      Optional<User> userOptional = userRepository.findByUsername(
-        userDTO.getUsername()
-      );
-      User user = userOptional.get();
-
-      // Change password
-      user.setPassword(userDTO.getPassword());
-      return;
-    }
-    throw new GenericServiceException(
-      "Couldn't change password. Please try again."
-    );
+  public boolean isEmailFree(UserDTO userDTO)
+          throws GenericServiceException {
+    return !userRepository.existsByEmail(userDTO.getEmail());
   }
 
   public void lock(User user) {
@@ -113,5 +98,21 @@ public class UserService {
 
   public void enable(User user) {
     // TODO: implement user activation
+  }
+
+  public void resetPassword(UserDTO userDTO) throws GenericServiceException {
+      if(userRepository.existsByUsernameAndEmail(userDTO.getUsername(), userDTO.getEmail())){
+      // Get user if it exists in database
+
+      User user = userRepository.findByUsername(userDTO.getUsername()).get();
+
+      user.setPassword(userDTO.getPassword());
+
+      userRepository.save(user);
+      } else {
+        throw new GenericServiceException(
+                "Couldn't change password. Username or password is not correct."
+        );
+      }
   }
 }

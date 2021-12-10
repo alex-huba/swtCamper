@@ -34,18 +34,17 @@ public class UserController implements IUserController {
     }
   }
 
-  public boolean isUsernameFree(UserDTO userDTO)
-    throws GenericServiceException {
-    try {
-      return userService.isUsernameFree(userDTO);
-    } catch (GenericServiceException e) {
-      throw new GenericServiceException(e.getMessage());
-    }
+  public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException {
+    return userService.isUsernameFree(userDTO);
+  }
+
+  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
+    return userService.isEmailFree(userDTO);
   }
 
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
     try {
-      userService.changePassword(userDTO);
+      userService.resetPassword(userDTO);
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }

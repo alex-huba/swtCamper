@@ -1,6 +1,7 @@
 package swtcamper.api.contract;
 
 public enum UserRoleDTO {
-  USER,
+  PROVIDER,
+  RENTER,
   OPERATOR,
 }

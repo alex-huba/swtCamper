@@ -1,6 +1,9 @@
 package swtcamper.javafx.controller;
 
 import java.util.Optional;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,11 +50,15 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   @FXML
   public Label errorLabel;
 
+  private final BooleanProperty isUsernameOk = new SimpleBooleanProperty(false);
+  private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
+
   @FXML
   public void initialize() {
-    usernameTf.setOnKeyTyped(this);
-    passwordPf.setOnKeyTyped(this);
-    loginButton.setDisable(true);
+    usernameTf.setOnKeyTyped(this::validateInput);
+    passwordPf.setOnKeyTyped(this::validateInput);
+
+    loginButton.disableProperty().bind((isUsernameOk.and(isPasswordOk)).not());
   }
 
   @Override
@@ -60,74 +67,57 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateInput(KeyEvent event) {
-    boolean isUsernameOk = false;
-    boolean isPasswordOk = false;
-
-    String source = "";
-    source = event.getSource().toString();
-    if (source.contains("usernameTf")) {
-      source = "username";
-    }
-    if (source.contains("passwordPf")) {
-      source = "password";
-    }
-
-    switch (source) {
-      case "username":
-        String inputUsername = usernameTf.getText();
-        if (inputUsername.contains(" ") || inputUsername.length() < 5) {
-          errorLabel.setText(
-            "Invalid username: 5 characters minimum and no spaces"
-          );
-          usernameTf.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
-          isUsernameOk = false;
-        } else {
-          errorLabel.setText("");
-          usernameTf.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
-          isUsernameOk = true;
-        }
-        break;
-      case "password":
-        String inputPassword = passwordPf.getText();
-        if (inputPassword.contains(" ") || inputPassword.length() < 5) {
-          errorLabel.setText(
-            "Invalid password: 5 characters minimum and no spaces"
-          );
-          passwordPf.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
-          isPasswordOk = false;
-        } else {
-          errorLabel.setText("");
-          passwordPf.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
-          isPasswordOk = true;
-        }
-        break;
-    }
-    if (isUsernameOk && isPasswordOk) {
-      loginButton.setDisable(false);
+    Object eventSource = event.getSource();
+    if (eventSource.equals(usernameTf)) {
+      String inputUsername = usernameTf.getText();
+      if (inputUsername.contains(" ") || inputUsername.length() < 5) {
+        errorLabel.setText(
+                "Invalid username: 5 characters minimum and no spaces"
+        );
+        usernameTf.setBackground(
+                new Background(
+                        new BackgroundFill(
+                                Color.LIGHTPINK,
+                                CornerRadii.EMPTY,
+                                Insets.EMPTY
+                        )
+                )
+        );
+        isUsernameOk.setValue(false);
+      } else {
+        errorLabel.setText("");
+        usernameTf.setBackground(
+                new Background(
+                        new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+                )
+        );
+        isUsernameOk.setValue(true);
+      }
+    } else if (eventSource.equals(passwordPf)) {
+      String inputPassword = passwordPf.getText();
+      if (inputPassword.contains(" ") || inputPassword.length() < 5) {
+        errorLabel.setText(
+                "Invalid password: 5 characters minimum and no spaces"
+        );
+        passwordPf.setBackground(
+                new Background(
+                        new BackgroundFill(
+                                Color.LIGHTPINK,
+                                CornerRadii.EMPTY,
+                                Insets.EMPTY
+                        )
+                )
+        );
+        isPasswordOk.setValue(false);
+      } else {
+        errorLabel.setText("");
+        passwordPf.setBackground(
+                new Background(
+                        new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+                )
+        );
+        isPasswordOk.setValue(true);
+      }
     }
   }
 
@@ -147,8 +137,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (GenericServiceException e) {
       // Inform user that user doesn't exist in database and forward to registration view if user agrees
       Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Want to sign up instead? Click ok."
+              Alert.AlertType.CONFIRMATION,
+              "Want to sign up instead? Click ok."
       );
       alert.setTitle("Authentication failed");
       alert.setHeaderText(e.getMessage());
