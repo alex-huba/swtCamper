@@ -33,7 +33,6 @@ public class App extends Application {
 
     primaryStage.setTitle("SWTCamper");
     primaryStage.setScene(new Scene(rootNode));
-    primaryStage.setResizable(false);
     primaryStage.show();
   }
 
