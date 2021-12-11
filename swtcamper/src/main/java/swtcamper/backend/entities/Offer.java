@@ -150,7 +150,7 @@ public class Offer implements IOffer {
 
   @Override
   public void setLocation(String location) {
-    this.location = Offer.this.location;
+    this.location = location;
   }
 
   @Override
@@ -170,7 +170,7 @@ public class Offer implements IOffer {
 
   @Override
   public void setDescription(String description) {
-    this.description = Offer.this.description;
+    this.description = description;
   }
 
   @Override
