@@ -150,7 +150,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Invalid username: 5 characters minimum");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input, null))) {
+    } else if (!userController.isUsernameFree(new UserDTO(input))) {
       errorLabel.setText("Invalid username: username already taken");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
@@ -189,10 +189,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateEmailTf() throws GenericServiceException {
     String input = emailTf.getText();
-
-    UserDTO userWithEmail = new UserDTO();
-    userWithEmail.setEmail(input);
-
     if (
       input.length() < 5 ||
       !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
@@ -200,7 +196,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Invalid email. Enter a correct email");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(userWithEmail)) {
+    } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
       errorLabel.setText("Invalid email: email already taken");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);

@@ -40,6 +40,12 @@ public class UserDTO {
     this.enabled = enabled;
   }
 
+  public UserDTO(String username, String password, String email) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+  }
+
   public UserDTO(String username, String password) {
     this.username = username;
     this.password = password;

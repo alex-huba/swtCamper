@@ -65,7 +65,6 @@
 
         <HBox spacing="15.0" layoutX="100" layoutY="480">
             <children>
-                <CheckBox fx:id="operatorCb" styleClass="operatorRb" text="I'm an operator"/>
                 <CheckBox fx:id="renterCb" styleClass="renterCb" text="I'm a renter"/>
                 <CheckBox fx:id="providerCb" styleClass="providerCb" text="I'm a provider"/>
             </children>
