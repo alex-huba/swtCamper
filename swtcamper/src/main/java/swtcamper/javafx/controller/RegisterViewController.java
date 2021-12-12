@@ -144,7 +144,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     ) validateNameTf(); else if (surnameTf.equals(source)) validateSurnameTf();
   }
 
-  private void validateUsernameTf() throws GenericServiceException {
+  public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText("Invalid username: 5 characters minimum");
@@ -161,7 +161,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validatePasswordPf() {
+  public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText("Invalid password: 5 characters minimum");

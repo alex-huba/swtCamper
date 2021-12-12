@@ -113,7 +113,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleLogin(ActionEvent actionEvent) {
+  public void handleLogin(ActionEvent actionEvent) throws GenericServiceException {
     // Get user input
     String username = usernameTf.getText();
     String password = passwordPf.getText();
@@ -138,6 +138,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         mainViewController.changeView("register");
         registerViewController.usernameTf.setText(username);
         registerViewController.passwordPf.setText(password);
+        registerViewController.validateUsernameTf();
+        registerViewController.validatePasswordPf();
       }
     }
   }
