@@ -65,15 +65,21 @@ public class UserService {
   }
 
   public boolean login(UserDTO userDTO) throws GenericServiceException {
+    // Check if username and password are matching
     if (
       userRepository.existsByUsernameAndPassword(
         userDTO.getUsername(),
         userDTO.getPassword()
       )
     ) {
+      // Username and password are matching
       return true;
     }
-    throw new GenericServiceException("User doesn't exist.");
+    // Check if either username or password exists to see if user typed one of them wrong
+    if(userRepository.existsByUsername(userDTO.getUsername())){
+      throw new GenericServiceException("Wrong password. Please try again.");
+    }
+    throw new GenericServiceException("Username doesn't exist.");
   }
 
   /**

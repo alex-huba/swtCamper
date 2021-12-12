@@ -103,7 +103,7 @@ public class ResetPasswordViewController {
   }
 
   @FXML
-  private void validateUsernameTf() {
+  public void validateUsernameTf() {
     String input = usernameTf.getText();
     if (input.length() == 0) {
       errorMessageLabel.setText("Invalid username");
@@ -131,7 +131,7 @@ public class ResetPasswordViewController {
   }
 
   @FXML
-  private void validatePasswordPf() {
+  public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorMessageLabel.setText("Invalid password: 5 characters minimum");

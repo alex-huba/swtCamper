@@ -31,6 +31,9 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   @Autowired
   private RegisterViewController registerViewController;
 
+  @Autowired
+  private ResetPasswordViewController resetPasswordViewController;
+
   @FXML
   public Button loginButton;
 
@@ -126,20 +129,39 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       userController.login(userDTO);
       mainViewController.login();
     } catch (GenericServiceException e) {
-      // Inform user that user doesn't exist in database and forward to registration view if user agrees
-      Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Want to sign up instead? Click ok."
-      );
-      alert.setTitle("Authentication failed");
-      alert.setHeaderText(e.getMessage());
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
-        mainViewController.changeView("register");
-        registerViewController.usernameTf.setText(username);
-        registerViewController.passwordPf.setText(password);
-        registerViewController.validateUsernameTf();
-        registerViewController.validatePasswordPf();
+
+      // Inform user that entered password is wrong and forward to reset password view if user agrees
+      if(e.getMessage().equals("Wrong password. Please try again.")){
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Forgot password and want to change it? Click ok."
+        );
+        alert.setTitle("Authentication failed");
+        alert.setHeaderText(e.getMessage());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+          mainViewController.changeView("forgotPassword");
+          resetPasswordViewController.usernameTf.setText(username);
+          resetPasswordViewController.passwordPf.setText(password);
+          resetPasswordViewController.validateUsernameTf();
+          resetPasswordViewController.validatePasswordPf();
+        }
+        // Inform user that user doesn't exist in database and forward to registration view if user agrees
+      } else {
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Want to sign up instead? Click ok."
+        );
+        alert.setTitle("Authentication failed");
+        alert.setHeaderText(e.getMessage());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+          mainViewController.changeView("register");
+          registerViewController.usernameTf.setText(username);
+          registerViewController.passwordPf.setText(password);
+          registerViewController.validateUsernameTf();
+          registerViewController.validatePasswordPf();
+        }
       }
     }
   }

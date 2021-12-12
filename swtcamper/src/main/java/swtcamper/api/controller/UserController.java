@@ -30,7 +30,7 @@ public class UserController implements IUserController {
     try {
       return userService.login(userDTO);
     } catch (GenericServiceException e) {
-      throw new GenericServiceException("User doesn't exist.");
+      throw new GenericServiceException(e.getMessage());
     }
   }
 
