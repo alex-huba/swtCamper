@@ -172,7 +172,6 @@
                <String fx:value="btn" />
                <String fx:value="successBtn" />
             </styleClass></Button>
-         <!--   Buttons Place Offer, Cancel-->
          <Button fx:id="cancelButton" onAction="#cancelAction" text="Cancel">
             <styleClass>
                <String fx:value="btn" />
@@ -180,4 +179,5 @@
             </styleClass></Button>
       </children>
    </HBox>
+   <Label fx:id="errorLabel" layoutX="8.0" layoutY="552.0" styleClass="errorMessage" text="errorLabel" />
 </Pane>

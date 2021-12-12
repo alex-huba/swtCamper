@@ -27,7 +27,7 @@ import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
-public class ModifyOfferViewController {
+public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private MainViewController mainViewController;
@@ -71,6 +71,9 @@ public class ModifyOfferViewController {
 
   @FXML
   public ComboBox<VehicleType> typeBox;
+
+  @FXML
+  public Label errorLabel;
 
   @FXML
   public TextField brandTextField;
@@ -129,6 +132,12 @@ public class ModifyOfferViewController {
   @FXML
   public Button placeOfferButton;
 
+  boolean isPriceOk = false;
+  boolean isBrandOk = false;
+  boolean isModelOk = false;
+  boolean isSeatsOk = false;
+  boolean isBedsOk = false;
+
   private long offerID;
   private Vehicle offeredObject;
 
@@ -148,6 +157,13 @@ public class ModifyOfferViewController {
 
     offerDetailsVBox.getChildren().remove(activeCheckBox);
     resetFields();
+
+    priceTextField.setOnKeyTyped(this);
+    brandTextField.setOnKeyTyped(this);
+    modelTextField.setOnKeyTyped(this);
+    seatsTextField.setOnKeyTyped(this);
+    bedsTextField.setOnKeyTyped(this);
+    placeOfferButton.setDisable(true);
   }
 
   @FXML
@@ -265,6 +281,18 @@ public class ModifyOfferViewController {
     kitchenUnitCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
     importPath.clear();
+
+    isPriceOk = false;
+    isBrandOk = false;
+    isSeatsOk = false;
+    isBedsOk = false;
+    isModelOk = false;
+    placeOfferButton.setDisable(true);
+  }
+
+  @Override
+  public void handle(KeyEvent event) {
+    validateOfferInput(event);
   }
 
   @FXML
@@ -273,8 +301,15 @@ public class ModifyOfferViewController {
       String[] pictureURLs = null;
       String[] particularities = null;
 
+      double length = doubleStringConverter.fromString(
+        lengthTextField.getText()
+      );
+      double width = doubleStringConverter.fromString(widthTextField.getText());
+      double height = doubleStringConverter.fromString(
+        heightTextField.getText()
+      );
+
       OfferDTO offerDTO = offerController.create(
-        // TODO add missing fields
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
@@ -289,9 +324,9 @@ public class ModifyOfferViewController {
         brandTextField.getText(),
         modelTextField.getText(),
         constructionYearTextField.getText(),
-        doubleStringConverter.fromString(lengthTextField.getText()),
-        doubleStringConverter.fromString(widthTextField.getText()),
-        doubleStringConverter.fromString(heightTextField.getText()),
+        length,
+        width,
+        height,
         engineTextField.getText(),
         transmissionComboBox.getValue().toString(),
         Integer.parseInt(seatsTextField.getText()),
@@ -368,6 +403,154 @@ public class ModifyOfferViewController {
     if (
       result.isPresent() && result.get() == ButtonType.OK
     ) mainViewController.changeView("activeOffers");
+  }
+
+  private void validateOfferInput(KeyEvent event) {
+    String source = "";
+    source = event.getSource().toString();
+    if (source.contains("priceTextField")) {
+      source = "price";
+    }
+    if (source.contains("brandTextField")) {
+      source = "brand";
+    }
+    if (source.contains("modelTextField")) {
+      source = "model";
+    }
+    if (source.contains("seatsTextField")) {
+      source = "seats";
+    }
+    if (source.contains("bedsTextField")) {
+      source = "beds";
+    }
+
+    switch (source) {
+      case "price":
+        String inputPrice = priceTextField.getText();
+        if (inputPrice.isEmpty() || !inputPrice.matches("[0-9]*")) {
+          errorLabel.setText("Invalid price");
+          priceTextField.setBackground(
+            new Background(
+              new BackgroundFill(
+                Color.LIGHTPINK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+              )
+            )
+          );
+          isPriceOk = false;
+        } else {
+          errorLabel.setText("");
+          priceTextField.setBackground(
+            new Background(
+              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+          );
+          isPriceOk = true;
+        }
+        break;
+      case "brand":
+        String inputBrand = brandTextField.getText();
+        if (inputBrand.isEmpty()) {
+          errorLabel.setText("Invalid brand");
+          brandTextField.setBackground(
+            new Background(
+              new BackgroundFill(
+                Color.LIGHTPINK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+              )
+            )
+          );
+          isBrandOk = false;
+        } else {
+          errorLabel.setText("");
+          brandTextField.setBackground(
+            new Background(
+              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+          );
+          isBrandOk = true;
+        }
+        break;
+      case "model":
+        String inputModel = modelTextField.getText();
+        if (inputModel.isEmpty()) {
+          errorLabel.setText("Invalid model");
+          modelTextField.setBackground(
+            new Background(
+              new BackgroundFill(
+                Color.LIGHTPINK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+              )
+            )
+          );
+          isModelOk = false;
+        } else {
+          errorLabel.setText("");
+          modelTextField.setBackground(
+            new Background(
+              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+          );
+          isModelOk = true;
+        }
+        break;
+      case "seats":
+        String inputSeats = seatsTextField.getText();
+        if (inputSeats.isEmpty() || !inputSeats.matches("[0-9]*")) {
+          errorLabel.setText("Invalid seats");
+          seatsTextField.setBackground(
+            new Background(
+              new BackgroundFill(
+                Color.LIGHTPINK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+              )
+            )
+          );
+          isSeatsOk = false;
+        } else {
+          errorLabel.setText("");
+          seatsTextField.setBackground(
+            new Background(
+              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+          );
+          isSeatsOk = true;
+        }
+        break;
+      case "beds":
+        String inputBeds = bedsTextField.getText();
+        if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
+          errorLabel.setText("Invalid beds");
+          bedsTextField.setBackground(
+            new Background(
+              new BackgroundFill(
+                Color.LIGHTPINK,
+                CornerRadii.EMPTY,
+                Insets.EMPTY
+              )
+            )
+          );
+          isBedsOk = false;
+        } else {
+          errorLabel.setText("");
+          bedsTextField.setBackground(
+            new Background(
+              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+            )
+          );
+          isBedsOk = true;
+        }
+        break;
+    }
+    if (isPriceOk && isBrandOk && isModelOk && isSeatsOk && isBedsOk) {
+      placeOfferButton.setDisable(false);
+    } else {
+      placeOfferButton.setDisable(true);
+    }
   }
 
   public void importFileChooserAction(ActionEvent event) {
