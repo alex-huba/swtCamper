@@ -45,6 +45,9 @@ public class RentingViewController {
   public TextField bedAmountTextField;
 
   @FXML
+  public CheckBox excludeInactiveCheckBox;
+
+  @FXML
   public CheckBox roofTentCheckBox;
 
   @FXML
@@ -91,6 +94,8 @@ public class RentingViewController {
     offersList.setItems(
       FXCollections.observableArrayList(offerController.offers())
     );
+
+    excludeInactiveCheckBox.setSelected(true);
 
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -164,6 +169,7 @@ public class RentingViewController {
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
       Integer.parseInt(bedAmountTextField.getText())
     );
+    newFilter.setExcludeInactive(excludeInactiveCheckBox.isSelected());
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
