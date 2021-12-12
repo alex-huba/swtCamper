@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
@@ -94,7 +95,8 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRole userRole, boolean isEnabled) {
+  public void login(UserRole userRole, boolean isEnabled)
+    throws GenericServiceException {
     navBarItems.getChildren().removeIf(b -> true);
 
     List<Button> toAdd = new ArrayList<>();

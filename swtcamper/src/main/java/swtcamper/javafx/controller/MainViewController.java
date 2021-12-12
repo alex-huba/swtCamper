@@ -42,9 +42,6 @@ public class MainViewController {
   public Pane homeViewBox;
 
   @FXML
-  public Pane filterOptionsViewBox;
-
-  @FXML
   public Pane placeOfferViewBox;
 
   @FXML
@@ -75,7 +72,7 @@ public class MainViewController {
   public Pane forgotPasswordViewBox;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws GenericServiceException {
     changeView("home");
   }
 
@@ -155,7 +152,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.loginButton
         );
-        loginViewController.resetInputfields();
+        loginViewController.resetInputFields();
         break;
       case "account":
         mainStage.getChildren().add(accountViewBox);
@@ -198,7 +195,8 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserRole userRole, boolean isEnabled) {
+  public void login(UserRole userRole, boolean isEnabled)
+    throws GenericServiceException {
     navigationViewController.login(userRole, isEnabled);
   }
 
