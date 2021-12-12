@@ -67,6 +67,15 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public CheckBox min21CheckBox;
+
+  @FXML
+  public CheckBox crossBordersCheckBox;
+
+  @FXML
+  public CheckBox payCashCheckBox;
+
+  @FXML
   public ListView<OfferDTO> offersList;
 
   @Autowired
@@ -182,6 +191,10 @@ public class RentingViewController {
     newFilter.setToilet(toiletCheckBox.isSelected());
     newFilter.setKitchen(kitchenCheckBox.isSelected());
     newFilter.setFridge(fridgeCheckBox.isSelected());
+
+    newFilter.setMinAge21(min21CheckBox.isSelected());
+    newFilter.setCrossingBordersAllowed(crossBordersCheckBox.isSelected());
+    newFilter.setDepositInCash(payCashCheckBox.isSelected());
 
     offersList.setItems(
       FXCollections.observableArrayList(
