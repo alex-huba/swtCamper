@@ -153,6 +153,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
+  private final Background errorBackground = new Background(
+    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+  );
+  private final Background successBackground = new Background(
+    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
+  );
+
   @FXML
   public void initialize() {
     isEditMode.addListener((observable, oldValue, newValue) ->
@@ -295,6 +302,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     isBedsOk = false;
     isModelOk = false;
     placeOfferButton.setDisable(true);
+    errorLabel.setText("");
   }
 
   @Override
@@ -436,23 +444,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String inputPrice = priceTextField.getText();
         if (inputPrice.isEmpty() || !inputPrice.matches("[0-9]*")) {
           errorLabel.setText("Invalid price");
-          priceTextField.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
+          priceTextField.setBackground(errorBackground);
           isPriceOk = false;
         } else {
           errorLabel.setText("");
-          priceTextField.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
+          priceTextField.setBackground(successBackground);
           isPriceOk = true;
         }
         break;
@@ -460,23 +456,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String inputBrand = brandTextField.getText();
         if (inputBrand.isEmpty()) {
           errorLabel.setText("Invalid brand");
-          brandTextField.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
+          brandTextField.setBackground(errorBackground);
           isBrandOk = false;
         } else {
           errorLabel.setText("");
-          brandTextField.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
+          brandTextField.setBackground(successBackground);
           isBrandOk = true;
         }
         break;
@@ -484,47 +468,27 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String inputModel = modelTextField.getText();
         if (inputModel.isEmpty()) {
           errorLabel.setText("Invalid model");
-          modelTextField.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
+          modelTextField.setBackground(errorBackground);
           isModelOk = false;
         } else {
           errorLabel.setText("");
-          modelTextField.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
+          modelTextField.setBackground(successBackground);
           isModelOk = true;
         }
         break;
       case "seats":
         String inputSeats = seatsTextField.getText();
-        if (inputSeats.isEmpty() || !inputSeats.matches("[0-9]*")) {
-          errorLabel.setText("Invalid seats");
-          seatsTextField.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
+        if (
+          inputSeats.isEmpty() ||
+          !inputSeats.matches("[0-9]*") ||
+          inputSeats.equals("0")
+        ) {
+          errorLabel.setText("Invalid seat amount");
+          seatsTextField.setBackground(errorBackground);
           isSeatsOk = false;
         } else {
           errorLabel.setText("");
-          seatsTextField.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
+          seatsTextField.setBackground(successBackground);
           isSeatsOk = true;
         }
         break;
@@ -532,32 +496,29 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String inputBeds = bedsTextField.getText();
         if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
           errorLabel.setText("Invalid beds");
-          bedsTextField.setBackground(
-            new Background(
-              new BackgroundFill(
-                Color.LIGHTPINK,
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-              )
-            )
-          );
+          bedsTextField.setBackground(errorBackground);
           isBedsOk = false;
         } else {
           errorLabel.setText("");
-          bedsTextField.setBackground(
-            new Background(
-              new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-            )
-          );
+          bedsTextField.setBackground(successBackground);
           isBedsOk = true;
         }
         break;
     }
-    if (isPriceOk && isBrandOk && isModelOk && isSeatsOk && isBedsOk) {
-      placeOfferButton.setDisable(false);
-    } else {
-      placeOfferButton.setDisable(true);
-    }
+    placeOfferButton.setDisable(
+      !(
+        isPriceOk &&
+        !isBrandOk &&
+        !isModelOk &&
+        !isSeatsOk &&
+        !isBedsOk &&
+        !titleTextField.getText().isEmpty() &&
+        !locationTextField.getText().isEmpty() &&
+        !contactTextField.getText().isEmpty() &&
+        typeBox.getValue() != null &&
+        transmissionComboBox.getValue() != null
+      )
+    );
   }
 
   public void importFileChooserAction(ActionEvent event) {

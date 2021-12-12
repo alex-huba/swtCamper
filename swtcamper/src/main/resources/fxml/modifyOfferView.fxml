@@ -19,35 +19,20 @@
          <VBox prefWidth="230.0" spacing="10.0">
             <VBox fx:id="offerDetailsVBox" prefHeight="350.0" prefWidth="230.0" spacing="5.0">
                <VBox prefHeight="50.0" prefWidth="170.0" spacing="5.0">
-                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Title:" />
+                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Title*:" />
                   <TextField fx:id="titleTextField" />
                </VBox>
                <HBox alignment="CENTER_LEFT" prefWidth="200.0">
-                  <Label prefHeight="6.0" prefWidth="120.0" styleClass="descriptionLabel" text="Price per day:" />
+                  <Label prefHeight="6.0" prefWidth="120.0" styleClass="descriptionLabel" text="Price per day*:" />
                   <TextField fx:id="priceTextField" prefWidth="80.0" />
                   <Label prefHeight="6.0" text=" €" />
                </HBox>
                <VBox prefHeight="50.0" prefWidth="170.0">
-                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Pick-up location:" />
+                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Pick-up location*:" />
                   <TextField fx:id="locationTextField" />
                </VBox>
-<!--               <VBox prefHeight="50.0" prefWidth="170.0" spacing="2.0">-->
-<!--                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Availability:">-->
-<!--                     <font>-->
-<!--                        <Font name="System Bold" size="12.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
-<!--                     <Label prefWidth="40.0" text="  From: " />-->
-<!--                     <DatePicker fx:id="availableFromDatePicker" />-->
-<!--                  </HBox>-->
-<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
-<!--                     <Label prefWidth="40.0" text="  Until:" />-->
-<!--                     <DatePicker fx:id="availableUntilDatePicker" />-->
-<!--                  </HBox>-->
-<!--               </VBox>-->
                <VBox prefHeight="50.0">
-                  <Label styleClass="descriptionLabel" text="Contact: " />
+                  <Label styleClass="descriptionLabel" text="Contact*: " />
                   <TextField fx:id="contactTextField" />
                </VBox>
                <VBox spacing="5.0">
@@ -72,17 +57,17 @@
          <VBox prefWidth="303.0" spacing="5.0">
             <!--   Vehicle Type-->
             <VBox layoutX="15.0" layoutY="15.0" prefHeight="42.0">
-               <Label styleClass="descriptionLabel" text="Vehicle type: " />
+               <Label styleClass="descriptionLabel" text="Vehicle type*: " />
                <ComboBox fx:id="typeBox" prefWidth="150.0" />
             </VBox>
             <!--   Marke, Modell, Baujahr-->
             <HBox spacing="5.0">
                <VBox>
-                  <Label styleClass="descriptionLabel" text="Brand: " />
+                  <Label styleClass="descriptionLabel" text="Brand*: " />
                   <TextField fx:id="brandTextField" />
                </VBox>
                <VBox>
-                  <Label styleClass="descriptionLabel" text="Model: " />
+                  <Label styleClass="descriptionLabel" text="Model*: " />
                   <TextField fx:id="modelTextField" />
                </VBox>
             </HBox>
@@ -110,17 +95,17 @@
                   <TextField fx:id="engineTextField" />
                </VBox>
                <VBox>
-                  <Label styleClass="descriptionLabel" text="transmission: " />
+                  <Label styleClass="descriptionLabel" text="transmission*:" />
                   <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="116.0" />
                </VBox>
             </HBox>
             <HBox spacing="5.0">
                <VBox>
-                  <Label styleClass="descriptionLabel" text="seats: " />
+                  <Label styleClass="descriptionLabel" text="seats*: " />
                   <TextField fx:id="seatsTextField" />
                </VBox>
                <VBox>
-                  <Label styleClass="descriptionLabel" text="beds: " />
+                  <Label styleClass="descriptionLabel" text="beds*: " />
                   <TextField fx:id="bedsTextField" />
                </VBox>
             </HBox>
