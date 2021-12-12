@@ -2,16 +2,13 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -171,38 +168,6 @@ public class MainViewController {
         break;
     }
   }
-
-  //  public void clearView() {
-  //    mainStage.getChildren().remove(activeOffersViewBox);
-  //    mainStage.getChildren().remove(homeViewBox);
-  //    mainStage.getChildren().remove(placeOfferViewBox);
-  //    mainStage.getChildren().remove(loginViewBox);
-  //    mainStage.getChildren().remove(registerViewBox);
-  //    mainStage.getChildren().remove(forgotPasswordViewBox);
-  //  }
-
-  //  public void changeView(String switchTo) {
-  //    clearView();
-  //
-  //    if (switchTo.equals("MyOffers")) mainStage
-  //            .getChildren()
-  //            .add(activeOffersViewBox);
-  //    if (switchTo.equals("rentVan")) mainStage
-  //            .getChildren()
-  //            .add(homeViewBox);
-  //    if (switchTo.equals("placeOffer")) mainStage
-  //            .getChildren()
-  //            .add(placeOfferViewBox);
-  //    if (switchTo.equals("login")) mainStage
-  //            .getChildren()
-  //            .add(loginViewBox);
-  //    if(switchTo.equals("register")) mainStage
-  //            .getChildren()
-  //            .add(registerViewBox);
-  //    if (switchTo.equals("forgotPassword")) mainStage
-  //            .getChildren()
-  //            .add(forgotPasswordViewBox);
-  //  }
 
   public void handleExceptionMessage(String message) {
     Alert alert = new Alert(AlertType.ERROR);

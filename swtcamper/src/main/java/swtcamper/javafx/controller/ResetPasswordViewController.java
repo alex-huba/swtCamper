@@ -1,11 +1,9 @@
 package swtcamper.javafx.controller;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -69,6 +67,7 @@ public class ResetPasswordViewController {
     isPasswordOk = new SimpleBooleanProperty(false);
     isRepeatPasswordOk = new SimpleBooleanProperty(false);
 
+    // Disable reset button until every field contains valid input
     resetButton
       .disableProperty()
       .bind(
@@ -80,7 +79,7 @@ public class ResetPasswordViewController {
       );
   }
 
-  public void resetPassword(ActionEvent actionEvent) {
+  public void resetPassword() {
     try {
       UserDTO userDTO = new UserDTO();
       userDTO.setUsername(usernameTf.getText());

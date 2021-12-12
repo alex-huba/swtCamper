@@ -9,11 +9,16 @@ import swtcamper.backend.entities.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
   List<User> findAll();
+
   Optional<User> findById(Long id);
+
   Optional<User> findByUsername(String username);
+
   boolean existsByUsernameAndPassword(String username, String password);
+
   boolean existsByUsername(String username);
+
   boolean existsByEmail(String email);
+
   boolean existsByUsernameAndEmail(String username, String email);
-  boolean existsByPassword(String password);
 }

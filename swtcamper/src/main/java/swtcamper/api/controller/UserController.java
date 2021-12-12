@@ -24,11 +24,11 @@ public class UserController implements IUserController {
     try {
       return modelMapper.userToUserDTO(userService.create(userDTO));
     } catch (GenericServiceException e) {
-      // TODO: Check exception handling
       throw new GenericServiceException("Could not register user.");
     }
   }
 
+  @Override
   public UserRole login(UserDTO userDTO)
     throws WrongPasswordException, UserDoesNotExistException {
     try {
@@ -40,15 +40,18 @@ public class UserController implements IUserController {
     }
   }
 
+  @Override
   public boolean isUsernameFree(UserDTO userDTO)
     throws GenericServiceException {
     return userService.isUsernameFree(userDTO);
   }
 
+  @Override
   public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
     return userService.isEmailFree(userDTO);
   }
 
+  @Override
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
     try {
       userService.resetPassword(userDTO);
@@ -57,10 +60,12 @@ public class UserController implements IUserController {
     }
   }
 
+  @Override
   public long countUser() {
     return userService.countUser();
   }
 
+  @Override
   public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
     return userService.isEnabled(userDTO);
   }

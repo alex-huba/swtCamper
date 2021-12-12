@@ -3,7 +3,6 @@ package swtcamper.javafx.controller;
 import java.util.Optional;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -73,6 +72,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
 
   private void validateInput(KeyEvent event) {
     Object eventSource = event.getSource();
+
+    // Validate username
     if (eventSource.equals(usernameTf)) {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
@@ -94,6 +95,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         );
         isUsernameOk.setValue(true);
       }
+      // Validate password
     } else if (eventSource.equals(passwordPf)) {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
@@ -147,6 +149,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         resetPasswordViewController.usernameTf.setText(username);
       }
     } catch (UserDoesNotExistException e) {
+      // Inform user that user account doesn't exist
       Alert alert = new Alert(
         Alert.AlertType.CONFIRMATION,
         "Want to sign up instead? Click ok."
@@ -165,12 +168,12 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleRegister(ActionEvent actionEvent) {
+  public void handleRegister() {
     mainViewController.changeView("register");
   }
 
   @FXML
-  public void handleForgotPassword(ActionEvent actionEvent) {
+  public void handleForgotPassword() {
     mainViewController.changeView("forgotPassword");
   }
 

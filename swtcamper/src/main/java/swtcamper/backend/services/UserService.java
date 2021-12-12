@@ -57,6 +57,11 @@ public class UserService {
     // TODO: implement user update
   }
 
+  /**
+   * Finds all user.
+   * @return
+   * @throws GenericServiceException if there are no user in the database
+   */
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
@@ -66,6 +71,13 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  /**
+   * Checks if user exists in database and gets information about user role of the user if it does.
+   * @param userDTO
+   * @return the user role of the user if user already exists in database
+   * @throws WrongPasswordException if the password doesn't match with the username
+   * @throws UserDoesNotExistException if username wasn't found in the database
+   */
   public UserRole login(UserDTO userDTO)
     throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
@@ -95,20 +107,29 @@ public class UserService {
   }
 
   /**
-   * Method to check if username is free
+   * Checks if username is already existing in database.
    * @param userDTO
-   * @return
-   * @throws GenericServiceException when the username is already taken
+   * @return true if username doesn't exist in database yet
+   * @return false if username is already taken in database
    */
-  public boolean isUsernameFree(UserDTO userDTO)
-    throws GenericServiceException {
+  public boolean isUsernameFree(UserDTO userDTO) {
     return !userRepository.existsByUsername(userDTO.getUsername());
   }
 
-  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
+  /**
+   * Checks if email is already existing in database.
+   * @param userDTO
+   * @return true if email doesn't exist in database yet
+   * @return false if email is already taken in database
+   */
+  public boolean isEmailFree(UserDTO userDTO) {
     return !userRepository.existsByEmail(userDTO.getEmail());
   }
 
+  /**
+   * Locks an user account.
+   * @param userDTO
+   */
   public void lock(UserDTO userDTO) {
     Optional<User> userOptional = userRepository.findById(userDTO.getId());
     if (userOptional.isPresent()) {
@@ -117,6 +138,10 @@ public class UserService {
     }
   }
 
+  /**
+   * Unlocks an user account.
+   * @param userDTO
+   */
   public void unlock(UserDTO userDTO) {
     Optional<User> userOptional = userRepository.findById(userDTO.getId());
     if (userOptional.isPresent()) {
@@ -125,6 +150,10 @@ public class UserService {
     }
   }
 
+  /**
+   * Enables an user account.
+   * @param userDTO
+   */
   public void enable(UserDTO userDTO) {
     Optional<User> userOptional = userRepository.findById(userDTO.getId());
     if (userOptional.isPresent()) {
@@ -133,6 +162,12 @@ public class UserService {
     }
   }
 
+  /**
+   * Checks if an user account is enabled.
+   * @param userDTO
+   * @return
+   * @throws UserDoesNotExistException if there is no user account found in database
+   */
   public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
     Optional<User> userOptional = userRepository.findByUsername(
       userDTO.getUsername()
@@ -146,19 +181,22 @@ public class UserService {
     throw new UserDoesNotExistException("User does not exist");
   }
 
+  /**
+   * Changes an users' password.
+   * @param userDTO
+   * @throws GenericServiceException if user account doesn't exist in database
+   */
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
+    // Check if user exists in database
     if (
       userRepository.existsByUsernameAndEmail(
         userDTO.getUsername(),
         userDTO.getEmail()
       )
     ) {
-      // Get user if it exists in database
-
+      // Get user if it exists in database, change password and save it back on database
       User user = userRepository.findByUsername(userDTO.getUsername()).get();
-
       user.setPassword(userDTO.getPassword());
-
       userRepository.save(user);
     } else {
       throw new GenericServiceException(
@@ -167,6 +205,10 @@ public class UserService {
     }
   }
 
+  /**
+   * Counts the number of user accounts that exist in the database.
+   * @return
+   */
   public long countUser() {
     return userRepository.count();
   }

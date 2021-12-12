@@ -99,11 +99,13 @@ public class NavigationViewController {
 
     List<Button> toAdd = new ArrayList<>();
 
+    // Enable renter functionalities
     if (userRole == UserRole.RENTER) {
       toAdd.add(homeButton);
       toAdd.add(dealHistoryButton);
       toAdd.add(myBookingsButton);
       toAdd.add(accountButton);
+      // Enable provider functionalities
     } else if (userRole == UserRole.PROVIDER) {
       toAdd.add(homeButton);
       toAdd.add(newOfferButton);
@@ -112,6 +114,7 @@ public class NavigationViewController {
       if (isEnabled) toAdd.add(excludeButton);
       toAdd.add(myBookingsButton);
       toAdd.add(accountButton);
+      // Enable operator functionalities
     } else {
       toAdd.add(homeButton);
       toAdd.add(newOfferButton);

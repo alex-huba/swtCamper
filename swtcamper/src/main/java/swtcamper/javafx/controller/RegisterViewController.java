@@ -2,15 +2,12 @@ package swtcamper.javafx.controller;
 
 import static swtcamper.backend.entities.UserRole.*;
 
-import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -105,6 +102,18 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     isNameOk = new SimpleBooleanProperty(false);
     isSurnameOk = new SimpleBooleanProperty(false);
 
+    renterCb
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue.equals(false)) providerCb.setSelected(false);
+      });
+    providerCb
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue.equals(true)) renterCb.setSelected(true);
+      });
+
+    // Disable register button until every field contains valid input
     registerBtn
       .disableProperty()
       .bind(
@@ -121,13 +130,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleCancelBtn(ActionEvent actionEvent) {
+  public void handleCancelBtn() {
     mainViewController.changeView("login");
   }
 
   @Override
   public void handle(KeyEvent event) {
-    // Validate input and disable login button if input of one field is invalid
+    // Validate input and disable login button until every field contains valid input
     Object source = event.getSource();
     if (usernameTf.equals(source)) {
       try {
@@ -209,7 +218,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validatePhoneTf() {
     String input = phoneTf.getText();
-    if (input.length() < 5 || !input.matches("^[0-9-]*")) {
+    if (input.length() < 9 || !input.matches("^[0-9-]*")) {
       errorLabel.setText("Invalid phone number. No letters allowed.");
       phoneTf.setBackground(errorBackground);
       isPhoneOk.setValue(false);
@@ -250,7 +259,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public void handleRegisterBtn() {
     String username = usernameTf.getText();
     String password = passwordPf.getText();
-    String repeatPassword = repeatPasswordPf.getText();
     String email = emailTf.getText();
     String phone = phoneTf.getText();
     String name = nameTf.getText();
@@ -274,6 +282,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
     try {
       userController.register(userDTO);
+      // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
           String.format(
@@ -281,6 +290,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
             username
           )
         );
+        // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
           String.format("New user '%s' created. Login to proceed.", username)

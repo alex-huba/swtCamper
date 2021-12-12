@@ -68,6 +68,8 @@ public class ModelMapper {
   public UserRoleDTO toUserRoleDTO(UserRole userRole)
     throws GenericServiceException {
     switch (userRole) {
+      case PROVIDER:
+        return UserRoleDTO.PROVIDER;
       case RENTER:
         return UserRoleDTO.RENTER;
       case OPERATOR:
