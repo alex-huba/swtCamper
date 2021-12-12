@@ -48,6 +48,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
+                        <CheckBox fx:id="excludeInactiveCheckBox" mnemonicParsing="false" text="Exclude inactive offers" />
                         <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" text="Roof tent" />
                         <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" text="Roof rack" />
                         <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" text="Bike rack" />
