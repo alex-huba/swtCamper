@@ -60,18 +60,11 @@
                             <!--                            <fx:include source="accountView.fxml" />-->
                         </Pane>
                         <Pane fx:id="registerViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Account" style="-fx-text-fill: #FFF"/>
-                            <Button onAction="#logout" text="Logout"/>
-                            <!--                            TODO after Merging: include-->
-                                                     <fx:include source="registerView.fxml" />
+                            <fx:include source="registerView.fxml" />
                         </Pane>
                         <Pane fx:id="forgotPasswordViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Account" style="-fx-text-fill: #FFF"/>
-                            <Button onAction="#logout" text="Logout"/>
-                            <!--                            TODO after Merging: include-->
                             <fx:include source="resetPasswordView.fxml" />
                         </Pane>
-
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
