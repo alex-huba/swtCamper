@@ -22,56 +22,66 @@
    </left>
    <center>
        <AnchorPane fx:id="mainStage" prefHeight="600.0" prefWidth="596.0">
-           <children>
-               <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <fx:include source="rentingView.fxml"/>
-               </Pane>
-               <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <fx:include source="placeOfferView.fxml"/>
-               </Pane>
-               <Pane fx:id="updateOfferViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Place Offer" style="-fx-text-fill: #FFF"/>
-                   <fx:include source="updateOfferView.fxml"/>
-               </Pane>
-               <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <fx:include source="myOffersView.fxml"/>
-               </Pane>
-               <Pane fx:id="dealHistoryViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Deal History" style="-fx-text-fill: #FFF"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="dealHistoryView.fxml" />-->
-               </Pane>
-               <Pane fx:id="excludeRenterViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Exclude Renters" style="-fx-text-fill: #FFF"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="excludeRenterView.fxml" />-->
-               </Pane>
-               <Pane fx:id="approveDealViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Approve Deal" style="-fx-text-fill: #FFF"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="approveDealView.fxml" />-->
-               </Pane>
-               <Pane fx:id="myBookingsViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="My Bookings" style="-fx-text-fill: #FFF"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="myBookingsView.fxml" />-->
-               </Pane>
-               <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Login" style="-fx-text-fill: #FFF"/>
-                   <Button onAction="#login" text="Login"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="loginView.fxml" />-->
-               </Pane>
-               <Pane fx:id="accountViewBox" prefHeight="200.0" prefWidth="200.0">
-                   <Label text="Account" style="-fx-text-fill: #FFF"/>
-                   <Button onAction="#logout" text="Logout"/>
-                   <!--                            TODO after Merging: include-->
-                   <!--                            <fx:include source="accountView.fxml" />-->
-               </Pane>
-           </children>
-           <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-           </padding>
-       </AnchorPane>
+                    <children>
+                        <Pane fx:id="homeViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="rentingView.fxml"/>
+                        </Pane>
+                        <Pane fx:id="placeOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="placeOfferView.fxml"/>
+                        </Pane>
+                        <Pane fx:id="updateOfferViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Place Offer" style="-fx-text-fill: #FFF"/>
+                            <fx:include source="updateOfferView.fxml"/>
+                        </Pane>
+                        <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="myOffersView.fxml"/>
+                        </Pane>
+                        <Pane fx:id="dealHistoryViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Deal History" style="-fx-text-fill: #FFF"/>
+                            <!--                            TODO after Merging: include-->
+                            <!--                            <fx:include source="dealHistoryView.fxml" />-->
+                        </Pane>
+                        <Pane fx:id="excludeRenterViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Exclude Renters" style="-fx-text-fill: #FFF"/>
+                            <!--                            TODO after Merging: include-->
+                            <!--                            <fx:include source="excludeRenterView.fxml" />-->
+                        </Pane>
+                        <Pane fx:id="approveDealViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Approve Deal" style="-fx-text-fill: #FFF"/>
+                            <!--                            TODO after Merging: include-->
+                            <!--                            <fx:include source="approveDealView.fxml" />-->
+                        </Pane>
+                        <Pane fx:id="myBookingsViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="My Bookings" style="-fx-text-fill: #FFF"/>
+                            <!--                            TODO after Merging: include-->
+                            <!--                            <fx:include source="myBookingsView.fxml" />-->
+                        </Pane>
+                        <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
+                                                        <fx:include source="loginView.fxml" />
+                        </Pane>
+                        <Pane fx:id="accountViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Account" style="-fx-text-fill: #FFF"/>
+                            <Button onAction="#logout" text="Logout"/>
+                            <!--                            TODO after Merging: include-->
+                            <!--                            <fx:include source="accountView.fxml" />-->
+                        </Pane>
+                        <Pane fx:id="registerViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Account" style="-fx-text-fill: #FFF"/>
+                            <Button onAction="#logout" text="Logout"/>
+                            <!--                            TODO after Merging: include-->
+                                                     <fx:include source="registerView.fxml" />
+                        </Pane>
+                        <Pane fx:id="forgotPasswordViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <Label text="Account" style="-fx-text-fill: #FFF"/>
+                            <Button onAction="#logout" text="Logout"/>
+                            <!--                            TODO after Merging: include-->
+                            <fx:include source="resetPasswordView.fxml" />
+                        </Pane>
+
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </AnchorPane>
    </center>
 </BorderPane>
