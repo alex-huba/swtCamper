@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
@@ -28,7 +29,8 @@ public class UserController implements IUserController {
     }
   }
 
-  public boolean login(UserDTO userDTO) throws WrongPasswordException, UserDoesNotExistException {
+  public UserRole login(UserDTO userDTO)
+    throws WrongPasswordException, UserDoesNotExistException {
     try {
       return userService.login(userDTO);
     } catch (WrongPasswordException e) {
@@ -53,5 +55,13 @@ public class UserController implements IUserController {
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
+  }
+
+  public long countUser() {
+    return userService.countUser();
+  }
+
+  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
+    return userService.isEnabled(userDTO);
   }
 }

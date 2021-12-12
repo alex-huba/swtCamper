@@ -22,7 +22,7 @@
               </HBox>
               <HBox styleClass="hBoxField">
                   <Label styleClass="passwordLabel,descriptionLabel" text="Password" />
-                  <PasswordField fx:id="passwordPf" promptText="password" styleClass="inputField" />
+                  <PasswordField fx:id="passwordPf" promptText="password" styleClass="inputField" onKeyReleased="#handleEnterKey" />
               </HBox>
               <Button fx:id="loginButton" onAction="#handleLogin" styleClass="btnLogin,Button" text="login" />
               <Button fx:id="forgotPasswordButton" onAction="#handleForgotPassword" styleClass="btnForgotPassword" text="Forgot your password?" />

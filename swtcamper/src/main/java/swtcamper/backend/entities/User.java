@@ -24,54 +24,10 @@ public class User {
   private boolean locked;
   private boolean enabled;
 
-  public User(
-    Long id,
-    String username,
-    String name,
-    String surname,
-    String email,
-    String phone,
-    String password,
-    UserRole userRole,
-    boolean locked,
-    boolean enabled
-  ) {
-    this.id = id;
-    this.username = username;
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.phone = phone;
-    this.password = password;
-    this.userRole = userRole;
-    this.locked = locked;
-    this.enabled = enabled;
-  }
-
-  public User(
-    String username,
-    String name,
-    String surname,
-    String email,
-    String phone,
-    String password,
-    UserRole userRole,
-    boolean locked,
-    boolean enabled
-  ) {
-    this.username = username;
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.phone = phone;
-    this.password = password;
-    this.userRole = userRole;
-    this.locked = locked;
-    this.enabled = enabled;
-  }
-
   public User() {
     super();
+    this.locked = false;
+    this.enabled = false;
   }
 
   @Override

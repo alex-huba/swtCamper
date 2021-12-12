@@ -1,7 +1,6 @@
 package swtcamper.javafx.controller;
 
-import static swtcamper.backend.entities.UserRole.OPERATOR;
-import static swtcamper.backend.entities.UserRole.RENTER;
+import static swtcamper.backend.entities.UserRole.*;
 
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
@@ -11,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -247,7 +247,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleRegisterBtn(ActionEvent actionEvent) {
+  public void handleRegisterBtn() {
     String username = usernameTf.getText();
     String password = passwordPf.getText();
     String repeatPassword = repeatPasswordPf.getText();
@@ -264,28 +264,31 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     userDTO.setName(name);
     userDTO.setSurname(surname);
 
-    // TODO: implement user roles (Provider and Renter instead of User)
-    if (providerCb.isSelected()) {
+    if (userController.countUser() == 0) {
       userDTO.setUserRole(OPERATOR);
-    } else if (renterCb.isSelected()) {
+    } else if (providerCb.isSelected()) {
+      userDTO.setUserRole(PROVIDER);
+    } else {
       userDTO.setUserRole(RENTER);
     }
+
     try {
       userController.register(userDTO);
-      mainViewController.handleInformationMessage(
-        "Your data will be checked by operator shortly."
-      );
-      // Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      // alert.setContentText("Your data will be checked by operator shortly.");
-      // alert.setTitle("Thank you for signing up!");
-      // alert.setHeaderText("We've got your sign up request.");
-      // alert.show();
+      if (providerCb.isSelected()) {
+        mainViewController.handleInformationMessage(
+          String.format(
+            "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
+            username
+          )
+        );
+      } else {
+        mainViewController.handleInformationMessage(
+          String.format("New user '%s' created. Login to proceed.", username)
+        );
+      }
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());
     }
-    // if (isInputValid){
-    // Alert
-    // }
   }
 }

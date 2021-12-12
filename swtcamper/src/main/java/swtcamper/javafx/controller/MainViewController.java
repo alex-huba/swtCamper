@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.OfferController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -207,7 +208,7 @@ public class MainViewController {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle("Exception");
     alert.setHeaderText("There has been an error processing your request");
-    alert.setContentText(String.format("Message: %s", message));
+    alert.setContentText(message);
     alert.showAndWait();
   }
 
@@ -215,7 +216,7 @@ public class MainViewController {
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("Information");
     alert.setHeaderText("Note the following");
-    alert.setContentText(String.format("Message: %s", message));
+    alert.setContentText(message);
     alert.showAndWait();
   }
 
@@ -223,8 +224,8 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login() {
-    navigationViewController.login();
+  public void login(UserRole userRole, boolean isEnabled) {
+    navigationViewController.login(userRole, isEnabled);
   }
 
   public void logout() {

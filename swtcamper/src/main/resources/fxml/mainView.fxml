@@ -51,9 +51,6 @@
                             <!--                            <fx:include source="myBookingsView.fxml" />-->
                         </Pane>
                         <Pane fx:id="loginViewBox" prefHeight="200.0" prefWidth="200.0">
-                            <Label text="Login" style="-fx-text-fill: #FFF"/>
-                            <Button onAction="#login" text="Login"/>
-                            <!--                            TODO after Merging: include-->
                                                         <fx:include source="loginView.fxml" />
                         </Pane>
                         <Pane fx:id="accountViewBox" prefHeight="200.0" prefWidth="200.0">

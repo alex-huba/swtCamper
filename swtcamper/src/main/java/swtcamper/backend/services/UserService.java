@@ -66,7 +66,8 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public boolean login(UserDTO userDTO) throws WrongPasswordException, UserDoesNotExistException {
+  public UserRole login(UserDTO userDTO)
+    throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (
       userRepository.existsByUsernameAndPassword(
@@ -74,11 +75,20 @@ public class UserService {
         userDTO.getPassword()
       )
     ) {
+      UserRole userRole;
+      Optional<User> user = userRepository.findByUsername(
+        userDTO.getUsername()
+      );
+      if (user.isPresent()) {
+        userRole = user.get().getUserRole();
+      } else {
+        throw new UserDoesNotExistException("User doesn't exist.");
+      }
       // Username and password are matching
-      return true;
+      return userRole;
     }
     // Check if either username or password exists to see if user typed one of them wrong
-    if(userRepository.existsByUsername(userDTO.getUsername())){
+    if (userRepository.existsByUsername(userDTO.getUsername())) {
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
     throw new UserDoesNotExistException("Username doesn't exist.");
@@ -99,12 +109,41 @@ public class UserService {
     return !userRepository.existsByEmail(userDTO.getEmail());
   }
 
-  public void lock(User user) {
-    // TODO: implement user lock
+  public void lock(UserDTO userDTO) {
+    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+    if (userOptional.isPresent()) {
+      User userToLock = userOptional.get();
+      userToLock.setLocked(true);
+    }
   }
 
-  public void enable(User user) {
-    // TODO: implement user activation
+  public void unlock(UserDTO userDTO) {
+    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+    if (userOptional.isPresent()) {
+      User userToLock = userOptional.get();
+      userToLock.setLocked(false);
+    }
+  }
+
+  public void enable(UserDTO userDTO) {
+    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+    if (userOptional.isPresent()) {
+      User userToEnable = userOptional.get();
+      userToEnable.setEnabled(true);
+    }
+  }
+
+  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
+    Optional<User> userOptional = userRepository.findByUsername(
+      userDTO.getUsername()
+    );
+    if (userOptional.isPresent()) {
+      return userRepository
+        .findByUsername(userDTO.getUsername())
+        .get()
+        .isEnabled();
+    }
+    throw new UserDoesNotExistException("User does not exist");
   }
 
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
@@ -126,5 +165,9 @@ public class UserService {
         "Couldn't change password. Username or password is not correct."
       );
     }
+  }
+
+  public long countUser() {
+    return userRepository.count();
   }
 }
