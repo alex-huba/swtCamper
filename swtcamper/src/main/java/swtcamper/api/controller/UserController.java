@@ -7,6 +7,8 @@ import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.UserDoesNotExistException;
+import swtcamper.backend.services.exceptions.WrongPasswordException;
 
 @Component
 public class UserController implements IUserController {
@@ -26,11 +28,13 @@ public class UserController implements IUserController {
     }
   }
 
-  public boolean login(UserDTO userDTO) throws GenericServiceException {
+  public boolean login(UserDTO userDTO) throws WrongPasswordException, UserDoesNotExistException {
     try {
       return userService.login(userDTO);
-    } catch (GenericServiceException e) {
-      throw new GenericServiceException(e.getMessage());
+    } catch (WrongPasswordException e) {
+      throw new WrongPasswordException(e.getMessage());
+    } catch (UserDoesNotExistException e) {
+      throw new UserDoesNotExistException(e.getMessage());
     }
   }
 

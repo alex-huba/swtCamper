@@ -10,6 +10,8 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.UserDoesNotExistException;
+import swtcamper.backend.services.exceptions.WrongPasswordException;
 
 @Service
 public class UserService {
@@ -64,7 +66,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public boolean login(UserDTO userDTO) throws GenericServiceException {
+  public boolean login(UserDTO userDTO) throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (
       userRepository.existsByUsernameAndPassword(
@@ -77,9 +79,9 @@ public class UserService {
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if(userRepository.existsByUsername(userDTO.getUsername())){
-      throw new GenericServiceException("Wrong password. Please try again.");
+      throw new WrongPasswordException("Wrong password. Please try again.");
     }
-    throw new GenericServiceException("Username doesn't exist.");
+    throw new UserDoesNotExistException("Username doesn't exist.");
   }
 
   /**
