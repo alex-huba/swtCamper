@@ -18,7 +18,7 @@
          <children>
             <HBox layoutX="178.0" layoutY="89.0" prefHeight="247.0" spacing="5.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefWidth="140.0" spacing="5.0">
+                  <VBox prefWidth="140.0" spacing="5.0">
                      <children>
                         <HBox spacing="2.0">
                            <children>
@@ -30,9 +30,10 @@
                         <TextField fx:id="constructionYearTextField" promptText="Construction year" />
                         <TextField fx:id="maxPricePerDayTextField" promptText="Max. price per day" />
                         <TextField fx:id="locationTextField" promptText="Location" />
+                        <CheckBox fx:id="min21CheckBox" mnemonicParsing="false" text="min age 21" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefWidth="140.0" spacing="5.0">
+                  <VBox prefWidth="140.0" spacing="5.0">
                      <children>
                         <TextField fx:id="engineTextField" promptText="Engine" />
                         <HBox spacing="2.0">
@@ -43,10 +44,12 @@
                         </HBox>
                         <TextField fx:id="seatAmountTextField" promptText="Nr. of seats" />
                         <TextField fx:id="bedAmountTextField" promptText="Nr. of beds" />
+                        <CheckBox fx:id="crossBordersCheckBox" mnemonicParsing="false" text="cross borders" />
+                        <CheckBox fx:id="payCashCheckBox" mnemonicParsing="false" text="pay in cash" />
 <!--                        <TextField fx:id="keywordTextField" promptText="Keywords" />-->
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="171.0" prefWidth="150.0" spacing="5.0">
                      <children>
                         <CheckBox fx:id="excludeInactiveCheckBox" mnemonicParsing="false" text="Exclude inactive offers" />
                         <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" text="Roof tent" />
@@ -60,7 +63,7 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
                   <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" prefWidth="60.0" styleClass="btn" text="search">
                      <font>
@@ -74,7 +77,7 @@
             <Insets bottom="10.0" left="20.0" top="10.0" />
          </padding>
       </HBox>
-      <Label layoutX="14.0" layoutY="181.0" styleClass="heading" text="Let's find a perfect camper van for You!">
+      <Label layoutX="3.0" layoutY="191.0" styleClass="heading" text="Let's find a perfect camper van for You!">
          <font>
             <Font size="20.0" />
          </font>
