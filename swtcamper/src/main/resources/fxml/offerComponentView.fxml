@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="178.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="14.0" layoutY="14.0" prefHeight="150.0" prefWidth="150.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="201.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/c12d410940_IMG_5333.JPG" />
+               </image>
+               <viewport>
+                  <Rectangle2D width="1050.0" />
+               </viewport>
+            </ImageView>
+         </children>
+      </Pane>
+      <VBox layoutX="218.0" layoutY="14.0" prefHeight="118.0" prefWidth="252.0">
+         <children>
+            <Label fx:id="titleLabel" text="Label" />
+            <HBox spacing="5.0">
+               <children>
+                  <Label fx:id="brandLabel" text="Label" />
+                  <Label fx:id="modelLabel" text="Label" />
+                  <Label fx:id="yearLabel" text="Label" />
+               </children>
+            </HBox>
+            <Label fx:id="priceLabel" text="Label" />
+         </children>
+      </VBox>
+      <Button layoutX="387.0" layoutY="138.0" mnemonicParsing="false" text="View Offer" />
+   </children>
+</Pane>

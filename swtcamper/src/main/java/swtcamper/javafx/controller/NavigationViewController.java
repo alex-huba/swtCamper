@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
@@ -74,7 +75,7 @@ public class NavigationViewController {
   }
 
   @FXML
-  private void handleNavBtnClick(ActionEvent e) {
+  private void handleNavBtnClick(ActionEvent e) throws GenericServiceException {
     Button selectedButton = (Button) e.getTarget();
     mainViewController.changeView(selectedButton.getAccessibleHelp());
   }
@@ -89,7 +90,7 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login() {
+  public void login() throws GenericServiceException {
     navBarItems.getChildren().removeIf(b -> true);
     Button[] toAdd = {
       homeButton,
@@ -102,7 +103,7 @@ public class NavigationViewController {
       accountButton,
     };
     navBarItems.getChildren().addAll(toAdd);
-    mainViewController.changeView("account");
+    mainViewController.changeView("home");
     if (isShortText) {
       setShortTexts();
     } else {
@@ -110,7 +111,7 @@ public class NavigationViewController {
     }
   }
 
-  public void logout() {
+  public void logout() throws GenericServiceException {
     setStartButtons();
     mainViewController.changeView("home");
     if (isShortText) {

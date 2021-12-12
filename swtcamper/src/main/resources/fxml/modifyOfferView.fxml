@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane stylesheets="@../styles/modifyOffer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.ModifyOfferViewController">
+   <HBox layoutX="14.0" prefHeight="539.0" prefWidth="549.0" spacing="5.0">
+      <VBox spacing="5.0">
+         <Label prefHeight="45" styleClass="heading" text="Offer Details" />
+         <VBox prefWidth="230.0" spacing="10.0">
+            <VBox fx:id="offerDetailsVBox" prefHeight="350.0" prefWidth="230.0" spacing="5.0">
+               <VBox prefHeight="50.0" prefWidth="170.0" spacing="5.0">
+                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Title:" />
+                  <TextField fx:id="titleTextField" />
+               </VBox>
+               <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                  <Label prefHeight="6.0" prefWidth="120.0" styleClass="descriptionLabel" text="Price per day:" />
+                  <TextField fx:id="priceTextField" prefWidth="80.0" />
+                  <Label prefHeight="6.0" text=" €" />
+               </HBox>
+               <VBox prefHeight="50.0" prefWidth="170.0">
+                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Pick-up location:" />
+                  <TextField fx:id="locationTextField" />
+               </VBox>
+<!--               <VBox prefHeight="50.0" prefWidth="170.0" spacing="2.0">-->
+<!--                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Availability:">-->
+<!--                     <font>-->
+<!--                        <Font name="System Bold" size="12.0" />-->
+<!--                     </font>-->
+<!--                  </Label>-->
+<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
+<!--                     <Label prefWidth="40.0" text="  From: " />-->
+<!--                     <DatePicker fx:id="availableFromDatePicker" />-->
+<!--                  </HBox>-->
+<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
+<!--                     <Label prefWidth="40.0" text="  Until:" />-->
+<!--                     <DatePicker fx:id="availableUntilDatePicker" />-->
+<!--                  </HBox>-->
+<!--               </VBox>-->
+               <VBox prefHeight="50.0">
+                  <Label styleClass="descriptionLabel" text="Contact: " />
+                  <TextField fx:id="contactTextField" />
+               </VBox>
+               <VBox spacing="5.0">
+                  <children>
+                     <Label styleClass="descriptionLabel" text="Particularities:" />
+                     <TextArea fx:id="particularitiesTextArea" prefHeight="100.0" />
+                  </children>
+               </VBox>
+               <CheckBox fx:id="activeCheckBox" text="active?" />
+            </VBox>
+            <VBox prefHeight="50.0" spacing="3.0">
+               <Label styleClass="descriptionLabel" text="Rental Conditions: " />
+               <CheckBox fx:id="minAgeCheckBox" text="Do you want a Minimum Age?" />
+               <CheckBox fx:id="borderCrossingCheckBox" text="Can the renter cross borders?" />
+               <CheckBox fx:id="depositCheckBox" text="Do you want a deposit before renting?" />
+            </VBox>
+         </VBox>
+      </VBox>
+      <Separator orientation="VERTICAL" prefHeight="200.0" />
+      <VBox spacing="5.0">
+         <Label prefHeight="45" styleClass="heading" text="Vehicle Details" />
+         <VBox prefWidth="303.0" spacing="5.0">
+            <!--   Vehicle Type-->
+            <VBox layoutX="15.0" layoutY="15.0" prefHeight="42.0">
+               <Label styleClass="descriptionLabel" text="Vehicle type: " />
+               <ComboBox fx:id="typeBox" prefWidth="150.0" />
+            </VBox>
+            <!--   Marke, Modell, Baujahr-->
+            <HBox spacing="5.0">
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="Brand: " />
+                  <TextField fx:id="brandTextField" />
+               </VBox>
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="Model: " />
+                  <TextField fx:id="modelTextField" />
+               </VBox>
+            </HBox>
+            <VBox prefHeight="50.0">
+               <Label styleClass="descriptionLabel" text="Year of construction: " />
+               <TextField fx:id="constructionYearTextField" />
+            </VBox>
+            <HBox prefWidth="200.0" spacing="5.0">
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="length: " />
+                  <TextField fx:id="lengthTextField" />
+               </VBox>
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="width: " />
+                  <TextField fx:id="widthTextField" />
+               </VBox>
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="height: " />
+                  <TextField fx:id="heightTextField" />
+               </VBox>
+            </HBox>
+            <HBox spacing="5.0">
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="engine: " />
+                  <TextField fx:id="engineTextField" />
+               </VBox>
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="transmission: " />
+                  <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="116.0" />
+               </VBox>
+            </HBox>
+            <HBox spacing="5.0">
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="seats: " />
+                  <TextField fx:id="seatsTextField" />
+               </VBox>
+               <VBox>
+                  <Label styleClass="descriptionLabel" text="beds: " />
+                  <TextField fx:id="bedsTextField" />
+               </VBox>
+            </HBox>
+            <!--   Features-->
+            <VBox layoutX="15.0" layoutY="160.0" prefHeight="90.0">
+               <children>
+                  <Label styleClass="descriptionLabel" text="Features:" />
+                  <HBox prefHeight="100.0" spacing="20.0">
+                     <children>
+                        <VBox prefHeight="200.0" spacing="3.0">
+                           <children>
+                              <CheckBox fx:id="roofTentCheckBox" text="roof tent?" />
+                              <CheckBox fx:id="roofRackCheckBox" text="roof rack?" />
+                              <CheckBox fx:id="bikeRackCheckBox" text="bike rack?" />
+                              <CheckBox fx:id="showerCheckBox" text="shower?" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" spacing="3.0">
+                           <children>
+                              <CheckBox fx:id="toiletCheckBox" text="toilet?" />
+                              <CheckBox fx:id="kitchenUnitCheckBox" text="kitchen unit?" />
+                              <CheckBox fx:id="fridgeCheckBox" text="fridge?" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <!--   Pictures-->
+            <VBox layoutX="15.0" layoutY="260.0" prefHeight="50.0">
+               <Label styleClass="descriptionLabel" text="Pictures:" />
+               <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                  <children>
+                     <HBox prefHeight="48.0" prefWidth="172.0" spacing="5.0">
+                        <TextField fx:id="importPath" editable="false" layoutX="67.0" layoutY="62.0" />
+                        <Button layoutX="253.0" layoutY="62.0" mnemonicParsing="false" onAction="#importFileChooserAction" prefHeight="26.0" prefWidth="83.0" styleClass="btn" text="Bild wählen" />
+                     </HBox>
+                     <Button mnemonicParsing="false" onAction="#importButtonAction" styleClass="btn" text="Import selected picture" />
+                  </children>
+               </VBox>
+            </VBox>
+         </VBox>
+      </VBox>
+   </HBox>
+   <HBox layoutX="439.0" layoutY="547.0" spacing="5.0">
+      <children>
+         <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Place Offer">
+            <styleClass>
+               <String fx:value="btn" />
+               <String fx:value="successBtn" />
+            </styleClass></Button>
+         <!--   Buttons Place Offer, Cancel-->
+         <Button fx:id="cancelButton" onAction="#cancelAction" text="Cancel">
+            <styleClass>
+               <String fx:value="btn" />
+               <String fx:value="cancelBtn" />
+            </styleClass></Button>
+      </children>
+   </HBox>
+</Pane>

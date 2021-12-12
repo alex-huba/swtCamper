@@ -2,13 +2,23 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
+import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 public interface IOfferController {
+  List<OfferDTO> offers() throws GenericServiceException;
+
   OfferDTO create(
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -41,6 +51,10 @@ public interface IOfferController {
     long offerId,
     Vehicle offeredObject,
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     ArrayList<Long> bookings,
     long price,
     boolean active,
@@ -73,5 +87,6 @@ public interface IOfferController {
 
   void delete(long id) throws GenericServiceException;
 
-  List<OfferDTO> offers() throws GenericServiceException;
+  List<OfferDTO> getFilteredOffers(Filter filter)
+    throws GenericServiceException;
 }

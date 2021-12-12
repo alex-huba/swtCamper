@@ -28,6 +28,12 @@ public class MainViewController {
   @Autowired
   public NavigationViewController navigationViewController;
 
+  @Autowired
+  public ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
+  public RentingViewController rentingViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -35,10 +41,10 @@ public class MainViewController {
   public Pane homeViewBox;
 
   @FXML
-  public Pane placeOfferViewBox;
+  public Pane filterOptionsViewBox;
 
   @FXML
-  public Pane updateOfferViewBox;
+  public Pane placeOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -62,8 +68,7 @@ public class MainViewController {
   public Pane accountViewBox;
 
   @FXML
-  private void initialize() {
-    //    reloadData();
+  private void initialize() throws GenericServiceException {
     changeView("home");
   }
 
@@ -85,24 +90,28 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
-  public void changeView(String switchTo) {
+  public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo, true);
+  }
+
+  public void changeView(String switchTo, boolean reloadData)
+    throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        if (reloadData) rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
+        modifyOfferViewController.initialize();
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
-        break;
-      case "updateOffer":
-        mainStage.getChildren().add(updateOfferViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
@@ -146,6 +155,8 @@ public class MainViewController {
           navigationViewController.accountButton
         );
         break;
+      default:
+        System.out.println("gibts nicht");
     }
   }
 
@@ -169,11 +180,11 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login() {
+  public void login() throws GenericServiceException {
     navigationViewController.login();
   }
 
-  public void logout() {
+  public void logout() throws GenericServiceException {
     navigationViewController.logout();
   }
 }
