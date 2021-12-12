@@ -194,7 +194,7 @@ public class OfferService {
     offer.setTitle(title);
     offer.setLocation(location);
     offer.setContact(contact);
-    offer.setDescription(description);
+    offer.setParticularities(description);
     offer.setPrice(price);
     offer.setActive(active);
     offer.setMinAge25(minAge25);

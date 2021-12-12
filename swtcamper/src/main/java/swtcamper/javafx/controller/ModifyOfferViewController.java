@@ -1,15 +1,9 @@
 package swtcamper.javafx.controller;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +55,7 @@ public class ModifyOfferViewController {
   public TextField contactTextField;
 
   @FXML
-  public TextArea descriptionTextArea;
+  public TextArea particularitiesTextArea;
 
   @FXML
   public CheckBox activeCheckBox;
@@ -174,7 +168,7 @@ public class ModifyOfferViewController {
     priceTextField.setText(String.valueOf(offer.getPrice()));
     locationTextField.setText(offer.getLocation());
     contactTextField.setText(offer.getContact());
-    descriptionTextArea.setText(offer.getDescription());
+    particularitiesTextArea.setText(offer.getDescription());
     activeCheckBox.setSelected(offer.isActive());
     minAgeCheckBox.setSelected(offer.isMinAge25());
     borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
@@ -246,7 +240,7 @@ public class ModifyOfferViewController {
     priceTextField.clear();
     locationTextField.clear();
     contactTextField.clear();
-    descriptionTextArea.clear();
+    particularitiesTextArea.clear();
     minAgeCheckBox.setSelected(false);
     borderCrossingCheckBox.setSelected(false);
     depositCheckBox.setSelected(false);
@@ -284,7 +278,7 @@ public class ModifyOfferViewController {
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
-        descriptionTextArea.getText(),
+        particularitiesTextArea.getText(),
         longStringConverter.fromString(priceTextField.getText()),
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
@@ -328,7 +322,7 @@ public class ModifyOfferViewController {
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
-        descriptionTextArea.getText(),
+        particularitiesTextArea.getText(),
         bookings,
         longStringConverter.fromString(priceTextField.getText()),
         activeCheckBox.isSelected(),

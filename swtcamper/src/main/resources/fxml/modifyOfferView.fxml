@@ -52,8 +52,8 @@
                </VBox>
                <VBox spacing="5.0">
                   <children>
-                     <Label styleClass="descriptionLabel" text="Description:" />
-                     <TextArea fx:id="descriptionTextArea" prefHeight="100.0" />
+                     <Label styleClass="descriptionLabel" text="Particularities:" />
+                     <TextArea fx:id="particularitiesTextArea" prefHeight="100.0" />
                   </children>
                </VBox>
                <CheckBox fx:id="activeCheckBox" text="active?" />

@@ -31,9 +31,9 @@ public interface IOffer {
 
   public void setContact(String contact);
 
-  public String getDescription();
+  public String getParticularities();
 
-  public void setDescription(String description);
+  public void setParticularities(String particularities);
 
   public long getPrice();
 
