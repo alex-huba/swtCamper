@@ -36,7 +36,6 @@ public class ModifyOfferViewController {
   private OfferController offerController;
 
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
-
   LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
@@ -137,6 +136,9 @@ public class ModifyOfferViewController {
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
+  /**
+   * Initialization method for placing a new offer.
+   */
   @FXML
   public void initialize() {
     isEditMode.addListener((observable, oldValue, newValue) ->
@@ -150,6 +152,10 @@ public class ModifyOfferViewController {
     resetFields();
   }
 
+  /**
+   * Initialization method for updating an existing offer.
+   * @param offer Offer that shall get updated
+   */
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
@@ -161,8 +167,6 @@ public class ModifyOfferViewController {
       offeredObject.getVehicleID()
     );
     Vehicle vehicle = vehicleResponse.get();
-
-    // TODO implement new fields
 
     titleTextField.setText(offer.getTitle());
     priceTextField.setText(String.valueOf(offer.getPrice()));
@@ -235,6 +239,9 @@ public class ModifyOfferViewController {
     );
   }
 
+  /**
+   * Clears all input fields.
+   */
   private void resetFields() {
     titleTextField.clear();
     priceTextField.clear();
@@ -267,6 +274,10 @@ public class ModifyOfferViewController {
     importPath.clear();
   }
 
+  /**
+   * Places a new offer or updates an existing one, depending on the boolean value of EditMode.
+   * @throws GenericServiceException
+   */
   @FXML
   public void placeOfferAction() throws GenericServiceException {
     if (!isEditMode.get()) {
@@ -274,7 +285,6 @@ public class ModifyOfferViewController {
       String[] particularities = null;
 
       OfferDTO offerDTO = offerController.create(
-        // TODO add missing fields
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
@@ -357,6 +367,10 @@ public class ModifyOfferViewController {
     mainViewController.reloadData();
   }
 
+  /**
+   * Cancels the process of placing/ updating an offer and takes the user to the ActiveOffers view.
+   * @throws GenericServiceException
+   */
   @FXML
   public void cancelAction() throws GenericServiceException {
     Alert confirmDelete = new Alert(
@@ -370,6 +384,10 @@ public class ModifyOfferViewController {
     ) mainViewController.changeView("activeOffers");
   }
 
+  /**
+   * Imports the path of a file from the filesystem.
+   * @param event ActionEvent from FXML to determine the pressed button
+   */
   public void importFileChooserAction(ActionEvent event) {
     Node source = (Node) event.getSource();
     Window window = source.getScene().getWindow();
@@ -381,6 +399,9 @@ public class ModifyOfferViewController {
     importPath.setText(file.getAbsolutePath().toString());
   }
 
+  /**
+   * Uploads one or more before selected pictures.
+   */
   public void importButtonAction() {
     // TODO
     //    String importPathString = importPath.getText();

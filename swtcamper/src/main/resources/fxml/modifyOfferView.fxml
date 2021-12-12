@@ -31,21 +31,6 @@
                   <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Pick-up location:" />
                   <TextField fx:id="locationTextField" />
                </VBox>
-<!--               <VBox prefHeight="50.0" prefWidth="170.0" spacing="2.0">-->
-<!--                  <Label layoutY="200.0" prefHeight="6.0" styleClass="descriptionLabel" text="Availability:">-->
-<!--                     <font>-->
-<!--                        <Font name="System Bold" size="12.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
-<!--                     <Label prefWidth="40.0" text="  From: " />-->
-<!--                     <DatePicker fx:id="availableFromDatePicker" />-->
-<!--                  </HBox>-->
-<!--                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">-->
-<!--                     <Label prefWidth="40.0" text="  Until:" />-->
-<!--                     <DatePicker fx:id="availableUntilDatePicker" />-->
-<!--                  </HBox>-->
-<!--               </VBox>-->
                <VBox prefHeight="50.0">
                   <Label styleClass="descriptionLabel" text="Contact: " />
                   <TextField fx:id="contactTextField" />

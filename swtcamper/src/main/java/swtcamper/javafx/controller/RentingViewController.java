@@ -1,8 +1,6 @@
 package swtcamper.javafx.controller;
 
-import java.util.Arrays;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,15 +86,8 @@ public class RentingViewController {
         showInfoAlert(selectedItem);
       }
     });
-  }
-
-  public void reloadData() throws GenericServiceException {
-    offersList.setItems(
-      FXCollections.observableArrayList(offerController.offers())
-    );
 
     excludeInactiveCheckBox.setSelected(true);
-
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
@@ -131,11 +122,25 @@ public class RentingViewController {
     );
   }
 
+  /**
+   * Gets all available offers from the database .
+   * @throws GenericServiceException
+   */
+  public void reloadData() throws GenericServiceException {
+    offersList.setItems(
+      FXCollections.observableArrayList(offerController.offers())
+    );
+  }
+
   private void showInfoAlert(OfferDTO offerItem) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
     alert.showAndWait();
   }
 
+  /**
+   * Creates a new Filter Object and gets all offers from the database that fit to this filter.
+   * @throws GenericServiceException
+   */
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
@@ -185,10 +190,16 @@ public class RentingViewController {
     );
   }
 
+  /**
+   * Resets VehicleTypeComboBox to its initial state.
+   */
   public void resetVehicleTypeComboBox() {
     vehicleTypeComboBox.valueProperty().set(null);
   }
 
+  /**
+   * Resets TransmissionTypeComboBox to its initial state.
+   */
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
   }

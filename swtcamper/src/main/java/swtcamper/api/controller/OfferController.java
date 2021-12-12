@@ -202,6 +202,12 @@ public class OfferController implements IOfferController {
     }
   }
 
+  /**
+   * Looks for fitting offers in the database.
+   * @param filter Filter to hold search settings.
+   * @return (Array)List of offers that fit to the given Filter
+   * @throws GenericServiceException
+   */
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
     return filter.isEmpty()
@@ -285,16 +291,6 @@ public class OfferController implements IOfferController {
         )
         .collect(Collectors.toList());
   }
-
-  //    private boolean searchForKeywords(OfferDTO offerDTO, Filter filter) {
-  //        for (String keyword : filter.getKeywords()) {
-  //            if(offerDTO.getTitle().contains(keyword) ||
-  //                    offerDTO.getContact().contains(keyword) ||
-  //                    offerDTO.getDescription().contains(keyword)) return true;
-  //        }
-  //
-  //        return false;
-  //    }
 
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
     List<Boolean> booleanList = new ArrayList<>();
