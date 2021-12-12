@@ -2,19 +2,14 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
-import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Filter;
-import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleFeatures;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -202,6 +197,12 @@ public class OfferController implements IOfferController {
     }
   }
 
+  /**
+   * Looks for fitting offers in the database.
+   * @param filter Filter to hold search settings.
+   * @return (Array)List of offers that fit to the given Filter
+   * @throws GenericServiceException
+   */
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
     return filter.isEmpty()
@@ -286,16 +287,6 @@ public class OfferController implements IOfferController {
         .collect(Collectors.toList());
   }
 
-  //    private boolean searchForKeywords(OfferDTO offerDTO, Filter filter) {
-  //        for (String keyword : filter.getKeywords()) {
-  //            if(offerDTO.getTitle().contains(keyword) ||
-  //                    offerDTO.getContact().contains(keyword) ||
-  //                    offerDTO.getDescription().contains(keyword)) return true;
-  //        }
-  //
-  //        return false;
-  //    }
-
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
     List<Boolean> booleanList = new ArrayList<>();
 
@@ -320,6 +311,11 @@ public class OfferController implements IOfferController {
     if (filter.isFridge()) booleanList.add(
       offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
+    if (filter.isMinAge21()) booleanList.add(offerDTO.isMinAge25());
+    if (filter.isCrossingBordersAllowed()) booleanList.add(
+      offerDTO.isBorderCrossingAllowed()
+    );
+    if (filter.isDepositInCash()) booleanList.add(offerDTO.isDepositInCash());
 
     return !booleanList.contains(false);
   }
