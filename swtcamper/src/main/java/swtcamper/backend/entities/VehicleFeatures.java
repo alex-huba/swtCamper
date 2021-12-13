@@ -30,7 +30,6 @@ public class VehicleFeatures {
   private int seats;
   private int beds;
 
-
   private boolean roofTent;
   private boolean roofRack;
   private boolean bikeRack;

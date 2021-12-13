@@ -397,8 +397,5 @@ public class ModifyOfferViewController {
   /**
    * Uploads one or more before selected pictures.
    */
-  public void importButtonAction() {
-
-  }
+  public void importButtonAction() {}
 }
-

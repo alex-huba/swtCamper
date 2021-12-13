@@ -9,7 +9,7 @@ public class Vehicle {
   @GeneratedValue
   private long vehicleID;
 
-  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
   @JoinColumn(name = "vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
 
@@ -46,5 +46,4 @@ public class Vehicle {
   public void setPictureURLs(String[] pictureURLs) {
     this.pictureURLs = pictureURLs;
   }
-
 }
