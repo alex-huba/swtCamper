@@ -25,7 +25,6 @@ public interface IOfferController {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -45,7 +44,7 @@ public interface IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ); // TODO throws Exception
+  );
 
   OfferDTO update(
     long offerId,
@@ -63,7 +62,6 @@ public interface IOfferController {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

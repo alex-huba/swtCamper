@@ -52,7 +52,6 @@ public class OfferController implements IOfferController {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -72,7 +71,7 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) { // TODO throws Exception
+  ) {
     return modelMapper.offerToOfferDTO(
       offerService.create(
         //Offer-Parameter
@@ -86,7 +85,6 @@ public class OfferController implements IOfferController {
         depositInCash,
         //Vehicle-Parameter
         pictureURLs,
-        particularities,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -126,7 +124,6 @@ public class OfferController implements IOfferController {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -164,7 +161,6 @@ public class OfferController implements IOfferController {
         depositInCash,
         //Vehicle-Parameter
         pictureURLs,
-        particularities,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -191,7 +187,6 @@ public class OfferController implements IOfferController {
   public void delete(long id) throws GenericServiceException {
     try {
       offerService.delete(id);
-      // TODO was passiert mit dem Vehicle des Offers
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

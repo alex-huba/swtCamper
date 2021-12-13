@@ -43,7 +43,6 @@ public class OfferService {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -93,7 +92,6 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
-    vehicle.setParticularities(particularities);
 
     Offer offer = new Offer(
       vehicle,
@@ -126,7 +124,6 @@ public class OfferService {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -185,8 +182,6 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
-    vehicle.setParticularities(particularities);
-
     vehicleRepository.save(vehicle);
 
     offer.setOfferedObject(vehicle);

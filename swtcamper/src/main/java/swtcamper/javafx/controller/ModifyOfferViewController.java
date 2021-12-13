@@ -282,7 +282,6 @@ public class ModifyOfferViewController {
   public void placeOfferAction() throws GenericServiceException {
     if (!isEditMode.get()) {
       String[] pictureURLs = null;
-      String[] particularities = null;
 
       OfferDTO offerDTO = offerController.create(
         titleTextField.getText(),
@@ -294,7 +293,6 @@ public class ModifyOfferViewController {
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
         pictureURLs,
-        particularities,
         typeBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -321,9 +319,7 @@ public class ModifyOfferViewController {
     }
 
     if (isEditMode.get()) {
-      // TODO entsprechende Felder noch anlegen
       String[] pictureURLs = null;
-      String[] particularities = null;
       ArrayList<Long> bookings = null;
 
       offerController.update(
@@ -340,7 +336,6 @@ public class ModifyOfferViewController {
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
         pictureURLs,
-        particularities,
         typeBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -403,43 +398,7 @@ public class ModifyOfferViewController {
    * Uploads one or more before selected pictures.
    */
   public void importButtonAction() {
-    // TODO
-    //    String importPathString = importPath.getText();
-    //    if (importPathString.isEmpty()) {
-    //      mainViewController.handleExceptionMessage(
-    //              "The prior selected file path is empty."
-    //      );
-    //      return;
-    //    }
-    //    Path path = Paths.get(importPathString);
-    //    if (!Files.exists(path)) {
-    //      mainViewController.handleExceptionMessage(
-    //              String.format(
-    //                      "The prior selected file \"%s\" does not exists.",
-    //                      path.toAbsolutePath()
-    //              )
-    //      );
-    //      return;
-    //    }
-    //
-    //    String json;
-    //    try {
-    //      json = Files.readString(path);
-    //    } catch (IOException e) {
-    //      mainViewController.handleExceptionMessage(
-    //              String.format(
-    //                      "An error occurred while trying to read file %s",
-    //                      path.toAbsolutePath()
-    //              )
-    //      );
-    //      return;
-    //    }
-    //    try {
-    //      mainViewController.handleInformationMessage("The import was successful!");
-    //      mainViewController.reloadData();
-    //    } catch (Exception e) {
-    //      mainViewController.handleException(e);
-    //      return;
-    //    }
+
   }
 }
+
