@@ -147,6 +147,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("forgotPassword");
         resetPasswordViewController.usernameTf.setText(username);
+        resetPasswordViewController.validateUsernameTf();
       }
     } catch (UserDoesNotExistException e) {
       // Inform user that user account doesn't exist
