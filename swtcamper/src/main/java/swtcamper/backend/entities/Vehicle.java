@@ -14,7 +14,6 @@ public class Vehicle {
   private VehicleFeatures vehicleFeatures;
 
   private String[] pictureURLs;
-  private String[] particularities;
 
   public Vehicle(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
@@ -46,13 +45,5 @@ public class Vehicle {
 
   public void setPictureURLs(String[] pictureURLs) {
     this.pictureURLs = pictureURLs;
-  }
-
-  public String[] getParticularities() {
-    return particularities;
-  }
-
-  public void setParticularities(String[] particularities) {
-    this.particularities = particularities;
   }
 }

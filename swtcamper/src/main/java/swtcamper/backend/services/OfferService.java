@@ -33,13 +33,16 @@ public class OfferService {
     // TODO validation
 
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -89,10 +92,13 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
-    vehicle.setParticularities(particularities);
 
     Offer offer = new Offer(
       vehicle,
+      title,
+      location,
+      contact,
+      description,
       price,
       minAge25,
       borderCrossingAllowed,
@@ -106,6 +112,10 @@ public class OfferService {
     long offerId,
     Vehicle offeredObject,
     // Offer-Parameter
+    String title,
+    String location,
+    String contact,
+    String description,
     ArrayList<Long> bookings,
     long price,
     boolean active,
@@ -114,7 +124,6 @@ public class OfferService {
     boolean depositInCash,
     //Vehicle-Parameter
     String[] pictureURLs,
-    String[] particularities,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -169,15 +178,18 @@ public class OfferService {
       kitchenUnit,
       fridge
     );
+    vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
-    vehicle.setParticularities(particularities);
-
     vehicleRepository.save(vehicle);
 
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
+    offer.setTitle(title);
+    offer.setLocation(location);
+    offer.setContact(contact);
+    offer.setParticularities(description);
     offer.setPrice(price);
     offer.setActive(active);
     offer.setMinAge25(minAge25);

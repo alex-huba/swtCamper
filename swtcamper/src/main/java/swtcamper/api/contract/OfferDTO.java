@@ -1,6 +1,7 @@
 package swtcamper.api.contract;
 
 import java.util.ArrayList;
+import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
@@ -8,6 +9,10 @@ public class OfferDTO {
   private long offerID;
   private OfferedObjectTypeDTO offeredObjectType;
   private Vehicle offeredObject;
+  private String title;
+  private String location;
+  private String contact;
+  private String description;
   private ArrayList<Long> bookings;
   private long price;
   boolean minAge25;
@@ -20,6 +25,10 @@ public class OfferDTO {
     OfferedObjectTypeDTO offeredObjectType,
     Vehicle offeredObject,
     ArrayList<Long> bookings,
+    String title,
+    String location,
+    String contact,
+    String description,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -30,6 +39,10 @@ public class OfferDTO {
     this.offeredObjectType = offeredObjectType;
     this.offeredObject = offeredObject;
     this.bookings = bookings;
+    this.title = title;
+    this.location = location;
+    this.contact = contact;
+    this.description = description;
     this.price = price;
     this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
@@ -67,6 +80,38 @@ public class OfferDTO {
 
   public void setBookings(ArrayList<Long> bookings) {
     this.bookings = bookings;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public String getContact() {
+    return contact;
+  }
+
+  public void setContact(String contact) {
+    this.contact = contact;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public long getPrice() {
@@ -107,5 +152,28 @@ public class OfferDTO {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "offerID: " +
+      offerID +
+      ", Fahrzeug: " +
+      offeredObject.getVehicleFeatures().getMake() +
+      " " +
+      offeredObject.getVehicleFeatures().getModel() +
+      " (" +
+      offeredObject.getVehicleFeatures().getVehicleType() +
+      ") (Bj. " +
+      offeredObject.getVehicleFeatures().getYear() +
+      ")" +
+      ", Sitzplätze: " +
+      offeredObject.getVehicleFeatures().getSeats() +
+      ", Preis pro Tag: " +
+      price +
+      ", aktiv: " +
+      active
+    );
   }
 }
