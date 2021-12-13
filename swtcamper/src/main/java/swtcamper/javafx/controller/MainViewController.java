@@ -27,6 +27,12 @@ public class MainViewController {
   public NavigationViewController navigationViewController;
 
   @Autowired
+  public ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
+  public RentingViewController rentingViewController;
+
+  @Autowired
   public LoginViewController loginViewController;
 
   @FXML
@@ -37,9 +43,6 @@ public class MainViewController {
 
   @FXML
   public Pane placeOfferViewBox;
-
-  @FXML
-  public Pane updateOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -69,8 +72,7 @@ public class MainViewController {
   public Pane forgotPasswordViewBox;
 
   @FXML
-  private void initialize() {
-    //    reloadData();
+  private void initialize() throws GenericServiceException {
     changeView("home");
   }
 
@@ -92,24 +94,28 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
-  public void changeView(String switchTo) {
+  public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo, true);
+  }
+
+  public void changeView(String switchTo, boolean reloadData)
+    throws GenericServiceException {
     clearView();
 
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        if (reloadData) rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
+        modifyOfferViewController.initialize();
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
-        break;
-      case "updateOffer":
-        mainStage.getChildren().add(updateOfferViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
@@ -146,7 +152,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.loginButton
         );
-        loginViewController.resetInputfields();
+        loginViewController.resetInputFields();
         break;
       case "account":
         mainStage.getChildren().add(accountViewBox);
@@ -189,11 +195,12 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserRole userRole, boolean isEnabled) {
+  public void login(UserRole userRole, boolean isEnabled)
+    throws GenericServiceException {
     navigationViewController.login(userRole, isEnabled);
   }
 
-  public void logout() {
+  public void logout() throws GenericServiceException {
     navigationViewController.logout();
   }
 }

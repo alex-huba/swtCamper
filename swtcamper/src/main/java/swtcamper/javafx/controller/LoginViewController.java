@@ -169,16 +169,16 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleRegister() {
+  public void handleRegister() throws GenericServiceException {
     mainViewController.changeView("register");
   }
 
   @FXML
-  public void handleForgotPassword() {
+  public void handleForgotPassword() throws GenericServiceException {
     mainViewController.changeView("forgotPassword");
   }
 
-  public void resetInputfields() {
+  public void resetInputFields() {
     usernameTf.clear();
     passwordPf.clear();
   }
