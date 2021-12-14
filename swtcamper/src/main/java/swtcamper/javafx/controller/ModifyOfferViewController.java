@@ -76,7 +76,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public CheckBox depositCheckBox;
 
   @FXML
-  public ComboBox<VehicleType> typeBox;
+  public ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
   public Label errorLabel;
@@ -138,11 +138,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public Button placeOfferButton;
 
-  boolean isPriceOk = false;
-  boolean isBrandOk = false;
-  boolean isModelOk = false;
-  boolean isSeatsOk = false;
-  boolean isBedsOk = false;
+  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
 
   private long offerID;
   private Vehicle offeredObject;
@@ -154,6 +159,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private final Background errorBackground = new Background(
     new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+  );
+  private final Background neutralBackground = new Background(
+    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
   );
   private final Background successBackground = new Background(
     new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
@@ -170,8 +178,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       )
     );
     isEditMode.set(false);
-
     offerDetailsVBox.getChildren().remove(activeCheckBox);
+
     resetFields();
 
     priceTextField.setOnKeyTyped(this);
@@ -179,11 +187,43 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     modelTextField.setOnKeyTyped(this);
     seatsTextField.setOnKeyTyped(this);
     bedsTextField.setOnKeyTyped(this);
-    placeOfferButton.setDisable(true);
+    titleTextField.setOnKeyTyped(this);
+    locationTextField.setOnKeyTyped(this);
+    contactTextField.setOnKeyTyped(this);
+
+    vehicleTypeComboBox
+      .getSelectionModel()
+      .selectedItemProperty()
+      .addListener((options, oldValue, newValue) -> {
+        validateVehicleType(newValue);
+      });
+    transmissionComboBox
+      .getSelectionModel()
+      .selectedItemProperty()
+      .addListener((options, oldValue, newValue) -> {
+        validateTransmissionType(newValue);
+      });
+
+    placeOfferButton
+      .disableProperty()
+      .bind(
+        isPriceOk
+          .and(isBrandOk)
+          .and(isModelOk)
+          .and(isSeatsOk)
+          .and(isBedsOk)
+          .and(isTitleOk)
+          .and(isLocationOk)
+          .and(isContactOk)
+          .and(isVehicleTypeOk)
+          .and(isTransmissionTypeOk)
+          .not()
+      );
   }
 
   /**
    * Initialization method for updating an existing offer.
+   *
    * @param offer Offer that shall get updated
    */
   @FXML
@@ -193,11 +233,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
-      offeredObject.getVehicleID()
-    );
-    Vehicle vehicle = vehicleResponse.get();
+    Vehicle vehicle = vehicleRepository
+      .findById(offeredObject.getVehicleID())
+      .orElse(null);
 
+    // fill in values from selected offer
     titleTextField.setText(offer.getTitle());
     priceTextField.setText(String.valueOf(offer.getPrice()));
     locationTextField.setText(offer.getLocation());
@@ -207,33 +247,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     minAgeCheckBox.setSelected(offer.isMinAge25());
     borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
     depositCheckBox.setSelected(offer.isDepositInCash());
-    typeBox.setValue(
-      offer.getOfferedObject().getVehicleFeatures().getVehicleType()
-    );
-    brandTextField.setText(
-      offer.getOfferedObject().getVehicleFeatures().getMake()
-    );
-    modelTextField.setText(
-      offer.getOfferedObject().getVehicleFeatures().getModel()
-    );
-    constructionYearTextField.setText(
-      offer.getOfferedObject().getVehicleFeatures().getYear()
-    );
+
+    assert vehicle != null;
+    vehicleTypeComboBox.setValue(vehicle.getVehicleFeatures().getVehicleType());
+    brandTextField.setText(vehicle.getVehicleFeatures().getMake());
+    modelTextField.setText(vehicle.getVehicleFeatures().getModel());
+    constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
     widthTextField.setText(
-      String.valueOf(offer.getOfferedObject().getVehicleFeatures().getWidth())
+      String.valueOf(vehicle.getVehicleFeatures().getWidth())
     );
     lengthTextField.setText(
-      String.valueOf(offer.getOfferedObject().getVehicleFeatures().getLength())
+      String.valueOf(vehicle.getVehicleFeatures().getLength())
     );
     heightTextField.setText(
-      String.valueOf(offer.getOfferedObject().getVehicleFeatures().getHeight())
+      String.valueOf(vehicle.getVehicleFeatures().getHeight())
     );
-    engineTextField.setText(
-      offer.getOfferedObject().getVehicleFeatures().getEngine()
-    );
+    engineTextField.setText(vehicle.getVehicleFeatures().getEngine());
     transmissionComboBox.setValue(
-      offer
-          .getOfferedObject()
+      vehicle
           .getVehicleFeatures()
           .getTransmission()
           .equals(TransmissionType.AUTOMATIC.toString())
@@ -241,38 +272,29 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         : TransmissionType.MANUAL
     );
     seatsTextField.setText(
-      String.valueOf(offer.getOfferedObject().getVehicleFeatures().getSeats())
+      String.valueOf(vehicle.getVehicleFeatures().getSeats())
     );
     bedsTextField.setText(
-      String.valueOf(offer.getOfferedObject().getVehicleFeatures().getBeds())
+      String.valueOf(vehicle.getVehicleFeatures().getBeds())
     );
-    roofTentCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isRoofTent()
-    );
-    roofRackCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isRoofRack()
-    );
-    bikeRackCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isBikeRack()
-    );
-    showerCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isShower()
-    );
-    toiletCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isToilet()
-    );
+    roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
+    roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
+    bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
+    showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
+    toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
     kitchenUnitCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isKitchenUnit()
+      vehicle.getVehicleFeatures().isKitchenUnit()
     );
-    fridgeCheckBox.setSelected(
-      offer.getOfferedObject().getVehicleFeatures().isFridge()
-    );
+    fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
+
+    validateMandatoryFields();
   }
 
   /**
    * Clears all input fields.
    */
   private void resetFields() {
+    // clear input fields
     titleTextField.clear();
     priceTextField.clear();
     locationTextField.clear();
@@ -281,7 +303,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     minAgeCheckBox.setSelected(false);
     borderCrossingCheckBox.setSelected(false);
     depositCheckBox.setSelected(false);
-    typeBox.setItems(FXCollections.observableArrayList(VehicleType.values()));
+    vehicleTypeComboBox.setItems(
+      FXCollections.observableArrayList(VehicleType.values())
+    );
     brandTextField.clear();
     modelTextField.clear();
     constructionYearTextField.clear();
@@ -303,12 +327,28 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fridgeCheckBox.setSelected(false);
     importPath.clear();
 
-    isPriceOk = false;
-    isBrandOk = false;
-    isSeatsOk = false;
-    isBedsOk = false;
-    isModelOk = false;
-    placeOfferButton.setDisable(true);
+    // resets all backgrounds to neutral
+    titleTextField.setBackground(neutralBackground);
+    priceTextField.setBackground(neutralBackground);
+    locationTextField.setBackground(neutralBackground);
+    contactTextField.setBackground(neutralBackground);
+    vehicleTypeComboBox.setBackground(neutralBackground);
+    brandTextField.setBackground(neutralBackground);
+    modelTextField.setBackground(neutralBackground);
+    transmissionComboBox.setBackground(neutralBackground);
+    seatsTextField.setBackground(neutralBackground);
+    bedsTextField.setBackground(neutralBackground);
+
+    // reset validated properties
+    isTitleOk.set(false);
+    isPriceOk.set(false);
+    isLocationOk.set(false);
+    isContactOk.set(false);
+    isBrandOk.set(false);
+    isModelOk.set(false);
+    isSeatsOk.set(false);
+    isBedsOk.set(false);
+
     errorLabel.setText("");
   }
 
@@ -319,20 +359,23 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Places a new offer or updates an existing one, depending on the boolean value of EditMode.
+   *
    * @throws GenericServiceException
    */
   @FXML
   public void placeOfferAction() throws GenericServiceException {
+    double length = !lengthTextField.getText().isEmpty()
+      ? doubleStringConverter.fromString(lengthTextField.getText())
+      : 0;
+    double width = !widthTextField.getText().isEmpty()
+      ? doubleStringConverter.fromString(widthTextField.getText())
+      : 0;
+    double height = !heightTextField.getText().isEmpty()
+      ? doubleStringConverter.fromString(heightTextField.getText())
+      : 0;
+
     if (!isEditMode.get()) {
       String[] pictureURLs = null;
-
-      double length = doubleStringConverter.fromString(
-        lengthTextField.getText()
-      );
-      double width = doubleStringConverter.fromString(widthTextField.getText());
-      double height = doubleStringConverter.fromString(
-        heightTextField.getText()
-      );
 
       OfferDTO offerDTO = offerController.create(
         titleTextField.getText(),
@@ -344,7 +387,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
         pictureURLs,
-        typeBox.getValue(),
+        vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
         constructionYearTextField.getText(),
@@ -367,9 +410,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       mainViewController.handleInformationMessage(
         String.format("New offer \"%s\" has been created.", offerDTO.getID())
       );
-    }
-
-    if (isEditMode.get()) {
+    } else if (isEditMode.get()) {
       String[] pictureURLs = null;
       ArrayList<Long> bookings = null;
 
@@ -387,13 +428,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
         pictureURLs,
-        typeBox.getValue(),
+        vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
         constructionYearTextField.getText(),
-        doubleStringConverter.fromString(lengthTextField.getText()),
-        doubleStringConverter.fromString(widthTextField.getText()),
-        doubleStringConverter.fromString(heightTextField.getText()),
+        length,
+        width,
+        height,
         engineTextField.getText(),
         transmissionComboBox.getValue().toString(),
         Integer.parseInt(seatsTextField.getText()),
@@ -415,6 +456,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Cancels the process of placing/ updating an offer and takes the user to the ActiveOffers view.
+   *
    * @throws GenericServiceException
    */
   @FXML
@@ -425,114 +467,188 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     Optional<ButtonType> result = confirmDelete.showAndWait();
 
-    if (
-      result.isPresent() && result.get() == ButtonType.OK
-    ) mainViewController.changeView("activeOffers");
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+      resetFields();
+      mainViewController.changeView("activeOffers");
+    }
   }
 
   private void validateOfferInput(KeyEvent event) {
-    String source = "";
-    source = event.getSource().toString();
-    if (source.contains("priceTextField")) {
-      source = "price";
-    }
-    if (source.contains("brandTextField")) {
-      source = "brand";
-    }
-    if (source.contains("modelTextField")) {
-      source = "model";
-    }
-    if (source.contains("seatsTextField")) {
-      source = "seats";
-    }
-    if (source.contains("bedsTextField")) {
-      source = "beds";
-    }
+    Object source = event.getSource();
 
-    switch (source) {
-      case "price":
-        String inputPrice = priceTextField.getText();
-        if (inputPrice.isEmpty() || !inputPrice.matches("[0-9]*")) {
-          errorLabel.setText("Invalid price");
-          priceTextField.setBackground(errorBackground);
-          isPriceOk = false;
-        } else {
-          errorLabel.setText("");
-          priceTextField.setBackground(successBackground);
-          isPriceOk = true;
-        }
-        break;
-      case "brand":
-        String inputBrand = brandTextField.getText();
-        if (inputBrand.isEmpty()) {
-          errorLabel.setText("Invalid brand");
-          brandTextField.setBackground(errorBackground);
-          isBrandOk = false;
-        } else {
-          errorLabel.setText("");
-          brandTextField.setBackground(successBackground);
-          isBrandOk = true;
-        }
-        break;
-      case "model":
-        String inputModel = modelTextField.getText();
-        if (inputModel.isEmpty()) {
-          errorLabel.setText("Invalid model");
-          modelTextField.setBackground(errorBackground);
-          isModelOk = false;
-        } else {
-          errorLabel.setText("");
-          modelTextField.setBackground(successBackground);
-          isModelOk = true;
-        }
-        break;
-      case "seats":
-        String inputSeats = seatsTextField.getText();
-        if (
-          inputSeats.isEmpty() ||
-          !inputSeats.matches("[0-9]*") ||
-          inputSeats.equals("0")
-        ) {
-          errorLabel.setText("Invalid seat amount");
-          seatsTextField.setBackground(errorBackground);
-          isSeatsOk = false;
-        } else {
-          errorLabel.setText("");
-          seatsTextField.setBackground(successBackground);
-          isSeatsOk = true;
-        }
-        break;
-      case "beds":
-        String inputBeds = bedsTextField.getText();
-        if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
-          errorLabel.setText("Invalid beds");
-          bedsTextField.setBackground(errorBackground);
-          isBedsOk = false;
-        } else {
-          errorLabel.setText("");
-          bedsTextField.setBackground(successBackground);
-          isBedsOk = true;
-        }
-        break;
+    if (titleTextField.equals(source)) {
+      String inputTitle = titleTextField.getText();
+      validateTitle(inputTitle);
+    } else if (priceTextField.equals(source)) {
+      String inputPrice = priceTextField.getText();
+      validatePrice(inputPrice);
+    } else if (locationTextField.equals(source)) {
+      String inputLocation = locationTextField.getText();
+      validateLocation(inputLocation);
+    } else if (contactTextField.equals(source)) {
+      String inputContact = contactTextField.getText();
+      validateContact(inputContact);
+    } else if (brandTextField.equals(source)) {
+      String inputBrand = brandTextField.getText();
+      validateBrand(inputBrand);
+    } else if (modelTextField.equals(source)) {
+      String inputModel = modelTextField.getText();
+      validateModel(inputModel);
+    } else if (seatsTextField.equals(source)) {
+      String inputSeats = seatsTextField.getText();
+      validateSeats(inputSeats);
+    } else if (bedsTextField.equals(source)) {
+      String inputBeds = bedsTextField.getText();
+      validateBeds(inputBeds);
     }
-    placeOfferButton.setDisable(
-      !(
-        isPriceOk &&
-        !isBrandOk &&
-        !isModelOk &&
-        !isSeatsOk &&
-        !isBedsOk &&
-        !titleTextField.getText().isEmpty() &&
-        !locationTextField.getText().isEmpty() &&
-        !contactTextField.getText().isEmpty() &&
-        typeBox.getValue() != null &&
-        transmissionComboBox.getValue() != null
-      )
-    );
+  }
+
+  private void validateMandatoryFields() {
+    validateTitle(titleTextField.getText());
+    validatePrice(priceTextField.getText());
+    validateLocation(locationTextField.getText());
+    validateContact(contactTextField.getText());
+    validateVehicleType(vehicleTypeComboBox.getValue());
+    validateBrand(brandTextField.getText());
+    validateModel(modelTextField.getText());
+    validateTransmissionType(transmissionComboBox.getValue());
+    validateSeats(seatsTextField.getText());
+    validateBeds(bedsTextField.getText());
+  }
+
+  private void validateTitle(String inputTitle) {
+    if (inputTitle.isEmpty() || inputTitle.length() < 5) {
+      errorLabel.setText("Invalid title");
+      titleTextField.setBackground(errorBackground);
+      isTitleOk.set(false);
+    } else {
+      errorLabel.setText("");
+      titleTextField.setBackground(successBackground);
+      isTitleOk.set(true);
+    }
+  }
+
+  private void validatePrice(String inputPrice) {
+    if (
+      inputPrice.isEmpty() ||
+      !inputPrice.matches("[0-9]*") ||
+      Integer.parseInt(inputPrice) <= 0
+    ) {
+      errorLabel.setText("Invalid price");
+      priceTextField.setBackground(errorBackground);
+      isPriceOk.set(false);
+    } else {
+      errorLabel.setText("");
+      priceTextField.setBackground(successBackground);
+      isPriceOk.set(true);
+    }
+  }
+
+  private void validateLocation(String inputLocation) {
+    if (inputLocation.isEmpty() || inputLocation.length() < 3) {
+      errorLabel.setText("Invalid location");
+      locationTextField.setBackground(errorBackground);
+      isLocationOk.set(false);
+    } else {
+      errorLabel.setText("");
+      locationTextField.setBackground(successBackground);
+      isLocationOk.set(true);
+    }
+  }
+
+  private void validateContact(String inputContact) {
+    if (inputContact.isEmpty() || inputContact.length() < 5) {
+      errorLabel.setText("Invalid contact");
+      contactTextField.setBackground(errorBackground);
+      isContactOk.set(false);
+    } else {
+      errorLabel.setText("");
+      contactTextField.setBackground(successBackground);
+      isContactOk.set(true);
+    }
+  }
+
+  private void validateVehicleType(VehicleType inputVehicleType) {
+    if (inputVehicleType == null) {
+      errorLabel.setText("Invalid vehicle type");
+      vehicleTypeComboBox.setBackground(errorBackground);
+      isVehicleTypeOk.set(false);
+    } else {
+      errorLabel.setText("");
+      vehicleTypeComboBox.setBackground(successBackground);
+      isVehicleTypeOk.set(true);
+    }
+  }
+
+  private void validateBrand(String inputBrand) {
+    if (inputBrand.isEmpty() || inputBrand.length() < 3) {
+      errorLabel.setText("Invalid brand");
+      brandTextField.setBackground(errorBackground);
+      isBrandOk.set(false);
+    } else {
+      errorLabel.setText("");
+      brandTextField.setBackground(successBackground);
+      isBrandOk.set(true);
+    }
+  }
+
+  private void validateModel(String inputModel) {
+    if (inputModel.isEmpty() || inputModel.length() < 3) {
+      errorLabel.setText("Invalid model");
+      modelTextField.setBackground(errorBackground);
+      isModelOk.set(false);
+    } else {
+      errorLabel.setText("");
+      modelTextField.setBackground(successBackground);
+      isModelOk.set(true);
+    }
+  }
+
+  private void validateTransmissionType(
+    TransmissionType inputTransmissionType
+  ) {
+    if (inputTransmissionType == null) {
+      errorLabel.setText("Invalid transmission type");
+      transmissionComboBox.setBackground(errorBackground);
+      isTransmissionTypeOk.set(false);
+    } else {
+      errorLabel.setText("");
+      transmissionComboBox.setBackground(successBackground);
+      isTransmissionTypeOk.set(true);
+    }
+  }
+
+  private void validateSeats(String inputSeats) {
+    if (
+      inputSeats.isEmpty() ||
+      !inputSeats.matches("[0-9]*") ||
+      Integer.parseInt(inputSeats) == 0
+    ) {
+      errorLabel.setText("Invalid seat amount");
+      seatsTextField.setBackground(errorBackground);
+      isSeatsOk.set(false);
+    } else {
+      errorLabel.setText("");
+      seatsTextField.setBackground(successBackground);
+      isSeatsOk.set(true);
+    }
+  }
+
+  private void validateBeds(String inputBeds) {
+    if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
+      errorLabel.setText("Invalid beds");
+      bedsTextField.setBackground(errorBackground);
+      isBedsOk.set(false);
+    } else {
+      errorLabel.setText("");
+      bedsTextField.setBackground(successBackground);
+      isBedsOk.set(true);
+    }
   }
 
   /**
    * Imports the path of a file from the filesystem.
+   *
    * @param event ActionEvent from FXML to determine the pressed button
    */
   public void importFileChooserAction(ActionEvent event) {
