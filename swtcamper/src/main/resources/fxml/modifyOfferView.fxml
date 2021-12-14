@@ -58,7 +58,7 @@
             <!--   Vehicle Type-->
             <VBox layoutX="15.0" layoutY="15.0" prefHeight="42.0">
                <Label styleClass="descriptionLabel" text="Vehicle type*: " />
-               <ComboBox fx:id="typeBox" prefWidth="150.0" />
+               <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" />
             </VBox>
             <!--   Marke, Modell, Baujahr-->
             <HBox spacing="5.0">
@@ -78,15 +78,15 @@
             <HBox prefWidth="200.0" spacing="5.0">
                <VBox>
                   <Label styleClass="descriptionLabel" text="length: " />
-                  <TextField fx:id="lengthTextField" />
+                  <TextField fx:id="lengthTextField" promptText="length in cm"/>
                </VBox>
                <VBox>
                   <Label styleClass="descriptionLabel" text="width: " />
-                  <TextField fx:id="widthTextField" />
+                  <TextField fx:id="widthTextField" promptText="width in cm"/>
                </VBox>
                <VBox>
                   <Label styleClass="descriptionLabel" text="height: " />
-                  <TextField fx:id="heightTextField" />
+                  <TextField fx:id="heightTextField" promptText="height in cm"/>
                </VBox>
             </HBox>
             <HBox spacing="5.0">
