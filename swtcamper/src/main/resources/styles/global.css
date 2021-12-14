@@ -7,8 +7,14 @@
     -fx-light: #FFFFFF;
     -fx-dark: #333333;
 
-    -fx-purple: #36334f;
-    -fx-dark-purple: #2c2a3f;
+    -fx-active: #0a47a1;
+
+    -fx-alt-primary: #36334f;
+    -fx-alt-active: #2c2a3f;
+}
+
+Button {
+    -fx-cursor: hand;
 }
 
 
@@ -42,7 +48,9 @@
     -fx-background-radius: 30;
 }
 
-
+.border-0 {
+    -fx-border-width: 0;
+}
 .border-primary {
     -fx-border-color: -fx-primary;
 }
@@ -87,24 +95,24 @@
 
 
 .bg-primary {
-    -fx-background-color: -fx-primary;
+    -fx-base: -fx-primary;
     -fx-text-fill: #FFFFFF;
 }
 .bg-secondary {
-    -fx-background-color: -fx-secondary;
+    -fx-base: -fx-secondary;
 }
 .bg-success {
-    -fx-background-color: -fx-success;
+    -fx-base: -fx-success;
     -fx-text-fill: #FFFFFF;
 }
 .bg-warning {
-    -fx-background-color: -fx-warning;
+    -fx-base: -fx-warning;
 }
 .bg-danger {
-    -fx-background-color: -fx-danger;
+    -fx-base: -fx-danger;
     -fx-text-fill: #FFFFFF;
 }
 .bg-dark {
-    -fx-background-color: -fx-dark;
+    -fx-base: -fx-dark;
     -fx-text-fill: #FFFFFF;
 }

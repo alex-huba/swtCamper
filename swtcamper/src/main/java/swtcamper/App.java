@@ -37,7 +37,7 @@ public class App extends Application {
     primaryStage.setMinWidth(600);
     primaryStage.setMinHeight(400);
     // TODO: remove before merge
-    primaryStage.titleProperty().bind(Bindings.format("%sx%s",primaryStage.heightProperty().asString("%1$,.0f"),primaryStage.widthProperty().asString("%1$,.0f")));
+    primaryStage.titleProperty().bind(Bindings.format("%sx%s",primaryStage.widthProperty().asString("%1$,.0f"),primaryStage.heightProperty().asString("%1$,.0f")));
     primaryStage.show();
   }
 

@@ -15,6 +15,12 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class RentingViewController {
 
+  @Autowired
+  private OfferController offerController;
+
+  @FXML
+  public TitledPane searchBoxTitledPane;
+
   @FXML
   public TextField locationTextField;
 
@@ -77,9 +83,6 @@ public class RentingViewController {
 
   @FXML
   public ListView<OfferDTO> offersList;
-
-  @Autowired
-  private OfferController offerController;
 
   @FXML
   private void initialize() throws GenericServiceException {
