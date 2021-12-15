@@ -99,6 +99,7 @@ public class RentingViewController {
       }
     });
 
+    searchBoxTitledPane.setExpanded(false);
     excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())

@@ -14,10 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -46,7 +43,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
-  public VBox offerDetailsVBox;
+  public BorderPane offerDetailsMainView;
 
   @FXML
   public TextField titleTextField;
@@ -178,7 +175,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       )
     );
     isEditMode.set(false);
-    offerDetailsVBox.getChildren().remove(activeCheckBox);
+    offerDetailsMainView.getChildren().remove(activeCheckBox);
 
     resetFields();
 
@@ -229,7 +226,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
-    offerDetailsVBox.getChildren().add(activeCheckBox);
+    offerDetailsMainView.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
@@ -328,6 +325,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     importPath.clear();
 
     // resets all backgrounds to neutral
+    // mandatory fields
     titleTextField.setBackground(neutralBackground);
     priceTextField.setBackground(neutralBackground);
     locationTextField.setBackground(neutralBackground);
@@ -338,6 +336,14 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     transmissionComboBox.setBackground(neutralBackground);
     seatsTextField.setBackground(neutralBackground);
     bedsTextField.setBackground(neutralBackground);
+    // rest fields
+    particularitiesTextArea.setBackground(neutralBackground);
+    constructionYearTextField.setBackground(neutralBackground);
+    engineTextField.setBackground(neutralBackground);
+    importPath.setBackground(neutralBackground);
+    lengthTextField.setBackground(neutralBackground);
+    widthTextField.setBackground(neutralBackground);
+    heightTextField.setBackground(neutralBackground);
 
     // reset validated properties
     isTitleOk.set(false);

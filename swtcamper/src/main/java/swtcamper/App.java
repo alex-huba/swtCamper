@@ -34,10 +34,16 @@ public class App extends Application {
 
     primaryStage.setTitle("SWTCamper");
     primaryStage.setScene(new Scene(rootNode));
-    primaryStage.setMinWidth(600);
-    primaryStage.setMinHeight(400);
+    primaryStage.setMinWidth(900);
+    primaryStage.setMinHeight(850);
     // TODO: remove before merge
-    primaryStage.titleProperty().bind(Bindings.format("%sx%s",primaryStage.widthProperty().asString("%1$,.0f"),primaryStage.heightProperty().asString("%1$,.0f")));
+    primaryStage.titleProperty().bind(
+            Bindings.format(
+                    "%sx%s",
+                    primaryStage.widthProperty().asString("%1$,.0f"),
+                    primaryStage.heightProperty().asString("%1$,.0f")
+            )
+    );
     primaryStage.show();
   }
 

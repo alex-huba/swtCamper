@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
-<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -14,35 +14,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="580.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+<BorderPane prefHeight="580.0" prefWidth="644.0" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+    <center>
+        <ListView fx:id="offersList" BorderPane.alignment="CENTER" />
+    </center>
     <top>
-        <TitledPane fx:id="searchBoxTitledPane" expanded="false" styleClass="bg-warning" text="Let's find a perfect camper van for You!" BorderPane.alignment="CENTER">
+        <TitledPane fx:id="searchBoxTitledPane" styleClass="bg-warning" text="Find the perfect camper van for You!" BorderPane.alignment="CENTER">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
                     <children>
                         <HBox>
                             <children>
-                                <HBox prefHeight="247.0" spacing="5.0">
+                                <HBox spacing="5.0">
                                     <children>
-                                        <VBox prefWidth="140.0" spacing="5.0">
+                                        <VBox spacing="5.0">
                                             <children>
+                                                <TextField fx:id="vehicleBrandTextField" promptText="Vehicle Brand" />
                                                 <HBox spacing="2.0">
                                                     <children>
                                                         <ComboBox fx:id="vehicleTypeComboBox" promptText="Vehicle Type" />
                                                         <Button mnemonicParsing="false" onAction="#resetVehicleTypeComboBox" text="X" />
                                                     </children>
                                                 </HBox>
-                                                <TextField fx:id="vehicleBrandTextField" promptText="Vehicle Brand" />
                                                 <TextField fx:id="constructionYearTextField" promptText="Construction year" />
-                                                <TextField fx:id="maxPricePerDayTextField" promptText="Max. price per day" />
-                                                <TextField fx:id="locationTextField" promptText="Location" />
-                                                <CheckBox fx:id="min21CheckBox" mnemonicParsing="false" styleClass="text-dark" text="min age 21" />
-                                                <CheckBox fx:id="crossBordersCheckBox" mnemonicParsing="false" styleClass="text-dark" text="cross borders" />
-                                                <CheckBox fx:id="payCashCheckBox" mnemonicParsing="false" styleClass="text-dark" text="pay in cash" />
-                                            </children>
-                                        </VBox>
-                                        <VBox prefWidth="140.0" spacing="5.0">
-                                            <children>
                                                 <TextField fx:id="engineTextField" promptText="Engine" />
                                                 <HBox spacing="2.0">
                                                     <children>
@@ -50,38 +44,58 @@
                                                         <Button mnemonicParsing="false" onAction="#resetTransmissionTypeComboBox" text="X" />
                                                     </children>
                                                 </HBox>
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="5.0">
+                                            <children>
+                                                <TextField fx:id="locationTextField" promptText="Location" />
+                                                <TextField fx:id="maxPricePerDayTextField" promptText="Max. price per day" />
                                                 <TextField fx:id="seatAmountTextField" promptText="Nr. of seats" />
                                                 <TextField fx:id="bedAmountTextField" promptText="Nr. of beds" />
                                                 <!--                        <TextField fx:id="keywordTextField" promptText="Keywords" />-->
                                             </children>
                                         </VBox>
-                                        <VBox spacing="5.0">
+                                        <VBox spacing="13.0">
                                             <children>
-                                                <CheckBox fx:id="excludeInactiveCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Exclude inactive offers" />
                                                 <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Roof tent" />
                                                 <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Roof rack" />
                                                 <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Bike rack" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="13.0">
+                                            <children>
                                                 <CheckBox fx:id="showerCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Shower" />
                                                 <CheckBox fx:id="toiletCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Toilet" />
                                                 <CheckBox fx:id="kitchenCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kitchen" />
                                                 <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Fridge" />
                                             </children>
                                         </VBox>
+                                        <VBox spacing="13.0">
+                                            <children>
+                                                <CheckBox fx:id="min21CheckBox" mnemonicParsing="false" styleClass="text-dark" text="min age 21" />
+                                                <CheckBox fx:id="crossBordersCheckBox" mnemonicParsing="false" styleClass="text-dark" text="cross borders" />
+                                                <CheckBox fx:id="payCashCheckBox" mnemonicParsing="false" styleClass="text-dark" text="pay in cash" />
+                                            </children>
+                                        </VBox>
                                     </children>
                                 </HBox>
-                                <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                                    <children>
-                                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" prefWidth="60.0" text="search">
-                                            <font>
-                                                <Font name="System Bold" size="12.0" />
-                                            </font>
-                                 <styleClass>
-                                    <String fx:value="bg-primary" />
-                                    <String fx:value="radius-10" />
-                                 </styleClass>
-                                        </Button>
-                                    </children>
-                                </VBox>
+                            </children>
+                            <padding>
+                                <Insets left="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="419.0" layoutY="156.0" spacing="10.0" AnchorPane.rightAnchor="14.0">
+                            <children>
+                                <CheckBox fx:id="excludeInactiveCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Exclude inactive offers" />
+                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" prefWidth="60.0" text="search">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                    <styleClass>
+                                        <String fx:value="bg-primary" />
+                                        <String fx:value="radius-10" />
+                                    </styleClass>
+                                </Button>
                             </children>
                         </HBox>
                     </children>
@@ -89,11 +103,4 @@
             </content>
         </TitledPane>
     </top>
-    <center>
-        <ListView fx:id="offersList" prefHeight="445.0" prefWidth="648.0" BorderPane.alignment="CENTER" />
-    </center>
-   <stylesheets>
-      <URL value="@../styles/rentingview.css" />
-      <URL value="@../styles/global.css" />
-   </stylesheets>
 </BorderPane>

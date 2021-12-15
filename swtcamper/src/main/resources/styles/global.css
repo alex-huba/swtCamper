@@ -17,6 +17,10 @@ Button {
     -fx-cursor: hand;
 }
 
+.heading {
+    -fx-font-size: 20;
+}
+
 
 .p1 {
     -fx-padding: 1;
@@ -95,7 +99,7 @@ Button {
 
 
 .bg-primary {
-    -fx-base: -fx-primary;
+    -fx-base: -fx-alt-primary;
     -fx-text-fill: #FFFFFF;
 }
 .bg-secondary {
