@@ -79,14 +79,14 @@ public class ModelMapper {
     }
   }
 
-  public BookingDTO bookingToBookingDTO(Booking booking){
+  public BookingDTO bookingToBookingDTO(Booking booking) {
     return new BookingDTO(
-            booking.getId(),
-            booking.getUser(),
-            booking.getOffer(),
-            booking.getStartDate(),
-            booking.getEndDate(),
-            booking.isActive()
+      booking.getId(),
+      booking.getUser(),
+      booking.getOffer(),
+      booking.getStartDate(),
+      booking.getEndDate(),
+      booking.isActive()
     );
   }
 }

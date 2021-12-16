@@ -1,4 +1,3 @@
 package swtcamper.backend.repositories;
 
-public interface BookingRepository {
-}
+public interface BookingRepository {}
