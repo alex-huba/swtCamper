@@ -3,10 +3,8 @@ package swtcamper.api;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.contract.OfferedObjectTypeDTO;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.OfferedObjectType;
+import swtcamper.api.contract.*;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 /**
@@ -50,5 +48,45 @@ public class ModelMapper {
       offerDTOs.add(offerToOfferDTO(offer));
     }
     return offerDTOs;
+  }
+
+  public UserDTO userToUserDTO(User user) {
+    return new UserDTO(
+      user.getId(),
+      user.getUsername(),
+      user.getName(),
+      user.getSurname(),
+      user.getEmail(),
+      user.getPhone(),
+      user.getPassword(),
+      user.getUserRole(),
+      user.isLocked(),
+      user.isEnabled()
+    );
+  }
+
+  public UserRoleDTO toUserRoleDTO(UserRole userRole)
+    throws GenericServiceException {
+    switch (userRole) {
+      case PROVIDER:
+        return UserRoleDTO.PROVIDER;
+      case RENTER:
+        return UserRoleDTO.RENTER;
+      case OPERATOR:
+        return UserRoleDTO.OPERATOR;
+      default:
+        throw new GenericServiceException("UserRole is invalid.");
+    }
+  }
+
+  public BookingDTO bookingToBookingDTO(Booking booking) {
+    return new BookingDTO(
+      booking.getId(),
+      booking.getUser(),
+      booking.getOffer(),
+      booking.getStartDate(),
+      booking.getEndDate(),
+      booking.isActive()
+    );
   }
 }

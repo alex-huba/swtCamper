@@ -24,27 +24,12 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    public static List getBookedDays() {
+    public List getBookedDays(Long offerID) {
         List<LocalDate> bookedDays = new ArrayList<>();
-//        Optional<Offer> offerResponse = offerRepository.findById(offerID);
-//        Offer offer = offerResponse.get();
-//        ArrayList<Long> bookingIDs = offer.getBookings();
-//        Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
-        User user1 = new User();
-        User user2 = new User();
-        Offer offer1 = new Offer();
-        Offer offer2 = new Offer();
-        LocalDate startDate1 = LocalDate.of(2021, 12, 1);
-        LocalDate endDate1 = LocalDate.of(2021, 12, 10);
-        LocalDate startDate2 = LocalDate.of(2021, 10, 27);
-        LocalDate endDate2 = LocalDate.of(2021, 11, 2);
-        Long id1 = Long.valueOf(1);
-        Long id2 = Long.valueOf(2);
-        Booking booking1 = new Booking(id1, user1, offer1, startDate1, endDate1, true);
-        Booking booking2 = new Booking(id2, user2, offer2, startDate2, endDate2, true);
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(booking1);
-        bookings.add(booking2);
+        Optional<Offer> offerResponse = offerRepository.findById(offerID);
+        Offer offer = offerResponse.get();
+        ArrayList<Long> bookingIDs = offer.getBookings();
+        Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
 
         for (Booking booking : bookings) {
             LocalDate startDate = booking.getStartDate();
@@ -57,3 +42,5 @@ public class BookingService {
         return bookedDays;
     }
 }
+
+

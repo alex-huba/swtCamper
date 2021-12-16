@@ -1,26 +1,22 @@
-package swtcamper.backend.entities;
+package swtcamper.api.contract;
 
 import java.time.LocalDate;
-import javax.persistence.*;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 
-@Entity
-public class Booking {
+public class BookingDTO {
 
-  @Id
-  @GeneratedValue
   Long id;
 
-  @ManyToOne
   User user;
 
-  @ManyToOne
   Offer offer;
 
   LocalDate startDate;
   LocalDate endDate;
   boolean active;
 
-  public Booking(
+  public BookingDTO(
     Long id,
     User user,
     Offer offer,
@@ -36,7 +32,7 @@ public class Booking {
     this.active = active;
   }
 
-  public Booking() {}
+  public BookingDTO() {}
 
   public Long getId() {
     return id;
