@@ -8,60 +8,43 @@
 <?import javafx.scene.layout.Pane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
-   <left>
-     <fx:include source="navigationView.fxml" />
-   </left>
-   <center>
-       <AnchorPane fx:id="mainStage">
-                    <children>
-                        <Pane fx:id="homeViewBox">
-                            <fx:include source="rentingView.fxml" />
-                        </Pane>
-                        <Pane fx:id="placeOfferViewBox">
-                            <fx:include source="modifyOfferView.fxml" />
-                        </Pane>
-                        <Pane fx:id="activeOffersViewBox">
-                            <fx:include source="myOffersView.fxml" />
-                        </Pane>
-                        <Pane fx:id="dealHistoryViewBox">
-                            <Label style="-fx-text-fill: #FFF" text="Deal History" />
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="dealHistoryView.fxml" />-->
-                        </Pane>
-                        <Pane fx:id="excludeRenterViewBox">
-                            <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="excludeRenterView.fxml" />-->
-                        </Pane>
-                        <Pane fx:id="approveDealViewBox">
-                            <Label style="-fx-text-fill: #FFF" text="Approve Deal" />
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="approveDealView.fxml" />-->
-                        </Pane>
-                        <Pane fx:id="myBookingsViewBox">
-                            <Label style="-fx-text-fill: #FFF" text="My Bookings" />
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="myBookingsView.fxml" />-->
-                        </Pane>
-                        <Pane fx:id="loginViewBox">
-                                                        <fx:include source="loginView.fxml" />
-                        </Pane>
-                        <Pane fx:id="accountViewBox">
-                            <Label style="-fx-text-fill: #FFF" text="Account" />
-                            <Button onAction="#logout" text="Logout" />
-                            <!--                            TODO after Merging: include-->
-                            <!--                            <fx:include source="accountView.fxml" />-->
-                        </Pane>
-                        <Pane fx:id="registerViewBox">
-                            <fx:include source="registerView.fxml" />
-                        </Pane>
-                        <Pane fx:id="forgotPasswordViewBox">
-                            <fx:include source="resetPasswordView.fxml" />
-                        </Pane>
-                    </children>
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                </AnchorPane>
-   </center>
+    <left>
+        <fx:include source="navigationView.fxml" />
+    </left>
+    <center>
+        <AnchorPane fx:id="mainStage">
+            <fx:include fx:id="homeViewBox" source="rentingView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="placeOfferViewBox" source="modifyOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="activeOffersViewBox" source="myOffersView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Pane fx:id="dealHistoryViewBox">
+                <Label style="-fx-text-fill: #FFF" text="Deal History" />
+                <!--                            TODO after Merging: include-->
+                <!--                            <fx:include source="dealHistoryView.fxml" />-->
+            </Pane>
+            <Pane fx:id="excludeRenterViewBox">
+                <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
+                <!--                            TODO after Merging: include-->
+                <!--                            <fx:include source="excludeRenterView.fxml" />-->
+            </Pane>
+            <Pane fx:id="approveDealViewBox">
+                <Label style="-fx-text-fill: #FFF" text="Approve Deal" />
+                <!--                            TODO after Merging: include-->
+                <!--                            <fx:include source="approveDealView.fxml" />-->
+            </Pane>
+            <Pane fx:id="myBookingsViewBox">
+                <Label style="-fx-text-fill: #FFF" text="My Bookings" />
+                <!--                            TODO after Merging: include-->
+                <!--                            <fx:include source="myBookingsView.fxml" />-->
+            </Pane>
+            <fx:include fx:id="loginViewBox" source="loginView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Pane fx:id="accountViewBox">
+                <Label style="-fx-text-fill: #FFF" text="Account" />
+                <Button onAction="#logout" text="Logout" />
+                <!--                            TODO after Merging: include-->
+                <!--                            <fx:include source="accountView.fxml" />-->
+            </Pane>
+            <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+        </AnchorPane>
+    </center>
 </BorderPane>

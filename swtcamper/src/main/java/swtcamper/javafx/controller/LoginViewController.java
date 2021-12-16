@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -80,19 +81,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid username: 5 characters minimum and no spaces"
         );
-        usernameTf.setBackground(
-          new Background(
-            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
+        validateFalse(usernameTf);
         isUsernameOk.setValue(false);
       } else {
         errorLabel.setText("");
-        usernameTf.setBackground(
-          new Background(
-            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
+        validateTrue(usernameTf);
         isUsernameOk.setValue(true);
       }
       // Validate password
@@ -102,22 +95,22 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid password: 5 characters minimum and no spaces"
         );
-        passwordPf.setBackground(
-          new Background(
-            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
+        validateFalse(passwordPf);
         isPasswordOk.setValue(false);
       } else {
         errorLabel.setText("");
-        passwordPf.setBackground(
-          new Background(
-            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
+        validateTrue(passwordPf);
         isPasswordOk.setValue(true);
       }
     }
+  }
+
+  private void validateTrue(Node element) {
+    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   @FXML
