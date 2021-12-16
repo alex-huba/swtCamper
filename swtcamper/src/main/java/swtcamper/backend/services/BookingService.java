@@ -1,10 +1,9 @@
 package swtcamper.backend.services;
 
-import java.awt.print.Book;
 import java.time.LocalDate;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.contract.BookingDTO;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
@@ -24,8 +23,9 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) {
-    // TODO: implement booking creation
-    return null;
+    return bookingRepository.save(
+      new Booking(user, offer, startDate, endDate, active)
+    );
   }
 
   public Booking update(
@@ -34,12 +34,47 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) throws GenericServiceException {
-    // TODO: implement booking update
-    return null;
+    // Search for booking in database
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      // Booking found so update can be made
+      Booking booking = bookingOptional.get();
+      booking.setStartDate(startDate);
+      booking.setEndDate(endDate);
+      booking.setActive(active);
+      // Save update back to database
+      return bookingRepository.save(booking);
+    }
+    throw new GenericServiceException(
+      "Booking not found. Update not possible."
+    );
   }
 
   public Booking deactivate(Long bookingID) throws GenericServiceException {
-    // TODO: implement booking creation
-    return null;
+    // Search for booking in database
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      // Booking found so update can be made
+      Booking booking = bookingOptional.get();
+      // Update by setting active = false
+      // Save update back to database
+      return this.update(
+          booking.getId(),
+          booking.getStartDate(),
+          booking.getEndDate(),
+          false
+        );
+    }
+    throw new GenericServiceException(
+      "Booking not found. Deactivation not possible."
+    );
+  }
+
+  public void delete(Long bookingID) throws GenericServiceException {
+    try {
+      bookingRepository.deleteById(bookingID);
+    } catch (IllegalArgumentException e) {
+      throw new GenericServiceException("The passed ID is not available: " + e);
+    }
   }
 }

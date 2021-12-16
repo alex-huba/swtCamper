@@ -38,6 +38,20 @@ public class Booking {
 
   public Booking() {}
 
+  public Booking(
+    User user,
+    Offer offer,
+    LocalDate startDate,
+    LocalDate endDate,
+    boolean active
+  ) {
+    this.user = user;
+    this.offer = offer;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.active = active;
+  }
+
   public Long getId() {
     return id;
   }
