@@ -130,7 +130,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   @FXML
-  public void handleCancelBtn() {
+  public void handleCancelBtn() throws GenericServiceException {
     mainViewController.changeView("login");
   }
 

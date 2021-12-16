@@ -97,7 +97,7 @@ public class ResetPasswordViewController {
     }
   }
 
-  public void cancelReset() {
+  public void cancelReset() throws GenericServiceException {
     mainViewController.changeView("login");
   }
 
