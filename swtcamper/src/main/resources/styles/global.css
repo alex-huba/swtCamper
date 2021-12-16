@@ -19,9 +19,12 @@ Button {
     -fx-cursor: hand;
 }
 
+Label {
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+
 .heading {
     -fx-font-size: 30;
-    -fx-font-family: "Arial Rounded MT Bold";
     -fx-text-fill: #040759;
 }
 
@@ -103,7 +106,7 @@ Button {
 
 
 .bg-primary {
-    -fx-base: -fx-alt-primary;
+    -fx-base: -fx-primary;
     -fx-text-fill: #FFFFFF;
 }
 .bg-secondary {
@@ -127,10 +130,12 @@ Button {
 .bg-lightGreen {
    -fx-base: -fx-lightGreen;
 }
+
 .rootNodeBackground {
     -fx-background-color: #D6CFCD;
 }
+
 .errorMessage {
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-text-fill: -fx-danger;
     -fx-font-size: 15px;
 }

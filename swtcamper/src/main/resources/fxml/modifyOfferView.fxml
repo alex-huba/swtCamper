@@ -21,7 +21,7 @@
         </HBox>
     </bottom>
     <top>
-        <Label fx:id="errorLabel" styleClass="text-danger" text="errorLabel">
+        <Label fx:id="errorLabel" styleClass="errorMessage" text="errorLabel">
          <BorderPane.margin>
             <Insets left="10.0" top="5.0" />
          </BorderPane.margin></Label>
@@ -39,13 +39,13 @@
                         </HBox>
                         <HBox spacing="20.0">
                             <children>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Title*:" />
+                                        <Label prefWidth="130.0" styleClass="descriptionLabel" text="Title*:" />
                                         <TextField fx:id="titleTextField" prefHeight="25.0" prefWidth="252.0" />
                                     </children>
                                 </HBox>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="100.0" styleClass="descriptionLabel" text="Price per day*:" />
                                         <TextField fx:id="priceTextField" prefWidth="50.0" />
@@ -54,27 +54,27 @@
                                 </HBox>
                             </children>
                         </HBox>
-                        <HBox>
+                        <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Contact*: " />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Contact*: " />
                                 <TextField fx:id="contactTextField" />
                             </children>
                         </HBox>
-                        <HBox>
+                        <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Pick-up location*:" />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Pick-up location*:" />
                                 <TextField fx:id="locationTextField" />
                             </children>
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Particularities:" />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Particularities:" />
                                 <TextArea fx:id="particularitiesTextArea" />
                             </children>
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Rental Conditions: " />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Rental Conditions: " />
                                 <VBox spacing="3.0">
                                     <children>
                                         <CheckBox fx:id="minAgeCheckBox" accessibleHelp="Min age will be 21" accessibleText="Min age will be 21" text="Do you want a Minimum Age?" />
@@ -92,21 +92,21 @@
                 <VBox spacing="5.0">
                     <children>
                         <Label prefHeight="45" styleClass="heading" text="Vehicle Details" />
-                        <HBox>
+                        <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Vehicle type*: " />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Vehicle type*: " />
                                 <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" />
                             </children>
                         </HBox>
                         <HBox spacing="20.0">
                             <children>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Brand*: " />
+                                        <Label prefWidth="130.0" styleClass="descriptionLabel" text="Brand*: " />
                                         <TextField fx:id="brandTextField" />
                                     </children>
                                 </HBox>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="50.0" styleClass="descriptionLabel" text="Model*: " />
                                         <TextField fx:id="modelTextField" />
@@ -114,21 +114,21 @@
                                 </HBox>
                             </children>
                         </HBox>
-                        <HBox>
+                        <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Transmission*:" />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Transmission*:" />
                                 <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="149.0" />
                             </children>
                         </HBox>
                         <HBox layoutX="10.0" layoutY="125.0" spacing="20.0">
                             <children>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Seats*: " />
+                                        <Label prefWidth="130.0" styleClass="descriptionLabel" text="Seats*: " />
                                         <TextField fx:id="seatsTextField" />
                                     </children>
                                 </HBox>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="50.0" styleClass="descriptionLabel" text="Beds*: " />
                                         <TextField fx:id="bedsTextField" />
@@ -138,13 +138,13 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="154.0" spacing="20.0">
                             <children>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Year of construction: " />
+                                        <Label prefWidth="130.0" styleClass="descriptionLabel" text="Year of construction: " />
                                         <TextField fx:id="constructionYearTextField" />
                                     </children>
                                 </HBox>
-                                <HBox>
+                                <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="50.0" styleClass="descriptionLabel" text="Engine: " />
                                         <TextField fx:id="engineTextField" />
@@ -152,9 +152,9 @@
                                 </HBox>
                             </children>
                         </HBox>
-                        <HBox>
+                        <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Pictures:" />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Pictures:" />
                                 <HBox spacing="2.0">
                                     <children>
                                         <TextField fx:id="importPath" editable="false" />
@@ -169,7 +169,7 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="125.0" />
+                                <Label prefWidth="130.0" />
                                 <HBox spacing="5.0">
                                     <children>
                                         <VBox>
@@ -199,7 +199,7 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Features:" />
+                                <Label prefWidth="130.0" styleClass="descriptionLabel" text="Features:" />
                                 <VBox spacing="3.0">
                                     <children>
                                         <CheckBox fx:id="roofTentCheckBox" prefWidth="100.0" text="roof tent?" />
