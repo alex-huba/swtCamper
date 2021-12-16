@@ -14,7 +14,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class RentingViewController {
-
   @Autowired
   private OfferController offerController;
 
@@ -26,6 +25,9 @@ public class RentingViewController {
 
   @FXML
   public ComboBox<VehicleType> vehicleTypeComboBox;
+
+  @FXML
+  public Button resetVehicleTypeBtn;
 
   @FXML
   public TextField vehicleBrandTextField;
@@ -41,6 +43,9 @@ public class RentingViewController {
 
   @FXML
   public ComboBox<TransmissionType> transmissionComboBox;
+
+  @FXML
+  public Button resetTransmissionTypeBtn;
 
   @FXML
   public TextField seatAmountTextField;
@@ -117,6 +122,7 @@ public class RentingViewController {
         }
       }
     );
+    resetVehicleTypeBtn.visibleProperty().bind(vehicleTypeComboBox.valueProperty().isNotNull());
     transmissionComboBox.setItems(
       FXCollections.observableArrayList(TransmissionType.values())
     );
@@ -133,6 +139,7 @@ public class RentingViewController {
         }
       }
     );
+    resetTransmissionTypeBtn.visibleProperty().bind(transmissionComboBox.valueProperty().isNotNull());
   }
 
   /**

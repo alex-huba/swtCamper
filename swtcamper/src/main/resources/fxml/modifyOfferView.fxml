@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -16,18 +15,8 @@
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="5.0">
             <children>
-                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Place Offer">
-                    <styleClass>
-                        <String fx:value="bg-success" />
-                        <String fx:value="radius-10" />
-                    </styleClass>
-                </Button>
-                <Button fx:id="cancelButton" onAction="#cancelAction" text="Cancel">
-                    <styleClass>
-                        <String fx:value="bg-danger" />
-                        <String fx:value="radius-10" />
-                    </styleClass>
-                </Button>
+                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" styleClass="bg-success" text="Place Offer" />
+                <Button fx:id="cancelButton" onAction="#cancelAction" styleClass="bg-danger" text="Cancel" />
             </children>
         </HBox>
     </bottom>
@@ -52,7 +41,7 @@
                             <children>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="120.0" styleClass="descriptionLabel" text="Title*:" />
+                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Title*:" />
                                         <TextField fx:id="titleTextField" prefHeight="25.0" prefWidth="252.0" />
                                     </children>
                                 </HBox>
@@ -67,25 +56,25 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Contact*: " />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Contact*: " />
                                 <TextField fx:id="contactTextField" />
                             </children>
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Pick-up location*:" />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Pick-up location*:" />
                                 <TextField fx:id="locationTextField" />
                             </children>
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Particularities:" />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Particularities:" />
                                 <TextArea fx:id="particularitiesTextArea" />
                             </children>
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Rental Conditions: " />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Rental Conditions: " />
                                 <VBox spacing="3.0">
                                     <children>
                                         <CheckBox fx:id="minAgeCheckBox" accessibleHelp="Min age will be 21" accessibleText="Min age will be 21" text="Do you want a Minimum Age?" />
@@ -102,7 +91,7 @@
                         <Label prefHeight="45" styleClass="heading" text="Vehicle Details" />
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Vehicle type*: " />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Vehicle type*: " />
                                 <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" />
                             </children>
                         </HBox>
@@ -110,7 +99,7 @@
                             <children>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="120.0" styleClass="descriptionLabel" text="Brand*: " />
+                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Brand*: " />
                                         <TextField fx:id="brandTextField" />
                                     </children>
                                 </HBox>
@@ -124,7 +113,7 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Transmission*:" />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Transmission*:" />
                                 <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="149.0" />
                             </children>
                         </HBox>
@@ -132,7 +121,7 @@
                             <children>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="120.0" styleClass="descriptionLabel" text="Seats*: " />
+                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Seats*: " />
                                         <TextField fx:id="seatsTextField" />
                                     </children>
                                 </HBox>
@@ -148,7 +137,7 @@
                             <children>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="120.0" styleClass="descriptionLabel" text="Year of construction: " />
+                                        <Label prefWidth="125.0" styleClass="descriptionLabel" text="Year of construction: " />
                                         <TextField fx:id="constructionYearTextField" />
                                     </children>
                                 </HBox>
@@ -162,12 +151,12 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Pictures:" />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Pictures:" />
                                 <HBox spacing="2.0">
                                     <children>
                                         <TextField fx:id="importPath" editable="false" />
-                                        <Button mnemonicParsing="false" onAction="#importFileChooserAction" prefHeight="26.0" text="Bild wählen" />
-                                        <Button mnemonicParsing="false" onAction="#importButtonAction" text="Import selected picture" />
+                                        <Button mnemonicParsing="false" onAction="#importFileChooserAction" prefHeight="26.0" styleClass="bg-primary" text="Bild wählen" />
+                                        <Button mnemonicParsing="false" onAction="#importButtonAction" styleClass="bg-primary" text="Import selected picture" />
                                     </children>
                                 </HBox>
                             </children>
@@ -201,7 +190,7 @@
                         </HBox>
                         <HBox>
                             <children>
-                                <Label prefWidth="120.0" styleClass="descriptionLabel" text="Features:" />
+                                <Label prefWidth="125.0" styleClass="descriptionLabel" text="Features:" />
                                 <VBox spacing="3.0">
                                     <children>
                                         <CheckBox fx:id="roofTentCheckBox" prefWidth="100.0" text="roof tent?" />
@@ -231,4 +220,7 @@
          </BorderPane.margin>
         </VBox>
     </center>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" />
+   </padding>
 </BorderPane>

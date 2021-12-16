@@ -3,6 +3,7 @@ package swtcamper.javafx.controller;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
@@ -39,10 +40,10 @@ public class MainViewController {
   public AnchorPane mainStage;
 
   @FXML
-  public Pane homeViewBox;
+  public Node homeViewBox;
 
   @FXML
-  public Pane placeOfferViewBox;
+  public Node placeOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;

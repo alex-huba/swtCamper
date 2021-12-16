@@ -154,16 +154,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
-  private final Background errorBackground = new Background(
-    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-  private final Background neutralBackground = new Background(
-    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-  private final Background successBackground = new Background(
-    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
   /**
    * Initialization method for placing a new offer.
    */
@@ -323,27 +313,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     kitchenUnitCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
     importPath.clear();
-
-    // resets all backgrounds to neutral
-    // mandatory fields
-    titleTextField.setBackground(neutralBackground);
-    priceTextField.setBackground(neutralBackground);
-    locationTextField.setBackground(neutralBackground);
-    contactTextField.setBackground(neutralBackground);
-    vehicleTypeComboBox.setBackground(neutralBackground);
-    brandTextField.setBackground(neutralBackground);
-    modelTextField.setBackground(neutralBackground);
-    transmissionComboBox.setBackground(neutralBackground);
-    seatsTextField.setBackground(neutralBackground);
-    bedsTextField.setBackground(neutralBackground);
-    // rest fields
-    particularitiesTextArea.setBackground(neutralBackground);
-    constructionYearTextField.setBackground(neutralBackground);
-    engineTextField.setBackground(neutralBackground);
-    importPath.setBackground(neutralBackground);
-    lengthTextField.setBackground(neutralBackground);
-    widthTextField.setBackground(neutralBackground);
-    heightTextField.setBackground(neutralBackground);
 
     // reset validated properties
     isTitleOk.set(false);
@@ -522,14 +491,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateBeds(bedsTextField.getText());
   }
 
+  private void validateTrue(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-false");
+    inputField.getStyleClass().add("input-validate-true");
+  }
+
+  private void validateFalse(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-true");
+    inputField.getStyleClass().add("input-validate-false");
+  }
+
   private void validateTitle(String inputTitle) {
     if (inputTitle.isEmpty() || inputTitle.length() < 5) {
       errorLabel.setText("Invalid title");
-      titleTextField.setBackground(errorBackground);
+      validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
       errorLabel.setText("");
-      titleTextField.setBackground(successBackground);
+      validateTrue(titleTextField);
       isTitleOk.set(true);
     }
   }
@@ -541,11 +520,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       Integer.parseInt(inputPrice) <= 0
     ) {
       errorLabel.setText("Invalid price");
-      priceTextField.setBackground(errorBackground);
+      validateFalse(priceTextField);
       isPriceOk.set(false);
     } else {
       errorLabel.setText("");
-      priceTextField.setBackground(successBackground);
+      validateTrue(priceTextField);
       isPriceOk.set(true);
     }
   }
@@ -553,11 +532,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateLocation(String inputLocation) {
     if (inputLocation.isEmpty() || inputLocation.length() < 3) {
       errorLabel.setText("Invalid location");
-      locationTextField.setBackground(errorBackground);
+      validateFalse(locationTextField);
       isLocationOk.set(false);
     } else {
       errorLabel.setText("");
-      locationTextField.setBackground(successBackground);
+      validateTrue(locationTextField);
       isLocationOk.set(true);
     }
   }
@@ -565,11 +544,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateContact(String inputContact) {
     if (inputContact.isEmpty() || inputContact.length() < 5) {
       errorLabel.setText("Invalid contact");
-      contactTextField.setBackground(errorBackground);
+      validateFalse(contactTextField);
       isContactOk.set(false);
     } else {
       errorLabel.setText("");
-      contactTextField.setBackground(successBackground);
+      validateTrue(contactTextField);
       isContactOk.set(true);
     }
   }
@@ -577,11 +556,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateVehicleType(VehicleType inputVehicleType) {
     if (inputVehicleType == null) {
       errorLabel.setText("Invalid vehicle type");
-      vehicleTypeComboBox.setBackground(errorBackground);
+      validateFalse(vehicleTypeComboBox);
       isVehicleTypeOk.set(false);
     } else {
       errorLabel.setText("");
-      vehicleTypeComboBox.setBackground(successBackground);
+      validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
   }
@@ -589,11 +568,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateBrand(String inputBrand) {
     if (inputBrand.isEmpty() || inputBrand.length() < 3) {
       errorLabel.setText("Invalid brand");
-      brandTextField.setBackground(errorBackground);
+      validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
       errorLabel.setText("");
-      brandTextField.setBackground(successBackground);
+      validateTrue(brandTextField);
       isBrandOk.set(true);
     }
   }
@@ -601,11 +580,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateModel(String inputModel) {
     if (inputModel.isEmpty() || inputModel.length() < 3) {
       errorLabel.setText("Invalid model");
-      modelTextField.setBackground(errorBackground);
+      validateFalse(modelTextField);
       isModelOk.set(false);
     } else {
       errorLabel.setText("");
-      modelTextField.setBackground(successBackground);
+      validateTrue(modelTextField);
       isModelOk.set(true);
     }
   }
@@ -615,11 +594,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   ) {
     if (inputTransmissionType == null) {
       errorLabel.setText("Invalid transmission type");
-      transmissionComboBox.setBackground(errorBackground);
+      validateFalse(transmissionComboBox);
       isTransmissionTypeOk.set(false);
     } else {
       errorLabel.setText("");
-      transmissionComboBox.setBackground(successBackground);
+      validateTrue(transmissionComboBox);
       isTransmissionTypeOk.set(true);
     }
   }
@@ -631,11 +610,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       Integer.parseInt(inputSeats) == 0
     ) {
       errorLabel.setText("Invalid seat amount");
-      seatsTextField.setBackground(errorBackground);
+      validateFalse(seatsTextField);
       isSeatsOk.set(false);
     } else {
       errorLabel.setText("");
-      seatsTextField.setBackground(successBackground);
+      validateTrue(seatsTextField);
       isSeatsOk.set(true);
     }
   }
@@ -643,11 +622,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateBeds(String inputBeds) {
     if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
       errorLabel.setText("Invalid beds");
-      bedsTextField.setBackground(errorBackground);
+      validateFalse(bedsTextField);
       isBedsOk.set(false);
     } else {
       errorLabel.setText("");
-      bedsTextField.setBackground(successBackground);
+      validateTrue(bedsTextField);
       isBedsOk.set(true);
     }
   }

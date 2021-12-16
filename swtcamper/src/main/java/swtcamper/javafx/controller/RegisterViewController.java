@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -71,18 +72,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private BooleanProperty isPhoneOk;
   private BooleanProperty isNameOk;
   private BooleanProperty isSurnameOk;
-
-  private Background errorBackground = new Background(
-    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background neutralBackground = new Background(
-    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background successBackground = new Background(
-    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
-  );
 
   @FXML
   private void initialize() {
@@ -153,19 +142,29 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     ) validateNameTf(); else if (surnameTf.equals(source)) validateSurnameTf();
   }
 
+  private void validateTrue(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-false");
+    inputField.getStyleClass().add("input-validate-true");
+  }
+
+  private void validateFalse(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-true");
+    inputField.getStyleClass().add("input-validate-false");
+  }
+
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText("Invalid username: 5 characters minimum");
-      usernameTf.setBackground(errorBackground);
+      validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else if (!userController.isUsernameFree(new UserDTO(input))) {
       errorLabel.setText("Invalid username: username already taken");
-      usernameTf.setBackground(errorBackground);
+      validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
       errorLabel.setText("");
-      usernameTf.setBackground(successBackground);
+      validateTrue(usernameTf);
       isUsernameOk.setValue(true);
     }
   }
@@ -174,11 +173,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText("Invalid password: 5 characters minimum");
-      passwordPf.setBackground(errorBackground);
+      validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
       errorLabel.setText("");
-      passwordPf.setBackground(successBackground);
+      validateTrue(passwordPf);
       isPasswordOk.setValue(true);
     }
   }
@@ -187,11 +186,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
       errorLabel.setText("Passwords don't match");
-      repeatPasswordPf.setBackground(errorBackground);
+      validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
       errorLabel.setText("");
-      repeatPasswordPf.setBackground(successBackground);
+      validateTrue(repeatPasswordPf);
       isRepeatPasswordOk.setValue(true);
     }
   }
@@ -203,15 +202,15 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     ) {
       errorLabel.setText("Invalid email. Enter a correct email");
-      emailTf.setBackground(errorBackground);
+      validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
       errorLabel.setText("Invalid email: email already taken");
-      emailTf.setBackground(errorBackground);
+      validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
       errorLabel.setText("");
-      emailTf.setBackground(successBackground);
+      validateTrue(emailTf);
       isEmailOk.setValue(true);
     }
   }
@@ -220,11 +219,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = phoneTf.getText();
     if (input.length() < 9 || !input.matches("^[0-9-]*")) {
       errorLabel.setText("Invalid phone number. No letters allowed.");
-      phoneTf.setBackground(errorBackground);
+      validateFalse(phoneTf);
       isPhoneOk.setValue(false);
     } else {
       errorLabel.setText("");
-      phoneTf.setBackground(successBackground);
+      validateTrue(phoneTf);
       isPhoneOk.setValue(true);
     }
   }
@@ -233,11 +232,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = nameTf.getText();
     if (input.length() < 3 || !input.matches("^[a-zA-Z]*")) {
       errorLabel.setText("Invalid name: 2 letters minimum");
-      nameTf.setBackground(errorBackground);
+      validateFalse(nameTf);
       isNameOk.setValue(false);
     } else {
       errorLabel.setText("");
-      nameTf.setBackground(successBackground);
+      validateTrue(nameTf);
       isNameOk.setValue(true);
     }
   }
@@ -246,11 +245,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = surnameTf.getText();
     if (input.length() < 3 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText("Invalid surname: 2 letters minimum");
-      surnameTf.setBackground(errorBackground);
+      validateFalse(surnameTf);
       isSurnameOk.setValue(false);
     } else {
       errorLabel.setText("");
-      surnameTf.setBackground(successBackground);
+      validateTrue(surnameTf);
       isSurnameOk.setValue(true);
     }
   }

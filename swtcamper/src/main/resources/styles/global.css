@@ -99,7 +99,7 @@ Button {
 
 
 .bg-primary {
-    -fx-base: -fx-alt-primary;
+    -fx-base: -fx-primary;
     -fx-text-fill: #FFFFFF;
 }
 .bg-secondary {
@@ -118,5 +118,15 @@ Button {
 }
 .bg-dark {
     -fx-base: -fx-dark;
+    -fx-text-fill: #FFFFFF;
+}
+
+.input-validate-true {
+    -fx-background-color: -fx-success;
+    -fx-text-fill: #FFFFFF;
+}
+
+.input-validate-false {
+    -fx-background-color: -fx-danger;
     -fx-text-fill: #FFFFFF;
 }

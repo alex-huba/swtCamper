@@ -3,6 +3,7 @@ package swtcamper.javafx.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -45,18 +46,6 @@ public class ResetPasswordViewController {
   SimpleBooleanProperty isEmailOk;
   SimpleBooleanProperty isPasswordOk;
   SimpleBooleanProperty isRepeatPasswordOk;
-
-  private Background errorBackground = new Background(
-    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background neutralBackground = new Background(
-    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background successBackground = new Background(
-    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
-  );
 
   @FXML
   public void initialize() {
@@ -101,16 +90,26 @@ public class ResetPasswordViewController {
     mainViewController.changeView("login");
   }
 
+  private void validateTrue(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-false");
+    inputField.getStyleClass().add("input-validate-true");
+  }
+
+  private void validateFalse(Node inputField) {
+    inputField.getStyleClass().remove("input-validate-true");
+    inputField.getStyleClass().add("input-validate-false");
+  }
+
   @FXML
   public void validateUsernameTf() {
     String input = usernameTf.getText();
     if (input.length() == 0) {
       errorMessageLabel.setText("Invalid username");
-      usernameTf.setBackground(errorBackground);
+      validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      usernameTf.setBackground(neutralBackground);
+      validateTrue(usernameTf);
       isUsernameOk.setValue(true);
     }
   }
@@ -120,11 +119,11 @@ public class ResetPasswordViewController {
     String input = usernameTf.getText();
     if (input.length() == 0) {
       errorMessageLabel.setText("Invalid email");
-      usernameTf.setBackground(errorBackground);
+      validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      usernameTf.setBackground(neutralBackground);
+      validateTrue(emailTf);
       isEmailOk.setValue(true);
     }
   }
@@ -134,11 +133,11 @@ public class ResetPasswordViewController {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorMessageLabel.setText("Invalid password: 5 characters minimum");
-      passwordPf.setBackground(errorBackground);
+      validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      passwordPf.setBackground(successBackground);
+      validateTrue(passwordPf);
       isPasswordOk.setValue(true);
     }
   }
@@ -148,11 +147,11 @@ public class ResetPasswordViewController {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
       errorMessageLabel.setText("Passwords don't match");
-      repeatPasswordPf.setBackground(errorBackground);
+      validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      repeatPasswordPf.setBackground(successBackground);
+      validateTrue(repeatPasswordPf);
       isRepeatPasswordOk.setValue(true);
     }
   }
