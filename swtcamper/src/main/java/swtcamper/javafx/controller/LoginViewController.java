@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -71,16 +70,6 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     validateInput(event);
   }
 
-  private void validateTrue(Node inputField) {
-    inputField.getStyleClass().remove("input-validate-false");
-    inputField.getStyleClass().add("input-validate-true");
-  }
-
-  private void validateFalse(Node inputField) {
-    inputField.getStyleClass().remove("input-validate-true");
-    inputField.getStyleClass().add("input-validate-false");
-  }
-
   private void validateInput(KeyEvent event) {
     Object eventSource = event.getSource();
 
@@ -91,11 +80,19 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid username: 5 characters minimum and no spaces"
         );
-        validateFalse(usernameTf);
+        usernameTf.setBackground(
+          new Background(
+            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+          )
+        );
         isUsernameOk.setValue(false);
       } else {
         errorLabel.setText("");
-        validateTrue(usernameTf);
+        usernameTf.setBackground(
+          new Background(
+            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+          )
+        );
         isUsernameOk.setValue(true);
       }
       // Validate password
@@ -105,11 +102,19 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid password: 5 characters minimum and no spaces"
         );
-        validateFalse(passwordPf);
+        passwordPf.setBackground(
+          new Background(
+            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+          )
+        );
         isPasswordOk.setValue(false);
       } else {
         errorLabel.setText("");
-        validateTrue(passwordPf);
+        passwordPf.setBackground(
+          new Background(
+            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+          )
+        );
         isPasswordOk.setValue(true);
       }
     }
