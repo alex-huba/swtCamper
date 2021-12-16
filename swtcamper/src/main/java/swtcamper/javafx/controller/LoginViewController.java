@@ -81,11 +81,9 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid username: 5 characters minimum and no spaces"
         );
-        validateFalse(usernameTf);
         isUsernameOk.setValue(false);
       } else {
         errorLabel.setText("");
-        validateTrue(usernameTf);
         isUsernameOk.setValue(true);
       }
       // Validate password
@@ -95,22 +93,12 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         errorLabel.setText(
           "Invalid password: 5 characters minimum and no spaces"
         );
-        validateFalse(passwordPf);
         isPasswordOk.setValue(false);
       } else {
         errorLabel.setText("");
-        validateTrue(passwordPf);
         isPasswordOk.setValue(true);
       }
     }
-  }
-
-  private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
-  }
-
-  private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   @FXML
