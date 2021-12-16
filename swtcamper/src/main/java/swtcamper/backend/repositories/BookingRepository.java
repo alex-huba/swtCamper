@@ -3,7 +3,6 @@ package swtcamper.backend.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import swtcamper.backend.entities.Booking;
-import swtcamper.backend.entities.Offer;
 
 import java.util.List;
 

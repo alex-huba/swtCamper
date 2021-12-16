@@ -24,12 +24,13 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    public List getBookedDays(Long offerID) {
+    public List getBookedDays(long offerID) {
         List<LocalDate> bookedDays = new ArrayList<>();
         Optional<Offer> offerResponse = offerRepository.findById(offerID);
         Offer offer = offerResponse.get();
         ArrayList<Long> bookingIDs = offer.getBookings();
         Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
+
 
         for (Booking booking : bookings) {
             LocalDate startDate = booking.getStartDate();
@@ -42,5 +43,4 @@ public class BookingService {
         return bookedDays;
     }
 }
-
 
