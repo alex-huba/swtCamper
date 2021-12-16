@@ -4,53 +4,59 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="96.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="314.0" minWidth="10.0" prefWidth="304.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-         <children>
-            <Label styleClass="header" text="Login" />
-            <Label fx:id="errorLabel" styleClass="errorMessage" text="errorLabel" />
-         </children>
+<BorderPane prefHeight="580.0" prefWidth="644.0" styleClass="rootNodeBackground" stylesheets="/styles/global.css, /styles/loginview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
+
+   <top>
+      <VBox spacing="15.0">
+         <HBox alignment="TOP_CENTER">
+            <Label styleClass="heading" text="Login" />
+         </HBox>
+         <HBox alignment="TOP_CENTER">
+            <Label fx:id="errorLabel" styleClass="errorMessage, text-danger" text="errorLabel" />
+         </HBox>
       </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+   </top>
+
+   <center>
+      <VBox alignment="CENTER" spacing="30">
          <children>
-            <Label styleClass="descriptionLabel" text="Have no account yet?" />
-            <Button fx:id="registerButton" onAction="#handleRegister" styleClass="btnRegister" text="sign up" />
-            <Button fx:id="forgotPasswordButton" onAction="#handleForgotPassword" styleClass="btnForgotPassword" text="Forgot your password?" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER_RIGHT" prefHeight="89.0" prefWidth="208.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <children>
-            <HBox alignment="BASELINE_RIGHT">
+            <HBox alignment="CENTER" spacing="20">
                <children>
-                  <Label styleClass="usernameLabel,descriptionLabel" text="Username" />
+                  <Label styleClass="descriptionLabel" text="Username"></Label>
                   <TextField fx:id="usernameTf" promptText="username" styleClass="inputField" />
                </children>
             </HBox>
-            <HBox alignment="BASELINE_RIGHT">
+            <HBox alignment="CENTER" spacing="20">
                <children>
-                  <Label styleClass="passwordLabel,descriptionLabel" text="Password" />
+                  <Label styleClass="descriptionLabel" text="Password"></Label>
                   <PasswordField fx:id="passwordPf" onKeyReleased="#handleEnterKey" promptText="password" styleClass="inputField" />
                </children>
             </HBox>
-            <Button fx:id="loginButton" onAction="#handleLogin" styleClass="btnLogin,Button" text="login" />
+            <HBox alignment="CENTER">
+               <Button fx:id="loginButton" onAction="#handleLogin" styleClass="Button, bg-lightGreen, radius-20, border-dark" text="login" />
+            </HBox>
          </children>
       </VBox>
-   </children>
-</GridPane>
+   </center>
+
+   <bottom>
+      <VBox spacing="20">
+         <children>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+               <Label styleClass="descriptionLabel" text="Have no account yet?" />
+               <Button fx:id="registerButton" onAction="#handleRegister" styleClass="btnRegister" text="sign up" />
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+               <Button fx:id="forgotPasswordButton" onAction="#handleForgotPassword" styleClass="btnForgotPassword" text="Forgot your password?" />
+            </HBox>
+         </children>
+      </VBox>
+   </bottom>
+
+
+
+</BorderPane>

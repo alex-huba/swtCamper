@@ -11,6 +11,8 @@
 
     -fx-alt-primary: #36334f;
     -fx-alt-active: #2c2a3f;
+
+    -fx-lightGreen: #AADDA9;
 }
 
 Button {
@@ -18,7 +20,9 @@ Button {
 }
 
 .heading {
-    -fx-font-size: 20;
+    -fx-font-size: 30;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-text-fill: #040759;
 }
 
 
@@ -119,4 +123,14 @@ Button {
 .bg-dark {
     -fx-base: -fx-dark;
     -fx-text-fill: #FFFFFF;
+}
+.bg-lightGreen {
+   -fx-base: -fx-lightGreen;
+}
+.rootNodeBackground {
+    -fx-background-color: #D6CFCD;
+}
+.errorMessage {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 15px;
 }
