@@ -82,4 +82,15 @@ public class ModelMapper {
         throw new GenericServiceException("UserRole is invalid.");
     }
   }
+
+  public BookingDTO bookingToBookingDTO(Booking booking) {
+    return new BookingDTO(
+      booking.getId(),
+      booking.getUser(),
+      booking.getOffer(),
+      booking.getStartDate(),
+      booking.getEndDate(),
+      booking.isActive()
+    );
+  }
 }
