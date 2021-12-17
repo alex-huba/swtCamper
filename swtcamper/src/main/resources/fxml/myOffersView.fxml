@@ -12,10 +12,10 @@
     <top>
         <ToolBar BorderPane.alignment="CENTER">
             <items>
-                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" styleClass="bg-primary" text="Place Offer" />
-                <Button fx:id="viewOfferButton" onAction="#viewOfferAction" styleClass="bg-primary" text="View Offer" />
-                <Button fx:id="updateOfferButton" onAction="#updateOfferAction" styleClass="bg-primary" text="Update Offer" />
-                <Button fx:id="removeButton" onAction="#removeOfferAction" styleClass="bg-danger" text="Remove Offer" />
+                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" styleClass="bg-primary" text="Neues Angebot" />
+                <Button fx:id="viewOfferButton" onAction="#viewOfferAction" styleClass="bg-primary" text="Angebot ansehen" />
+                <Button fx:id="updateOfferButton" onAction="#updateOfferAction" styleClass="bg-primary" text="Angebot verändern" />
+                <Button fx:id="removeButton" onAction="#removeOfferAction" styleClass="bg-danger" text="Angebot entfernen" />
             </items>
         </ToolBar>
     </top>
