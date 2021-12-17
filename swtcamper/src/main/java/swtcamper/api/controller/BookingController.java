@@ -29,7 +29,7 @@ public class BookingController implements IBookingController {
     boolean active
   ) {
     return modelMapper.bookingToBookingDTO(
-      bookingService.create(user, offer, startDate, endDate, active)
+      bookingService.create(user, offer, startDate, endDate)
     );
   }
 

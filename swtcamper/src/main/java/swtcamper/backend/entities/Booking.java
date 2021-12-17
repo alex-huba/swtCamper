@@ -42,14 +42,13 @@ public class Booking {
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) {
     this.user = user;
     this.offer = offer;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.active = active;
+    this.active = true;
   }
 
   public Long getId() {
