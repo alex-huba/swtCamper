@@ -78,7 +78,7 @@ public class ResetPasswordViewController {
 
       Alert successAlert = new Alert(
         Alert.AlertType.INFORMATION,
-        "Changed password successfully"
+        "Passwort wurde erfolgreich geändert"
       );
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
@@ -102,7 +102,7 @@ public class ResetPasswordViewController {
   public void validateUsernameTf() {
     String input = usernameTf.getText();
     if (input.length() == 0) {
-      errorMessageLabel.setText("Invalid username");
+      errorMessageLabel.setText("Ungültiger Nutzername");
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
@@ -116,7 +116,7 @@ public class ResetPasswordViewController {
   private void validateEmailTf() {
     String input = emailTf.getText();
     if (input.length() == 0) {
-      errorMessageLabel.setText("Invalid email");
+      errorMessageLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
@@ -130,7 +130,7 @@ public class ResetPasswordViewController {
   public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorMessageLabel.setText("Invalid password: 5 characters minimum");
+      errorMessageLabel.setText("Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen");
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
@@ -144,7 +144,7 @@ public class ResetPasswordViewController {
   private void validateRepeatPasswordPf() {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
-      errorMessageLabel.setText("Passwords don't match");
+      errorMessageLabel.setText("Passwörter stimmen nicht überein");
       validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {

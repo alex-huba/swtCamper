@@ -79,7 +79,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
         errorLabel.setText(
-          "Invalid username: 5 characters minimum and no spaces"
+          "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
         );
         isUsernameOk.setValue(false);
       } else {
@@ -91,7 +91,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
         errorLabel.setText(
-          "Invalid password: 5 characters minimum and no spaces"
+          "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
         );
         isPasswordOk.setValue(false);
       } else {
@@ -119,11 +119,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
       Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Forgot your password? Click ok to reset it."
+        Alert.AlertType.ERROR,
+        "Klicken Sie OK um den Passwort zurückzusetzen"
       );
-      alert.setTitle("Authentication failed");
-      alert.setHeaderText(e.getMessage());
+      alert.setTitle("Authentifizierung fehlgeschlagen!");
+      alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("forgotPassword");
@@ -133,11 +133,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (UserDoesNotExistException e) {
       // Inform user that user account doesn't exist
       Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Want to sign up instead? Click ok."
+        Alert.AlertType.ERROR,
+        "Klicken Sie OK um neuen Account zu erstellen"
       );
-      alert.setTitle("Authentication failed");
-      alert.setHeaderText(e.getMessage());
+      alert.setTitle("Authentifizierung fehlgeschlagen!");
+      alert.setHeaderText("Es gibt keinen Account mit solchem Nutzername");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("register");

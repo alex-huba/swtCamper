@@ -16,7 +16,7 @@
             <Label styleClass="heading" text="Login" />
          </HBox>
          <HBox alignment="TOP_CENTER">
-            <Label fx:id="errorLabel" styleClass="errorMessage, text-danger" text="errorLabel" />
+            <Label fx:id="errorLabel" styleClass="errorMessage, text-danger" text="" />
          </HBox>
       </VBox>
    </top>

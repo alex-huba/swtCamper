@@ -153,11 +153,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorLabel.setText("Invalid username: 5 characters minimum");
+      errorLabel.setText("Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen");
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else if (!userController.isUsernameFree(new UserDTO(input))) {
-      errorLabel.setText("Invalid username: username already taken");
+      errorLabel.setText("Ungültiger Nutzername: Nutzername ist bereits vergeben");
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
@@ -170,7 +170,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorLabel.setText("Invalid password: 5 characters minimum");
+      errorLabel.setText("Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen");
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
@@ -183,7 +183,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validateRepeatPasswordPf() {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
-      errorLabel.setText("Passwords don't match");
+      errorLabel.setText("Passwörter stimmen nicht überein");
       validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
@@ -199,11 +199,11 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       input.length() < 5 ||
       !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     ) {
-      errorLabel.setText("Invalid email. Enter a correct email");
+      errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
-      errorLabel.setText("Invalid email: email already taken");
+      errorLabel.setText("Ungültiges Email: Email ist bereits vergeben");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
@@ -216,7 +216,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validatePhoneTf() {
     String input = phoneTf.getText();
     if (input.length() < 9 || !input.matches("^[0-9-]*")) {
-      errorLabel.setText("Invalid phone number. No letters allowed.");
+      errorLabel.setText("Ungültige Telefonnummer. Bitte keine Buchstaben.");
       validateFalse(phoneTf);
       isPhoneOk.setValue(false);
     } else {
@@ -229,7 +229,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validateNameTf() {
     String input = nameTf.getText();
     if (input.length() < 3 || !input.matches("^[a-zA-Z]*")) {
-      errorLabel.setText("Invalid name: 2 letters minimum");
+      errorLabel.setText("Ungültiger Name: 2 Buchstaben mindestens");
       validateFalse(nameTf);
       isNameOk.setValue(false);
     } else {
@@ -242,7 +242,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validateSurnameTf() {
     String input = surnameTf.getText();
     if (input.length() < 3 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorLabel.setText("Invalid surname: 2 letters minimum");
+      errorLabel.setText("Ungültiger Nachname: 2 Buchstaben mindestens");
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);
     } else {
@@ -283,14 +283,14 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
           String.format(
-            "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
+            "Neuer Benutzer '%s' erstellt. \nMelden Sie sich an, um fortzufahren. \nIhre Daten werden in Kürze von einem Operator geprüft.",
             username
           )
         );
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-          String.format("New user '%s' created. Login to proceed.", username)
+          String.format("Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.", username)
         );
       }
       mainViewController.changeView("login");

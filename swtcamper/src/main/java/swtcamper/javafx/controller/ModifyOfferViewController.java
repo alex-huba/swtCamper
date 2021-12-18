@@ -386,7 +386,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       );
 
       mainViewController.handleInformationMessage(
-        String.format("New offer \"%s\" has been created.", offerDTO.getID())
+        String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
       );
     } else if (isEditMode.get()) {
       String[] pictureURLs = null;
@@ -504,7 +504,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateTitle(String inputTitle) {
     if (inputTitle.isEmpty() || inputTitle.length() < 5) {
-      errorLabel.setText("Invalid title");
+      errorLabel.setText("Ungültiger Titel");
       validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
@@ -520,7 +520,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       !inputPrice.matches("[0-9]*") ||
       Integer.parseInt(inputPrice) <= 0
     ) {
-      errorLabel.setText("Invalid price");
+      errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
       isPriceOk.set(false);
     } else {
@@ -532,7 +532,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateLocation(String inputLocation) {
     if (inputLocation.isEmpty() || inputLocation.length() < 3) {
-      errorLabel.setText("Invalid location");
+      errorLabel.setText("Ungültiger Abholort");
       validateFalse(locationTextField);
       isLocationOk.set(false);
     } else {
@@ -544,7 +544,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateContact(String inputContact) {
     if (inputContact.isEmpty() || inputContact.length() < 5) {
-      errorLabel.setText("Invalid contact");
+      errorLabel.setText("Ungültiger Kontakt");
       validateFalse(contactTextField);
       isContactOk.set(false);
     } else {
@@ -556,7 +556,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateVehicleType(VehicleType inputVehicleType) {
     if (inputVehicleType == null) {
-      errorLabel.setText("Invalid vehicle type");
+      errorLabel.setText("Ungültiger Fahrzeugtyp");
       validateFalse(vehicleTypeComboBox);
       isVehicleTypeOk.set(false);
     } else {
@@ -568,7 +568,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateBrand(String inputBrand) {
     if (inputBrand.isEmpty() || inputBrand.length() < 3) {
-      errorLabel.setText("Invalid brand");
+      errorLabel.setText("Ungültige Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
@@ -580,7 +580,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateModel(String inputModel) {
     if (inputModel.isEmpty() || inputModel.length() < 3) {
-      errorLabel.setText("Invalid model");
+      errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);
     } else {
@@ -594,7 +594,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     TransmissionType inputTransmissionType
   ) {
     if (inputTransmissionType == null) {
-      errorLabel.setText("Invalid transmission type");
+      errorLabel.setText("Ungültige Schaltung");
       validateFalse(transmissionComboBox);
       isTransmissionTypeOk.set(false);
     } else {
@@ -610,7 +610,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       !inputSeats.matches("[0-9]*") ||
       Integer.parseInt(inputSeats) == 0
     ) {
-      errorLabel.setText("Invalid seat amount");
+      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
       validateFalse(seatsTextField);
       isSeatsOk.set(false);
     } else {
@@ -622,7 +622,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateBeds(String inputBeds) {
     if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
-      errorLabel.setText("Invalid beds");
+      errorLabel.setText("Ungültige Anzahl von Betten");
       validateFalse(bedsTextField);
       isBedsOk.set(false);
     } else {
@@ -642,7 +642,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     Window window = source.getScene().getWindow();
 
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Open Resource File");
+    fileChooser.setTitle("Ressourcendatei öffnen");
     File file = fileChooser.showOpenDialog(window);
     if (file == null) return;
     importPath.setText(file.getAbsolutePath().toString());
