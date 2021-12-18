@@ -17,6 +17,7 @@
 
 Button {
     -fx-cursor: hand;
+    -fx-font-family: "Arial Rounded MT Bold";
 }
 
 Label {

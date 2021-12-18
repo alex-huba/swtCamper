@@ -8,54 +8,54 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="rootNode" stylesheets="/styles/registerview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RegisterViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="rootNodeBackground" stylesheets="/styles/registerview.css, /styles/global.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RegisterViewController">
     <children>
-        <Label layoutX="315" layoutY="10" styleClass="header" text="Registrieren" />
-        <Label fx:id="errorLabel" layoutX="250" layoutY="70" styleClass="errorMessageLabel" />
+        <Label layoutX="315" layoutY="10" styleClass="heading" text="Registrieren" />
+        <Label fx:id="errorLabel" layoutX="250" layoutY="70" styleClass="errorMessage" />
 
-        <HBox layoutX="180" layoutY="100" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="100">
             <children>
                 <Label styleClass="usernameLabel" text="Nutzername" />
                 <TextField fx:id="usernameTf" promptText="Nutzername" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="150" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="150">
             <children>
                 <Label styleClass="passwordLabel" text="Passwort" />
                 <PasswordField fx:id="passwordPf" promptText="Passwort" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="200" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="200">
             <children>
                 <Label styleClass="repeatPasswordLabel" text="Passwort wiederholen" />
                 <PasswordField fx:id="repeatPasswordPf" promptText="Passwort" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="250" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="250">
             <children>
                 <Label styleClass="emailLabel" text="E-mail" />
                 <TextField fx:id="emailTf" promptText="E-mail" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="300" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="300" >
             <children>
                 <Label styleClass="phoneLabel" text="Telefon" />
                 <TextField fx:id="phoneTf" promptText="Telefon" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="350" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="350">
             <children>
                 <Label styleClass="nameLabel" text="Vorname" />
                 <TextField fx:id="nameTf" promptText="Vorname" styleClass="inputField" />
             </children>
         </HBox>
 
-        <HBox layoutX="180" layoutY="400" styleClass="hBoxField">
+        <HBox layoutX="180" layoutY="400">
             <children>
                 <Label styleClass="surnameLabel" text="Nachname" />
                 <TextField fx:id="surnameTf" promptText="Nachname" styleClass="inputField" />
@@ -69,7 +69,7 @@
             </children>
         </HBox>
 
-        <Button fx:id="cancelBtn" layoutX="250" layoutY="535" onAction="#handleCancelBtn" styleClass="cancelBtn" text="Abbrechen" />
-        <Button fx:id="registerBtn" layoutX="430" layoutY="535" onAction="#handleRegisterBtn" styleClass="registerBtn" text="Registrieren" />
+        <Button fx:id="cancelBtn" layoutX="250" layoutY="535" onAction="#handleCancelBtn" styleClass="cancelBtn, bg-danger, radius-20, border-0" text="Abbrechen" />
+        <Button fx:id="registerBtn" layoutX="430" layoutY="535" onAction="#handleRegisterBtn" styleClass="registerBtn, bg-lightGreen, border-0,radius-20" text="Registrieren" />
     </children>
 </AnchorPane>
