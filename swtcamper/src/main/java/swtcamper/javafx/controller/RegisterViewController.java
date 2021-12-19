@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,6 +66,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   @FXML
   public Label errorLabel;
 
+  @FXML
+  public VBox rootElement;
+
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
   private BooleanProperty isRepeatPasswordOk;
@@ -116,6 +120,8 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
           .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
           .not()
       );
+
+//    rootElement.setVgrow()
   }
 
   @FXML
