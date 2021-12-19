@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -35,6 +36,9 @@ public class MainViewController {
   @Autowired
   public LoginViewController loginViewController;
 
+  @Autowired
+  public OfferViewController offerViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -43,6 +47,9 @@ public class MainViewController {
 
   @FXML
   public Pane placeOfferViewBox;
+
+  @FXML
+  public Pane OfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -116,6 +123,9 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
+        break;
+      case "viewOffer":
+        mainStage.getChildren().add(OfferViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);

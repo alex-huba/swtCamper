@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane style="-fx-background-color: lightgrey;" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0"
+      prefWidth="378.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="swtcamper.javafx.controller.OfferViewController">
+    <children>
+        <VBox>
+            <Label prefHeight="50" text="Your Offer:"/>
+            <Label fx:id="priceLabel" text="Price per night:"/>
+            <CheckBox fx:id="minAgeCheckBox" text="Do you want a Minimum Age?"/>
+            <CheckBox fx:id="borderCrossingCheckBox" text="Can the renter cross borders?"/>
+            <CheckBox fx:id="depositCheckBox" text="Do you want a deposit before renting?"/>
+            <Label prefHeight="30" text="Vehicle Details:"/>
+            <Label fx:id="typeLabel" text="Vehicle Type:"/>
+            <HBox>
+                <Label fx:id="brandLabel" prefWidth="75" text="Brand:"/>
+                <Label fx:id="modelLabel" prefWidth="75" text="Model:"/>
+            </HBox>
+            <Label fx:id="constructionYearLabel" text="Year of Construction:"/>
+            <HBox>
+                <Label fx:id="lengthLabel" prefWidth="75" text=""/>
+                <Label fx:id="widthLabel" prefWidth="75" text="Width:"/>
+                <Label fx:id="heightLabel" prefWidth="75" text="Height:"/>
+            </HBox>
+            <HBox>
+                <Label fx:id="engineLabel" prefWidth="100" text=""/>
+                <Label fx:id="transmissionLabel" prefWidth="100" text="Transmission:"/>
+            </HBox>
+            <HBox>
+                <Label fx:id="seatsLabel" prefWidth="75" text="Seats:"/>
+                <Label fx:id="bedsLabel" prefWidth="75" text="Beds:"/>
+            </HBox>
+            <Label prefHeight="30" text="Features:"/>
+            <HBox>
+                <VBox prefWidth="100">
+                    <CheckBox fx:id="roofTentCheckBox" text="roof tent:"/>
+                    <CheckBox fx:id="roofRackCheckBox" text="roof rack:"/>
+                    <CheckBox fx:id="bikeRackCheckBox" text="bike rack:"/>
+                    <CheckBox fx:id="showerCheckBox" text="shower:"/>
+                </VBox>
+                <VBox>
+                    <CheckBox fx:id="toiletCheckBox" text="toilet:"/>
+                    <CheckBox fx:id="kitchenUnitCheckBox" text="kitchen unit:"/>
+                    <CheckBox fx:id="fridgeCheckBox" text="fridge:"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+
+        <Button fx:id="cancelButton" layoutX="290.0" layoutY="369.0" mnemonicParsing="false"
+                onAction="#backAction" text="Back"/>
+    </children>
+</Pane>
