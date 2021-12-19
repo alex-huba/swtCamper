@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -257,48 +258,99 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @FXML
   public void handleRegisterBtn() {
+//    String username = usernameTf.getText();
+//    String password = passwordPf.getText();
+//    String email = emailTf.getText();
+//    String phone = phoneTf.getText();
+//    String name = nameTf.getText();
+//    String surname = surnameTf.getText();
+//
+//    UserDTO userDTO = new UserDTO();
+//    userDTO.setUsername(username);
+//    userDTO.setPassword(password);
+//    userDTO.setEmail(email);
+//    userDTO.setPhone(phone);
+//    userDTO.setName(name);
+//    userDTO.setSurname(surname);
+//
+//    if (userController.countUser() == 0) {
+//      userDTO.setUserRole(OPERATOR);
+//    } else if (providerCb.isSelected()) {
+//      userDTO.setUserRole(PROVIDER);
+//    } else {
+//      userDTO.setUserRole(RENTER);
+//    }
+
+//    try {
+//      userController.register(userDTO);
+//      // User registered as provider
+//      if (providerCb.isSelected()) {
+//        mainViewController.handleInformationMessage(
+//          String.format(
+//            "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
+//            username
+//          )
+//        );
+//        // User registered as renter
+//      } else {
+//        mainViewController.handleInformationMessage(
+//          String.format("New user '%s' created. Login to proceed.", username)
+//        );
+//      }
+//      mainViewController.changeView("login");
+//    } catch (GenericServiceException e) {
+//      mainViewController.handleExceptionMessage(e.getMessage());
+//    }
+
     String username = usernameTf.getText();
     String password = passwordPf.getText();
     String email = emailTf.getText();
     String phone = phoneTf.getText();
     String name = nameTf.getText();
     String surname = surnameTf.getText();
-
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUsername(username);
-    userDTO.setPassword(password);
-    userDTO.setEmail(email);
-    userDTO.setPhone(phone);
-    userDTO.setName(name);
-    userDTO.setSurname(surname);
+    UserRole userRole;
+    boolean enabled;
 
     if (userController.countUser() == 0) {
-      userDTO.setUserRole(OPERATOR);
+      userRole = OPERATOR;
+      enabled = true;
     } else if (providerCb.isSelected()) {
-      userDTO.setUserRole(PROVIDER);
+      userRole = PROVIDER;
+      enabled = false;
     } else {
-      userDTO.setUserRole(RENTER);
+      userRole = RENTER;
+      enabled = true;
     }
 
     try {
-      userController.register(userDTO);
+      userController.register(
+              username,
+              password,
+              email,
+              phone,
+              name,
+              surname,
+              userRole,
+              enabled
+      );
       // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
-          String.format(
-            "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
-            username
-          )
+                String.format(
+                        "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
+                        username
+                )
         );
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-          String.format("New user '%s' created. Login to proceed.", username)
+                String.format("New user '%s' created. Login to proceed.", username)
         );
       }
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());
     }
+
   }
 }

@@ -7,10 +7,24 @@ import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
 
 public interface IUserController {
+//  /**
+//   * see {@link UserService#create}
+//   */
+//  public UserDTO register(UserDTO userDTO) throws GenericServiceException;
+
   /**
    * see {@link UserService#create}
    */
-  public UserDTO register(UserDTO userDTO) throws GenericServiceException;
+  public UserDTO register(
+          String username,
+          String password,
+          String email,
+          String phone,
+          String name,
+          String surname,
+          UserRole userRole,
+          boolean enabled
+  );
 
   /**
    * see {@link UserService#login}
