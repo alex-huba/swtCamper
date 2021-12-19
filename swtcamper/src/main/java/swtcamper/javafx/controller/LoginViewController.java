@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -78,21 +79,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
         errorLabel.setText(
-          "Invalid username: 5 characters minimum and no spaces"
-        );
-        usernameTf.setBackground(
-          new Background(
-            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-          )
+          "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
         );
         isUsernameOk.setValue(false);
       } else {
         errorLabel.setText("");
-        usernameTf.setBackground(
-          new Background(
-            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
         isUsernameOk.setValue(true);
       }
       // Validate password
@@ -100,21 +91,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
         errorLabel.setText(
-          "Invalid password: 5 characters minimum and no spaces"
-        );
-        passwordPf.setBackground(
-          new Background(
-            new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-          )
+          "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
         );
         isPasswordOk.setValue(false);
       } else {
         errorLabel.setText("");
-        passwordPf.setBackground(
-          new Background(
-            new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-          )
-        );
         isPasswordOk.setValue(true);
       }
     }
@@ -138,11 +119,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
       Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Forgot your password? Click ok to reset it."
+        Alert.AlertType.ERROR,
+        "Klicken Sie OK um den Passwort zurückzusetzen"
       );
-      alert.setTitle("Authentication failed");
-      alert.setHeaderText(e.getMessage());
+      alert.setTitle("Authentifizierung fehlgeschlagen!");
+      alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("forgotPassword");
@@ -152,11 +133,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (UserDoesNotExistException e) {
       // Inform user that user account doesn't exist
       Alert alert = new Alert(
-        Alert.AlertType.CONFIRMATION,
-        "Want to sign up instead? Click ok."
+        Alert.AlertType.ERROR,
+        "Klicken Sie OK um neuen Account zu erstellen"
       );
-      alert.setTitle("Authentication failed");
-      alert.setHeaderText(e.getMessage());
+      alert.setTitle("Authentifizierung fehlgeschlagen!");
+      alert.setHeaderText("Es gibt keinen Account mit solchem Nutzername");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("register");
