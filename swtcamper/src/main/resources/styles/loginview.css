@@ -1,27 +1,14 @@
-.hBoxField {
-    -fx-spacing: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 25px;
-}
+@import "global.css";
 
 .descriptionLabel {
-    -fx-font-weight: bold;
-    -fx-font-size: 15px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
 }
-
 .inputField {
-    -fx-font-weight: bold;
     -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 15px;
+    -fx-font-size: 20px;
 }
-
-.Button {
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 15px;
-    -fx-pref-width: 80px;
-    -fx-pref-height: 30px;
-    -fx-border-width: 1px;
+.loginButton {
+    -fx-font-size: 30px;
 }
 
 .vBoxField {
@@ -29,14 +16,14 @@
     -fx-font-size: 20px;
 }
 .btnRegister {
-    -fx-font-family: "Arial Rounded MT Bold";
+
     -fx-background-color: transparent;
     -fx-text-fill: blue;
     -fx-underline: true;
     -fx-font-size: 15px;
 }
 .btnForgotPassword {
-    -fx-font-family: "Arial Rounded MT Bold";
+
     -fx-font-size: 15px;
     -fx-background-color: transparent;
     -fx-text-fill: blue;

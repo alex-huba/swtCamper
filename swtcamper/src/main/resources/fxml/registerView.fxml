@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="30" prefHeight="600.0" prefWidth="800.0" styleClass="rootNodeBackground"
-      stylesheets="/styles/registerview.css, /styles/global.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox alignment="CENTER" spacing="30" styleClass="rootNodeBackground"
+      stylesheets="/styles/registerview.css" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="swtcamper.javafx.controller.RegisterViewController" fx:id="rootElement">
-    <children>
-        <Label  styleClass="heading" text="Registrieren" />
-        <Label fx:id="errorLabel"  styleClass="errorMessage" />
 
+    <children>
+        <Label styleClass="heading" text="Registrieren" />
+        <Label styleClass="errorMessage" fx:id="errorLabel" />
 
         <HBox alignment="CENTER" spacing="20">
             <children>
                 <VBox spacing="40">
                     <children>
-                        <Label styleClass="usernameLabel" text="Nutzername" />
-                        <Label styleClass="passwordLabel" text="Passwort" />
-                        <Label styleClass="repeatPasswordLabel" text="Passwort wiederholen" />
-                        <Label styleClass="emailLabel" text="E-mail" />
-                        <Label styleClass="phoneLabel" text="Telefon" />
-                        <Label styleClass="nameLabel" text="Vorname" />
-                        <Label styleClass="surnameLabel" text="Nachname" />
+                        <Label  text="Nutzername" />
+                        <Label  text="Passwort" />
+                        <Label  text="Passwort wiederholen" />
+                        <Label  text="E-mail" />
+                        <Label  text="Telefon" />
+                        <Label  text="Vorname" />
+                        <Label  text="Nachname" />
                         <HBox spacing="20">
-                            <Button fx:id="cancelBtn"  onAction="#handleCancelBtn" styleClass="cancelBtn, bg-danger, radius-20, border-0" text="Abbrechen" />
-                            <Button fx:id="registerBtn"  onAction="#handleRegisterBtn" styleClass="registerBtn, bg-lightGreen, border-0,radius-20" text="Registrieren" />
+                            <Button fx:id="cancelBtn" onAction="#handleCancelBtn" styleClass="bg-danger, border-0, radius-20" text="Abbrechen" />
+                            <Button fx:id="registerBtn" onAction="#handleRegisterBtn" styleClass="bg-lightGreen, border-0,radius-20" text="Registrieren" />
                         </HBox>
 
                     </children>
@@ -45,8 +43,8 @@
                         <TextField fx:id="phoneTf" promptText="Telefon" styleClass="inputField" />
                         <TextField fx:id="nameTf" promptText="Vorname" styleClass="inputField" />
                         <TextField fx:id="surnameTf" promptText="Nachname" styleClass="inputField" />
-                        <CheckBox fx:id="providerCb" styleClass="providerCb" text="Ich vermiete auch" />
-                        <CheckBox fx:id="renterCb" styleClass="renterCb" text="Ich bin Mieter" />
+                        <CheckBox fx:id="providerCb" text="Ich vermiete auch" />
+                        <CheckBox fx:id="renterCb" text="Ich bin Mieter" />
                     </children>
                 </VBox>
             </children>
