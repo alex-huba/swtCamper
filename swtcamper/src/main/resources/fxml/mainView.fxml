@@ -30,6 +30,9 @@
                         <Pane fx:id="activeOffersViewBox" prefHeight="200.0" prefWidth="200.0">
                             <fx:include source="myOffersView.fxml" />
                         </Pane>
+                        <Pane fx:id="offerViewBox" prefHeight="200.0" prefWidth="200.0">
+                            <fx:include source="offerView.fxml" />
+                        </Pane>
                         <Pane fx:id="dealHistoryViewBox" prefHeight="200.0" prefWidth="200.0">
                             <Label style="-fx-text-fill: #FFF" text="Deal History" />
                             <!--                            TODO after Merging: include-->

@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -49,7 +48,7 @@ public class MainViewController {
   public Pane placeOfferViewBox;
 
   @FXML
-  public Pane OfferViewBox;
+  public Pane offerViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -125,7 +124,7 @@ public class MainViewController {
         );
         break;
       case "viewOffer":
-        mainStage.getChildren().add(OfferViewBox);
+        mainStage.getChildren().add(offerViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
