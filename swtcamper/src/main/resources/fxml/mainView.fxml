@@ -44,6 +44,8 @@
             </Pane>
             <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="moreAboutOfferViewBox" source="moreAboutOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
         </AnchorPane>
     </center>
 </BorderPane>

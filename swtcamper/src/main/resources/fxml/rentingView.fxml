@@ -14,10 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+
 <BorderPane stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
-    <center>
-        <ListView fx:id="offersList" BorderPane.alignment="CENTER" />
-    </center>
     <top>
         <TitledPane fx:id="searchBoxTitledPane" styleClass="bg-warning" text="Finde den perfekten Camper für deine Bedürfnisse!" BorderPane.alignment="CENTER">
             <content>
@@ -127,4 +128,16 @@
             </content>
         </TitledPane>
     </top>
+    <center>
+        <HBox fx:id="offerListBox" alignment="CENTER">
+            <ScrollPane fx:id="offerListScroll" fitToWidth="true">
+                <content>
+                        <VBox alignment="CENTER" fx:id="offerListRoot" spacing="20"/>
+                </content>
+            </ScrollPane>
+        </HBox>
+    </center>
+    <bottom>
+        <HBox/>
+    </bottom>
 </BorderPane>
