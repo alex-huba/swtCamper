@@ -263,7 +263,18 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     phoneTf.clear();
     nameTf.clear();
     surnameTf.clear();
-    // TODO: Clear click on user role combobox
+    providerCb.setSelected(false);
+    renterCb.setSelected(false);
+
+    usernameTf.setBackground(neutralBackground);
+    passwordPf.setBackground(neutralBackground);
+    repeatPasswordPf.setBackground(neutralBackground);
+    emailTf.setBackground(neutralBackground);
+    phoneTf.setBackground(neutralBackground);
+    nameTf.setBackground(neutralBackground);
+    surnameTf.setBackground(neutralBackground);
+
+    errorLabel.setText("");
   }
 
   @FXML
