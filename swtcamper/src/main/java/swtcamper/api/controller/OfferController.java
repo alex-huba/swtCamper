@@ -275,7 +275,7 @@ public class OfferController implements IOfferController {
           (
             filter.isExcludeInactive()
               ? offerDTO.isActive()
-              : !offerDTO.isActive()
+              : true
           ) &&
           evalCheckBoxes(offerDTO, filter)
         )
