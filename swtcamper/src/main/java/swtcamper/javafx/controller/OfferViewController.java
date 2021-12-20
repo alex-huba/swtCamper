@@ -254,10 +254,17 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    User user = new User();
-    Optional<Offer> offerResponse = offerRepository.findById(offerID);
-    bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+    Alert confirmBooking = new Alert(
+            Alert.AlertType.WARNING,
+            "Willst du das Angebot wirklich buchen?"
+    );
+    Optional<ButtonType> result = confirmBooking.showAndWait();
 
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+      User user = new User();
+      Optional<Offer> offerResponse = offerRepository.findById(offerID);
+      bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+    }
   }
 
 }
