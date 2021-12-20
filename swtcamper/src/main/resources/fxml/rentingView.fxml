@@ -83,5 +83,6 @@
          </font>
       </Label>
       <ListView fx:id="offersList" layoutY="218.0" prefHeight="287.0" prefWidth="644.0" />
+      <Button  fx:id="viewButton" onAction="#viewAction" text="View Offer" />
    </children>
 </Pane>

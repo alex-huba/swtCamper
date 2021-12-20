@@ -61,7 +61,7 @@ public class MyOffersViewController {
     OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
       mainViewController.changeView("viewOffer");
-      offerViewController.initialize(selectedOffer);
+      offerViewController.initialize(selectedOffer, false);
     } else {
       showSelectOfferFirstInfo();
     }

@@ -15,6 +15,12 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class RentingViewController {
 
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private OfferViewController offerViewController;
+
   @FXML
   public TextField locationTextField;
 
@@ -92,7 +98,7 @@ public class RentingViewController {
       }
       //Listener for double click
       if (click.getClickCount() == 2) {
-        showInfoAlert(selectedItem);
+        //viewAction();
       }
     });
 
@@ -201,6 +207,24 @@ public class RentingViewController {
         offerController.getFilteredOffers(newFilter)
       )
     );
+  }
+
+  public void viewAction () throws GenericServiceException {
+    OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      mainViewController.changeView("viewOffer");
+      offerViewController.initialize(selectedItem, true);
+    } else {
+      showSelectOfferFirstInfo();
+    }
+  }
+
+  private void showSelectOfferFirstInfo() {
+    Alert alert = new Alert(
+            Alert.AlertType.WARNING,
+            "Bitte wähle erst ein Angebot aus der Liste"
+    );
+    alert.showAndWait();
   }
 
   /**

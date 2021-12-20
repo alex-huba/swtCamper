@@ -12,18 +12,27 @@ import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import javafx.beans.property.SimpleBooleanProperty;
 
+import javafx.util.Callback;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -33,10 +42,19 @@ public class OfferViewController {
   private MainViewController mainViewController;
 
   @Autowired
+  private BookingService bookingService;
+
+  @Autowired
+  private BookingController bookingController;
+
+  @Autowired
   private OfferController offerController;
 
   @Autowired
   private VehicleRepository vehicleRepository;
+
+  @Autowired
+  private OfferRepository offerRepository;
 
   private long offerID;
 
@@ -121,7 +139,30 @@ public class OfferViewController {
   @FXML
   public Label bedsLabel;
 
-  public void initialize(OfferDTO offer) {
+  @FXML
+  public Button modifyButton;
+
+  @FXML
+  public Button bookingButton;
+
+  @FXML
+  public DatePicker startDate;
+
+  @FXML
+  public DatePicker endDate;
+
+  private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
+
+  public void initialize(OfferDTO offer, boolean RentingMode) {
+    bookingButton.setVisible(false);
+    modifyButton.setVisible(false);
+    this.isRentingMode.set(RentingMode);
+    if (isRentingMode.get()) {
+      bookingButton.setVisible(true);
+    } else {
+      modifyButton.setVisible(true);
+    }
+
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
@@ -177,16 +218,46 @@ public class OfferViewController {
     bedsLabel.setText("Beds: " +
         vehicle.getVehicleFeatures().getBeds()
       );
+
+/*    final List<LocalDate> bookedDays = bookingService.getBookedDays(offerID);
+    datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+      @Override
+      public DateCell call(DatePicker param) {
+        return new DateCell(){
+          @Override
+          public void updateItem(LocalDate item, boolean empty) {
+            super.updateItem(item, empty);
+            if (!empty && item != null) {
+              if(bookedDays.contains(item)) {
+
+                // Aussehen und Verhalten der Zellen setzen
+                this.setStyle("-fx-background-color: pink");
+                setDisable(true);
+              }
+            }
+          }
+        };
+      }
+    });*/
   }
 
 
   @FXML
   public void backAction() throws GenericServiceException {
-
       mainViewController.changeView("activeOffers");
+  }
+
+  @FXML
+  public void modifyAction() throws GenericServiceException {
 
   }
 
+  @FXML
+  public void bookingAction() throws GenericServiceException {
+    User user = new User();
+    Optional<Offer> offerResponse = offerRepository.findById(offerID);
+    bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
 
+  }
 
 }
