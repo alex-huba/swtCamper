@@ -34,13 +34,13 @@
                                                     <children>
                                                         <ComboBox fx:id="vehicleTypeComboBox" promptText="Fahrzeugtyp" />
                                                         <Button fx:id="resetVehicleTypeBtn" mnemonicParsing="false" onAction="#resetVehicleTypeComboBox" text="X">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
                                              <styleClass>
                                                 <String fx:value="bg-danger" />
-                                                <String fx:value="radius-30" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="8.0" />
-                                             </font></Button>
+                                                <String fx:value="resetBtn" />
+                                             </styleClass></Button>
                                                     </children>
                                                 </HBox>
                                                 <TextField fx:id="constructionYearTextField" promptText="Baujahr" />
@@ -49,13 +49,13 @@
                                                     <children>
                                                         <ComboBox fx:id="transmissionComboBox" promptText="Schaltung" />
                                                         <Button fx:id="resetTransmissionTypeBtn" mnemonicParsing="false" onAction="#resetTransmissionTypeComboBox" text="X">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
                                              <styleClass>
                                                 <String fx:value="bg-danger" />
-                                                <String fx:value="radius-30" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="8.0" />
-                                             </font></Button>
+                                                <String fx:value="resetBtn" />
+                                             </styleClass></Button>
                                                     </children>
                                                 </HBox>
                                             </children>
@@ -103,12 +103,12 @@
                                 <CheckBox fx:id="excludeInactiveCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Inaktive Angebote ausschließen" />
                                 <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" styleClass="bg-primary" text="Suchen">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="15.0" />
                                     </font>
                                 </Button>
                                 <Button fx:id="resetFilterButton" mnemonicParsing="false" onAction="#resetFilter" styleClass="bg-warning" text="Zurücksetzen">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="15.0" />
                                     </font>
                                 </Button>
                             </children>
