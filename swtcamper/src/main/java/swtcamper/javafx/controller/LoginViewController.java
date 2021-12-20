@@ -127,13 +127,13 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     String password = passwordPf.getText();
 
     // Create temporary userDTO to compare it with user database
-    UserDTO userDTO = new UserDTO(username, password);
+    //    UserDTO userDTO = new UserDTO(username, password);
 
     // Try to login if user input matches data in database
     try {
       mainViewController.login(
-        userController.login(userDTO),
-        userController.isEnabled(userDTO)
+        userController.login(username, password),
+        userController.isEnabled(username)
       );
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong

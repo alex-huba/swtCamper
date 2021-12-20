@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -95,20 +96,20 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRole userRole, boolean isEnabled)
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
     throws GenericServiceException {
     navBarItems.getChildren().removeIf(b -> true);
 
     List<Button> toAdd = new ArrayList<>();
 
     // Enable renter functionalities
-    if (userRole == UserRole.RENTER) {
+    if (userRoleDTO == UserRoleDTO.RENTER) {
       toAdd.add(homeButton);
       toAdd.add(dealHistoryButton);
       toAdd.add(myBookingsButton);
       toAdd.add(accountButton);
       // Enable provider functionalities
-    } else if (userRole == UserRole.PROVIDER) {
+    } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
       toAdd.add(homeButton);
       toAdd.add(newOfferButton);
       if (isEnabled) toAdd.add(activeOffersButton);
