@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,6 +37,7 @@ public class App extends Application {
     primaryStage.setScene(new Scene(rootNode, 1200, 830));
     primaryStage.setMinWidth(730);
     primaryStage.setMinHeight(830);
+    primaryStage.getIcons().add(new Image("pictures/logo.png"));
     primaryStage.show();
   }
 
