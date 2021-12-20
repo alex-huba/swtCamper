@@ -9,10 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -108,6 +105,12 @@ public class RentingViewController {
     @FXML
     public VBox offerListRoot;
 
+    @FXML
+    public VBox rootVBOX;
+
+    @FXML
+    public AnchorPane rootAnchorPane;
+
 //    @FXML
 //    public ListView<OfferDTO> offersList;
 
@@ -169,7 +172,7 @@ public class RentingViewController {
         offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
         offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
-        offerListScroll.setMaxHeight(500);
+        offerListScroll.setPrefHeight(rootVBOX.getHeight()-rootAnchorPane.getHeight());
     }
 
     /**
