@@ -165,7 +165,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       )
     );
     isEditMode.set(false);
-    offerDetailsMainView.getChildren().remove(activeCheckBox);
+    activeCheckBox.visibleProperty().bind(isEditMode);
 
     resetFields();
 
@@ -216,7 +216,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
-    offerDetailsMainView.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
@@ -316,6 +315,14 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     // resets all backgrounds to neutral
     // mandatory fields
+    titleTextField.setStyle("");
+    priceTextField.setStyle("");
+    locationTextField.setStyle("");
+    contactTextField.setStyle("");
+    brandTextField.setStyle("");
+    modelTextField.setStyle("");
+    seatsTextField.setStyle("");
+    bedsTextField.setStyle("");
 
     // reset validated properties
     isTitleOk.set(false);
@@ -567,8 +574,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBrand(String inputBrand) {
-    if (inputBrand.isEmpty() || inputBrand.length() < 3) {
-      errorLabel.setText("Ungültige Hersteller");
+    if (inputBrand.isEmpty() || inputBrand.length() < 2) {
+      errorLabel.setText("Ungültiger Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
@@ -579,7 +586,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateModel(String inputModel) {
-    if (inputModel.isEmpty() || inputModel.length() < 3) {
+    if (inputModel.isEmpty() || inputModel.length() < 2) {
       errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);

@@ -33,21 +33,9 @@ public class App extends Application {
     Parent rootNode = fxmlLoader.load();
 
     primaryStage.setTitle("SWTCamper");
-    primaryStage.setScene(new Scene(rootNode));
-    primaryStage.setMinWidth(1000);
-    primaryStage.setMinHeight(900);
-    primaryStage.setWidth(1200);
-    primaryStage.setHeight(900);
-    // TODO: remove before merge
-    primaryStage
-      .titleProperty()
-      .bind(
-        Bindings.format(
-          "%sx%s",
-          primaryStage.widthProperty().asString("%1$,.0f"),
-          primaryStage.heightProperty().asString("%1$,.0f")
-        )
-      );
+    primaryStage.setScene(new Scene(rootNode, 1200, 830));
+    primaryStage.setMinWidth(730);
+    primaryStage.setMinHeight(830);
     primaryStage.show();
   }
 

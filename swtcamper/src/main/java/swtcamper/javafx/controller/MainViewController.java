@@ -180,7 +180,9 @@ public class MainViewController {
   public void handleExceptionMessage(String message) {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle("Fehler");
-    alert.setHeaderText("Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten");
+    alert.setHeaderText(
+      "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten"
+    );
     alert.setContentText(message);
     alert.showAndWait();
   }

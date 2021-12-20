@@ -8,24 +8,15 @@
     -fx-font-size: 20px;
 }
 .loginButton {
-    -fx-font-size: 30px;
+    -fx-font-size: 20px;
 }
 
 .vBoxField {
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-font-size: 20px;
 }
-.btnRegister {
-
-    -fx-background-color: transparent;
+#registerButton, #forgotPasswordButton {
     -fx-text-fill: blue;
     -fx-underline: true;
     -fx-font-size: 15px;
-}
-.btnForgotPassword {
-
-    -fx-font-size: 15px;
-    -fx-background-color: transparent;
-    -fx-text-fill: blue;
-    -fx-underline: true;
 }

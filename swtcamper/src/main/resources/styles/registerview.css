@@ -1,18 +1,12 @@
 @import "global.css";
 
-.inputField {
-    -fx-font-size: 20px;
+.inputField, CheckBox {
+    -fx-font-size: 15px;
     -fx-font-family: "Arial Rounded MT Bold";
 }
-CheckBox {
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-}
-Label {
-    -fx-font-size: 20px;
-}
+
 Button {
-    -fx-font-size: 25px;
+    -fx-font-size: 15px;
 }
 
 
