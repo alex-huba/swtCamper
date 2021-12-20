@@ -10,7 +10,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -80,14 +79,11 @@ public class ResetPasswordViewController {
   }
 
   public void resetPassword() {
+    String username = usernameTf.getText();
+    String email = emailTf.getText();
+    String password = passwordPf.getText();
+
     try {
-      //      UserDTO userDTO = new UserDTO();
-      //      userDTO.setUsername(usernameTf.getText());
-      //      userDTO.setEmail(emailTf.getText());
-      //      userDTO.setPassword(passwordPf.getText());
-      String username = usernameTf.getText();
-      String email = emailTf.getText();
-      String password = passwordPf.getText();
       userController.resetPassword(username, email, password);
 
       Alert successAlert = new Alert(

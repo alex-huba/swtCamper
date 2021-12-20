@@ -41,18 +41,6 @@ public class UserService {
     UserRole userRole,
     boolean enabled
   ) {
-    //    User user = new User();
-    //    user.setUsername(userDTO.getUsername());
-    //    user.setName(userDTO.getName());
-    //    user.setSurname(userDTO.getSurname());
-    //    user.setEmail(userDTO.getEmail());
-    //    user.setPhone(userDTO.getPhone());
-    //    user.setPassword(userDTO.getPassword());
-    //    user.setUserRole(userDTO.getUserRole());
-    //    user.setLocked(userDTO.isLocked());
-    //    user.setEnabled(userDTO.isEnabled());
-    //    return userRepository.save(user);
-
     User user = new User();
     user.setUsername(username);
     user.setName(name);

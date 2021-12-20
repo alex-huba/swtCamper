@@ -21,14 +21,6 @@ public class UserController implements IUserController {
   @Autowired
   ModelMapper modelMapper;
 
-  //  public UserDTO register(UserDTO userDTO) throws GenericServiceException {
-  //    try {
-  //      return modelMapper.userToUserDTO(userService.create(userDTO));
-  //    } catch (GenericServiceException e) {
-  //      throw new GenericServiceException("Could not register user.");
-  //    }
-  //  }
-
   public UserDTO register(
     String username,
     String password,
@@ -57,7 +49,6 @@ public class UserController implements IUserController {
   public UserRoleDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
     try {
-      //      return userService.login(userDTO);
       return modelMapper.toUserRoleDTO(userService.login(username, password));
     } catch (WrongPasswordException e) {
       throw new WrongPasswordException(e.getMessage());
