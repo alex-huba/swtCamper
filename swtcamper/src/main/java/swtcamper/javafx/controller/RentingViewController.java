@@ -34,9 +34,6 @@ public class RentingViewController {
     private MainViewController mainViewController;
 
     @FXML
-    public TitledPane searchBoxTitledPane;
-
-    @FXML
     public TextField locationTextField;
 
     @FXML
@@ -129,7 +126,6 @@ public class RentingViewController {
 //            }
 //        });
 
-        searchBoxTitledPane.setExpanded(false);
         excludeInactiveCheckBox.setSelected(true);
         vehicleTypeComboBox.setItems(
                 FXCollections.observableArrayList(VehicleType.values())
