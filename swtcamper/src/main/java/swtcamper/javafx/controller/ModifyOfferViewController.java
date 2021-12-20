@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
@@ -41,6 +42,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private OfferController offerController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
   LongStringConverter longStringConverter = new LongStringConverter();
@@ -517,7 +521,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTitle(String inputTitle) {
-    if (inputTitle.isEmpty() || inputTitle.length() < 5) {
+    //if (inputTitle.isEmpty() || inputTitle.length() < 5) {
+    if (!validationHelper.checkOfferTitle(inputTitle)) {
       errorLabel.setText("Invalid title");
       titleTextField.setBackground(errorBackground);
       isTitleOk.set(false);
@@ -529,11 +534,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validatePrice(String inputPrice) {
-    if (
+    /*if (
       inputPrice.isEmpty() ||
       !inputPrice.matches("[0-9]*") ||
       Integer.parseInt(inputPrice) <= 0
-    ) {
+    ) */
+    if (!validationHelper.checkOfferPrice(inputPrice)){
       errorLabel.setText("Invalid price");
       priceTextField.setBackground(errorBackground);
       isPriceOk.set(false);
