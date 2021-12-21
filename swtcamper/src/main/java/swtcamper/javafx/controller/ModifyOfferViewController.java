@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -278,6 +279,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
         // add pictures
+        int cnt = 0;
         for(String file: vehicle.getPictureURLs()) {
             pictureURLs.add(file);
 
@@ -287,10 +289,29 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
             thumbnail.setFitHeight(50);
             thumbnail.setPreserveRatio(true);
 
-            picturesHbox.getChildren().add(thumbnail);
+            Button deleteBtn = new Button(" - ");
+            int finalCnt = cnt;
+            deleteBtn.setOnAction(event->removePicture(finalCnt));
+
+            VBox imageBox = new VBox();
+            imageBox.getChildren().add(thumbnail);
+            imageBox.getChildren().add(deleteBtn);
+
+            picturesHbox.getChildren().add(imageBox);
+
+            cnt++;
         }
 
         validateMandatoryFields();
+    }
+
+    private void addPicture() {
+
+    }
+
+    private void removePicture(int index) {
+        pictureURLs.remove(index);
+        picturesHbox.getChildren().remove(index+1);
     }
 
     /**
@@ -675,6 +696,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         fileChooser.setTitle("Bilder hinzufügen");
         List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
+        int cnt = 0;
         for(File file: fileList) {
             pictureURLs.add(file.toString());
 
@@ -684,7 +706,17 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
             thumbnail.setFitHeight(50);
             thumbnail.setPreserveRatio(true);
 
-            picturesHbox.getChildren().add(thumbnail);
+            Button deleteBtn = new Button(" - ");
+            int finalCnt = cnt;
+            deleteBtn.setOnAction(e->removePicture(finalCnt));
+
+            VBox imageBox = new VBox();
+            imageBox.getChildren().add(thumbnail);
+            imageBox.getChildren().add(deleteBtn);
+
+            picturesHbox.getChildren().add(imageBox);
+
+            cnt++;
         }
     }
 
