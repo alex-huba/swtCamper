@@ -19,6 +19,8 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
+  private Long loggedInUserID;
+
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
@@ -69,6 +71,14 @@ public class UserService {
       );
     }
     return userRepository.findAll();
+  }
+
+  public Long getLoggedInUserID() {
+    return loggedInUserID;
+  }
+
+  public void setLoggedInUserID(Long loggedInUserID) {
+    this.loggedInUserID = loggedInUserID;
   }
 
   /**

@@ -46,6 +46,11 @@ public class UserController implements IUserController {
     return userService.isUsernameFree(userDTO);
   }
 
+  public Long getLoggedInUserID(){
+    return userService.getLoggedInUserID();
+  }
+
+
   @Override
   public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
     return userService.isEmailFree(userDTO);

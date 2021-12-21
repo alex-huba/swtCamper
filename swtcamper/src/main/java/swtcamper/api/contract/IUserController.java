@@ -21,6 +21,9 @@ public interface IUserController {
   /**
    * see {@link UserService#isUsernameFree}
    */
+
+  Long getLoggedInUserID();
+
   public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException;
 
   /**

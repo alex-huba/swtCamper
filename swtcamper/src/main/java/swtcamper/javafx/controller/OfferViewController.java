@@ -17,12 +17,14 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
+import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -63,10 +65,16 @@ public class OfferViewController {
   private OfferRepository offerRepository;
 
   @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
   private ValidationHelper validationHelper;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
+  private UserController userController;
 
   private long offerID;
 
@@ -258,9 +266,9 @@ public class OfferViewController {
       Optional<ButtonType> result = confirmBooking.showAndWait();
 
       if (result.isPresent() && result.get() == ButtonType.OK) {
-        User user = new User();
-        Optional<Offer> offerResponse = offerRepository.findById(offerID);
-        bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+        Optional<Offer> offerResponse = offerRepository.findById(viewedOffer.getID());
+        Optional<User> userResponse = userRepository.findById(userController.getLoggedInUserID());
+        bookingController.create(userResponse.get(), offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
       }
     } else {
       Alert alert = new Alert(
