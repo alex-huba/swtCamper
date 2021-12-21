@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -7,16 +8,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="navigationRoot" maxHeight="1.7976931348623157E308" prefHeight="581.0" styleClass="navBar" stylesheets="@../styles/navigation.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
+<AnchorPane fx:id="navigationRoot" maxHeight="1.7976931348623157E308" styleClass="navBar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
    <children>
       <Button layoutX="5.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleNavBar" styleClass="hamburgerMenu" text="☰" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <VBox fx:id="navBarItems" layoutX="6.0" layoutY="102.0" prefHeight="478.0" spacing="5.0">
+      <VBox fx:id="navBarItems" layoutX="6.0" layoutY="102.0" spacing="5.0">
          <children>
-            <Button fx:id="homeButton" accessibleHelp="home" accessibleText="Homepage" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Homepage" textFill="WHITE">
+            <Button fx:id="homeButton" accessibleHelp="home" accessibleText="Start" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Start" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="homeButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -25,7 +26,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="newOfferButton" accessibleHelp="placeOffer" accessibleText="New Offer" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="New Offer" textFill="WHITE">
+            <Button fx:id="newOfferButton" accessibleHelp="placeOffer" accessibleText="Neues Angebot" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Neues Angebot" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="newOfferButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -34,7 +35,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="activeOffersButton" accessibleHelp="activeOffers" accessibleText="Active Offers" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Active Offers" textFill="WHITE">
+            <Button fx:id="activeOffersButton" accessibleHelp="activeOffers" accessibleText="Aktive Angebote" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Aktive Angebote" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="activeOffersButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +44,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="dealHistoryButton" accessibleHelp="history" accessibleText="Deal History" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Deal History" textFill="WHITE">
+            <Button fx:id="dealHistoryButton" accessibleHelp="history" accessibleText="Angebotsverlauf" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Angebotsverlauf" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="dealHistoryButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -52,7 +53,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="excludeButton" accessibleHelp="exclude" accessibleText="Exclude" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Exclude" textFill="WHITE">
+            <Button fx:id="excludeButton" accessibleHelp="exclude" accessibleText="Ausschließen" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Ausschließen" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="excludeButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -61,7 +62,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="approveButton" accessibleHelp="approve" accessibleText="Approve" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Approve" textFill="WHITE">
+            <Button fx:id="approveButton" accessibleHelp="approve" accessibleText="Nutzer Akzeptieren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Nutzer Akzeptieren" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="approveButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -70,7 +71,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="myBookingsButton" accessibleHelp="myBookings" accessibleText="My Bookings" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="My Bookings" textFill="WHITE">
+            <Button fx:id="myBookingsButton" accessibleHelp="myBookings" accessibleText="Meine Buchungen" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Meine Buchungen" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="myBookingsButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -88,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="accountButton" accessibleHelp="account" accessibleText="Account" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Logout" textFill="WHITE">
+            <Button fx:id="accountButton" accessibleHelp="account" accessibleText="Benutzer" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Benutzer" textFill="WHITE">
                <graphic>
                   <ImageView fx:id="loginButtonIcon1" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -100,4 +101,8 @@
          </children>
       </VBox>
    </children>
+   <stylesheets>
+      <URL value="@../styles/navigation.css" />
+      <URL value="@../styles/global.css" />
+   </stylesheets>
 </AnchorPane>

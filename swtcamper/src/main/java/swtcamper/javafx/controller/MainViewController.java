@@ -3,10 +3,12 @@ package swtcamper.javafx.controller;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserRoleDTO;
@@ -46,10 +48,10 @@ public class MainViewController {
   public AnchorPane mainStage;
 
   @FXML
-  public Pane homeViewBox;
+  public Node homeViewBox;
 
   @FXML
-  public Pane placeOfferViewBox;
+  public Node placeOfferViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -186,8 +188,10 @@ public class MainViewController {
 
   public void handleExceptionMessage(String message) {
     Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Exception");
-    alert.setHeaderText("There has been an error processing your request");
+    alert.setTitle("Fehler");
+    alert.setHeaderText(
+      "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten"
+    );
     alert.setContentText(message);
     alert.showAndWait();
   }
@@ -195,8 +199,9 @@ public class MainViewController {
   public void handleInformationMessage(String message) {
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("Information");
-    alert.setHeaderText("Note the following");
+    alert.setHeaderText("Beachten Sie das Folgende:");
     alert.setContentText(message);
+    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
     alert.showAndWait();
   }
 

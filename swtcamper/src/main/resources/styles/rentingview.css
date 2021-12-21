@@ -1,23 +1,9 @@
-.listView {
-    -fx-background-color: transparent;
-}
-
-.searchBar {
-    -fx-background-color: #eac14f;
-    -fx-background-radius: 20;
-}
-
-.btn {
-    -fx-background-color: #c5e0b4;
-    -fx-border-color: #809f58;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-}
-
-.heading {
-    -fx-text-fill: #FFFFFF;
-}
+@import "global.css";
 
 CheckBox {
     -fx-text-fill: #FFFFFF;
+}
+
+.resetBtn {
+    -fx-font-size: 10;
 }
