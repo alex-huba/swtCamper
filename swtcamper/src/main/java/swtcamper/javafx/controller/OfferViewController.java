@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
@@ -25,6 +28,8 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import javafx.util.Callback;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,6 +61,9 @@ public class OfferViewController {
   @Autowired
   private OfferRepository offerRepository;
 
+  @Autowired
+  private ValidationHelper validationHelper;
+
   private long offerID;
 
   private Vehicle offeredObject;
@@ -77,13 +85,13 @@ public class OfferViewController {
   public Label constructionYearLabel;
 
   @FXML
-  public CheckBox minAgeCheckBox;
+  public Label minAgeLabel;
 
   @FXML
-  public CheckBox borderCrossingCheckBox;
+  public Label borderCrossingLabel;
 
   @FXML
-  public CheckBox depositCheckBox;
+  public Label depositLabel;
 
   @FXML
   public Label priceLabel;
@@ -104,25 +112,25 @@ public class OfferViewController {
   public Label transmissionLabel;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  public Label roofTentLabel;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  public Label roofRackLabel;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  public Label bikeRackLabel;
 
   @FXML
-  public CheckBox showerCheckBox;
+  public Label showerLabel;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  public Label toiletLabel;
 
   @FXML
-  public CheckBox kitchenUnitCheckBox;
+  public Label kitchenUnitLabel;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  public Label fridgeLabel;
 
   /*@FXML
   public Label contactLabel;
@@ -180,9 +188,9 @@ public class OfferViewController {
     constructionYearLabel.setText( "Year of construction: " +
         vehicle.getVehicleFeatures().getYear()
       );
-    minAgeCheckBox.setSelected(offer.isMinAge25());
-    borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
-    depositCheckBox.setSelected(offer.isDepositInCash());
+    minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
+    borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
+    depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
     priceLabel.setText("Price per night: " + longStringConverter.toString(offer.getPrice()));
     widthLabel.setText("Width: " +
         doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth())
@@ -197,21 +205,13 @@ public class OfferViewController {
     transmissionLabel.setText("Transmission: " +
         vehicle.getVehicleFeatures().getTransmission()
       );
-    roofTentCheckBox.setSelected(
-        vehicle.getVehicleFeatures().isRoofTent()
-      );
-    roofRackCheckBox.setSelected(
-        vehicle.getVehicleFeatures().isRoofRack()
-      );
-    bikeRackCheckBox.setSelected(
-        vehicle.getVehicleFeatures().isBikeRack()
-      );
-    showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
-    toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
-    kitchenUnitCheckBox.setSelected(
-        vehicle.getVehicleFeatures().isKitchenUnit()
-      );
-    fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
+    roofTentLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofTent()));
+    roofRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofRack()));
+    bikeRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isBikeRack()));
+    showerLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isShower()));
+    toiletLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isToilet()));
+    kitchenUnitLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isKitchenUnit()));
+    fridgeLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isFridge()));
     seatsLabel.setText("Seats: " +
         vehicle.getVehicleFeatures().getSeats()
       );
@@ -241,6 +241,10 @@ public class OfferViewController {
     });*/
   }
 
+  public double labelOpacity (boolean checkBox) {
+    if (checkBox) { return 1; }
+    else { return 0.3; }
+  }
 
   @FXML
   public void backAction() throws GenericServiceException {
@@ -254,17 +258,27 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    Alert confirmBooking = new Alert(
-            Alert.AlertType.WARNING,
-            "Willst du das Angebot wirklich buchen?"
-    );
-    Optional<ButtonType> result = confirmBooking.showAndWait();
+    if (validationHelper.checkRentingDate(startDate.getValue(), endDate.getValue())) {
 
-    if (result.isPresent() && result.get() == ButtonType.OK) {
-      User user = new User();
-      Optional<Offer> offerResponse = offerRepository.findById(offerID);
-      bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+
+      Alert confirmBooking = new Alert(
+              Alert.AlertType.WARNING,
+              "Willst du das Angebot wirklich von " + startDate.getValue() + " bis " +
+                      endDate.getValue() + " buchen?"
+      );
+      Optional<ButtonType> result = confirmBooking.showAndWait();
+
+      if (result.isPresent() && result.get() == ButtonType.OK) {
+        User user = new User();
+        Optional<Offer> offerResponse = offerRepository.findById(offerID);
+        bookingController.create(user, offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+      }
+    } else {
+      Alert alert = new Alert(
+              Alert.AlertType.WARNING,
+              "Bitte wähle ein korrektes Datum aus!"
+      );
+      alert.showAndWait();
     }
   }
-
 }

@@ -1,10 +1,12 @@
 package swtcamper.api.controller;
 
+import javafx.scene.control.DatePicker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,11 @@ public class ValidationHelper {
 
     public boolean checkOfferContact (String toCheck) {
         if (toCheck.isEmpty() || !lengthOverThree(toCheck)) { return false; }
+        else { return true; }
+    }
+
+    public boolean checkRentingDate (LocalDate startDate, LocalDate endDate) {
+        if (startDate.isBefore(endDate)) { return false; }
         else { return true; }
     }
 }

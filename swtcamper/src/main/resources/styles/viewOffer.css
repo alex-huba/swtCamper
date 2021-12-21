@@ -1,0 +1,25 @@
+Label, CheckBox {
+    -fx-text-fill: #FFF;
+}
+
+.heading {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.descriptionLabel {
+    -fx-font-weight: bold;
+}
+
+.btn {
+    -fx-background-color: #EEC142;
+    -fx-background-radius: 10;
+}
+
+.cancelBtn {
+    -fx-background-color: #FF6565;
+}
+
+.successBtn {
+    -fx-background-color: lightgreen;
+}

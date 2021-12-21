@@ -3,14 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="378.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.OfferViewController">
+<?import java.lang.String?>
+<Pane stylesheets="@../styles/viewOffer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.OfferViewController">
     <children>
         <VBox>
             <Label prefHeight="50" text="Your Offer:" />
             <Label fx:id="priceLabel" text="Price per night:" />
-            <CheckBox fx:id="minAgeCheckBox" text="Do you want a Minimum Age?" />
-            <CheckBox fx:id="borderCrossingCheckBox" text="Can the renter cross borders?" />
-            <CheckBox fx:id="depositCheckBox" text="Do you want a deposit before renting?" />
+            <Label text="Rental Conditions:" />
+            <Label fx:id="minAgeLabel" text="- A minimum age is required" />
+            <Label fx:id="borderCrossingLabel" text="- You can cross borders" />
+            <Label fx:id="depositLabel" text="- A deposit before renting is wanted" />
             <Label prefHeight="30" text="Vehicle Details:" />
             <Label fx:id="typeLabel" text="Vehicle Type:" />
             <HBox>
@@ -34,23 +36,35 @@
             <Label prefHeight="30" text="Features:" />
             <HBox>
                 <VBox prefWidth="100">
-                    <CheckBox fx:id="roofTentCheckBox" text="roof tent:" />
-                    <CheckBox fx:id="roofRackCheckBox" text="roof rack:" />
-                    <CheckBox fx:id="bikeRackCheckBox" text="bike rack:" />
-                    <CheckBox fx:id="showerCheckBox" text="shower:" />
+                    <Label fx:id="roofTentLabel" text="- Roof tent" />
+                    <Label fx:id="roofRackLabel" text="- Roof rack" />
+                    <Label fx:id="bikeRackLabel" text="- Bike rack" />
+                    <Label fx:id="showerLabel" text="- Shower" />
                 </VBox>
                 <VBox>
-                    <CheckBox fx:id="toiletCheckBox" text="toilet:" />
-                    <CheckBox fx:id="kitchenUnitCheckBox" text="kitchen unit:" />
-                    <CheckBox fx:id="fridgeCheckBox" text="fridge:" />
+                    <Label fx:id="toiletLabel" text="- Toilet" />
+                    <Label fx:id="kitchenUnitLabel" text="- Kitchen unit" />
+                    <Label fx:id="fridgeLabel" text="- Fridge" />
                 </VBox>
             </HBox>
         </VBox>
 
-        <Button fx:id="modifyButton" layoutX="220.0" layoutY="369.0" mnemonicParsing="false" onAction="#modifyAction" text="modify Offer" visible="false" />
-        <Button fx:id="bookingButton" layoutX="220.0" layoutY="369.0" mnemonicParsing="false" onAction="#bookingAction" text="Book it" visible="false" />
-        <Button fx:id="cancelButton" layoutX="290.0" layoutY="369.0" mnemonicParsing="false" onAction="#backAction" text="Back" />
-        <DatePicker fx:id="startDate" layoutX="186.0" layoutY="323.0" />
+        <Button fx:id="modifyButton" layoutX="220.0" layoutY="369.0" mnemonicParsing="false" onAction="#modifyAction" text="modify Offer" visible="false" >
+        <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="successBtn" />
+        </styleClass></Button>
+        <Button fx:id="bookingButton" layoutX="220.0" layoutY="369.0" mnemonicParsing="false" onAction="#bookingAction" text="Book it" visible="false" >
+        <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="successBtn" />
+        </styleClass></Button>
+        <Button fx:id="cancelButton" layoutX="290.0" layoutY="369.0" mnemonicParsing="false" onAction="#backAction" text="Back" >
+    <styleClass>
+        <String fx:value="btn" />
+        <String fx:value="cancelBtn" />
+    </styleClass></Button>
+    <DatePicker fx:id="startDate" layoutX="186.0" layoutY="323.0" />
         <DatePicker fx:id="endDate" layoutX="186.0" layoutY="273.0" />
     </children>
 </Pane>
