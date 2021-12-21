@@ -82,10 +82,11 @@ public class BookingService {
     }
   }
 
-  public List getBookedDays(long offerID) {
-    List<LocalDate> bookedDays = new ArrayList<>();
+public List<LocalDate> getBookedDays(long offerID) throws GenericServiceException {
+  List<LocalDate> bookedDays = new ArrayList<>();
 
-    Optional<Offer> offerResponse = offerRepository.findById(offerID);
+  Optional<Offer> offerResponse = offerRepository.findById(offerID);
+  if(offerResponse.isPresent()){
     Offer offer = offerResponse.get();
     ArrayList<Long> bookingIDs = offer.getBookings();
     Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
@@ -100,6 +101,8 @@ public class BookingService {
     }
     return bookedDays;
   }
+  throw new GenericServiceException("Offer with following ID not found: " + offerID);
+}
 
   public ArrayList<Long> getAvailableOffers(
     LocalDate startDate,
