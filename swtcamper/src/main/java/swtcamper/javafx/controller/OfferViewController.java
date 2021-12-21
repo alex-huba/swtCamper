@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import javafx.scene.image.ImageView;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,9 @@ public class OfferViewController {
 
   @Autowired
   private ValidationHelper validationHelper;
+
+  @Autowired
+  private ModifyOfferViewController modifyOfferViewController;
 
   private long offerID;
 
@@ -132,20 +136,23 @@ public class OfferViewController {
   @FXML
   public Label fridgeLabel;
 
-  /*@FXML
+  @FXML
   public Label contactLabel;
 
   @FXML
   public Label locationLabel;
 
   @FXML
-  public Label descriptionLabel;*/
+  public Label particularitiesLabel;
 
   @FXML
   public Label seatsLabel;
 
   @FXML
   public Label bedsLabel;
+
+  @FXML
+  public Label titleLabel;
 
   @FXML
   public Button modifyButton;
@@ -159,52 +166,47 @@ public class OfferViewController {
   @FXML
   public DatePicker endDate;
 
+  public OfferDTO viewedOffer;
+
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
-  public void initialize(OfferDTO offer, boolean RentingMode) {
-    bookingButton.setVisible(false);
-    modifyButton.setVisible(false);
-    this.isRentingMode.set(RentingMode);
-    if (isRentingMode.get()) {
-      bookingButton.setVisible(true);
-    } else {
-      modifyButton.setVisible(true);
-    }
-
+  public void initialize(OfferDTO offer, boolean rentingMode) {
+    checkMode(rentingMode);
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
-      offeredObject.getVehicleID()
-    );
-    Vehicle vehicle = vehicleResponse.get();
+    this.viewedOffer = offer;
+    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
+    //Vehicle vehicle = vehicleResponse.get();
+    Vehicle vehicle = viewedOffer.getOfferedObject().getVehicleFeatures().getVehicle();
     // TODO felder füllen
    /* this.typeBox.setItems(
         FXCollections.observableArrayList(
           vehicle.getVehicleFeatures().getVehicleType()
         )
       );*/
-    brandLabel.setText("Brand: " + vehicle.getVehicleFeatures().getMake());
-    modelLabel.setText("Model: " + vehicle.getVehicleFeatures().getModel());
-    constructionYearLabel.setText( "Year of construction: " +
-        vehicle.getVehicleFeatures().getYear()
-      );
+    titleLabel.setText(offer.getTitle());
+    contactLabel.setText(offer.getContact());
+    priceLabel.setText(longStringConverter.toString(offer.getPrice()));
+    locationLabel.setText(offer.getLocation());
+    particularitiesLabel.setText(offer.getDescription());
     minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
     borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
-    priceLabel.setText("Price per night: " + longStringConverter.toString(offer.getPrice()));
-    widthLabel.setText("Width: " +
-        doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth())
-      );
-    lengthLabel.setText("Length: " +
-        doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength())
-      );
-    heightLabel.setText("Height: " +
-        doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight())
-      );
-    engineLabel.setText("Engine: " + vehicle.getVehicleFeatures().getEngine());
-    transmissionLabel.setText("Transmission: " +
-        vehicle.getVehicleFeatures().getTransmission()
-      );
+
+    typeLabel.setText(offer.getOfferedObject().getVehicleFeatures().getType().toString());
+    //typeLabel.setText(vehicle.getVehicleFeatures().getType().toString());
+    brandLabel.setText("test");
+    brandLabel.setText(vehicle.getVehicleFeatures().getMake());
+    modelLabel.setText(vehicle.getVehicleFeatures().getModel());
+    transmissionLabel.setText(vehicle.getVehicleFeatures().getTransmission());
+    seatsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getSeats()));
+    bedsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getBeds()));
+    constructionYearLabel.setText(vehicle.getVehicleFeatures().getYear());
+    engineLabel.setText(vehicle.getVehicleFeatures().getEngine());
+    widthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
+    lengthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
+    heightLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
+
     roofTentLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofTent()));
     roofRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofRack()));
     bikeRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isBikeRack()));
@@ -212,33 +214,6 @@ public class OfferViewController {
     toiletLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isToilet()));
     kitchenUnitLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isKitchenUnit()));
     fridgeLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isFridge()));
-    seatsLabel.setText("Seats: " +
-        vehicle.getVehicleFeatures().getSeats()
-      );
-    bedsLabel.setText("Beds: " +
-        vehicle.getVehicleFeatures().getBeds()
-      );
-
-/*    final List<LocalDate> bookedDays = bookingService.getBookedDays(offerID);
-    datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-      @Override
-      public DateCell call(DatePicker param) {
-        return new DateCell(){
-          @Override
-          public void updateItem(LocalDate item, boolean empty) {
-            super.updateItem(item, empty);
-            if (!empty && item != null) {
-              if(bookedDays.contains(item)) {
-
-                // Aussehen und Verhalten der Zellen setzen
-                this.setStyle("-fx-background-color: pink");
-                setDisable(true);
-              }
-            }
-          }
-        };
-      }
-    });*/
   }
 
   public double labelOpacity (boolean checkBox) {
@@ -246,14 +221,28 @@ public class OfferViewController {
     else { return 0.3; }
   }
 
+  public void checkMode (boolean rentingMode) {
+    bookingButton.setVisible(false);
+    modifyButton.setVisible(false);
+    this.isRentingMode.set(rentingMode);
+    if (isRentingMode.get()) {
+      bookingButton.setVisible(true);
+    } else {
+      modifyButton.setVisible(true);
+    }
+  }
+
   @FXML
   public void backAction() throws GenericServiceException {
-      mainViewController.changeView("activeOffers");
+    if (isRentingMode.get()) {
+      mainViewController.changeView("home");
+    } else { mainViewController.changeView("activeOffers"); }
   }
 
   @FXML
   public void modifyAction() throws GenericServiceException {
-
+    mainViewController.changeView("placeOffer");
+    modifyOfferViewController.initialize(viewedOffer);
   }
 
   @FXML

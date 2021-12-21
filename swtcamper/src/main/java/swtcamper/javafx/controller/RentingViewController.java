@@ -265,7 +265,8 @@ public class RentingViewController {
           @Override
           public void handle(ActionEvent event) {
             try {
-              mainViewController.changeView("moreInfoOffer");
+              mainViewController.changeView("viewOffer");
+              offerViewController.initialize(offer, true);
             } catch (GenericServiceException e) {
               e.printStackTrace();
             }
@@ -375,13 +376,13 @@ public class RentingViewController {
   }
 
   public void viewAction () throws GenericServiceException {
-    OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
+    /*OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
     if (selectedItem != null) {
       mainViewController.changeView("viewOffer");
       offerViewController.initialize(selectedItem, true);
     } else {
       showSelectOfferFirstInfo();
-    }
+    }*/
   }
 
   private void showSelectOfferFirstInfo() {
