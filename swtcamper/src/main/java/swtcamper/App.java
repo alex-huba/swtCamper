@@ -34,9 +34,9 @@ public class App extends Application {
     Parent rootNode = fxmlLoader.load();
 
     primaryStage.setTitle("SWTCamper");
-    primaryStage.setScene(new Scene(rootNode, 1200, 830));
-    primaryStage.setMinWidth(730);
-    primaryStage.setMinHeight(830);
+    primaryStage.setScene(new Scene(rootNode, 1200, 850));
+    primaryStage.setMinWidth(950);
+    primaryStage.setMinHeight(850);
     primaryStage.getIcons().add(new Image("pictures/logo.png"));
     primaryStage.show();
   }

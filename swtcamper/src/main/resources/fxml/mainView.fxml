@@ -37,7 +37,6 @@
             </Pane>
             <fx:include fx:id="loginViewBox" source="loginView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Pane fx:id="accountViewBox">
-                <Label style="-fx-text-fill: #FFF" text="Account" />
                 <Button onAction="#logout" text="Logout" />
                 <!--                            TODO after Merging: include-->
                 <!--                            <fx:include source="accountView.fxml" />-->

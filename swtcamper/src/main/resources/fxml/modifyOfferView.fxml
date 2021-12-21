@@ -20,7 +20,7 @@
     <bottom>
         <HBox alignment="TOP_RIGHT" spacing="5.0">
             <children>
-                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Angebot erstellen">
+                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Anzeige erstellen">
                <styleClass>
                   <String fx:value="handleBtn" />
                   <String fx:value="bg-lightGreen" />

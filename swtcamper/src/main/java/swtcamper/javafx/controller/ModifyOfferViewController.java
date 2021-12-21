@@ -161,7 +161,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public void initialize() {
     isEditMode.addListener((observable, oldValue, newValue) ->
       placeOfferButton.setText(
-        String.format("%s Offer", newValue ? "Update " : "Place")
+        String.format("Anzeige %s", newValue ? "bearbeiten " : "erstellen")
       )
     );
     isEditMode.set(false);
