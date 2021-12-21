@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -35,7 +36,13 @@ public class MainViewController {
   public RentingViewController rentingViewController;
 
   @Autowired
+  public RegisterViewController registerViewController;
+
+  @Autowired
   public LoginViewController loginViewController;
+
+  @Autowired
+  public ResetPasswordViewController resetPasswordViewController;
 
   @FXML
   public AnchorPane mainStage;
@@ -167,12 +174,14 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
+        registerViewController.resetInputFields();
         break;
       case "forgotPassword":
         mainStage.getChildren().add(forgotPasswordViewBox);
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
+        resetPasswordViewController.resetInputFields();
         break;
     }
   }
@@ -200,9 +209,9 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserRole userRole, boolean isEnabled)
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
     throws GenericServiceException {
-    navigationViewController.login(userRole, isEnabled);
+    navigationViewController.login(userRoleDTO, isEnabled);
   }
 
   public void logout() throws GenericServiceException {

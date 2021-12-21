@@ -20,12 +20,9 @@ public class BookingService {
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) {
-    return bookingRepository.save(
-      new Booking(user, offer, startDate, endDate, active)
-    );
+    return bookingRepository.save(new Booking(user, offer, startDate, endDate));
   }
 
   public Booking update(
