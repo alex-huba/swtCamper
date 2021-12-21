@@ -107,25 +107,29 @@ public List<LocalDate> getBookedDays(long offerID) throws GenericServiceExceptio
   public ArrayList<Long> getAvailableOffers(
     LocalDate startDate,
     LocalDate endDate
-  ) {
-    // Liste aller angefragten Tage
+  ) throws GenericServiceException {
+    // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
     for (int i = 0; i <= amountOfDays; i++) {
       requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
     }
 
-    // Liste die returned wird
+    // List that is going to be returned
     ArrayList<Long> offerIDs = new ArrayList<>();
 
-    // Alle Offers holen und die angefragten Tage gegen die bereits gebuchten Tage gegenchecken
+    // Get all offers and check requested days against days that are already booked
     List<Offer> offerResponse = offerRepository.findAll();
     for (Offer offer : offerResponse) {
-      List<LocalDate> bookedDays = getBookedDays(offer.getOfferID());
-      for (LocalDate requestedDay : requestedDays) {
-        if (!bookedDays.contains(requestedDay)) {
-          offerIDs.add(offer.getOfferID());
+      try {
+        List<LocalDate> bookedDays = getBookedDays(offer.getOfferID());
+        for (LocalDate requestedDay : requestedDays) {
+          if (!bookedDays.contains(requestedDay)) {
+            offerIDs.add(offer.getOfferID());
+          }
         }
+      } catch (GenericServiceException e){
+        throw new GenericServiceException(e.getMessage());
       }
     }
     return offerIDs;
