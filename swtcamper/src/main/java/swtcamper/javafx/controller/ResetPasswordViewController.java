@@ -115,7 +115,7 @@ public class ResetPasswordViewController {
   private void validateEmailTf() {
     String input = emailTf.getText();
     if (input.length() == 0) {
-      errorMessageLabel.setText("Ungültiges Email");
+      errorMessageLabel.setText("Ungültige Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {

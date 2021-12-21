@@ -447,7 +447,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void cancelAction() throws GenericServiceException {
     Alert confirmDelete = new Alert(
-      Alert.AlertType.WARNING,
+      Alert.AlertType.CONFIRMATION,
       "Willst du wirklich abbrechen? Alle Änderungen gehen verloren!"
     );
     Optional<ButtonType> result = confirmDelete.showAndWait();
