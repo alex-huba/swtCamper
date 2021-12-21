@@ -44,6 +44,7 @@ public class Vehicle {
   }
 
   public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = new String[pictureURLs.length];
     this.pictureURLs = pictureURLs;
   }
 }
