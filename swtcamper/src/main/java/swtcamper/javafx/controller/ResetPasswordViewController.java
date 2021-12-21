@@ -160,10 +160,5 @@ public class ResetPasswordViewController {
     emailTf.clear();
     passwordPf.clear();
     repeatPasswordPf.clear();
-
-    usernameTf.setBackground(neutralBackground);
-    emailTf.setBackground(neutralBackground);
-    passwordPf.setBackground(neutralBackground);
-    repeatPasswordPf.setBackground(neutralBackground);
   }
 }

@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -163,7 +164,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input))) {
+    } else if (!userController.isUsernameFree(input)) {
       errorLabel.setText(
         "Ungültiger Nutzername: Nutzername ist bereits vergeben"
       );
@@ -213,7 +214,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
+    } else if (!userController.isEmailFree(input)) {
       errorLabel.setText("Ungültiges Email: Email ist bereits vergeben");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
@@ -273,14 +274,6 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     surnameTf.clear();
     providerCb.setSelected(false);
     renterCb.setSelected(false);
-
-    usernameTf.setBackground(neutralBackground);
-    passwordPf.setBackground(neutralBackground);
-    repeatPasswordPf.setBackground(neutralBackground);
-    emailTf.setBackground(neutralBackground);
-    phoneTf.setBackground(neutralBackground);
-    nameTf.setBackground(neutralBackground);
-    surnameTf.setBackground(neutralBackground);
 
     errorLabel.setText("");
   }
