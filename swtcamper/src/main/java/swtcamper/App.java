@@ -1,6 +1,7 @@
 package swtcamper;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,7 +34,16 @@ public class App extends Application {
 
     primaryStage.setTitle("SWTCamper");
     primaryStage.setScene(new Scene(rootNode));
-    primaryStage.setResizable(false);
+    // TODO: remove before merge
+    primaryStage
+      .titleProperty()
+      .bind(
+        Bindings.format(
+          "%sx%s",
+          primaryStage.widthProperty().asString("%1$,.0f"),
+          primaryStage.heightProperty().asString("%1$,.0f")
+        )
+      );
     primaryStage.show();
   }
 

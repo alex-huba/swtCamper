@@ -1,5 +1,7 @@
+@import "global.css";
+
 Label, CheckBox {
-    -fx-text-fill: #FFF;
+    -fx-text-fill: -fx-dark;
 }
 
 .heading {
@@ -9,17 +11,4 @@ Label, CheckBox {
 
 .descriptionLabel {
     -fx-font-weight: bold;
-}
-
-.btn {
-    -fx-background-color: #EEC142;
-    -fx-background-radius: 10;
-}
-
-.cancelBtn {
-    -fx-background-color: #FF6565;
-}
-
-.successBtn {
-    -fx-background-color: lightgreen;
 }

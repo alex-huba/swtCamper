@@ -14,10 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -50,7 +47,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
-  public VBox offerDetailsVBox;
+  public BorderPane offerDetailsMainView;
 
   @FXML
   public TextField titleTextField;
@@ -182,7 +179,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       )
     );
     isEditMode.set(false);
-    offerDetailsVBox.getChildren().remove(activeCheckBox);
+    offerDetailsMainView.getChildren().remove(activeCheckBox);
 
     resetFields();
 
@@ -233,7 +230,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
-    offerDetailsVBox.getChildren().add(activeCheckBox);
+    offerDetailsMainView.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
@@ -412,7 +409,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       );
 
       mainViewController.handleInformationMessage(
-        String.format("New offer \"%s\" has been created.", offerDTO.getID())
+        String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
       );
     } else if (isEditMode.get()) {
       String[] pictureURLs = null;
@@ -520,15 +517,23 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateBeds(bedsTextField.getText());
   }
 
+  private void validateTrue(Node element) {
+    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+  }
+
   private void validateTitle(String inputTitle) {
     //if (inputTitle.isEmpty() || inputTitle.length() < 5) {
     if (!validationHelper.checkOfferTitle(inputTitle)) {
       errorLabel.setText("Invalid title");
-      titleTextField.setBackground(errorBackground);
+      validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
       errorLabel.setText("");
-      titleTextField.setBackground(successBackground);
+      validateTrue(titleTextField);
       isTitleOk.set(true);
     }
   }
@@ -540,72 +545,72 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       Integer.parseInt(inputPrice) <= 0
     ) */
     if (!validationHelper.checkOfferPrice(inputPrice)){
-      errorLabel.setText("Invalid price");
-      priceTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültiger Preis");
+      validateFalse(priceTextField);
       isPriceOk.set(false);
     } else {
       errorLabel.setText("");
-      priceTextField.setBackground(successBackground);
+      validateTrue(priceTextField);
       isPriceOk.set(true);
     }
   }
 
   private void validateLocation(String inputLocation) {
     if (inputLocation.isEmpty() || inputLocation.length() < 3) {
-      errorLabel.setText("Invalid location");
-      locationTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültiger Abholort");
+      validateFalse(locationTextField);
       isLocationOk.set(false);
     } else {
       errorLabel.setText("");
-      locationTextField.setBackground(successBackground);
+      validateTrue(locationTextField);
       isLocationOk.set(true);
     }
   }
 
   private void validateContact(String inputContact) {
     if (inputContact.isEmpty() || inputContact.length() < 5) {
-      errorLabel.setText("Invalid contact");
-      contactTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültiger Kontakt");
+      validateFalse(contactTextField);
       isContactOk.set(false);
     } else {
       errorLabel.setText("");
-      contactTextField.setBackground(successBackground);
+      validateTrue(contactTextField);
       isContactOk.set(true);
     }
   }
 
   private void validateVehicleType(VehicleType inputVehicleType) {
     if (inputVehicleType == null) {
-      errorLabel.setText("Invalid vehicle type");
-      vehicleTypeComboBox.setBackground(errorBackground);
+      errorLabel.setText("Ungültiger Fahrzeugtyp");
+      validateFalse(vehicleTypeComboBox);
       isVehicleTypeOk.set(false);
     } else {
       errorLabel.setText("");
-      vehicleTypeComboBox.setBackground(successBackground);
+      validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
   }
 
   private void validateBrand(String inputBrand) {
     if (inputBrand.isEmpty() || inputBrand.length() < 3) {
-      errorLabel.setText("Invalid brand");
-      brandTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültige Hersteller");
+      validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
       errorLabel.setText("");
-      brandTextField.setBackground(successBackground);
+      validateTrue(brandTextField);
       isBrandOk.set(true);
     }
   }
 
   private void validateModel(String inputModel) {
     if (inputModel.isEmpty() || inputModel.length() < 3) {
-      errorLabel.setText("Invalid model");
-      modelTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültiges Modell");
+      validateFalse(modelTextField);
       isModelOk.set(false);
     } else {
       errorLabel.setText("");
-      modelTextField.setBackground(successBackground);
+      validateTrue(modelTextField);
       isModelOk.set(true);
     }
   }
@@ -614,12 +619,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     TransmissionType inputTransmissionType
   ) {
     if (inputTransmissionType == null) {
-      errorLabel.setText("Invalid transmission type");
-      transmissionComboBox.setBackground(errorBackground);
+      errorLabel.setText("Ungültige Schaltung");
+      validateFalse(transmissionComboBox);
       isTransmissionTypeOk.set(false);
     } else {
       errorLabel.setText("");
-      transmissionComboBox.setBackground(successBackground);
+      validateTrue(transmissionComboBox);
       isTransmissionTypeOk.set(true);
     }
   }
@@ -630,24 +635,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       !inputSeats.matches("[0-9]*") ||
       Integer.parseInt(inputSeats) == 0
     ) {
-      errorLabel.setText("Invalid seat amount");
-      seatsTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
+      validateFalse(seatsTextField);
       isSeatsOk.set(false);
     } else {
       errorLabel.setText("");
-      seatsTextField.setBackground(successBackground);
+      validateTrue(seatsTextField);
       isSeatsOk.set(true);
     }
   }
 
   private void validateBeds(String inputBeds) {
     if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
-      errorLabel.setText("Invalid beds");
-      bedsTextField.setBackground(errorBackground);
+      errorLabel.setText("Ungültige Anzahl von Betten");
+      validateFalse(bedsTextField);
       isBedsOk.set(false);
     } else {
       errorLabel.setText("");
-      bedsTextField.setBackground(successBackground);
+      validateTrue(bedsTextField);
       isBedsOk.set(true);
     }
   }
@@ -662,7 +667,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     Window window = source.getScene().getWindow();
 
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Open Resource File");
+    fileChooser.setTitle("Ressourcendatei öffnen");
     File file = fileChooser.showOpenDialog(window);
     if (file == null) return;
     importPath.setText(file.getAbsolutePath().toString());

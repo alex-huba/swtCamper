@@ -1,5 +1,7 @@
+@import "global.css";
+
 .navBar {
-    -fx-background-color: #36334f;
+    -fx-background-color: -fx-alt-primary;
 }
 
 .hamburgerMenu {
@@ -7,13 +9,12 @@
 }
 
 .navBtn {
-    -fx-background-color:  #393351;
+    -fx-background-color: -fx-alt-primary;
     -fx-background-radius:  30 0 0 30;
-    -fx-cursor: hand;
 }
 
 .navBtn.active {
-    -fx-background-color: #2c2a3f;
+    -fx-background-color: -fx-alt-active;
 }
 
 .navBtn .icon {
@@ -21,5 +22,5 @@
 }
 
 .navBtn:hover {
-    -fx-background-color:  #2c2a3f;
+    -fx-background-color:  -fx-alt-active;
 }
