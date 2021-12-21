@@ -15,8 +15,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -159,7 +159,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Invalid username: 5 characters minimum");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input))) {
+    } else if (!userController.isUsernameFree(input)) {
       errorLabel.setText("Invalid username: username already taken");
       usernameTf.setBackground(errorBackground);
       isUsernameOk.setValue(false);
@@ -205,7 +205,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Invalid email. Enter a correct email");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
+    } else if (!userController.isEmailFree(input)) {
       errorLabel.setText("Invalid email: email already taken");
       emailTf.setBackground(errorBackground);
       isEmailOk.setValue(false);
@@ -255,6 +255,28 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
+  public void resetInputFields() {
+    usernameTf.clear();
+    passwordPf.clear();
+    repeatPasswordPf.clear();
+    emailTf.clear();
+    phoneTf.clear();
+    nameTf.clear();
+    surnameTf.clear();
+    providerCb.setSelected(false);
+    renterCb.setSelected(false);
+
+    usernameTf.setBackground(neutralBackground);
+    passwordPf.setBackground(neutralBackground);
+    repeatPasswordPf.setBackground(neutralBackground);
+    emailTf.setBackground(neutralBackground);
+    phoneTf.setBackground(neutralBackground);
+    nameTf.setBackground(neutralBackground);
+    surnameTf.setBackground(neutralBackground);
+
+    errorLabel.setText("");
+  }
+
   @FXML
   public void handleRegisterBtn() {
     String username = usernameTf.getText();
@@ -263,37 +285,43 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String phone = phoneTf.getText();
     String name = nameTf.getText();
     String surname = surnameTf.getText();
-
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUsername(username);
-    userDTO.setPassword(password);
-    userDTO.setEmail(email);
-    userDTO.setPhone(phone);
-    userDTO.setName(name);
-    userDTO.setSurname(surname);
+    UserRole userRole;
+    boolean enabled;
 
     if (userController.countUser() == 0) {
-      userDTO.setUserRole(OPERATOR);
+      userRole = OPERATOR;
+      enabled = true;
     } else if (providerCb.isSelected()) {
-      userDTO.setUserRole(PROVIDER);
+      userRole = PROVIDER;
+      enabled = false;
     } else {
-      userDTO.setUserRole(RENTER);
+      userRole = RENTER;
+      enabled = true;
     }
 
     try {
-      userController.register(userDTO);
+      userController.register(
+        username,
+        password,
+        email,
+        phone,
+        name,
+        surname,
+        userRole,
+        enabled
+      );
       // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
           String.format(
-            "New user '%s' created. Login to proceed.\nYour data will be checked by an operator shortly.",
+            "New user \"%s\" created. Login to proceed.\nYour data will be checked by an operator shortly.",
             username
           )
         );
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-          String.format("New user '%s' created. Login to proceed.", username)
+          String.format("New user \"%s\" created. Login to proceed.", username)
         );
       }
       mainViewController.changeView("login");
