@@ -45,6 +45,10 @@ public class UserController implements IUserController {
     );
   }
 
+  public Long getLoggedInUserID(){
+    return userService.getLoggedInUserID();
+  }
+
   @Override
   public UserRoleDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
