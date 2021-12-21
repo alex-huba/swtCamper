@@ -12,7 +12,7 @@ public class OfferDTO {
   private String title;
   private String location;
   private String contact;
-  private String description;
+  private String particularities;
   private ArrayList<Long> bookings;
   private long price;
   boolean minAge25;
@@ -28,7 +28,7 @@ public class OfferDTO {
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -42,7 +42,7 @@ public class OfferDTO {
     this.title = title;
     this.location = location;
     this.contact = contact;
-    this.description = description;
+    this.particularities = particularities;
     this.price = price;
     this.minAge25 = minAge25;
     this.borderCrossingAllowed = borderCrossingAllowed;
@@ -106,12 +106,12 @@ public class OfferDTO {
     this.contact = contact;
   }
 
-  public String getDescription() {
-    return description;
+  public String getParticularities() {
+    return particularities;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setParticularities(String particularities) {
+    this.particularities = particularities;
   }
 
   public long getPrice() {

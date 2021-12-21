@@ -228,7 +228,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setText(String.valueOf(offer.getPrice()));
     locationTextField.setText(offer.getLocation());
     contactTextField.setText(offer.getContact());
-    particularitiesTextArea.setText(offer.getDescription());
+    particularitiesTextArea.setText(offer.getParticularities());
     activeCheckBox.setSelected(offer.isActive());
     minAgeCheckBox.setSelected(offer.isMinAge25());
     borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
