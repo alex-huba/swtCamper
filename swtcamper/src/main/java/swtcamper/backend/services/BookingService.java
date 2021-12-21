@@ -135,28 +135,27 @@ public List<LocalDate> getBookedDays(long offerID) throws GenericServiceExceptio
     return offerIDs;
   }
 
-  public boolean offerStillAvailable(long offerID, long bookingID) {
-    Optional<Offer> offerResponse = offerRepository.findById(offerID);
-    Offer offer = offerResponse.get();
-
+  public boolean offerStillAvailable(long offerID, long bookingID) throws GenericServiceException {
     Optional<Booking> bookingResponse = bookingRepository.findById(bookingID);
-    Booking booking = bookingResponse.get();
+    if(bookingResponse.isPresent()){
+      Booking booking = bookingResponse.get();
 
-    LocalDate startDate = booking.getStartDate();
-    LocalDate endDate = booking.getEndDate();
+      LocalDate startDate = booking.getStartDate();
+      LocalDate endDate = booking.getEndDate();
 
-    List<LocalDate> requestedDays = new ArrayList<>();
-    long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
-    for (int i = 0; i <= amountOfDays; i++) {
-      requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
-    }
-
-    List<LocalDate> bookedDays = getBookedDays(offerID);
-    for (LocalDate requestedDay : requestedDays) {
-      if (bookedDays.contains(requestedDay)) {
-        return false;
+      List<LocalDate> requestedDays = new ArrayList<>();
+      long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+      for (int i = 0; i <= amountOfDays; i++) {
+        requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
       }
+
+      List<LocalDate> bookedDays = getBookedDays(offerID);
+      for (LocalDate requestedDay : requestedDays) {
+        if (bookedDays.contains(requestedDay)) {
+          return false;
+        }
+      }
+      return true;
     }
-    return true;
+    throw new GenericServiceException("Booking with following ID not found: " + bookingID);
   }
-}
