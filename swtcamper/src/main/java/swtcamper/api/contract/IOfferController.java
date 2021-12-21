@@ -20,9 +20,7 @@ public interface IOfferController {
     String contact,
     String description,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -57,9 +55,7 @@ public interface IOfferController {
     ArrayList<Long> bookings,
     long price,
     boolean active,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter

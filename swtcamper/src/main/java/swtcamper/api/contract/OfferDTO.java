@@ -15,9 +15,7 @@ public class OfferDTO {
   private String description;
   private ArrayList<Long> bookings;
   private long price;
-  boolean minAge25;
-  boolean borderCrossingAllowed;
-  boolean depositInCash;
+  ArrayList<String> rentalConditions;
   private boolean active;
 
   public OfferDTO(
@@ -30,9 +28,7 @@ public class OfferDTO {
     String contact,
     String description,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     boolean active
   ) {
     this.offerID = offerID;
@@ -44,9 +40,7 @@ public class OfferDTO {
     this.contact = contact;
     this.description = description;
     this.price = price;
-    this.minAge25 = minAge25;
-    this.borderCrossingAllowed = borderCrossingAllowed;
-    this.depositInCash = depositInCash;
+    this.rentalConditions = rentalConditions;
     this.active = active;
   }
 
@@ -122,28 +116,12 @@ public class OfferDTO {
     this.price = price;
   }
 
-  public boolean isMinAge25() {
-    return minAge25;
+  public ArrayList<String> getRentalConditions() {
+    return rentalConditions;
   }
 
-  public void setMinAge25(boolean minAge25) {
-    this.minAge25 = minAge25;
-  }
-
-  public boolean isBorderCrossingAllowed() {
-    return borderCrossingAllowed;
-  }
-
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
-    this.borderCrossingAllowed = borderCrossingAllowed;
-  }
-
-  public boolean isDepositInCash() {
-    return depositInCash;
-  }
-
-  public void setDepositInCash(boolean depositInCash) {
-    this.depositInCash = depositInCash;
+  public void setRentalConditions(ArrayList<String> rentalConditions) {
+    this.rentalConditions = rentalConditions;
   }
 
   public boolean isActive() {

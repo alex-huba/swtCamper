@@ -25,9 +25,7 @@ public class Offer implements IOffer {
   private boolean active;
 
   // Rental Conditions
-  boolean minAge25;
-  boolean borderCrossingAllowed;
-  boolean depositInCash;
+  private ArrayList<String> rentalConditions;
 
   public Offer(
     Vehicle vehicle,
@@ -36,9 +34,7 @@ public class Offer implements IOffer {
     String contact,
     String particularities,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash
+    ArrayList<String> rentalConditions
   ) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
@@ -48,9 +44,7 @@ public class Offer implements IOffer {
     this.contact = contact;
     this.particularities = particularities;
     this.price = price;
-    this.minAge25 = minAge25;
-    this.borderCrossingAllowed = borderCrossingAllowed;
-    this.depositInCash = depositInCash;
+    this.rentalConditions = rentalConditions;
     this.active = true;
   }
 
@@ -63,9 +57,7 @@ public class Offer implements IOffer {
     String particularities,
     long price,
     boolean active,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash
+    ArrayList<String> rentalConditions
   ) {
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
@@ -75,9 +67,7 @@ public class Offer implements IOffer {
     this.contact = contact;
     this.particularities = particularities;
     this.price = price;
-    this.minAge25 = minAge25;
-    this.borderCrossingAllowed = borderCrossingAllowed;
-    this.depositInCash = depositInCash;
+    this.rentalConditions = rentalConditions;
     this.active = active;
   }
 
@@ -181,34 +171,12 @@ public class Offer implements IOffer {
     this.price = price;
   }
 
-  @Override
-  public boolean isMinAge25() {
-    return minAge25;
+  public ArrayList<String> getRentalConditions() {
+    return rentalConditions;
   }
 
-  @Override
-  public void setMinAge25(boolean minAge25) {
-    this.minAge25 = minAge25;
-  }
-
-  @Override
-  public boolean isBorderCrossingAllowed() {
-    return borderCrossingAllowed;
-  }
-
-  @Override
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
-    this.borderCrossingAllowed = borderCrossingAllowed;
-  }
-
-  @Override
-  public boolean isDepositInCash() {
-    return depositInCash;
-  }
-
-  @Override
-  public void setDepositInCash(boolean depositInCash) {
-    this.depositInCash = depositInCash;
+  public void setRentalConditions(ArrayList<String> rentalConditions) {
+    this.rentalConditions = rentalConditions;
   }
 
   @Override
@@ -230,9 +198,7 @@ public class Offer implements IOffer {
       offerID == offer.offerID &&
       price == offer.price &&
       active == offer.active &&
-      minAge25 == offer.minAge25 &&
-      borderCrossingAllowed == offer.borderCrossingAllowed &&
-      depositInCash == offer.depositInCash &&
+      rentalConditions == offer.rentalConditions &&
       offeredObjectType == offer.offeredObjectType &&
       Objects.equals(offeredObject, offer.offeredObject) &&
       Objects.equals(bookings, offer.bookings)

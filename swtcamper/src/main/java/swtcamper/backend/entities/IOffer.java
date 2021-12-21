@@ -39,17 +39,9 @@ public interface IOffer {
 
   public void setPrice(long price);
 
-  public boolean isMinAge25();
+  public ArrayList<String> getRentalConditions();
 
-  public void setMinAge25(boolean minAge25);
-
-  public boolean isBorderCrossingAllowed();
-
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed);
-
-  public boolean isDepositInCash();
-
-  public void setDepositInCash(boolean depositInCash);
+  public void setRentalConditions(ArrayList<String> rentalConditions);
 
   public boolean isActive();
 

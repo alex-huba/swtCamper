@@ -38,9 +38,7 @@ public class OfferService {
     String contact,
     String description,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -100,9 +98,7 @@ public class OfferService {
       contact,
       description,
       price,
-      minAge25,
-      borderCrossingAllowed,
-      depositInCash
+      rentalConditions
     );
     vehicleRepository.save(vehicle);
     return offerRepository.save(offer);
@@ -119,9 +115,7 @@ public class OfferService {
     ArrayList<Long> bookings,
     long price,
     boolean active,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -192,9 +186,7 @@ public class OfferService {
     offer.setParticularities(description);
     offer.setPrice(price);
     offer.setActive(active);
-    offer.setMinAge25(minAge25);
-    offer.setBorderCrossingAllowed(borderCrossingAllowed);
-    offer.setDepositInCash(depositInCash);
+    offer.setRentalConditions(rentalConditions);
 
     return offerRepository.save(offer);
   }
