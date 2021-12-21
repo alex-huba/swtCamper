@@ -45,7 +45,7 @@ public class UserController implements IUserController {
     );
   }
 
-  public Long getLoggedInUserID(){
+  public Long getLoggedInUserID() {
     return userService.getLoggedInUserID();
   }
 
