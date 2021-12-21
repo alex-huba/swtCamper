@@ -153,11 +153,15 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorLabel.setText("Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen");
+      errorLabel.setText(
+        "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
+      );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else if (!userController.isUsernameFree(new UserDTO(input))) {
-      errorLabel.setText("Ungültiger Nutzername: Nutzername ist bereits vergeben");
+      errorLabel.setText(
+        "Ungültiger Nutzername: Nutzername ist bereits vergeben"
+      );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
@@ -170,7 +174,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorLabel.setText("Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen");
+      errorLabel.setText(
+        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+      );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
@@ -290,7 +296,10 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-          String.format("Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.", username)
+          String.format(
+            "Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.",
+            username
+          )
         );
       }
       mainViewController.changeView("login");

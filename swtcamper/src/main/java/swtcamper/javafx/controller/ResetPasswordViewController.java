@@ -130,7 +130,9 @@ public class ResetPasswordViewController {
   public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorMessageLabel.setText("Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen");
+      errorMessageLabel.setText(
+        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+      );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
