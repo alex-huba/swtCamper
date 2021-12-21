@@ -272,11 +272,7 @@ public class OfferController implements IOfferController {
               filter.getBedAmount()
               : true
           ) &&
-          (
-            filter.isExcludeInactive()
-              ? offerDTO.isActive()
-              : !offerDTO.isActive()
-          ) &&
+          (filter.isExcludeInactive() ? offerDTO.isActive() : true) &&
           evalCheckBoxes(offerDTO, filter)
         )
         .collect(Collectors.toList());

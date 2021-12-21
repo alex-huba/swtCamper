@@ -1,72 +1,22 @@
-.rootNode {
-    -fx-background-color: #D6CFCD;
-}
-.header {
-    -fx-text-fill: #040759;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 30px;
-}
-.hBoxField {
-    -fx-spacing: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 25px;
-}
+@import "global.css";
 
 .descriptionLabel {
-    -fx-font-weight: bold;
-    -fx-font-size: 15px;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-pref-width: 200px;
+    -fx-font-size: 20px;
 }
-
 .inputField {
-   -fx-font-size: 15px;
-}
-
-.usernameLabel {
-   -fx-padding: 10 0 0 0;
-}
-.passwordLabel {
-    -fx-padding: 10 5 0 0;
-}
-
-.Button {
     -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 15px;
-    -fx-cursor: hand;
-    -fx-pref-width: 80px;
-    -fx-pref-height: 30px;
-    -fx-border-width: 1px;
-    -fx-border-color: black;
-    -fx-background-radius: 15px;
-    -fx-border-radius: 15px;
+    -fx-font-size: 20px;
+}
+.loginButton {
+    -fx-font-size: 20px;
 }
 
-.btnLogin {
-    -fx-background-color: #AADDA9;
-}
 .vBoxField {
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-font-size: 20px;
 }
-.btnRegister {
-    -fx-background-color: transparent;
+#registerButton, #forgotPasswordButton {
     -fx-text-fill: blue;
     -fx-underline: true;
-    -fx-cursor: hand;
-    -fx-padding: 0 0 0 130;
-    -fx-font-size: 15px;
-}
-.btnForgotPassword {
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-size: 15px;
-    -fx-background-color: transparent;
-    -fx-text-fill: blue;
-    -fx-underline: true;
-    -fx-cursor: hand;
-}
-.errorMessage {
-    -fx-text-fill: RED;
-    -fx-font-family: "Arial Rounded MT Bold";
     -fx-font-size: 15px;
 }

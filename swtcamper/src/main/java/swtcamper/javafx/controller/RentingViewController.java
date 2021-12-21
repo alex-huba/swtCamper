@@ -1,8 +1,10 @@
 package swtcamper.javafx.controller;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
@@ -15,11 +17,20 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class RentingViewController {
 
+  @Autowired
+  private OfferController offerController;
+
+  @FXML
+  public TitledPane searchBoxTitledPane;
+
   @FXML
   public TextField locationTextField;
 
   @FXML
   public ComboBox<VehicleType> vehicleTypeComboBox;
+
+  @FXML
+  public Button resetVehicleTypeBtn;
 
   @FXML
   public TextField vehicleBrandTextField;
@@ -35,6 +46,9 @@ public class RentingViewController {
 
   @FXML
   public ComboBox<TransmissionType> transmissionComboBox;
+
+  @FXML
+  public Button resetTransmissionTypeBtn;
 
   @FXML
   public TextField seatAmountTextField;
@@ -78,9 +92,6 @@ public class RentingViewController {
   @FXML
   public ListView<OfferDTO> offersList;
 
-  @Autowired
-  private OfferController offerController;
-
   @FXML
   private void initialize() throws GenericServiceException {
     reloadData();
@@ -96,6 +107,7 @@ public class RentingViewController {
       }
     });
 
+    searchBoxTitledPane.setExpanded(false);
     excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -113,6 +125,9 @@ public class RentingViewController {
         }
       }
     );
+    resetVehicleTypeBtn
+      .visibleProperty()
+      .bind(vehicleTypeComboBox.valueProperty().isNotNull());
     transmissionComboBox.setItems(
       FXCollections.observableArrayList(TransmissionType.values())
     );
@@ -129,10 +144,14 @@ public class RentingViewController {
         }
       }
     );
+    resetTransmissionTypeBtn
+      .visibleProperty()
+      .bind(transmissionComboBox.valueProperty().isNotNull());
   }
 
   /**
    * Gets all available offers from the database .
+   *
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
@@ -143,11 +162,13 @@ public class RentingViewController {
 
   private void showInfoAlert(OfferDTO offerItem) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
+    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
     alert.showAndWait();
   }
 
   /**
    * Creates a new Filter Object and gets all offers from the database that fit to this filter.
+   *
    * @throws GenericServiceException
    */
   public void startSearch() throws GenericServiceException {
@@ -200,6 +221,33 @@ public class RentingViewController {
       FXCollections.observableArrayList(
         offerController.getFilteredOffers(newFilter)
       )
+    );
+  }
+
+  public void resetFilter() throws GenericServiceException {
+    locationTextField.clear();
+    vehicleTypeComboBox.setValue(null);
+    vehicleBrandTextField.clear();
+    constructionYearTextField.clear();
+    maxPricePerDayTextField.clear();
+    engineTextField.clear();
+    transmissionComboBox.setValue(null);
+    seatAmountTextField.clear();
+    bedAmountTextField.clear();
+    excludeInactiveCheckBox.setSelected(true);
+    roofTentCheckBox.setSelected(false);
+    roofRackCheckBox.setSelected(false);
+    bikeRackCheckBox.setSelected(false);
+    showerCheckBox.setSelected(false);
+    toiletCheckBox.setSelected(false);
+    kitchenCheckBox.setSelected(false);
+    fridgeCheckBox.setSelected(false);
+    min21CheckBox.setSelected(false);
+    crossBordersCheckBox.setSelected(false);
+    payCashCheckBox.setSelected(false);
+
+    offersList.setItems(
+      FXCollections.observableArrayList(offerController.offers())
     );
   }
 

@@ -1,17 +1,31 @@
 package swtcamper.api.contract;
 
+import java.time.LocalDate;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 
 public interface IBookingController {
-  public void create(BookingDTO bookingDTO)
-    throws UserDoesNotExistException, GenericServiceException;
+  public BookingDTO create(
+    User user,
+    Offer offer,
+    LocalDate startDate,
+    LocalDate endDate,
+    boolean active
+  ) throws UserDoesNotExistException, GenericServiceException;
 
-  public void update(BookingDTO bookingDTO) throws GenericServiceException;
+  public BookingDTO update(
+    Long bookingID,
+    LocalDate startDate,
+    LocalDate endDate,
+    boolean active
+  ) throws GenericServiceException;
 
   /**
    * Updates an offer by setting active = false.
-   * @param bookingDTO
+   * @param bookingID
+   * @throws GenericServiceException
    */
-  public void deactivate(BookingDTO bookingDTO) throws GenericServiceException;
+  public BookingDTO deactivate(Long bookingID) throws GenericServiceException;
 }

@@ -194,6 +194,7 @@ public class Filter {
       transmissionType == null &&
       seatAmount == 0 &&
       bedAmount == 0 &&
+      !excludeInactive &&
       !roofTent &&
       !roofRack &&
       !bikeRack &&
