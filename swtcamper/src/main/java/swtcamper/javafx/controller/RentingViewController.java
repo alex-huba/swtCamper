@@ -198,15 +198,11 @@ public class RentingViewController {
 
       Image image;
       //TODO: after finishing staff with image realize logic with image
-      String[] picturesUrl = offer.getOfferedObject().getPictureURLs();
-      if(picturesUrl.length == 0) {
+      if (false) {
+        image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
+      } else {
         image = new Image("/pictures/noImg.png");
-      }else {
-        String url = "file:///" + picturesUrl[0];
-        image = new Image(url);
       }
-
-
 
       HBox offerDetails = new HBox();
 
