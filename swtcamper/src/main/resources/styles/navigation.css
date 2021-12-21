@@ -10,7 +10,8 @@
 
 .navBtn {
     -fx-background-color: -fx-alt-primary;
-    -fx-background-radius:  30 0 0 30;
+    -fx-background-radius:  30 0 0 30 !important;
+    -fx-border-color: transparent !important;
 }
 
 .navBtn.active {

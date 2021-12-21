@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
-import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -95,20 +90,20 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRole userRole, boolean isEnabled)
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
     throws GenericServiceException {
     navBarItems.getChildren().removeIf(b -> true);
 
     List<Button> toAdd = new ArrayList<>();
 
     // Enable renter functionalities
-    if (userRole == UserRole.RENTER) {
+    if (userRoleDTO == UserRoleDTO.RENTER) {
       toAdd.add(homeButton);
       toAdd.add(dealHistoryButton);
       toAdd.add(myBookingsButton);
       toAdd.add(accountButton);
       // Enable provider functionalities
-    } else if (userRole == UserRole.PROVIDER) {
+    } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
       toAdd.add(homeButton);
       toAdd.add(newOfferButton);
       if (isEnabled) toAdd.add(activeOffersButton);
