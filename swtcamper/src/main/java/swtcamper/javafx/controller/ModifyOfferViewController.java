@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,9 +132,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     public CheckBox fridgeCheckBox;
 
     @FXML
-    public TextField importPath;
-
-    @FXML
     public HBox picturesHbox;
 
     @FXML
@@ -150,6 +150,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     private long offerID;
     private Vehicle offeredObject;
+
+    private ArrayList<String> pictureURLs;
 
     @Autowired
     private VehicleRepository vehicleRepository;
@@ -275,6 +277,19 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         );
         fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
+        // add pictures
+        for(String file: vehicle.getPictureURLs()) {
+            pictureURLs.add(file);
+
+            String url = "file:///" + file;
+
+            ImageView thumbnail = new ImageView(new Image(url));
+            thumbnail.setFitHeight(50);
+            thumbnail.setPreserveRatio(true);
+
+            picturesHbox.getChildren().add(thumbnail);
+        }
+
         validateMandatoryFields();
     }
 
@@ -313,7 +328,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         toiletCheckBox.setSelected(false);
         kitchenUnitCheckBox.setSelected(false);
         fridgeCheckBox.setSelected(false);
-        //importPath.clear();
+
+        pictureURLs = new ArrayList<>();
+        picturesHbox.getChildren().remove(1,picturesHbox.getChildren().size());
 
         // resets all backgrounds to neutral
         // mandatory fields
@@ -361,9 +378,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
                 ? doubleStringConverter.fromString(heightTextField.getText())
                 : 0;
 
-        if (!isEditMode.get()) {
-            String[] pictureURLs = null;
+        String[] pictureArray = new String[pictureURLs.size()];
+        for (int i = 0; i < pictureURLs.size(); i++) {
+            pictureArray[i] = pictureURLs.get(i);
+        }
 
+        if (!isEditMode.get()) {
             OfferDTO offerDTO = offerController.create(
                     titleTextField.getText(),
                     locationTextField.getText(),
@@ -373,7 +393,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
                     minAgeCheckBox.isSelected(),
                     borderCrossingCheckBox.isSelected(),
                     depositCheckBox.isSelected(),
-                    pictureURLs,
+                    pictureArray,
                     vehicleTypeComboBox.getValue(),
                     brandTextField.getText(),
                     modelTextField.getText(),
@@ -398,7 +418,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
                     String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
             );
         } else if (isEditMode.get()) {
-            String[] pictureURLs = null;
             ArrayList<Long> bookings = null;
 
             offerController.update(
@@ -414,7 +433,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
                     minAgeCheckBox.isSelected(),
                     borderCrossingCheckBox.isSelected(),
                     depositCheckBox.isSelected(),
-                    pictureURLs,
+                    pictureArray,
                     vehicleTypeComboBox.getValue(),
                     brandTextField.getText(),
                     modelTextField.getText(),
@@ -647,30 +666,19 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
      * @param event ActionEvent from FXML to determine the pressed button
      */
     public void importFileChooserAction(ActionEvent event) {
-    /*Node source = (Node) event.getSource();
-    Window window = source.getScene().getWindow();
+        pictureURLs = new ArrayList<>();
 
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Bilder hinzufügen");
-    File file = fileChooser.showOpenDialog(window);
-    if (file == null) return;
-    importPath.setText(file.getAbsolutePath().toString());*/
+        Node source = (Node) event.getSource();
+        Window window = source.getScene().getWindow();
 
-        List<Path> photoPaths = new ArrayList<>();
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo1.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo2.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo3.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo4.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo5.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo6.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo7.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo8.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo9.jpg"));
-        photoPaths.add(Path.of("C:\\Users\\User\\Desktop\\DemoCamper\\photos\\photo10.jpg"));
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Bilder hinzufügen");
+        List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
+        for(File file: fileList) {
+            pictureURLs.add(file.toString());
 
-        for (Path photoPath : photoPaths) {
-            String url = "file:///" + photoPath.toString();
+            String url = "file:///" + Path.of(file.getAbsolutePath());
 
             ImageView thumbnail = new ImageView(new Image(url));
             thumbnail.setFitHeight(50);
