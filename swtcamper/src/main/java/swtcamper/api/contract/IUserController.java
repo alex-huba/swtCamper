@@ -1,5 +1,6 @@
 package swtcamper.api.contract;
 
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -11,23 +12,23 @@ public interface IUserController {
    * see {@link UserService#create}
    */
   UserDTO register(
-          String username,
-          String password,
-          String email,
-          String phone,
-          String name,
-          String surname,
-          UserRole userRole,
-          boolean enabled
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
   );
 
-  Long getLoggedInUserID();
+  User getLoggedInUser();
 
   /**
    * see {@link UserService#login}
    */
   UserRoleDTO login(String username, String password)
-          throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
+    throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
 
   /**
    * see {@link UserService#isUsernameFree}
@@ -43,7 +44,7 @@ public interface IUserController {
    * see {@link UserService#resetPassword}
    */
   void resetPassword(String username, String email, String password)
-          throws GenericServiceException;
+    throws GenericServiceException;
 
   /**
    * see {@link UserService#countUser()}

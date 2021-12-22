@@ -17,8 +17,6 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  private Long loggedInUserID;
-
   private User loggedInUser;
 
   /**
@@ -36,14 +34,14 @@ public class UserService {
    * @throws GenericServiceException
    */
   public User create(
-          String username,
-          String password,
-          String email,
-          String phone,
-          String name,
-          String surname,
-          UserRole userRole,
-          boolean enabled
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
   ) {
     User user = new User();
     user.setUsername(username);
@@ -73,18 +71,10 @@ public class UserService {
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
-              "No users found. User database is empty."
+        "No users found. User database is empty."
       );
     }
     return userRepository.findAll();
-  }
-
-  public Long getLoggedInUserID() {
-    return loggedInUserID;
-  }
-
-  public void setLoggedInUserID(Long loggedInUserID) {
-    this.loggedInUserID = loggedInUserID;
   }
 
   public User getLoggedInUser() {
@@ -104,14 +94,13 @@ public class UserService {
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
   public UserRole login(String username, String password)
-          throws WrongPasswordException, UserDoesNotExistException {
+    throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (userRepository.existsByUsernameAndPassword(username, password)) {
       User user;
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
-        this.setLoggedInUserID(user.getId());
         this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");
@@ -207,7 +196,7 @@ public class UserService {
    * @throws GenericServiceException if user account doesn't exist in database
    */
   public void resetPassword(String username, String email, String password)
-          throws GenericServiceException {
+    throws GenericServiceException {
     // Check if user exists in database
     if (userRepository.existsByUsernameAndEmail(username, email)) {
       // Get user if it exists in database, change password and save it back on database
@@ -216,7 +205,7 @@ public class UserService {
       userRepository.save(user);
     } else {
       throw new GenericServiceException(
-              "Couldn't change password. Username or password is not correct."
+        "Couldn't change password. Username or password is not correct."
       );
     }
   }

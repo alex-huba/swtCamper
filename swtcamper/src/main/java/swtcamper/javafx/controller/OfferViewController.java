@@ -1,5 +1,16 @@
 package swtcamper.javafx.controller;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,9 +18,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import javafx.scene.image.ImageView;
+import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +41,6 @@ import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import javafx.beans.property.SimpleBooleanProperty;
-
-import javafx.util.Callback;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class OfferViewController {
@@ -185,51 +183,86 @@ public class OfferViewController {
     this.offeredObject = offer.getOfferedObject();
     this.viewedOffer = offer;
 
-
-
-
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
     locationLabel.setText(offer.getLocation());
     particularitiesLabel.setText(offer.getDescription());
     minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
-    borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
+    borderCrossingLabel.setOpacity(
+      labelOpacity(offer.isBorderCrossingAllowed())
+    );
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
     //typeLabel.setText(offeredObject.getVehicleFeatures().getType().toString());
     brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
     modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
-    transmissionLabel.setText(offeredObject.getVehicleFeatures().getTransmission());
-    seatsLabel.setText(Integer.toString(offeredObject.getVehicleFeatures().getSeats()));
-    bedsLabel.setText(Integer.toString(offeredObject.getVehicleFeatures().getBeds()));
+    transmissionLabel.setText(
+      offeredObject.getVehicleFeatures().getTransmission()
+    );
+    seatsLabel.setText(
+      Integer.toString(offeredObject.getVehicleFeatures().getSeats())
+    );
+    bedsLabel.setText(
+      Integer.toString(offeredObject.getVehicleFeatures().getBeds())
+    );
     constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
     engineLabel.setText(offeredObject.getVehicleFeatures().getEngine());
-    widthLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getWidth()));
-    lengthLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getLength()));
-    heightLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getHeight()));
+    widthLabel.setText(
+      doubleStringConverter.toString(
+        offeredObject.getVehicleFeatures().getWidth()
+      )
+    );
+    lengthLabel.setText(
+      doubleStringConverter.toString(
+        offeredObject.getVehicleFeatures().getLength()
+      )
+    );
+    heightLabel.setText(
+      doubleStringConverter.toString(
+        offeredObject.getVehicleFeatures().getHeight()
+      )
+    );
 
-    roofTentLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isRoofTent()));
-    roofRackLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isRoofRack()));
-    bikeRackLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isBikeRack()));
-    showerLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isShower()));
-    toiletLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isToilet()));
-    kitchenUnitLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isKitchenUnit()));
-    fridgeLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isFridge()));
+    roofTentLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isRoofTent())
+    );
+    roofRackLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isRoofRack())
+    );
+    bikeRackLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isBikeRack())
+    );
+    showerLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isShower())
+    );
+    toiletLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isToilet())
+    );
+    kitchenUnitLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isKitchenUnit())
+    );
+    fridgeLabel.setOpacity(
+      labelOpacity(offeredObject.getVehicleFeatures().isFridge())
+    );
   }
 
-  public double labelOpacity (boolean checkBox) {
-    if (checkBox) { return 1; }
-    else { return 0.3; }
+  public double labelOpacity(boolean checkBox) {
+    if (checkBox) {
+      return 1;
+    } else {
+      return 0.3;
+    }
   }
 
-  public void checkMode (boolean rentingMode) {
+  public void checkMode(boolean rentingMode) {
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     this.isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
-      if (userController.getLoggedInUserID()!=null) {
-      bookingButton.setVisible(true); }
+      if (userController.getLoggedInUser() != null) {
+        bookingButton.setVisible(true);
+      }
       startDate.setVisible(true);
       endDate.setVisible(true);
     } else {
@@ -243,7 +276,9 @@ public class OfferViewController {
   public void backAction() throws GenericServiceException {
     if (isRentingMode.get()) {
       mainViewController.changeView("home");
-    } else { mainViewController.changeView("activeOffers"); }
+    } else {
+      mainViewController.changeView("activeOffers");
+    }
   }
 
   @FXML
@@ -254,25 +289,45 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    if (startDate.getValue()!=null && endDate.getValue()!=null) {
-      if (!validationHelper.checkRentingDate(startDate.getValue(), endDate.getValue())) {
+    if (startDate.getValue() != null && endDate.getValue() != null) {
+      if (
+        !validationHelper.checkRentingDate(
+          startDate.getValue(),
+          endDate.getValue()
+        )
+      ) {
         Alert confirmBooking = new Alert(
-                Alert.AlertType.WARNING,
-                "Willst du das Angebot wirklich von " + startDate.getValue() + " bis " +
-                        endDate.getValue() + " buchen?"
+          Alert.AlertType.WARNING,
+          "Willst du das Angebot wirklich von " +
+          startDate.getValue() +
+          " bis " +
+          endDate.getValue() +
+          " buchen?"
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
           Offer offer = offerController.offerDTOToOffer(viewedOffer);
           User user = userController.getLoggedInUser();
-          BookingDTO bookingDTO = bookingController.create(user, offer, startDate.getValue(), endDate.getValue(), true);
-          mainViewController.handleInformationMessage(bookingDTO.getStartDate().toString());
+          BookingDTO bookingDTO = bookingController.create(
+            user,
+            offer,
+            startDate.getValue(),
+            endDate.getValue(),
+            true
+          );
+          mainViewController.handleInformationMessage(
+            "Buchungsanfrage verschickt. Buchungsnummer: " + bookingDTO.getId()
+          );
         }
       } else {
-        mainViewController.handleExceptionMessage("Bitte wähle ein korrektes Datum aus!");
+        mainViewController.handleExceptionMessage(
+          "Bitte wähle ein korrektes Datum aus!"
+        );
       }
     } else {
-      mainViewController.handleExceptionMessage("Bitte wähle ein korrektes Datum aus!");
+      mainViewController.handleExceptionMessage(
+        "Bitte wähle ein korrektes Datum aus!"
+      );
     }
   }
 }

@@ -375,7 +375,7 @@ public class RentingViewController {
     //        offersList.setItems(FXCollections.observableArrayList(offerController.offers()));
   }
 
-  public void viewAction () throws GenericServiceException {
+  public void viewAction() throws GenericServiceException {
     /*OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
     if (selectedItem != null) {
       mainViewController.changeView("viewOffer");
@@ -387,8 +387,8 @@ public class RentingViewController {
 
   private void showSelectOfferFirstInfo() {
     Alert alert = new Alert(
-            Alert.AlertType.WARNING,
-            "Bitte wähle erst ein Angebot aus der Liste"
+      Alert.AlertType.WARNING,
+      "Bitte wähle erst ein Angebot aus der Liste"
     );
     alert.showAndWait();
   }

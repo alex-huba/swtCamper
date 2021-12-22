@@ -100,8 +100,8 @@ public class BookingService {
   }
 
   public ArrayList<Long> getAvailableOffers(
-          LocalDate startDate,
-          LocalDate endDate
+    LocalDate startDate,
+    LocalDate endDate
   ) {
     // Liste aller angefragten Tage
     List<LocalDate> requestedDays = new ArrayList<>();

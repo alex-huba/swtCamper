@@ -217,10 +217,9 @@ public class MainViewController {
   }
 
   public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
-          throws GenericServiceException {
+    throws GenericServiceException {
     navigationViewController.login(userRoleDTO, isEnabled);
   }
-
 
   public void logout() throws GenericServiceException {
     navigationViewController.logout();

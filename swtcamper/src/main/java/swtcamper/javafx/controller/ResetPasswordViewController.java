@@ -57,14 +57,14 @@ public class ResetPasswordViewController {
 
     // Disable reset button until every field contains valid input
     resetButton
-            .disableProperty()
-            .bind(
-                    isUsernameOk
-                            .and(isEmailOk)
-                            .and(isPasswordOk)
-                            .and(isRepeatPasswordOk)
-                            .not()
-            );
+      .disableProperty()
+      .bind(
+        isUsernameOk
+          .and(isEmailOk)
+          .and(isPasswordOk)
+          .and(isRepeatPasswordOk)
+          .not()
+      );
   }
 
   public void resetPassword() {
@@ -76,8 +76,8 @@ public class ResetPasswordViewController {
       userController.resetPassword(username, email, password);
 
       Alert successAlert = new Alert(
-              Alert.AlertType.INFORMATION,
-              "Passwort wurde erfolgreich geändert"
+        Alert.AlertType.INFORMATION,
+        "Passwort wurde erfolgreich geändert"
       );
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
@@ -130,7 +130,7 @@ public class ResetPasswordViewController {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorMessageLabel.setText(
-              "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
       );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
