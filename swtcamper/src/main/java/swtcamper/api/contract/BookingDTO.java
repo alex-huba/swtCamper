@@ -81,4 +81,18 @@ public class BookingDTO {
   public void setActive(boolean active) {
     this.active = active;
   }
+
+  @Override
+  public String toString() {
+    return (
+            "Buchungsnummer: " +
+                    id +
+            ", Ihr Camper: " +
+                    offer.getTitle() +
+                    "(id: " + offer.getOfferID() + ")" +
+                    " Beginn der Ausleihe:  " +
+                    startDate + ", Ende der Ausleihe:  " + endDate +
+                    "."
+    );
+  }
 }

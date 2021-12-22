@@ -191,4 +191,9 @@ public class BookingService {
       "Booking with following ID not found: " + bookingID
     );
   }
+
+  public List<Booking> bookings() {
+    return bookingRepository.findAll();
+  }
+
 }

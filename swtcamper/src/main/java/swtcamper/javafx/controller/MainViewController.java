@@ -47,6 +47,9 @@ public class MainViewController {
   @Autowired
   public OfferViewController offerViewController;
 
+  @Autowired
+  public MyBookingsViewController myBookingsViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -164,6 +167,7 @@ public class MainViewController {
         break;
       case "myBookings":
         mainStage.getChildren().add(myBookingsViewBox);
+        myBookingsViewController.initialize();
         navigationViewController.setButtonActive(
           navigationViewController.myBookingsButton
         );

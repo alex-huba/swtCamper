@@ -54,6 +54,15 @@ public class ModelMapper {
     return offerDTOs;
   }
 
+  public List<BookingDTO> bookingsToBookingDTOs(List<Booking> bookings)
+          throws GenericServiceException {
+    List<BookingDTO> bookingDTOs = new ArrayList<>();
+    for (Booking booking : bookings) {
+      bookingDTOs.add(bookingToBookingDTO(booking));
+    }
+    return bookingDTOs;
+  }
+
   public UserDTO userToUserDTO(User user) {
     return new UserDTO(
       user.getId(),
