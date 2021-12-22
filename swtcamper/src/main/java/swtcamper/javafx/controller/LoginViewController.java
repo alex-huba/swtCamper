@@ -16,6 +16,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -165,6 +166,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     passwordPf.clear();
   }
 
+  @FXML
   public void handleEnterKey(KeyEvent event) throws GenericServiceException {
     if (event.getCode() == KeyCode.ENTER) handleLogin();
   }

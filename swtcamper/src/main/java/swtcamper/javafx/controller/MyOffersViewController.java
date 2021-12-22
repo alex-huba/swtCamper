@@ -51,8 +51,7 @@ public class MyOffersViewController {
   }
 
   @FXML
-  public void placeOfferAction()
-    throws GenericServiceException {
+  public void placeOfferAction() throws GenericServiceException {
     mainViewController.changeView("placeOffer");
   }
 

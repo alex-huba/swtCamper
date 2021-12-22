@@ -225,14 +225,17 @@
                                             </children>
                                         </VBox>
                                     </children>
-                                    <HBox alignment="CENTER" spacing="5.0">
-                                        <DatePicker fx:id="startDate" />
-                                        <DatePicker fx:id="endDate" />
-                                    </HBox>
+
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                 </HBox>
+                                <VBox>
+                                    <Label text="Wählen sie ihr gewünschtes Mietdatum aus" />
+                                <HBox spacing="5.0">
+                                    <DatePicker fx:id="startDate" promptText="Beginn:" />
+                                    <DatePicker fx:id="endDate" promptText="Ende:" />
+                                </HBox></VBox>
                             </children>
                         </VBox>
                     </children>

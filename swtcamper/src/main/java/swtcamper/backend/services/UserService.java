@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
@@ -18,7 +17,7 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  private Long loggedInUserID;
+  private User loggedInUser;
 
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
@@ -78,12 +77,12 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public Long getLoggedInUserID() {
-    return loggedInUserID;
+  public User getLoggedInUser() {
+    return loggedInUser;
   }
 
-  public void setLoggedInUserID(Long loggedInUserID) {
-    this.loggedInUserID = loggedInUserID;
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
   }
 
   /**
@@ -102,7 +101,8 @@ public class UserService {
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
-        this.setLoggedInUserID(user.getId());
+        // this.setLoggedInUserID(user.getId());
+        this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
@@ -118,22 +118,22 @@ public class UserService {
 
   /**
    * Checks if username is already existing in database.
-   * @param userDTO
+   * @param username
    * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
    */
-  public boolean isUsernameFree(UserDTO userDTO) {
-    return !userRepository.existsByUsername(userDTO.getUsername());
+  public boolean isUsernameFree(String username) {
+    return !userRepository.existsByUsername(username);
   }
 
   /**
    * Checks if email is already existing in database.
-   * @param userDTO
+   * @param email
    * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
    */
-  public boolean isEmailFree(UserDTO userDTO) {
-    return !userRepository.existsByEmail(userDTO.getEmail());
+  public boolean isEmailFree(String email) {
+    return !userRepository.existsByEmail(email);
   }
 
   /**
