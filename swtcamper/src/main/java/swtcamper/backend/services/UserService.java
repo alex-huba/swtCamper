@@ -1,11 +1,9 @@
 package swtcamper.backend.services;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
@@ -21,33 +19,41 @@ public class UserService {
 
   private Long loggedInUserID;
 
+  private User loggedInUser;
+
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
-   * @param userDTO
-  //   * @param username
-  //   * @param name
-  //   * @param surname
-  //   * @param email
-  //   * @param phone
-  //   * @param password
-  //   * @param userRole
-  //   * @param locked
-  //   * @param enabled
+   * @param username
+   * @param password
+   * @param email
+   * @param phone
+   * @param name
+   * @param surname
+   * @param userRole
+   * @param enabled
    * @return
-   * @throws GenericServiceException if the username, name, surname, email, phone number or password is invalid
+   * @throws GenericServiceException
    */
-  public User create(UserDTO userDTO) throws GenericServiceException {
+  public User create(
+          String username,
+          String password,
+          String email,
+          String phone,
+          String name,
+          String surname,
+          UserRole userRole,
+          boolean enabled
+  ) {
     User user = new User();
-    user.setUsername(userDTO.getUsername());
-    user.setName(userDTO.getName());
-    user.setSurname(userDTO.getSurname());
-    user.setEmail(userDTO.getEmail());
-    user.setPhone(userDTO.getPhone());
-    user.setPassword(userDTO.getPassword());
-    user.setUserRole(userDTO.getUserRole());
-    user.setLocked(userDTO.isLocked());
-    user.setEnabled(userDTO.isEnabled());
+    user.setUsername(username);
+    user.setName(name);
+    user.setSurname(surname);
+    user.setEmail(email);
+    user.setPhone(phone);
+    user.setPassword(password);
+    user.setUserRole(userRole);
+    user.setEnabled(enabled);
     return userRepository.save(user);
   }
 
@@ -67,7 +73,7 @@ public class UserService {
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
-        "No users found. User database is empty."
+              "No users found. User database is empty."
       );
     }
     return userRepository.findAll();
@@ -81,36 +87,40 @@ public class UserService {
     this.loggedInUserID = loggedInUserID;
   }
 
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
+
   /**
    * Checks if user exists in database and gets information about user role of the user if it does.
-   * @param userDTO
+   * @param username
+   * @param password
    * @return the user role of the user if user already exists in database
    * @throws WrongPasswordException if the password doesn't match with the username
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
-  public UserRole login(UserDTO userDTO)
-    throws WrongPasswordException, UserDoesNotExistException {
+  public UserRole login(String username, String password)
+          throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
-    if (
-      userRepository.existsByUsernameAndPassword(
-        userDTO.getUsername(),
-        userDTO.getPassword()
-      )
-    ) {
-      UserRole userRole;
-      Optional<User> user = userRepository.findByUsername(
-        userDTO.getUsername()
-      );
-      if (user.isPresent()) {
-        userRole = user.get().getUserRole();
+    if (userRepository.existsByUsernameAndPassword(username, password)) {
+      User user;
+      Optional<User> userOptional = userRepository.findByUsername(username);
+      if (userOptional.isPresent()) {
+        user = userOptional.get();
+        this.setLoggedInUserID(user.getId());
+        this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
-      return userRole;
+      return user.getUserRole();
     }
     // Check if either username or password exists to see if user typed one of them wrong
-    if (userRepository.existsByUsername(userDTO.getUsername())) {
+    if (userRepository.existsByUsername(username)) {
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
     throw new UserDoesNotExistException("Username doesn't exist.");
@@ -118,99 +128,95 @@ public class UserService {
 
   /**
    * Checks if username is already existing in database.
-   * @param userDTO
+   * @param username
    * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
    */
-  public boolean isUsernameFree(UserDTO userDTO) {
-    return !userRepository.existsByUsername(userDTO.getUsername());
+  public boolean isUsernameFree(String username) {
+    return !userRepository.existsByUsername(username);
   }
 
   /**
    * Checks if email is already existing in database.
-   * @param userDTO
+   * @param email
    * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
    */
-  public boolean isEmailFree(UserDTO userDTO) {
-    return !userRepository.existsByEmail(userDTO.getEmail());
+  public boolean isEmailFree(String email) {
+    return !userRepository.existsByEmail(email);
   }
 
   /**
    * Locks an user account.
-   * @param userDTO
+   * @param userID
    */
-  public void lock(UserDTO userDTO) {
-    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+  public void lock(Long userID) {
+    Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
       User userToLock = userOptional.get();
       userToLock.setLocked(true);
+      userRepository.save(userToLock);
     }
   }
 
   /**
    * Unlocks an user account.
-   * @param userDTO
+   * @param userID
    */
-  public void unlock(UserDTO userDTO) {
-    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+  public void unlock(Long userID) {
+    Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
-      User userToLock = userOptional.get();
-      userToLock.setLocked(false);
+      User userToUnlock = userOptional.get();
+      userToUnlock.setLocked(false);
+      userRepository.save(userToUnlock);
     }
   }
 
   /**
    * Enables an user account.
-   * @param userDTO
+   * @param userID
    */
-  public void enable(UserDTO userDTO) {
-    Optional<User> userOptional = userRepository.findById(userDTO.getId());
+  public void enable(Long userID) {
+    Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
       User userToEnable = userOptional.get();
       userToEnable.setEnabled(true);
+      userRepository.save(userToEnable);
     }
   }
 
   /**
    * Checks if an user account is enabled.
-   * @param userDTO
+   * @param username
    * @return
    * @throws UserDoesNotExistException if there is no user account found in database
    */
-  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
-    Optional<User> userOptional = userRepository.findByUsername(
-      userDTO.getUsername()
-    );
+  public boolean isEnabled(String username) throws UserDoesNotExistException {
+    Optional<User> userOptional = userRepository.findByUsername(username);
     if (userOptional.isPresent()) {
-      return userRepository
-        .findByUsername(userDTO.getUsername())
-        .get()
-        .isEnabled();
+      return userRepository.findByUsername(username).get().isEnabled();
     }
     throw new UserDoesNotExistException("User does not exist");
   }
 
   /**
    * Changes an users' password.
-   * @param userDTO
+   * @param username
+   * @param email
+   * @param password
    * @throws GenericServiceException if user account doesn't exist in database
    */
-  public void resetPassword(UserDTO userDTO) throws GenericServiceException {
+  public void resetPassword(String username, String email, String password)
+          throws GenericServiceException {
     // Check if user exists in database
-    if (
-      userRepository.existsByUsernameAndEmail(
-        userDTO.getUsername(),
-        userDTO.getEmail()
-      )
-    ) {
+    if (userRepository.existsByUsernameAndEmail(username, email)) {
       // Get user if it exists in database, change password and save it back on database
-      User user = userRepository.findByUsername(userDTO.getUsername()).get();
-      user.setPassword(userDTO.getPassword());
+      User user = userRepository.findByUsername(username).get();
+      user.setPassword(password);
       userRepository.save(user);
     } else {
       throw new GenericServiceException(
-        "Couldn't change password. Username or password is not correct."
+              "Couldn't change password. Username or password is not correct."
       );
     }
   }

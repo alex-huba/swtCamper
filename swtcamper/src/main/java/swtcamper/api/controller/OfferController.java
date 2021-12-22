@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
@@ -280,6 +282,11 @@ public class OfferController implements IOfferController {
           evalCheckBoxes(offerDTO, filter)
         )
         .collect(Collectors.toList());
+  }
+
+  public Offer offerDTOToOffer (OfferDTO offer) {
+    Optional<Offer> offerResponse = offerRepository.findById(offer.getID());
+    return offerResponse.get();
   }
 
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {

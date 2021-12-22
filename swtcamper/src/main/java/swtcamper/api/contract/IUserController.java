@@ -10,39 +10,48 @@ public interface IUserController {
   /**
    * see {@link UserService#create}
    */
-  public UserDTO register(UserDTO userDTO) throws GenericServiceException;
+  UserDTO register(
+          String username,
+          String password,
+          String email,
+          String phone,
+          String name,
+          String surname,
+          UserRole userRole,
+          boolean enabled
+  );
+
+  Long getLoggedInUserID();
 
   /**
    * see {@link UserService#login}
    */
-  public UserRole login(UserDTO userDTO)
-    throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
+  UserRoleDTO login(String username, String password)
+          throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
 
   /**
    * see {@link UserService#isUsernameFree}
    */
-
-  Long getLoggedInUserID();
-
-  public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException;
+  boolean isUsernameFree(String username);
 
   /**
    * see {@link UserService#isEmailFree}
    */
-  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException;
+  boolean isEmailFree(String email);
 
   /**
    * see {@link UserService#resetPassword}
    */
-  public void resetPassword(UserDTO userDTO) throws GenericServiceException;
+  void resetPassword(String username, String email, String password)
+          throws GenericServiceException;
 
   /**
    * see {@link UserService#countUser()}
    */
-  public long countUser();
+  long countUser();
 
   /**
    * see {@link UserService#isEnabled}
    */
-  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException;
+  boolean isEnabled(String username) throws UserDoesNotExistException;
 }

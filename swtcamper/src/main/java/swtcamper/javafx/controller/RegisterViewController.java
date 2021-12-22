@@ -13,11 +13,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -65,6 +67,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   @FXML
   public Label errorLabel;
 
+  @FXML
+  public VBox rootElement;
+
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
   private BooleanProperty isRepeatPasswordOk;
@@ -92,30 +97,31 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     isSurnameOk = new SimpleBooleanProperty(false);
 
     renterCb
-      .selectedProperty()
-      .addListener((observable, oldValue, newValue) -> {
-        if (newValue.equals(false)) providerCb.setSelected(false);
-      });
+            .selectedProperty()
+            .addListener((observable, oldValue, newValue) -> {
+              if (newValue.equals(false)) providerCb.setSelected(false);
+            });
     providerCb
-      .selectedProperty()
-      .addListener((observable, oldValue, newValue) -> {
-        if (newValue.equals(true)) renterCb.setSelected(true);
-      });
+            .selectedProperty()
+            .addListener((observable, oldValue, newValue) -> {
+              if (newValue.equals(true)) renterCb.setSelected(true);
+            });
 
     // Disable register button until every field contains valid input
     registerBtn
-      .disableProperty()
-      .bind(
-        isUsernameOk
-          .and(isPasswordOk)
-          .and(isRepeatPasswordOk)
-          .and(isEmailOk)
-          .and(isPhoneOk)
-          .and(isNameOk)
-          .and(isSurnameOk)
-          .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
-          .not()
-      );
+            .disableProperty()
+            .bind(
+                    isUsernameOk
+                            .and(isPasswordOk)
+                            .and(isRepeatPasswordOk)
+                            .and(isEmailOk)
+                            .and(isPhoneOk)
+                            .and(isNameOk)
+                            .and(isSurnameOk)
+                            .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
+                            .not()
+            );
+    //    rootElement.setVgrow()
   }
 
   @FXML
@@ -132,13 +138,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
         validateUsernameTf();
       } catch (GenericServiceException e) {}
     } else if (passwordPf.equals(source)) validatePasswordPf(); else if (
-      repeatPasswordPf.equals(source)
+            repeatPasswordPf.equals(source)
     ) validateRepeatPasswordPf(); else if (emailTf.equals(source)) {
       try {
         validateEmailTf();
       } catch (GenericServiceException e) {}
     } else if (phoneTf.equals(source)) validatePhoneTf(); else if (
-      nameTf.equals(source)
+            nameTf.equals(source)
     ) validateNameTf(); else if (surnameTf.equals(source)) validateSurnameTf();
   }
 
@@ -154,13 +160,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText(
-        "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
+              "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input))) {
+    } else if (!userController.isUsernameFree(input)) {
       errorLabel.setText(
-        "Ungültiger Nutzername: Nutzername ist bereits vergeben"
+              "Ungültiger Nutzername: Nutzername ist bereits vergeben"
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
@@ -175,7 +181,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText(
-        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+              "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
       );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
@@ -202,13 +208,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validateEmailTf() throws GenericServiceException {
     String input = emailTf.getText();
     if (
-      input.length() < 5 ||
-      !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+            input.length() < 5 ||
+                    !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     ) {
       errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(new UserDTO(null, null, input))) {
+    } else if (!userController.isEmailFree(input)) {
       errorLabel.setText("Ungültiges Email: Email ist bereits vergeben");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
@@ -258,6 +264,20 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
   }
 
+  public void resetInputFields() {
+    usernameTf.clear();
+    passwordPf.clear();
+    repeatPasswordPf.clear();
+    emailTf.clear();
+    phoneTf.clear();
+    nameTf.clear();
+    surnameTf.clear();
+    providerCb.setSelected(false);
+    renterCb.setSelected(false);
+
+    errorLabel.setText("");
+  }
+
   @FXML
   public void handleRegisterBtn() {
     String username = usernameTf.getText();
@@ -266,40 +286,46 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String phone = phoneTf.getText();
     String name = nameTf.getText();
     String surname = surnameTf.getText();
-
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUsername(username);
-    userDTO.setPassword(password);
-    userDTO.setEmail(email);
-    userDTO.setPhone(phone);
-    userDTO.setName(name);
-    userDTO.setSurname(surname);
+    UserRole userRole;
+    boolean enabled;
 
     if (userController.countUser() == 0) {
-      userDTO.setUserRole(OPERATOR);
+      userRole = OPERATOR;
+      enabled = true;
     } else if (providerCb.isSelected()) {
-      userDTO.setUserRole(PROVIDER);
+      userRole = PROVIDER;
+      enabled = false;
     } else {
-      userDTO.setUserRole(RENTER);
+      userRole = RENTER;
+      enabled = true;
     }
 
     try {
-      userController.register(userDTO);
+      userController.register(
+              username,
+              password,
+              email,
+              phone,
+              name,
+              surname,
+              userRole,
+              enabled
+      );
       // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
-          String.format(
-            "Neuer Benutzer '%s' erstellt. \nMelden Sie sich an, um fortzufahren. \nIhre Daten werden in Kürze von einem Operator geprüft.",
-            username
-          )
+                String.format(
+                        "Neuer Benutzer '%s' erstellt. \nMelden Sie sich an, um fortzufahren. \nIhre Daten werden in Kürze von einem Operator geprüft.",
+                        username
+                )
         );
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-          String.format(
-            "Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.",
-            username
-          )
+                String.format(
+                        "Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.",
+                        username
+                )
         );
       }
       mainViewController.changeView("login");

@@ -14,6 +14,7 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
@@ -94,7 +95,7 @@ public class OfferViewController {
   public Label modelLabel;
 
   @FXML
-  public Label constructionYearLabel;
+  public Label constructionLabel;
 
   @FXML
   public Label minAgeLabel;
@@ -183,15 +184,10 @@ public class OfferViewController {
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
     this.viewedOffer = offer;
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
-    //Vehicle vehicle = vehicleResponse.get();
-    Vehicle vehicle = viewedOffer.getOfferedObject().getVehicleFeatures().getVehicle();
-    // TODO felder füllen
-   /* this.typeBox.setItems(
-        FXCollections.observableArrayList(
-          vehicle.getVehicleFeatures().getVehicleType()
-        )
-      );*/
+
+
+
+
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
@@ -201,27 +197,25 @@ public class OfferViewController {
     borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
-    typeLabel.setText(offer.getOfferedObject().getVehicleFeatures().getType().toString());
-    //typeLabel.setText(vehicle.getVehicleFeatures().getType().toString());
-    brandLabel.setText("test");
-    brandLabel.setText(vehicle.getVehicleFeatures().getMake());
-    modelLabel.setText(vehicle.getVehicleFeatures().getModel());
-    transmissionLabel.setText(vehicle.getVehicleFeatures().getTransmission());
-    seatsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getSeats()));
-    bedsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getBeds()));
-    constructionYearLabel.setText(vehicle.getVehicleFeatures().getYear());
-    engineLabel.setText(vehicle.getVehicleFeatures().getEngine());
-    widthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
-    lengthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
-    heightLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getHeight()));
+    //typeLabel.setText(offeredObject.getVehicleFeatures().getType().toString());
+    brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
+    modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
+    transmissionLabel.setText(offeredObject.getVehicleFeatures().getTransmission());
+    seatsLabel.setText(Integer.toString(offeredObject.getVehicleFeatures().getSeats()));
+    bedsLabel.setText(Integer.toString(offeredObject.getVehicleFeatures().getBeds()));
+    constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
+    engineLabel.setText(offeredObject.getVehicleFeatures().getEngine());
+    widthLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getWidth()));
+    lengthLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getLength()));
+    heightLabel.setText(doubleStringConverter.toString(offeredObject.getVehicleFeatures().getHeight()));
 
-    roofTentLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofTent()));
-    roofRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isRoofRack()));
-    bikeRackLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isBikeRack()));
-    showerLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isShower()));
-    toiletLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isToilet()));
-    kitchenUnitLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isKitchenUnit()));
-    fridgeLabel.setOpacity(labelOpacity(vehicle.getVehicleFeatures().isFridge()));
+    roofTentLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isRoofTent()));
+    roofRackLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isRoofRack()));
+    bikeRackLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isBikeRack()));
+    showerLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isShower()));
+    toiletLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isToilet()));
+    kitchenUnitLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isKitchenUnit()));
+    fridgeLabel.setOpacity(labelOpacity(offeredObject.getVehicleFeatures().isFridge()));
   }
 
   public double labelOpacity (boolean checkBox) {
@@ -234,9 +228,14 @@ public class OfferViewController {
     modifyButton.setVisible(false);
     this.isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
-      bookingButton.setVisible(true);
+      if (userController.getLoggedInUserID()!=null) {
+      bookingButton.setVisible(true); }
+      startDate.setVisible(true);
+      endDate.setVisible(true);
     } else {
       modifyButton.setVisible(true);
+      startDate.setVisible(false);
+      endDate.setVisible(false);
     }
   }
 
@@ -255,27 +254,25 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    if (validationHelper.checkRentingDate(startDate.getValue(), endDate.getValue())) {
-
-
-      Alert confirmBooking = new Alert(
-              Alert.AlertType.WARNING,
-              "Willst du das Angebot wirklich von " + startDate.getValue() + " bis " +
-                      endDate.getValue() + " buchen?"
-      );
-      Optional<ButtonType> result = confirmBooking.showAndWait();
-
-      if (result.isPresent() && result.get() == ButtonType.OK) {
-        Optional<Offer> offerResponse = offerRepository.findById(viewedOffer.getID());
-        Optional<User> userResponse = userRepository.findById(userController.getLoggedInUserID());
-        bookingController.create(userResponse.get(), offerResponse.get(), startDate.getValue(), endDate.getValue(), true);
+    if (startDate.getValue()!=null && endDate.getValue()!=null) {
+      if (!validationHelper.checkRentingDate(startDate.getValue(), endDate.getValue())) {
+        Alert confirmBooking = new Alert(
+                Alert.AlertType.WARNING,
+                "Willst du das Angebot wirklich von " + startDate.getValue() + " bis " +
+                        endDate.getValue() + " buchen?"
+        );
+        Optional<ButtonType> result = confirmBooking.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+          Offer offer = offerController.offerDTOToOffer(viewedOffer);
+          User user = userController.getLoggedInUser();
+          BookingDTO bookingDTO = bookingController.create(user, offer, startDate.getValue(), endDate.getValue(), true);
+          mainViewController.handleInformationMessage(bookingDTO.getStartDate().toString());
+        }
+      } else {
+        mainViewController.handleExceptionMessage("Bitte wähle ein korrektes Datum aus!");
       }
     } else {
-      Alert alert = new Alert(
-              Alert.AlertType.WARNING,
-              "Bitte wähle ein korrektes Datum aus!"
-      );
-      alert.showAndWait();
+      mainViewController.handleExceptionMessage("Bitte wähle ein korrektes Datum aus!");
     }
   }
 }

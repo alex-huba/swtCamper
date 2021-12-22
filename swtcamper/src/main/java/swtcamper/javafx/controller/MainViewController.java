@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -215,10 +216,11 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserRole userRole, boolean isEnabled)
-    throws GenericServiceException {
-    navigationViewController.login(userRole, isEnabled);
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
+          throws GenericServiceException {
+    navigationViewController.login(userRoleDTO, isEnabled);
   }
+
 
   public void logout() throws GenericServiceException {
     navigationViewController.logout();

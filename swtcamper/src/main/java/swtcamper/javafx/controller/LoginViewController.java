@@ -16,7 +16,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
@@ -41,10 +40,10 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   public Button loginButton;
 
   @FXML
-  public Button registerButton;
+  public Hyperlink registerButton;
 
   @FXML
-  public Button forgotPasswordButton;
+  public Hyperlink forgotPasswordButton;
 
   @FXML
   public TextField usernameTf;
@@ -79,7 +78,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
         errorLabel.setText(
-          "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
+                "Ungültiger Nutzername: mindestens 5 Zeichen und keine Leerzeichen"
         );
         isUsernameOk.setValue(false);
       } else {
@@ -91,7 +90,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
         errorLabel.setText(
-          "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+                "Ungültiges Passwort: mindestens 5 Zeichen und keine Leerzeichen"
         );
         isPasswordOk.setValue(false);
       } else {
@@ -107,20 +106,17 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     String username = usernameTf.getText();
     String password = passwordPf.getText();
 
-    // Create temporary userDTO to compare it with user database
-    UserDTO userDTO = new UserDTO(username, password);
-
     // Try to login if user input matches data in database
     try {
       mainViewController.login(
-        userController.login(userDTO),
-        userController.isEnabled(userDTO)
+              userController.login(username, password),
+              userController.isEnabled(username)
       );
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
       Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicken Sie OK um den Passwort zurückzusetzen"
+              Alert.AlertType.ERROR,
+              "Klicken Sie OK um das Passwort zurückzusetzen"
       );
       alert.setTitle("Authentifizierung fehlgeschlagen!");
       alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
@@ -133,11 +129,11 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (UserDoesNotExistException e) {
       // Inform user that user account doesn't exist
       Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicken Sie OK um neuen Account zu erstellen"
+              Alert.AlertType.ERROR,
+              "Klicke OK um einen neuen Account zu erstellen"
       );
       alert.setTitle("Authentifizierung fehlgeschlagen!");
-      alert.setHeaderText("Es gibt keinen Account mit solchem Nutzername");
+      alert.setHeaderText("Es gibt keinen Account mit diesem Nutzernamen");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && (result.get() == ButtonType.OK)) {
         mainViewController.changeView("register");
@@ -164,7 +160,9 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     passwordPf.clear();
   }
 
+  @FXML
   public void handleEnterKey(KeyEvent event) throws GenericServiceException {
     if (event.getCode() == KeyCode.ENTER) handleLogin();
   }
 }
+
