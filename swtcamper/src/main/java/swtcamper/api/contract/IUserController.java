@@ -32,7 +32,7 @@ public interface IUserController {
   /**
    * see {@link UserService#isUsernameFree}
    */
-  boolean isUsernameFree(String username);
+  public boolean isUsernameFree(UserDTO userDTO) throws GenericServiceException;
 
   /**
    * see {@link UserService#isEmailFree}

@@ -68,14 +68,14 @@ public class UserController implements IUserController {
     return userService.isUsernameFree(username);
   }
 
+
   @Override
-  public boolean isEmailFree(String email) {
-    return userService.isEmailFree(email);
+  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
+    return userService.isEmailFree(userDTO);
   }
 
   @Override
-  public void resetPassword(String username, String email, String password)
-    throws GenericServiceException {
+  public void resetPassword(UserDTO userDTO) throws GenericServiceException {
     try {
       userService.resetPassword(username, email, password);
     } catch (GenericServiceException e) {

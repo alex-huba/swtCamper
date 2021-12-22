@@ -44,6 +44,9 @@ public class MainViewController {
   @Autowired
   public ResetPasswordViewController resetPasswordViewController;
 
+  @Autowired
+  public OfferViewController offerViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -52,6 +55,9 @@ public class MainViewController {
 
   @FXML
   public Node placeOfferViewBox;
+
+  @FXML
+  public Pane offerViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -128,6 +134,9 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
+        break;
+      case "viewOffer":
+        mainStage.getChildren().add(offerViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);

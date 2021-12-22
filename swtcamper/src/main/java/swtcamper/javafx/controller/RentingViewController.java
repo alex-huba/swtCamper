@@ -25,13 +25,16 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class RentingViewController {
 
   @Autowired
-  private OfferController offerController;
+  private MainViewController mainViewController;
 
   @FXML
   public TitledPane searchBoxTitledPane;
   
   @Autowired
-  private MainViewController mainViewController;
+  private OfferViewController offerViewController;
+
+  @Autowired
+  private OfferController offerController;
 
   @FXML
   public TextField locationTextField;
@@ -182,7 +185,6 @@ public class RentingViewController {
 
   /**
    * Gets all available offers from the database .
-   *
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
@@ -266,7 +268,8 @@ public class RentingViewController {
           @Override
           public void handle(ActionEvent event) {
             try {
-              mainViewController.changeView("moreInfoOffer");
+              mainViewController.changeView("viewOffer");
+              offerViewController.initialize(offer, true);
             } catch (GenericServiceException e) {
               e.printStackTrace();
             }
@@ -373,6 +376,24 @@ public class RentingViewController {
     crossBordersCheckBox.setSelected(false);
     payCashCheckBox.setSelected(false);
     //        offersList.setItems(FXCollections.observableArrayList(offerController.offers()));
+  }
+
+  public void viewAction () throws GenericServiceException {
+    /*OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      mainViewController.changeView("viewOffer");
+      offerViewController.initialize(selectedItem, true);
+    } else {
+      showSelectOfferFirstInfo();
+    }*/
+  }
+
+  private void showSelectOfferFirstInfo() {
+    Alert alert = new Alert(
+            Alert.AlertType.WARNING,
+            "Bitte wähle erst ein Angebot aus der Liste"
+    );
+    alert.showAndWait();
   }
 
   /**

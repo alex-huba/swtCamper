@@ -15,6 +15,7 @@
             <fx:include fx:id="homeViewBox" source="rentingView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <fx:include fx:id="placeOfferViewBox" source="modifyOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <fx:include fx:id="activeOffersViewBox" source="myOffersView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="offerViewBox" source="offerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Pane fx:id="dealHistoryViewBox">
                 <Label style="-fx-text-fill: #FFF" text="Deal History" />
                 <!--                            TODO after Merging: include-->

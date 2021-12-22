@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -27,6 +28,9 @@ public class MyOffersViewController {
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
 
+  @Autowired
+  private OfferViewController offerViewController;
+
   @FXML
   public ListView<OfferDTO> offersList;
 
@@ -47,16 +51,17 @@ public class MyOffersViewController {
   }
 
   @FXML
-  public void placeOfferAction(ActionEvent event)
+  public void placeOfferAction()
     throws GenericServiceException {
     mainViewController.changeView("placeOffer");
   }
 
   @FXML
-  public void viewOfferAction() {
+  public void viewOfferAction() throws GenericServiceException {
     OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
-      showInfoAlert(selectedOffer);
+      mainViewController.changeView("viewOffer");
+      offerViewController.initialize(selectedOffer, false);
     } else {
       showSelectOfferFirstInfo();
     }
