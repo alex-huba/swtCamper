@@ -284,19 +284,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
     // add pictures
+    pictureURLs.clear();
     //int cnt = 0;
     for (String file : vehicle.getPictureURLs()) {
       pictureURLs.add(file);
 
-      String url = "file:///" + file;
-
-      ImageView thumbnail = new ImageView(new Image(url));
+      ImageView thumbnail = new ImageView(new Image(file));
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button(" x ");
       //int finalCnt = cnt;
-      deleteBtn.setOnAction(event -> removePicture(file.toString()));
+      deleteBtn.setOnAction(event -> removePicture(file));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
@@ -402,10 +401,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       ? doubleStringConverter.fromString(heightTextField.getText())
       : 0;
 
-    /*String[] pictureArray = new String[pictureURLs.size()];
+    String[] pictureArray = new String[pictureURLs.size()];
         for (int i = 0; i < pictureURLs.size(); i++) {
             pictureArray[i] = pictureURLs.get(i);
-        }*/
+        }
 
     if (!isEditMode.get()) {
       OfferDTO offerDTO = offerController.create(
@@ -417,7 +416,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
-        savePictures(pictureURLs),
+              pictureArray,
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -457,7 +456,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
-        savePictures(pictureURLs),
+              pictureArray,
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -702,9 +701,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
     for (File file : fileList) {
-      pictureURLs.add(file.toString());
-
       String url = "file:///" + Path.of(file.getAbsolutePath());
+      pictureURLs.add(url);
 
       ImageView thumbnail = new ImageView(new Image(url));
       thumbnail.setFitHeight(50);
@@ -736,9 +734,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
         byte[] photo = Files.readAllBytes(photoPath1);
         Path pathWhereToSave = Path.of(
-          "./src/main/resources/pictures",
-          userId,
-          offerId
+          "./src/main/resources/pictures/userPictures"
         );
 
         photoUrlsAsList.add(pathWhereToSave + "\\" + photoPath1.getFileName());
@@ -753,7 +749,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         System.out.println(
           "File " +
           photoPath1.getFileName() +
-          "saved in: " +
+          " saved in: " +
           pathWhereToSaveFile.toPath()
         );
       } catch (IOException e) {

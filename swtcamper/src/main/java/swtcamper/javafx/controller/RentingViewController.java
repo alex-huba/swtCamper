@@ -16,19 +16,17 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.Filter;
-import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.List;
 
 @Component
 public class RentingViewController {
 
   @Autowired
   private MainViewController mainViewController;
-
-  @FXML
-  public TitledPane searchBoxTitledPane;
   
   @Autowired
   private OfferViewController offerViewController;
@@ -117,23 +115,9 @@ public class RentingViewController {
   @FXML
   public AnchorPane rootAnchorPane;
 
-  //    @FXML
-  //    public ListView<OfferDTO> offersList;
-
   @FXML
   private void initialize() throws GenericServiceException {
     reloadData();
-    //        offersList.setOnMouseClicked(click -> {
-    //            OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-    //            //Listener for right click
-    //            if (click.isSecondaryButtonDown()) {
-    //                //ignore
-    //            }
-    //            //Listener for double click
-    //            if (click.getClickCount() == 2) {
-    //                showInfoAlert(selectedItem);
-    //            }
-    //        });
 
     excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
@@ -188,26 +172,24 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
+    setData(offerController.offers());
+  }
+
+  private void setData(List<OfferDTO> offers) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
-    Label header = new Label("Passende Angebote für Sie");
+    Label header = new Label((offers.size() == 0 ? "Keine passenden" : "Passende") + " Angebote für Sie");
     header.setStyle("-fx-font-size: 30");
     offerListRoot.getChildren().add(header);
 
-    for (OfferDTO offer : offerController.offers()) {
+    for (OfferDTO offer : offers) {
       VBox root = new VBox();
       root.setStyle(
-        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+              "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
       );
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
-      Image image;
-      //TODO: after finishing staff with image realize logic with image
-      if (false) {
-        image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
-      } else {
-        image = new Image("/pictures/noImg.png");
-      }
+      Image image = offer.getOfferedObject().getPictureURLs().length > 0 ? new Image(offer.getOfferedObject().getPictureURLs()[0]) : new Image("/pictures/noImg.png");
 
       HBox offerDetails = new HBox();
 
@@ -218,33 +200,33 @@ public class RentingViewController {
 
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
-        "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
+              "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
 
       Label locationLabel = new Label("Abholort: " + offer.getLocation());
       locationLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label priceLabel = new Label(
-        "Preis pro Tag: € " + Long.toString(offer.getPrice())
+              "Preis pro Tag: € " + Long.toString(offer.getPrice())
       );
       priceLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+              "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
       );
       brandLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+              "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
       );
       modelLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       VBox detailsVBox = new VBox();
@@ -261,20 +243,20 @@ public class RentingViewController {
 
       Button moreBtn = new Button("Mehr Information");
       moreBtn.setStyle(
-        "-fx-background-radius: 8; -fx-background-color: #e79e69"
+              "-fx-background-radius: 8; -fx-background-color: #e79e69"
       );
       moreBtn.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            try {
-              mainViewController.changeView("viewOffer");
-              offerViewController.initialize(offer, true);
-            } catch (GenericServiceException e) {
-              e.printStackTrace();
-            }
-          }
-        }
+              new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                  try {
+                    mainViewController.changeView("viewOffer");
+                    offerViewController.initialize(offer, true);
+                  } catch (GenericServiceException e) {
+                    e.printStackTrace();
+                  }
+                }
+              }
       );
 
       HBox btnBox = new HBox();
@@ -347,11 +329,8 @@ public class RentingViewController {
     newFilter.setMinAge21(min21CheckBox.isSelected());
     newFilter.setCrossingBordersAllowed(crossBordersCheckBox.isSelected());
     newFilter.setDepositInCash(payCashCheckBox.isSelected());
-    //        offersList.setItems(
-    //                FXCollections.observableArrayList(
-    //                        offerController.getFilteredOffers(newFilter)
-    //                )
-    //        );
+
+    setData(offerController.getFilteredOffers(newFilter));
   }
 
   public void resetFilter() throws GenericServiceException {
@@ -375,25 +354,8 @@ public class RentingViewController {
     min21CheckBox.setSelected(false);
     crossBordersCheckBox.setSelected(false);
     payCashCheckBox.setSelected(false);
-    //        offersList.setItems(FXCollections.observableArrayList(offerController.offers()));
-  }
 
-  public void viewAction () throws GenericServiceException {
-    /*OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-    if (selectedItem != null) {
-      mainViewController.changeView("viewOffer");
-      offerViewController.initialize(selectedItem, true);
-    } else {
-      showSelectOfferFirstInfo();
-    }*/
-  }
-
-  private void showSelectOfferFirstInfo() {
-    Alert alert = new Alert(
-            Alert.AlertType.WARNING,
-            "Bitte wähle erst ein Angebot aus der Liste"
-    );
-    alert.showAndWait();
+    reloadData();
   }
 
   /**
