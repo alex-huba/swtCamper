@@ -1,11 +1,14 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.IBookingController;
+import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
@@ -37,6 +40,11 @@ public class BookingController implements IBookingController {
     return modelMapper.bookingToBookingDTO(
       bookingService.create(user, offer, startDate, endDate)
     );
+  }
+
+  @Override
+  public List<BookingDTO> bookings() throws GenericServiceException {
+    return modelMapper.bookingsToBookingDTOs(bookingService.bookings());
   }
 
   @Override

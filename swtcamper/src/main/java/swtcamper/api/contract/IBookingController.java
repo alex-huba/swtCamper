@@ -1,6 +1,8 @@
 package swtcamper.api.contract;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -28,4 +30,5 @@ public interface IBookingController {
    * @throws GenericServiceException
    */
   public BookingDTO deactivate(Long bookingID) throws GenericServiceException;
+  public List<BookingDTO> bookings() throws GenericServiceException;
 }

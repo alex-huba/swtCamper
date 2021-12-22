@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.control.Label?>
+<BorderPane prefHeight="560.0" prefWidth="751.0" stylesheets="@../styles/myOffers.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MyBookingsViewController">
+    <center>
+
+        <ListView fx:id="bookingsList" BorderPane.alignment="CENTER" />
+    </center>
+    <top>
+        <Label text="Ihre bisherigen Buchungen:" />
+    </top>
+</BorderPane>
