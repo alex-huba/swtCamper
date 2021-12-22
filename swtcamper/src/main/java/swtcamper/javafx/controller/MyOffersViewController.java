@@ -52,7 +52,7 @@ public class MyOffersViewController {
   private void setData(List<OfferDTO> offers) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
-    Label header = new Label((offers.size() == 0 ? "Keine passenden" : "Passende") + " Angebote für Sie");
+    Label header = new Label("Deine Anzeigen");
     header.setStyle("-fx-font-size: 30");
     offerListRoot.getChildren().add(header);
 
@@ -72,7 +72,7 @@ public class MyOffersViewController {
       thumbnail.setFitWidth(90);
       offerDetails.getChildren().add(thumbnail);
 
-      Label titleLabel = new Label(offer.getTitle());
+      Label titleLabel = new Label(offer.getTitle() + " " + (offer.isActive() ? "(frei)" : "(vermietet)"));
       titleLabel.setStyle(
               "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
