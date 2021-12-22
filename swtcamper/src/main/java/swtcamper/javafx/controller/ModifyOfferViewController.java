@@ -734,7 +734,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
         byte[] photo = Files.readAllBytes(photoPath1);
         Path pathWhereToSave = Path.of(
-          "./src/main/resources/pictures/userPictures"
+          "./src/main/resources/pictures",
+                userId,offerId
         );
 
         photoUrlsAsList.add(pathWhereToSave + "\\" + photoPath1.getFileName());

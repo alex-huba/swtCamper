@@ -1,14 +1,11 @@
 package swtcamper.javafx.controller;
 
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
@@ -22,7 +19,6 @@ import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -30,17 +26,6 @@ import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import javafx.beans.property.SimpleBooleanProperty;
 
-import javafx.util.Callback;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -85,7 +70,10 @@ public class OfferViewController {
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @FXML
-  public Label typeLabel;
+  public HBox imageHbox;
+
+  @FXML
+  public Label vehicleTypeLabel;
 
   @FXML
   public Label brandLabel;
@@ -183,15 +171,16 @@ public class OfferViewController {
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
     this.viewedOffer = offer;
-    Optional<Vehicle> vehicleResponse = vehicleRepository.findById(offeredObject.getVehicleID());
-    //Vehicle vehicle = vehicleResponse.get();
-    Vehicle vehicle = viewedOffer.getOfferedObject().getVehicleFeatures().getVehicle();
-    // TODO felder füllen
-   /* this.typeBox.setItems(
-        FXCollections.observableArrayList(
-          vehicle.getVehicleFeatures().getVehicleType()
-        )
-      );*/
+    Vehicle vehicle = viewedOffer.getOfferedObject();
+
+
+    imageHbox.getChildren().removeIf(e->true);
+    for (String image : offer.getOfferedObject().getPictureURLs()) {
+      ImageView imageView = new ImageView(new Image(image));
+      imageView.setPreserveRatio(true);
+      imageView.setFitHeight(70);
+      imageHbox.getChildren().add(imageView);
+    }
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
@@ -201,9 +190,7 @@ public class OfferViewController {
     borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
-    typeLabel.setText(offer.getOfferedObject().getVehicleFeatures().getType().toString());
-    //typeLabel.setText(vehicle.getVehicleFeatures().getType().toString());
-    brandLabel.setText("test");
+    vehicleTypeLabel.setText(vehicle.getVehicleFeatures().getType().toString());
     brandLabel.setText(vehicle.getVehicleFeatures().getMake());
     modelLabel.setText(vehicle.getVehicleFeatures().getModel());
     transmissionLabel.setText(vehicle.getVehicleFeatures().getTransmission());
