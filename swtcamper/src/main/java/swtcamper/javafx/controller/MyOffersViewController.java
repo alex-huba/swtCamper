@@ -72,7 +72,7 @@ public class MyOffersViewController {
       thumbnail.setFitWidth(90);
       offerDetails.getChildren().add(thumbnail);
 
-      Label titleLabel = new Label(offer.getTitle() + " " + (offer.isActive() ? "(frei)" : "(vermietet)"));
+      Label titleLabel = new Label(offer.getTitle() + " " + (offer.isActive() ? "(aktiv)" : "(deaktiviert)"));
       titleLabel.setStyle(
               "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
