@@ -1,6 +1,7 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Vehicle {
@@ -13,6 +14,11 @@ public class Vehicle {
   @JoinColumn(name = "vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
 
+  //  @Type(type = "string-array")
+  //  @Column(
+  //          name = "picture_urls",
+  //          columnDefinition = "text[]"
+  //  )
   private String[] pictureURLs;
 
   public Vehicle(VehicleFeatures vehicleFeatures) {
@@ -44,6 +50,7 @@ public class Vehicle {
   }
 
   public void setPictureURLs(String[] pictureURLs) {
+    this.pictureURLs = new String[pictureURLs.length];
     this.pictureURLs = pictureURLs;
   }
 }

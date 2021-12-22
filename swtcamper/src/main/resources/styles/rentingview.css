@@ -7,3 +7,10 @@ CheckBox {
 .resetBtn {
     -fx-font-size: 10;
 }
+ScrollPane {
+    -fx-background: linear-gradient(to right, #FFDEE9, #B5FFFC);
+    -fx-border-color: linear-gradient(to right, #FFDEE9, #B5FFFC);
+}
+
+
+

@@ -1,21 +1,25 @@
 package swtcamper.javafx.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -130,7 +134,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public CheckBox fridgeCheckBox;
 
   @FXML
-  public TextField importPath;
+  public HBox picturesHbox;
 
   @FXML
   public Button placeOfferButton;
@@ -148,6 +152,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private long offerID;
   private Vehicle offeredObject;
+
+  private List<String> pictureURLs;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -273,7 +279,38 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
+    // add pictures
+    //int cnt = 0;
+    for (String file : vehicle.getPictureURLs()) {
+      pictureURLs.add(file);
+
+      String url = "file:///" + file;
+
+      ImageView thumbnail = new ImageView(new Image(url));
+      thumbnail.setFitHeight(50);
+      thumbnail.setPreserveRatio(true);
+
+      Button deleteBtn = new Button(" x ");
+      //int finalCnt = cnt;
+      deleteBtn.setOnAction(event -> removePicture(file.toString()));
+
+      VBox imageBox = new VBox();
+      imageBox.getChildren().add(thumbnail);
+      imageBox.getChildren().add(deleteBtn);
+
+      picturesHbox.getChildren().add(imageBox);
+      //cnt++;
+    }
+
     validateMandatoryFields();
+  }
+
+  private void addPicture() {}
+
+  private void removePicture(String url) {
+    int index = pictureURLs.indexOf(url);
+    pictureURLs.remove(url);
+    picturesHbox.getChildren().remove(index + 1);
   }
 
   /**
@@ -311,7 +348,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     toiletCheckBox.setSelected(false);
     kitchenUnitCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
-    importPath.clear();
+
+    pictureURLs = new ArrayList<>();
+    picturesHbox.getChildren().remove(1, picturesHbox.getChildren().size());
 
     // resets all backgrounds to neutral
     // mandatory fields
@@ -359,9 +398,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       ? doubleStringConverter.fromString(heightTextField.getText())
       : 0;
 
-    if (!isEditMode.get()) {
-      String[] pictureURLs = null;
+    /*String[] pictureArray = new String[pictureURLs.size()];
+        for (int i = 0; i < pictureURLs.size(); i++) {
+            pictureArray[i] = pictureURLs.get(i);
+        }*/
 
+    if (!isEditMode.get()) {
       OfferDTO offerDTO = offerController.create(
         titleTextField.getText(),
         locationTextField.getText(),
@@ -371,7 +413,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
-        pictureURLs,
+        savePictures(pictureURLs),
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -396,7 +438,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
       );
     } else if (isEditMode.get()) {
-      String[] pictureURLs = null;
       ArrayList<Long> bookings = null;
 
       offerController.update(
@@ -412,7 +453,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
-        pictureURLs,
+        savePictures(pictureURLs),
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -645,18 +686,75 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * @param event ActionEvent from FXML to determine the pressed button
    */
   public void importFileChooserAction(ActionEvent event) {
+    pictureURLs = new ArrayList<>();
+
     Node source = (Node) event.getSource();
     Window window = source.getScene().getWindow();
 
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Ressourcendatei öffnen");
-    File file = fileChooser.showOpenDialog(window);
-    if (file == null) return;
-    importPath.setText(file.getAbsolutePath().toString());
+    fileChooser.setTitle("Bilder hinzufügen");
+    List<File> fileList = fileChooser.showOpenMultipleDialog(window);
+
+    for (File file : fileList) {
+      pictureURLs.add(file.toString());
+
+      String url = "file:///" + Path.of(file.getAbsolutePath());
+
+      ImageView thumbnail = new ImageView(new Image(url));
+      thumbnail.setFitHeight(50);
+      thumbnail.setPreserveRatio(true);
+
+      Button deleteBtn = new Button(" x ");
+      deleteBtn.setOnAction(e -> removePicture(file.toString()));
+
+      VBox imageBox = new VBox();
+      imageBox.getChildren().add(thumbnail);
+      imageBox.getChildren().add(deleteBtn);
+
+      picturesHbox.getChildren().add(imageBox);
+    }
   }
 
   /**
    * Uploads one or more before selected pictures.
+   * @return
    */
-  public void importButtonAction() {}
+  public String[] savePictures(List<String> photoPaths) {
+    String userId = "1203";
+    String offerId = "5";
+    List<String> photoUrlsAsList = new ArrayList<>();
+
+    for (String photoPath : photoPaths) {
+      try {
+        Path photoPath1 = Path.of(photoPath);
+
+        byte[] photo = Files.readAllBytes(photoPath1);
+        Path pathWhereToSave = Path.of(
+          "./src/main/resources/pictures",
+          userId,
+          offerId
+        );
+
+        photoUrlsAsList.add(pathWhereToSave + "\\" + photoPath1.getFileName());
+        File pathWhereToSaveFile = new File(pathWhereToSave.toString());
+        if (!pathWhereToSaveFile.exists()) {
+          pathWhereToSaveFile.mkdirs();
+        }
+        Files.write(
+          Path.of(pathWhereToSave + "\\" + photoPath1.getFileName()),
+          photo
+        );
+        System.out.println(
+          "File " +
+          photoPath1.getFileName() +
+          "saved in: " +
+          pathWhereToSaveFile.toPath()
+        );
+      } catch (IOException e) {
+        System.err.println("File couldn't be read to byte[].");
+      }
+    }
+
+    return photoUrlsAsList.toArray(new String[photoUrlsAsList.size()]);
+  }
 }

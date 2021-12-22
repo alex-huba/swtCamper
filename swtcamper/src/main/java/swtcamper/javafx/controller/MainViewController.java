@@ -81,6 +81,9 @@ public class MainViewController {
   public Pane forgotPasswordViewBox;
 
   @FXML
+  public Pane moreAboutOfferViewBox;
+
+  @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
   }
@@ -182,6 +185,9 @@ public class MainViewController {
           navigationViewController.accountButton
         );
         resetPasswordViewController.resetInputFields();
+        break;
+      case "moreInfoOffer":
+        mainStage.getChildren().add(moreAboutOfferViewBox);
         break;
     }
   }
