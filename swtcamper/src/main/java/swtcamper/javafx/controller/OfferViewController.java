@@ -82,7 +82,7 @@ public class OfferViewController {
   public Label modelLabel;
 
   @FXML
-  public Label constructionYearLabel;
+  public Label constructionLabel;
 
   @FXML
   public Label minAgeLabel;
@@ -196,7 +196,7 @@ public class OfferViewController {
     transmissionLabel.setText(vehicle.getVehicleFeatures().getTransmission());
     seatsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getSeats()));
     bedsLabel.setText(Integer.toString(vehicle.getVehicleFeatures().getBeds()));
-    constructionYearLabel.setText(vehicle.getVehicleFeatures().getYear());
+    constructionLabel.setText(vehicle.getVehicleFeatures().getYear());
     engineLabel.setText(vehicle.getVehicleFeatures().getEngine());
     widthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getWidth()));
     lengthLabel.setText(doubleStringConverter.toString(vehicle.getVehicleFeatures().getLength()));
