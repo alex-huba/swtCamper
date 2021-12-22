@@ -242,6 +242,9 @@ public class OfferViewController {
     fridgeLabel.setOpacity(
       labelOpacity(offeredObject.getVehicleFeatures().isFridge())
     );
+
+    startDate.setValue(null);
+    endDate.setValue(null);
   }
 
   public double labelOpacity(boolean checkBox) {
