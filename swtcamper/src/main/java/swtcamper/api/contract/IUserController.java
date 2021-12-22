@@ -22,7 +22,6 @@ public interface IUserController {
     boolean enabled
   );
 
-  Long getLoggedInUserID();
   User getLoggedInUser();
 
   /**

@@ -47,8 +47,8 @@ public class UserController implements IUserController {
     );
   }
 
-  public Long getLoggedInUserID() {
-    return userService.getLoggedInUserID();
+  public User getLoggedInUser() {
+    return userService.getLoggedInUser();
   }
 
   @Override
@@ -67,11 +67,11 @@ public class UserController implements IUserController {
 
   @Override
   public boolean isUsernameFree(UserDTO userDTO) {
-    return userService.isUsernameFree(userDTO);
+    return userService.isUsernameFree(userDTO.getUsername());
   }
 
   public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
-    return userService.isEmailFree(userDTO);
+    return userService.isEmailFree(userDTO.getEmail());
   }
 
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {

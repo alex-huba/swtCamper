@@ -128,7 +128,7 @@
                                         </HBox>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="70.0" styleClass="descriptionLabel" text="Modell*: " />
+                                                <Label prefWidth="80.0" styleClass="descriptionLabel" text="Modell*: " />
                                                 <Label fx:id="modelLabel" text="Keine Angabe" />
                                             </children>
                                         </HBox>
@@ -150,7 +150,7 @@
                                         </HBox>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="70.0" styleClass="descriptionLabel" text="Betten:" />
+                                                <Label prefWidth="80.0" styleClass="descriptionLabel" text="Betten:" />
                                                 <Label fx:id="bedsLabel" text="Keine Angabe" />
                                             </children>
                                         </HBox>
@@ -166,7 +166,7 @@
                                         </HBox>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="70.0" styleClass="descriptionLabel" text="Kraftstoff:" />
+                                                <Label prefWidth="80.0" styleClass="descriptionLabel" text="Kraftstoff:" />
                                                 <Label fx:id="engineLabel" text="Keine Angabe" />
                                             </children>
                                         </HBox>
@@ -204,24 +204,24 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Features:" />
+                                        <Label prefWidth="180.0" styleClass="descriptionLabel" text="Features:" />
                                         <VBox spacing="3.0">
                                             <children>
-                                                <Label fx:id="roofTentLabel" prefWidth="130.0" text="- Dachzelt" />
-                                                <Label fx:id="roofRackLabel" prefWidth="130.0" text="- Dachgepäckträger" />
-                                                <Label fx:id="bikeRackLabel" prefWidth="130.0" text="- Fahrradträger" />
+                                                <Label fx:id="roofTentLabel" prefWidth="150.0" text="- Dachzelt" />
+                                                <Label fx:id="roofRackLabel" prefWidth="150.0" text="- Dachgepäckträger" />
+                                                <Label fx:id="bikeRackLabel" prefWidth="150.0" text="- Fahrradträger" />
                                             </children>
                                         </VBox>
                                         <VBox spacing="3.0">
                                             <children>
-                                                <Label fx:id="showerLabel" prefWidth="130.0" text="- Dusche" />
-                                                <Label fx:id="toiletLabel" prefWidth="130.0" text="- Toilette" />
+                                                <Label fx:id="showerLabel" prefWidth="100.0" text="- Dusche" />
+                                                <Label fx:id="toiletLabel" prefWidth="100.0" text="- Toilette" />
                                             </children>
                                         </VBox>
                                         <VBox spacing="3.0">
                                             <children>
-                                                <Label fx:id="kitchenUnitLabel" prefWidth="130.0" text="- Küche / Kocheinheit" />
-                                                <Label fx:id="fridgeLabel" prefWidth="130.0" text="- Kühlschrank" />
+                                                <Label fx:id="kitchenUnitLabel" prefWidth="180.0" text="- Küche / Kocheinheit" />
+                                                <Label fx:id="fridgeLabel" prefWidth="180.0" text="- Kühlschrank" />
                                             </children>
                                         </VBox>
                                     </children>
