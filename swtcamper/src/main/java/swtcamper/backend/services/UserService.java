@@ -17,7 +17,15 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  private Long loggedInUserID;
+  private User loggedInUser;
+
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
 
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
@@ -77,14 +85,6 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public Long getLoggedInUserID() {
-    return loggedInUserID;
-  }
-
-  public void setLoggedInUserID(Long loggedInUserID) {
-    this.loggedInUserID = loggedInUserID;
-  }
-
   /**
    * Checks if user exists in database and gets information about user role of the user if it does.
    * @param username
@@ -101,7 +101,7 @@ public class UserService {
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
-        this.setLoggedInUserID(user.getId());
+        this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");
       }

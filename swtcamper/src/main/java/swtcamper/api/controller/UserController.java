@@ -6,6 +6,7 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -45,8 +46,8 @@ public class UserController implements IUserController {
     );
   }
 
-  public Long getLoggedInUserID() {
-    return userService.getLoggedInUserID();
+  public User getLoggedInUser() {
+    return userService.getLoggedInUser();
   }
 
   @Override
