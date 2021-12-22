@@ -164,7 +164,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
-    } else if (!userController.isUsernameFree(new UserDTO(input))) {
+    } else if (!userController.isUsernameFree(input)) {
       errorLabel.setText(
         "Ungültiger Nutzername: Nutzername ist bereits vergeben"
       );
