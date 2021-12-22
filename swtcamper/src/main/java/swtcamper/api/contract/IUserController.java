@@ -26,7 +26,7 @@ public interface IUserController {
   /**
    * see {@link UserService#login}
    */
-  UserRoleDTO login(String username, String password)
+  UserRoleDTO login(UserDTO userDTO)
     throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
 
   /**
@@ -37,12 +37,12 @@ public interface IUserController {
   /**
    * see {@link UserService#isEmailFree}
    */
-  boolean isEmailFree(String email);
+  boolean isEmailFree(UserDTO userDTO) throws GenericServiceException;
 
   /**
    * see {@link UserService#resetPassword}
    */
-  void resetPassword(String username, String email, String password)
+  void resetPassword(UserDTO userDTO)
     throws GenericServiceException;
 
   /**
@@ -53,5 +53,5 @@ public interface IUserController {
   /**
    * see {@link UserService#isEnabled}
    */
-  boolean isEnabled(String username) throws UserDoesNotExistException;
+  boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException;
 }

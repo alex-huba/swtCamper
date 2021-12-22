@@ -16,6 +16,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
@@ -106,11 +107,15 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     String username = usernameTf.getText();
     String password = passwordPf.getText();
 
+    UserDTO userDTO = new UserDTO();
+    userDTO.setUsername(username);
+    userDTO.setPassword(password);
+
     // Try to login if user input matches data in database
     try {
       mainViewController.login(
-        userController.login(username, password),
-        userController.isEnabled(username)
+        userController.login(userDTO),
+        userController.isEnabled(new UserDTO(username))
       );
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong

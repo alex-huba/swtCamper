@@ -50,10 +50,10 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public UserRoleDTO login(String username, String password)
+  public UserRoleDTO login(UserDTO userDTO)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
     try {
-      return modelMapper.toUserRoleDTO(userService.login(username, password));
+      return modelMapper.toUserRoleDTO(userService.login(userDTO.getUsername(), userDTO.getPassword()));
     } catch (WrongPasswordException e) {
       throw new WrongPasswordException(e.getMessage());
     } catch (UserDoesNotExistException e) {
@@ -64,20 +64,17 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public boolean isUsernameFree(String username) {
-    return userService.isUsernameFree(username);
+  public boolean isUsernameFree(UserDTO userDTO) {
+    return userService.isUsernameFree(userDTO);
   }
 
-
-  @Override
   public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
     return userService.isEmailFree(userDTO);
   }
 
-  @Override
   public void resetPassword(UserDTO userDTO) throws GenericServiceException {
     try {
-      userService.resetPassword(username, email, password);
+      userService.resetPassword(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
@@ -89,7 +86,7 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public boolean isEnabled(String username) throws UserDoesNotExistException {
-    return userService.isEnabled(username);
+  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
+    return userService.isEnabled(userDTO.getUsername());
   }
 }

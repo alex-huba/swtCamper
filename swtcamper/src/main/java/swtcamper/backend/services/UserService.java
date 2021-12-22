@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
@@ -117,22 +118,22 @@ public class UserService {
 
   /**
    * Checks if username is already existing in database.
-   * @param username
+   * @param userDTO
    * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
    */
-  public boolean isUsernameFree(String username) {
-    return !userRepository.existsByUsername(username);
+  public boolean isUsernameFree(UserDTO userDTO) {
+    return !userRepository.existsByUsername(userDTO.getUsername());
   }
 
   /**
    * Checks if email is already existing in database.
-   * @param email
+   * @param userDTO
    * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
    */
-  public boolean isEmailFree(String email) {
-    return !userRepository.existsByEmail(email);
+  public boolean isEmailFree(UserDTO userDTO) {
+    return !userRepository.existsByEmail(userDTO.getEmail());
   }
 
   /**

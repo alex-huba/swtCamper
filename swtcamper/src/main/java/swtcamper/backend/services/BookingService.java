@@ -23,9 +23,6 @@ public class BookingService {
   @Autowired
   private BookingRepository bookingRepository;
 
-  @Autowired
-  private OfferRepository offerRepository;
-
   public Booking create(
     User user,
     Offer offer,

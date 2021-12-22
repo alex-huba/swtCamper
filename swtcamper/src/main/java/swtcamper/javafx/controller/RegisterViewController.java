@@ -214,7 +214,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
-    } else if (!userController.isEmailFree(input)) {
+    } else if (!userController.isEmailFree(new UserDTO(input))) {
       errorLabel.setText("Ungültiges Email: Email ist bereits vergeben");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
