@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.backend.entities.Booking;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.User;
+import swtcamper.api.contract.UserDTO;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -23,20 +22,26 @@ public class BookingService {
   @Autowired
   private BookingRepository bookingRepository;
 
+  @Autowired
+  private LoggingService loggingService;
+
   public Booking create(
     User user,
     Offer offer,
     LocalDate startDate,
     LocalDate endDate
   ) {
-    return bookingRepository.save(new Booking(user, offer, startDate, endDate));
+    long newBookingId = bookingRepository.save(new Booking(user, offer, startDate, endDate)).getId();
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s booked offer with ID %s.", user.getUsername(), offer.getOfferID())));
+    return bookingRepository.findById(newBookingId).get();
   }
 
   public Booking update(
     Long bookingID,
     LocalDate startDate,
     LocalDate endDate,
-    boolean active
+    boolean active,
+    UserDTO user
   ) throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
@@ -46,6 +51,8 @@ public class BookingService {
       booking.setStartDate(startDate);
       booking.setEndDate(endDate);
       booking.setActive(active);
+
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Booking with ID %s got updated by user %s.", bookingID, user.getUsername())));
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -54,19 +61,21 @@ public class BookingService {
     );
   }
 
-  public Booking deactivate(Long bookingID) throws GenericServiceException {
+  public Booking deactivate(Long bookingID, UserDTO user) throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
       // Update by setting active = false
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Booking with ID %s was deactivated by user %s.", bookingID, user.getUsername())));
       // Save update back to database
       return this.update(
           booking.getId(),
           booking.getStartDate(),
           booking.getEndDate(),
-          false
+          false,
+              user
         );
     }
     throw new GenericServiceException(
@@ -74,9 +83,10 @@ public class BookingService {
     );
   }
 
-  public void delete(Long bookingID) throws GenericServiceException {
+  public void delete(Long bookingID, UserDTO user) throws GenericServiceException {
     try {
       bookingRepository.deleteById(bookingID);
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("UBooking with ID %s was deleted by user %s", bookingID,user.getUsername())));
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

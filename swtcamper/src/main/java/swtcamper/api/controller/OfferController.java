@@ -33,7 +33,10 @@ public class OfferController implements IOfferController {
   private VehicleRepository vehicleRepository;
 
   @Autowired
-  VehicleFeaturesRepository vehicleFeaturesRepository;
+  private VehicleFeaturesRepository vehicleFeaturesRepository;
+
+  @Autowired
+  private UserController userController;
 
   @Override
   public List<OfferDTO> offers() throws GenericServiceException {
@@ -103,7 +106,8 @@ public class OfferController implements IOfferController {
         shower,
         toilet,
         kitchenUnit,
-        fridge
+        fridge,
+              modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
@@ -179,14 +183,15 @@ public class OfferController implements IOfferController {
         shower,
         toilet,
         kitchenUnit,
-        fridge
+        fridge,
+              modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
 
   public void delete(long id) throws GenericServiceException {
     try {
-      offerService.delete(id);
+      offerService.delete(id,modelMapper.userToUserDTO(userController.getLoggedInUser()));
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

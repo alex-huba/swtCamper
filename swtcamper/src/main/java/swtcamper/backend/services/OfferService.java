@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -24,7 +25,7 @@ public class OfferService {
   private OfferRepository offerRepository;
 
   @Autowired
-  OfferService offerService;
+  private LoggingService loggingService;
 
   public Offer create(
     // TODO validation
@@ -58,7 +59,8 @@ public class OfferService {
     boolean shower,
     boolean toilet,
     boolean kitchenUnit,
-    boolean fridge
+    boolean fridge,
+    UserDTO user
   ) {
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
@@ -101,8 +103,13 @@ public class OfferService {
       borderCrossingAllowed,
       depositInCash
     );
-    vehicleRepository.save(vehicle);
-    return offerRepository.save(offer);
+    long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New vehicle with ID %s created by user %s.", newVehicleId, user.getUsername())));
+
+    long newOfferId = offerRepository.save(offer).getOfferID();
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New offer with ID %s created by user %s.", newOfferId, user.getUsername())));
+
+    return offerRepository.findById(newOfferId).get();
   }
 
   public Offer update(
@@ -139,7 +146,8 @@ public class OfferService {
     boolean shower,
     boolean toilet,
     boolean kitchenUnit,
-    boolean fridge
+    boolean fridge,
+    UserDTO user
   ) {
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
     Offer offer = offerResponse.get();
@@ -180,6 +188,7 @@ public class OfferService {
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
+loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Vehicle with ID %s got updated by user %s.", vehicle.getVehicleID(), user.getUsername())));
 
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
@@ -192,6 +201,7 @@ public class OfferService {
     offer.setMinAge25(minAge25);
     offer.setBorderCrossingAllowed(borderCrossingAllowed);
     offer.setDepositInCash(depositInCash);
+loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Offer with ID %s got updated by user %s.", offer.getOfferID(), user.getUsername())));
 
     return offerRepository.save(offer);
   }
@@ -241,9 +251,10 @@ public class OfferService {
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
-  public void delete(long id) throws GenericServiceException {
+  public void delete(long id, UserDTO user) throws GenericServiceException {
     try {
       offerRepository.deleteById(id);
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Offer with ID %s got deleted by user %s.", id, user.getUsername())));
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

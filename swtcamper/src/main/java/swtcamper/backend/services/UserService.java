@@ -155,11 +155,13 @@ public class UserService {
    * Locks an user account.
    * @param userID
    */
-  public void lock(Long userID) {
+  public void lock(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
       User userToLock = userOptional.get();
       userToLock.setLocked(true);
+
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was locked by operator %s.", userToLock.getUsername(), operator)));
       userRepository.save(userToLock);
     }
   }
@@ -168,11 +170,13 @@ public class UserService {
    * Unlocks an user account.
    * @param userID
    */
-  public void unlock(Long userID) {
+  public void unlock(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
       User userToUnlock = userOptional.get();
       userToUnlock.setLocked(false);
+
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was unlocked by operator %s.", userToUnlock.getUsername(), operator)));
       userRepository.save(userToUnlock);
     }
   }
@@ -181,11 +185,13 @@ public class UserService {
    * Enables an user account.
    * @param userID
    */
-  public void enable(Long userID) {
+  public void enable(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
     if (userOptional.isPresent()) {
       User userToEnable = userOptional.get();
       userToEnable.setEnabled(true);
+
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was enabled by operator %s.", userToEnable.getUsername(), operator)));
       userRepository.save(userToEnable);
     }
   }
@@ -219,6 +225,8 @@ public class UserService {
       User user = userRepository.findByUsername(username).get();
       user.setPassword(password);
       userRepository.save(user);
+
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s's password got reset.", username)));
     } else {
       throw new GenericServiceException(
         "Couldn't change password. Username or password is not correct."
