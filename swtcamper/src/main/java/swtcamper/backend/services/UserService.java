@@ -69,18 +69,37 @@ public class UserService {
 
     // no is-present check because userRepository.save(user) will have definitely created this user
     long newId = userRepository.findByUsername(username).get().getId();
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New user with ID %s and username '%s' registered.", newId, username)));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New user with ID %s and username '%s' registered.",
+          newId,
+          username
+        )
+      )
+    );
 
     return userRepository.findById(newId).get();
   }
 
   public void delete(User user) {
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User with ID %s deleted.", user.getId())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format("User with ID %s deleted.", user.getId())
+      )
+    );
     // TODO: implement user deletion
   }
 
   public void update(User user) {
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User with ID %s updated.", user.getId())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format("User with ID %s updated.", user.getId())
+      )
+    );
     // TODO: implement user update
   }
 
@@ -119,15 +138,33 @@ public class UserService {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s logged in.",username)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format("User %s logged in.", username)
+        )
+      );
       return user.getUserRole();
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {
-      loggingService.log(new LoggingMessage(LoggingLevel.WARNING, String.format("Wrong password entered for user %s.",username)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.WARNING,
+          String.format("Wrong password entered for user %s.", username)
+        )
+      );
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
-    loggingService.log(new LoggingMessage(LoggingLevel.WARNING, String.format("Username %s tried to log in, but does not exist.",username)));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.WARNING,
+        String.format(
+          "Username %s tried to log in, but does not exist.",
+          username
+        )
+      )
+    );
     throw new UserDoesNotExistException("Username doesn't exist.");
   }
 
@@ -161,7 +198,16 @@ public class UserService {
       User userToLock = userOptional.get();
       userToLock.setLocked(true);
 
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was locked by operator %s.", userToLock.getUsername(), operator)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was locked by operator %s.",
+            userToLock.getUsername(),
+            operator
+          )
+        )
+      );
       userRepository.save(userToLock);
     }
   }
@@ -176,7 +222,16 @@ public class UserService {
       User userToUnlock = userOptional.get();
       userToUnlock.setLocked(false);
 
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was unlocked by operator %s.", userToUnlock.getUsername(), operator)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was unlocked by operator %s.",
+            userToUnlock.getUsername(),
+            operator
+          )
+        )
+      );
       userRepository.save(userToUnlock);
     }
   }
@@ -191,7 +246,16 @@ public class UserService {
       User userToEnable = userOptional.get();
       userToEnable.setEnabled(true);
 
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s was enabled by operator %s.", userToEnable.getUsername(), operator)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was enabled by operator %s.",
+            userToEnable.getUsername(),
+            operator
+          )
+        )
+      );
       userRepository.save(userToEnable);
     }
   }
@@ -226,7 +290,12 @@ public class UserService {
       user.setPassword(password);
       userRepository.save(user);
 
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s's password got reset.", username)));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format("User %s's password got reset.", username)
+        )
+      );
     } else {
       throw new GenericServiceException(
         "Couldn't change password. Username or password is not correct."

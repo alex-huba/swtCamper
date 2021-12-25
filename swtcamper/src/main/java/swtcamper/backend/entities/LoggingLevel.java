@@ -7,7 +7,7 @@ package swtcamper.backend.entities;
  * ERROR: exceptions or errors
  */
 public enum LoggingLevel {
-    INFO,
-    WARNING,
-    ERROR,
+  INFO,
+  WARNING,
+  ERROR,
 }

@@ -107,7 +107,7 @@ public class OfferController implements IOfferController {
         toilet,
         kitchenUnit,
         fridge,
-              modelMapper.userToUserDTO(userController.getLoggedInUser())
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
@@ -184,14 +184,17 @@ public class OfferController implements IOfferController {
         toilet,
         kitchenUnit,
         fridge,
-              modelMapper.userToUserDTO(userController.getLoggedInUser())
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
 
   public void delete(long id) throws GenericServiceException {
     try {
-      offerService.delete(id,modelMapper.userToUserDTO(userController.getLoggedInUser()));
+      offerService.delete(
+        id,
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

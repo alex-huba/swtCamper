@@ -104,10 +104,28 @@ public class OfferService {
       depositInCash
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New vehicle with ID %s created by user %s.", newVehicleId, user.getUsername())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New vehicle with ID %s created by user %s.",
+          newVehicleId,
+          user.getUsername()
+        )
+      )
+    );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New offer with ID %s created by user %s.", newOfferId, user.getUsername())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New offer with ID %s created by user %s.",
+          newOfferId,
+          user.getUsername()
+        )
+      )
+    );
 
     return offerRepository.findById(newOfferId).get();
   }
@@ -188,7 +206,16 @@ public class OfferService {
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
-loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Vehicle with ID %s got updated by user %s.", vehicle.getVehicleID(), user.getUsername())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "Vehicle with ID %s got updated by user %s.",
+          vehicle.getVehicleID(),
+          user.getUsername()
+        )
+      )
+    );
 
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
@@ -201,7 +228,16 @@ loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Vehicle 
     offer.setMinAge25(minAge25);
     offer.setBorderCrossingAllowed(borderCrossingAllowed);
     offer.setDepositInCash(depositInCash);
-loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Offer with ID %s got updated by user %s.", offer.getOfferID(), user.getUsername())));
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "Offer with ID %s got updated by user %s.",
+          offer.getOfferID(),
+          user.getUsername()
+        )
+      )
+    );
 
     return offerRepository.save(offer);
   }
@@ -254,7 +290,16 @@ loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Offer wi
   public void delete(long id, UserDTO user) throws GenericServiceException {
     try {
       offerRepository.deleteById(id);
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Offer with ID %s got deleted by user %s.", id, user.getUsername())));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got deleted by user %s.",
+            id,
+            user.getUsername()
+          )
+        )
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

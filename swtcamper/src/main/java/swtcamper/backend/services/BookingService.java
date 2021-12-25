@@ -31,8 +31,19 @@ public class BookingService {
     LocalDate startDate,
     LocalDate endDate
   ) {
-    long newBookingId = bookingRepository.save(new Booking(user, offer, startDate, endDate)).getId();
-    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s booked offer with ID %s.", user.getUsername(), offer.getOfferID())));
+    long newBookingId = bookingRepository
+      .save(new Booking(user, offer, startDate, endDate))
+      .getId();
+    loggingService.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "User %s booked offer with ID %s.",
+          user.getUsername(),
+          offer.getOfferID()
+        )
+      )
+    );
     return bookingRepository.findById(newBookingId).get();
   }
 
@@ -52,7 +63,16 @@ public class BookingService {
       booking.setEndDate(endDate);
       booking.setActive(active);
 
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Booking with ID %s got updated by user %s.", bookingID, user.getUsername())));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s got updated by user %s.",
+            bookingID,
+            user.getUsername()
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -61,21 +81,31 @@ public class BookingService {
     );
   }
 
-  public Booking deactivate(Long bookingID, UserDTO user) throws GenericServiceException {
+  public Booking deactivate(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
       // Update by setting active = false
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("Booking with ID %s was deactivated by user %s.", bookingID, user.getUsername())));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s was deactivated by user %s.",
+            bookingID,
+            user.getUsername()
+          )
+        )
+      );
       // Save update back to database
       return this.update(
           booking.getId(),
           booking.getStartDate(),
           booking.getEndDate(),
           false,
-              user
+          user
         );
     }
     throw new GenericServiceException(
@@ -83,10 +113,20 @@ public class BookingService {
     );
   }
 
-  public void delete(Long bookingID, UserDTO user) throws GenericServiceException {
+  public void delete(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     try {
       bookingRepository.deleteById(bookingID);
-      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("UBooking with ID %s was deleted by user %s", bookingID,user.getUsername())));
+      loggingService.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "UBooking with ID %s was deleted by user %s",
+            bookingID,
+            user.getUsername()
+          )
+        )
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }
