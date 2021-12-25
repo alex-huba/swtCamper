@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.backend.entities.LoggingLevel;
+import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
@@ -16,6 +18,9 @@ public class UserService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private LoggingService loggingService;
 
   private User loggedInUser;
 
@@ -60,14 +65,22 @@ public class UserService {
     user.setPassword(password);
     user.setUserRole(userRole);
     user.setEnabled(enabled);
-    return userRepository.save(user);
+    userRepository.save(user);
+
+    // no is-present check because userRepository.save(user) will have definitely created this user
+    long newId = userRepository.findByUsername(username).get().getId();
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("New user with ID %s and username '%s' registered.", newId, username)));
+
+    return userRepository.findById(newId).get();
   }
 
   public void delete(User user) {
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User with ID %s deleted.", user.getId())));
     // TODO: implement user deletion
   }
 
   public void update(User user) {
+    loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User with ID %s updated.", user.getId())));
     // TODO: implement user update
   }
 
@@ -106,12 +119,15 @@ public class UserService {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
+      loggingService.log(new LoggingMessage(LoggingLevel.INFO, String.format("User %s logged in.",username)));
       return user.getUserRole();
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {
+      loggingService.log(new LoggingMessage(LoggingLevel.WARNING, String.format("Wrong password entered for user %s.",username)));
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
+    loggingService.log(new LoggingMessage(LoggingLevel.WARNING, String.format("Username %s tried to log in, but does not exist.",username)));
     throw new UserDoesNotExistException("Username doesn't exist.");
   }
 
