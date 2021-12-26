@@ -1,17 +1,25 @@
 package swtcamper.javafx.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -32,19 +40,44 @@ public class MyOffersViewController {
   private ModifyOfferViewController modifyOfferViewController;
 
   @FXML
+  public BorderPane myOffersRootPane;
+
+  @FXML
+  public Button viewOfferButton;
+  @FXML
+  public Button updateOfferButton;
+  @FXML
+  public Button removeButton;
+
+  @FXML
   public ListView<OfferDTO> offersList;
 
   @FXML
-  public void initialize() throws GenericServiceException {
+  public VBox foreignOffersVBox;
+  @FXML
+  public ListView<OfferDTO> foreignOffersList;
+
+  @FXML
+  public void initialize() {
+    viewOfferButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
+    updateOfferButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
+    removeButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
+
     offersList.setOnMouseClicked(click -> {
-      OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-      //Listener for right click
-      if (click.isSecondaryButtonDown()) {
-        //ignore
-      }
+      foreignOffersList.getSelectionModel().select(null);
+      selectedOffer = offersList.getSelectionModel().getSelectedItem();
       //Listener for double click
       if (click.getClickCount() == 2) {
-        showInfoAlert(selectedItem);
+        showInfoAlert();
+      }
+    });
+
+    foreignOffersList.setOnMouseClicked(click -> {
+      offersList.getSelectionModel().select(null);
+      selectedOffer = foreignOffersList.getSelectionModel().getSelectedItem();
+      //Listener for double click
+      if (click.getClickCount() == 2) {
+        showInfoAlert();
       }
     });
   }
@@ -57,11 +90,8 @@ public class MyOffersViewController {
 
   @FXML
   public void viewOfferAction() {
-    OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
-      showInfoAlert(selectedOffer);
-    } else {
-      showSelectOfferFirstInfo();
+      showInfoAlert();
     }
   }
 
@@ -75,18 +105,14 @@ public class MyOffersViewController {
 
   @FXML
   public void updateOfferAction() throws GenericServiceException {
-    OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
       mainViewController.changeView("placeOffer");
       modifyOfferViewController.initialize(selectedOffer);
-    } else {
-      showSelectOfferFirstInfo();
     }
   }
 
   @FXML
   public void removeOfferAction() throws GenericServiceException {
-    OfferDTO selectedOffer = offersList.getSelectionModel().getSelectedItem();
     if (selectedOffer != null) {
       Alert confirmDelete = new Alert(
         Alert.AlertType.CONFIRMATION,
@@ -98,21 +124,23 @@ public class MyOffersViewController {
         offerController.delete(selectedOffer.getID());
         reloadData();
       }
-    } else {
-      showSelectOfferFirstInfo();
     }
   }
 
   public void reloadData() throws GenericServiceException {
-    offersList.setItems(
-      FXCollections.observableArrayList(
-        offerController.getOffersCreatedByUser(userController.getLoggedInUser())
-      )
-    );
+    offersList.setItems(FXCollections.observableArrayList(offerController.getOffersCreatedByUser(userController.getLoggedInUser())));
+
+    if(userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)) {
+      if(!myOffersRootPane.getChildren().contains(foreignOffersVBox)) myOffersRootPane.getChildren().add(foreignOffersVBox);
+
+      foreignOffersList.setItems(FXCollections.observableArrayList(offerController.getForeignOffers(userController.getLoggedInUser())));
+    } else {
+      if(myOffersRootPane.getChildren().contains(foreignOffersVBox)) myOffersRootPane.getChildren().remove(foreignOffersVBox);
+    }
   }
 
-  private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
+  private void showInfoAlert() {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION, selectedOffer.toString());
     alert.showAndWait();
   }
 }

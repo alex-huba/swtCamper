@@ -205,6 +205,14 @@ public class OfferController implements IOfferController {
       .collect(Collectors.toList());
   }
 
+  public List<OfferDTO> getForeignOffers(User user)
+          throws GenericServiceException {
+    return offers()
+            .stream()
+            .filter(offerDTO -> !offerDTO.getCreator().getId().equals(user.getId()))
+            .collect(Collectors.toList());
+  }
+
   /**
    * Looks for fitting offers in the database.
    * @param filter Filter to hold search settings.
