@@ -131,6 +131,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.activeOffersButton
         );
+        myOffersViewController.reloadData();
         break;
       case "history":
         mainStage.getChildren().add(dealHistoryViewBox);

@@ -2,11 +2,13 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
 
   private long offerID;
+  private User creator;
   private OfferedObjectTypeDTO offeredObjectType;
   private Vehicle offeredObject;
   private String title;
@@ -22,6 +24,7 @@ public class OfferDTO {
 
   public OfferDTO(
     long offerID,
+    User creator,
     OfferedObjectTypeDTO offeredObjectType,
     Vehicle offeredObject,
     ArrayList<Long> bookings,
@@ -36,6 +39,7 @@ public class OfferDTO {
     boolean active
   ) {
     this.offerID = offerID;
+    this.creator = creator;
     this.offeredObjectType = offeredObjectType;
     this.offeredObject = offeredObject;
     this.bookings = bookings;
@@ -56,6 +60,14 @@ public class OfferDTO {
 
   public void setID(long offerID) {
     this.offerID = offerID;
+  }
+
+  public User getCreator() {
+    return this.creator;
+  }
+
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
   public OfferedObjectTypeDTO getOfferedObjectType() {
@@ -156,24 +168,21 @@ public class OfferDTO {
 
   @Override
   public String toString() {
-    return (
-      "offerID: " +
-      offerID +
-      ", Fahrzeug: " +
-      offeredObject.getVehicleFeatures().getMake() +
-      " " +
-      offeredObject.getVehicleFeatures().getModel() +
-      " (" +
-      offeredObject.getVehicleFeatures().getVehicleType() +
-      ") (Bj. " +
-      offeredObject.getVehicleFeatures().getYear() +
-      ")" +
-      ", Sitzplätze: " +
-      offeredObject.getVehicleFeatures().getSeats() +
-      ", Preis pro Tag: " +
-      price +
-      ", aktiv: " +
-      active
-    );
+    return "OfferDTO{" +
+            "offerID=" + offerID +
+            ", creator=" + creator.getUsername() +
+            ", offeredObjectType=" + offeredObjectType +
+            ", offeredObject=" + offeredObject +
+            ", title='" + title + '\'' +
+            ", location='" + location + '\'' +
+            ", contact='" + contact + '\'' +
+            ", particularities='" + particularities + '\'' +
+            ", bookings=" + bookings +
+            ", price=" + price +
+            ", minAge25=" + minAge25 +
+            ", borderCrossingAllowed=" + borderCrossingAllowed +
+            ", depositInCash=" + depositInCash +
+            ", active=" + active +
+            '}';
   }
 }

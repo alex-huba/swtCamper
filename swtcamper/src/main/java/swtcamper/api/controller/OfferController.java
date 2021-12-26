@@ -9,6 +9,7 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
@@ -41,6 +42,7 @@ public class OfferController implements IOfferController {
   }
 
   public OfferDTO create(
+    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -74,6 +76,7 @@ public class OfferController implements IOfferController {
   ) {
     return modelMapper.offerToOfferDTO(
       offerService.create(
+        creator,
         //Offer-Parameter
         title,
         location,
@@ -110,6 +113,7 @@ public class OfferController implements IOfferController {
 
   public OfferDTO update(
     long offerId,
+    User creator,
     Vehicle offeredObject,
     // Offer-Parameter
     String title,
@@ -147,6 +151,7 @@ public class OfferController implements IOfferController {
     return modelMapper.offerToOfferDTO(
       offerService.update(
         offerId,
+        creator,
         offeredObject,
         //Offer-Parameter
         title,
@@ -190,6 +195,10 @@ public class OfferController implements IOfferController {
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }
+  }
+
+  public List<OfferDTO> getOffersCreatedByUser(User user) throws GenericServiceException {
+    return offers().stream().filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId())).collect(Collectors.toList());
   }
 
   /**

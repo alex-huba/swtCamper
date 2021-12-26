@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
@@ -35,6 +36,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
 
   @Autowired
   private OfferController offerController;
@@ -363,6 +367,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       String[] pictureURLs = null;
 
       OfferDTO offerDTO = offerController.create(
+        userController.getLoggedInUser(),
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
@@ -400,7 +405,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       ArrayList<Long> bookings = null;
 
       offerController.update(
-        offerID,
+        offerID, 
+        userController.getLoggedInUser(),
         offeredObject,
         titleTextField.getText(),
         locationTextField.getText(),

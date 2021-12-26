@@ -3,9 +3,8 @@ package swtcamper.api.contract;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.List;
-import swtcamper.backend.entities.Filter;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
+
+import swtcamper.backend.entities.*;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -14,6 +13,7 @@ public interface IOfferController {
   List<OfferDTO> offers() throws GenericServiceException;
 
   OfferDTO create(
+    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -48,6 +48,7 @@ public interface IOfferController {
 
   OfferDTO update(
     long offerId,
+    User creator,
     Vehicle offeredObject,
     // Offer-Parameter
     String title,

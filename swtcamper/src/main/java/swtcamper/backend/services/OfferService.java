@@ -28,7 +28,7 @@ public class OfferService {
 
   public Offer create(
     // TODO validation
-
+    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -91,6 +91,7 @@ public class OfferService {
     vehicle.setPictureURLs(pictureURLs);
 
     Offer offer = new Offer(
+      creator,
       vehicle,
       title,
       location,
@@ -107,6 +108,7 @@ public class OfferService {
 
   public Offer update(
     long offerId,
+    User creator,
     Vehicle offeredObject,
     // Offer-Parameter
     String title,
@@ -181,6 +183,7 @@ public class OfferService {
     vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
 
+    offer.setCreator(creator);
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
     offer.setTitle(title);

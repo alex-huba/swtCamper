@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -25,6 +26,9 @@ public class MyOffersViewController {
   private OfferController offerController;
 
   @Autowired
+  private UserController userController;
+
+  @Autowired
   private ModifyOfferViewController modifyOfferViewController;
 
   @FXML
@@ -32,7 +36,6 @@ public class MyOffersViewController {
 
   @FXML
   public void initialize() throws GenericServiceException {
-    reloadData();
     offersList.setOnMouseClicked(click -> {
       OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
       //Listener for right click
@@ -102,7 +105,7 @@ public class MyOffersViewController {
 
   public void reloadData() throws GenericServiceException {
     offersList.setItems(
-      FXCollections.observableArrayList(offerController.offers())
+      FXCollections.observableArrayList(offerController.getOffersCreatedByUser(userController.getLoggedInUser()))
     );
   }
 
