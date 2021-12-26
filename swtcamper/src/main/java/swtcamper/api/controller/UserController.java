@@ -13,6 +13,8 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
 
+import java.util.ArrayList;
+
 @Component
 public class UserController implements IUserController {
 
@@ -48,6 +50,10 @@ public class UserController implements IUserController {
 
   public User getLoggedInUser() {
     return userService.getLoggedInUser();
+  }
+
+  public ArrayList<User> getAllUsers() throws GenericServiceException {
+    return new ArrayList<>(userService.user());
   }
 
   @Override

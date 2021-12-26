@@ -12,6 +12,7 @@ import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -22,6 +23,9 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
+
+  @Autowired
+  private UserController userController;
 
   @Autowired
   public MyOffersViewController myOffersViewController;
@@ -37,6 +41,9 @@ public class MainViewController {
 
   @Autowired
   public RegisterViewController registerViewController;
+
+  @Autowired
+  public AccountViewController accountViewController;
 
   @Autowired
   public LoginViewController loginViewController;
@@ -168,6 +175,11 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
+        if(userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)) {
+          accountViewController.operatorInit();
+        } else {
+          accountViewController.normalUserInit();
+        }
         break;
       case "register":
         mainStage.getChildren().add(registerViewBox);

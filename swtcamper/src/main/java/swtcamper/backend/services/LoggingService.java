@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.repositories.LoggingRepository;
 
+import java.util.List;
+
 @Service
 public class LoggingService {
 
@@ -39,5 +41,9 @@ public class LoggingService {
         );
         break;
     }
+  }
+
+  public List<LoggingMessage> getAllLogMessages() {
+    return loggingRepository.findAll();
   }
 }
