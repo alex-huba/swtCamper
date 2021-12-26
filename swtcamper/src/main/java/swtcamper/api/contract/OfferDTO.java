@@ -168,21 +168,41 @@ public class OfferDTO {
 
   @Override
   public String toString() {
-    return "OfferDTO{" +
-            "offerID=" + offerID +
-            ", creator=" + creator.getUsername() +
-            ", offeredObjectType=" + offeredObjectType +
-            ", offeredObject=" + offeredObject +
-            ", title='" + title + '\'' +
-            ", location='" + location + '\'' +
-            ", contact='" + contact + '\'' +
-            ", particularities='" + particularities + '\'' +
-            ", bookings=" + bookings +
-            ", price=" + price +
-            ", minAge25=" + minAge25 +
-            ", borderCrossingAllowed=" + borderCrossingAllowed +
-            ", depositInCash=" + depositInCash +
-            ", active=" + active +
-            '}';
+    return (
+      "OfferDTO{" +
+      "offerID=" +
+      offerID +
+      ", creator=" +
+      creator.getUsername() +
+      ", offeredObjectType=" +
+      offeredObjectType +
+      ", offeredObject=" +
+      offeredObject +
+      ", title='" +
+      title +
+      '\'' +
+      ", location='" +
+      location +
+      '\'' +
+      ", contact='" +
+      contact +
+      '\'' +
+      ", particularities='" +
+      particularities +
+      '\'' +
+      ", bookings=" +
+      bookings +
+      ", price=" +
+      price +
+      ", minAge25=" +
+      minAge25 +
+      ", borderCrossingAllowed=" +
+      borderCrossingAllowed +
+      ", depositInCash=" +
+      depositInCash +
+      ", active=" +
+      active +
+      '}'
+    );
   }
 }

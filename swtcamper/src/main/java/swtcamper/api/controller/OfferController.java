@@ -197,8 +197,12 @@ public class OfferController implements IOfferController {
     }
   }
 
-  public List<OfferDTO> getOffersCreatedByUser(User user) throws GenericServiceException {
-    return offers().stream().filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId())).collect(Collectors.toList());
+  public List<OfferDTO> getOffersCreatedByUser(User user)
+    throws GenericServiceException {
+    return offers()
+      .stream()
+      .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))
+      .collect(Collectors.toList());
   }
 
   /**

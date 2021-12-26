@@ -105,7 +105,9 @@ public class MyOffersViewController {
 
   public void reloadData() throws GenericServiceException {
     offersList.setItems(
-      FXCollections.observableArrayList(offerController.getOffersCreatedByUser(userController.getLoggedInUser()))
+      FXCollections.observableArrayList(
+        offerController.getOffersCreatedByUser(userController.getLoggedInUser())
+      )
     );
   }
 

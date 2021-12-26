@@ -3,7 +3,6 @@ package swtcamper.api.contract;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.List;
-
 import swtcamper.backend.entities.*;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;

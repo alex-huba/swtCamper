@@ -405,7 +405,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       ArrayList<Long> bookings = null;
 
       offerController.update(
-        offerID, 
+        offerID,
         userController.getLoggedInUser(),
         offeredObject,
         titleTextField.getText(),

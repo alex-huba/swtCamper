@@ -11,7 +11,6 @@ public class Offer implements IOffer {
   @GeneratedValue
   private long offerID;
 
-
   @OneToOne
   private User creator;
 
@@ -61,7 +60,7 @@ public class Offer implements IOffer {
   }
 
   public Offer(
-          User creator,
+    User creator,
     Vehicle vehicle,
     ArrayList<Long> bookings,
     String title,
@@ -89,7 +88,7 @@ public class Offer implements IOffer {
     this.active = active;
   }
 
-  public Offer(User creator,Vehicle vehicle) {
+  public Offer(User creator, Vehicle vehicle) {
     this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
@@ -260,21 +259,41 @@ public class Offer implements IOffer {
 
   @Override
   public String toString() {
-    return "Offer{" +
-            "offerID=" + offerID +
-            ", creator=" + creator.getUsername() +
-            ", offeredObjectType=" + offeredObjectType +
-            ", offeredObject=" + offeredObject +
-            ", title='" + title + '\'' +
-            ", location='" + location + '\'' +
-            ", contact='" + contact + '\'' +
-            ", particularities='" + particularities + '\'' +
-            ", bookings=" + bookings +
-            ", price=" + price +
-            ", active=" + active +
-            ", minAge25=" + minAge25 +
-            ", borderCrossingAllowed=" + borderCrossingAllowed +
-            ", depositInCash=" + depositInCash +
-            '}';
+    return (
+      "Offer{" +
+      "offerID=" +
+      offerID +
+      ", creator=" +
+      creator.getUsername() +
+      ", offeredObjectType=" +
+      offeredObjectType +
+      ", offeredObject=" +
+      offeredObject +
+      ", title='" +
+      title +
+      '\'' +
+      ", location='" +
+      location +
+      '\'' +
+      ", contact='" +
+      contact +
+      '\'' +
+      ", particularities='" +
+      particularities +
+      '\'' +
+      ", bookings=" +
+      bookings +
+      ", price=" +
+      price +
+      ", active=" +
+      active +
+      ", minAge25=" +
+      minAge25 +
+      ", borderCrossingAllowed=" +
+      borderCrossingAllowed +
+      ", depositInCash=" +
+      depositInCash +
+      '}'
+    );
   }
 }
