@@ -16,145 +16,169 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class AccountViewController {
 
-    @Autowired
-    private UserController userController;
+  @Autowired
+  private UserController userController;
 
-    @Autowired
-    private LoggingController loggingController;
+  @Autowired
+  private LoggingController loggingController;
 
-    @Autowired
-    private MainViewController mainViewController;
+  @Autowired
+  private MainViewController mainViewController;
 
-    @FXML
-    public BorderPane accountRootPane;
-    @FXML
-    public ToolBar buttonToolbar;
+  @FXML
+  public BorderPane accountRootPane;
 
-    @FXML
-    public Button showLogBtn;
-    @FXML
-    public Button enableBtn;
-    @FXML
-    public Button blockBtn;
-    @FXML
-    public Button degradeBtn;
-    @FXML
-    public Button promoteBtn;
-    @FXML
-    public Button logoutBtn;
+  @FXML
+  public ToolBar buttonToolbar;
 
-    @FXML
-    public SplitPane operatorDashboard;
+  @FXML
+  public Button showLogBtn;
 
-    @FXML
-    public ListView<LoggingMessage> logListView;
+  @FXML
+  public Button enableBtn;
 
-    @FXML
-    public ListView<User> usersListView;
+  @FXML
+  public Button blockBtn;
 
-    private User selectedUser = null;
+  @FXML
+  public Button degradeBtn;
 
-    @FXML
-    public void initialize() {
-        showLogBtn.disableProperty().bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
-        enableBtn.setDisable(true);
-        blockBtn.setDisable(true);
-        degradeBtn.setDisable(true);
-        promoteBtn.setDisable(true);
+  @FXML
+  public Button promoteBtn;
 
-        usersListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                enableBtn.setDisable(true);
-                blockBtn.setDisable(true);
-                degradeBtn.setDisable(true);
-                promoteBtn.setDisable(true);
-            } else {
-                selectedUser = newValue;
+  @FXML
+  public Button logoutBtn;
 
-                if (!newValue.getId().equals(userController.getLoggedInUser().getId())) {
-                    enableBtn.setDisable(false);
-                    enableBtn.setText(newValue.isEnabled() ? "Ignorieren" : "Akzeptieren");
-                    blockBtn.setDisable(false);
-                    blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
+  @FXML
+  public SplitPane operatorDashboard;
 
-                    switch (newValue.getUserRole()) {
-                        case RENTER:
-                            degradeBtn.setDisable(true);
-                            promoteBtn.setDisable(false);
-                            break;
-                        case PROVIDER:
-                            degradeBtn.setDisable(false);
-                            promoteBtn.setDisable(false);
-                            break;
-                        case OPERATOR:
-                            degradeBtn.setDisable(false);
-                            promoteBtn.setDisable(true);
-                            break;
-                    }
-                } else {
-                    enableBtn.setDisable(true);
-                    blockBtn.setDisable(true);
-                    degradeBtn.setDisable(true);
-                    promoteBtn.setDisable(true);
-                }
-            }
-        });
-    }
+  @FXML
+  public ListView<LoggingMessage> logListView;
 
-    public void operatorInit() throws GenericServiceException {
-        if (!accountRootPane.getChildren().contains(operatorDashboard)) {
-            buttonToolbar.getItems().removeIf(node -> true);
+  @FXML
+  public ListView<User> usersListView;
 
-            Separator verticalSeperator = new Separator();
-            verticalSeperator.setOrientation(Orientation.VERTICAL);
+  private User selectedUser = null;
 
-            buttonToolbar.getItems().addAll(showLogBtn,
-                    enableBtn,
-                    blockBtn,
-                    degradeBtn,
-                    promoteBtn,
-                    verticalSeperator,
-                    logoutBtn);
-            accountRootPane.getChildren().add(operatorDashboard);
-        }
+  @FXML
+  public void initialize() {
+    showLogBtn
+      .disableProperty()
+      .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
+    enableBtn.setDisable(true);
+    blockBtn.setDisable(true);
+    degradeBtn.setDisable(true);
+    promoteBtn.setDisable(true);
 
-        logListView.setItems(FXCollections.observableArrayList(loggingController.getAllLogMessages()));
-        usersListView.setItems(FXCollections.observableArrayList(userController.getAllUsers()));
-    }
-
-
-    public void normalUserInit() {
-        if (accountRootPane.getChildren().contains(operatorDashboard)) {
-            buttonToolbar.getItems().removeIf(node -> true);
-            buttonToolbar.getItems().add(logoutBtn);
-            accountRootPane.getChildren().remove(operatorDashboard);
-        }
-    }
-
-    public void logout() throws GenericServiceException {
-        mainViewController.logout();
-    }
-
-    public void showLogForUser() {
-        if (showLogBtn.getText().equals("Zeige alle Logs")) {
-            usersListView.getSelectionModel().select(null);
-            logListView.setItems(FXCollections.observableArrayList(loggingController.getAllLogMessages()));
-            showLogBtn.setText("Zeige Logs zu diesem Nutzer");
+    usersListView
+      .getSelectionModel()
+      .selectedItemProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue == null) {
+          enableBtn.setDisable(true);
+          blockBtn.setDisable(true);
+          degradeBtn.setDisable(true);
+          promoteBtn.setDisable(true);
         } else {
-            logListView.setItems(FXCollections.observableArrayList(loggingController.getLogForUser(selectedUser)));
-            showLogBtn.setText("Zeige alle Logs");
+          selectedUser = newValue;
+
+          if (
+            !newValue.getId().equals(userController.getLoggedInUser().getId())
+          ) {
+            enableBtn.setDisable(false);
+            enableBtn.setText(
+              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
+            );
+            blockBtn.setDisable(false);
+            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
+
+            switch (newValue.getUserRole()) {
+              case RENTER:
+                degradeBtn.setDisable(true);
+                promoteBtn.setDisable(false);
+                break;
+              case PROVIDER:
+                degradeBtn.setDisable(false);
+                promoteBtn.setDisable(false);
+                break;
+              case OPERATOR:
+                degradeBtn.setDisable(false);
+                promoteBtn.setDisable(true);
+                break;
+            }
+          } else {
+            enableBtn.setDisable(true);
+            blockBtn.setDisable(true);
+            degradeBtn.setDisable(true);
+            promoteBtn.setDisable(true);
+          }
         }
+      });
+  }
+
+  public void operatorInit() throws GenericServiceException {
+    if (!accountRootPane.getChildren().contains(operatorDashboard)) {
+      buttonToolbar.getItems().removeIf(node -> true);
+
+      Separator verticalSeperator = new Separator();
+      verticalSeperator.setOrientation(Orientation.VERTICAL);
+
+      buttonToolbar
+        .getItems()
+        .addAll(
+          showLogBtn,
+          enableBtn,
+          blockBtn,
+          degradeBtn,
+          promoteBtn,
+          verticalSeperator,
+          logoutBtn
+        );
+      accountRootPane.getChildren().add(operatorDashboard);
     }
 
-    public void enableUser() {
-    }
+    logListView.setItems(
+      FXCollections.observableArrayList(loggingController.getAllLogMessages())
+    );
+    usersListView.setItems(
+      FXCollections.observableArrayList(userController.getAllUsers())
+    );
+  }
 
-    public void blockUser() {
+  public void normalUserInit() {
+    if (accountRootPane.getChildren().contains(operatorDashboard)) {
+      buttonToolbar.getItems().removeIf(node -> true);
+      buttonToolbar.getItems().add(logoutBtn);
+      accountRootPane.getChildren().remove(operatorDashboard);
     }
+  }
 
-    public void degradeUser() {
-    }
+  public void logout() throws GenericServiceException {
+    mainViewController.logout();
+  }
 
-    public void promoteUser() {
+  public void showLogForUser() {
+    if (showLogBtn.getText().equals("Zeige alle Logs")) {
+      usersListView.getSelectionModel().select(null);
+      logListView.setItems(
+        FXCollections.observableArrayList(loggingController.getAllLogMessages())
+      );
+      showLogBtn.setText("Zeige Logs zu diesem Nutzer");
+    } else {
+      logListView.setItems(
+        FXCollections.observableArrayList(
+          loggingController.getLogForUser(selectedUser)
+        )
+      );
+      showLogBtn.setText("Zeige alle Logs");
     }
+  }
+
+  public void enableUser() {}
+
+  public void blockUser() {}
+
+  public void degradeUser() {}
+
+  public void promoteUser() {}
 }

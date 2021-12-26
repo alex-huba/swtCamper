@@ -25,7 +25,8 @@ public class LoggingMessage implements ILoggingMessage {
 
   /**
    * LoggingMessage needed to send information to LoggingService
-   * @param logLvl LoggingLevel to specify the severity of the message
+   *
+   * @param logLvl  LoggingLevel to specify the severity of the message
    * @param message Message that shall be logged
    */
   public LoggingMessage(LoggingLevel logLvl, String message) {
@@ -54,17 +55,7 @@ public class LoggingMessage implements ILoggingMessage {
   @Override
   public String toString() {
     return (
-      "LoggingMessage{" +
-      "loggingMessageID=" +
-      loggingMessageID +
-      ", logLevel=" +
-      logLevel +
-      ", loggingMessage='" +
-      loggingMessage +
-      '\'' +
-      ", time=" +
-      time +
-      '}'
+      "[" + logLevel + "] " + loggingMessage + " (ID: " + loggingMessageID + ")"
     );
   }
 }

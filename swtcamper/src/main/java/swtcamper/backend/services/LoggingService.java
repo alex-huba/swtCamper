@@ -1,13 +1,12 @@
 package swtcamper.backend.services;
 
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.repositories.LoggingRepository;
-
-import java.util.List;
 
 @Service
 public class LoggingService {

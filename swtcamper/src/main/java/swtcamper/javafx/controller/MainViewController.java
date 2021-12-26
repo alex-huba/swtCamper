@@ -175,7 +175,12 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
-        if(userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)) {
+        if (
+          userController
+            .getLoggedInUser()
+            .getUserRole()
+            .equals(UserRole.OPERATOR)
+        ) {
           accountViewController.operatorInit();
         } else {
           accountViewController.normalUserInit();
