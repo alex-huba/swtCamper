@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,8 +43,10 @@ public class MyOffersViewController {
 
   @FXML
   public Button viewOfferButton;
+
   @FXML
   public Button updateOfferButton;
+
   @FXML
   public Button removeButton;
 
@@ -54,14 +55,54 @@ public class MyOffersViewController {
 
   @FXML
   public VBox foreignOffersVBox;
+
   @FXML
   public ListView<OfferDTO> foreignOffersList;
 
   @FXML
   public void initialize() {
-    viewOfferButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
-    updateOfferButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
-    removeButton.disableProperty().bind(offersList.getSelectionModel().selectedItemProperty().isNull().and(foreignOffersList.getSelectionModel().selectedItemProperty().isNull()));
+    viewOfferButton
+      .disableProperty()
+      .bind(
+        offersList
+          .getSelectionModel()
+          .selectedItemProperty()
+          .isNull()
+          .and(
+            foreignOffersList
+              .getSelectionModel()
+              .selectedItemProperty()
+              .isNull()
+          )
+      );
+    updateOfferButton
+      .disableProperty()
+      .bind(
+        offersList
+          .getSelectionModel()
+          .selectedItemProperty()
+          .isNull()
+          .and(
+            foreignOffersList
+              .getSelectionModel()
+              .selectedItemProperty()
+              .isNull()
+          )
+      );
+    removeButton
+      .disableProperty()
+      .bind(
+        offersList
+          .getSelectionModel()
+          .selectedItemProperty()
+          .isNull()
+          .and(
+            foreignOffersList
+              .getSelectionModel()
+              .selectedItemProperty()
+              .isNull()
+          )
+      );
 
     offersList.setOnMouseClicked(click -> {
       foreignOffersList.getSelectionModel().select(null);
@@ -128,19 +169,36 @@ public class MyOffersViewController {
   }
 
   public void reloadData() throws GenericServiceException {
-    offersList.setItems(FXCollections.observableArrayList(offerController.getOffersCreatedByUser(userController.getLoggedInUser())));
+    offersList.setItems(
+      FXCollections.observableArrayList(
+        offerController.getOffersCreatedByUser(userController.getLoggedInUser())
+      )
+    );
 
-    if(userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)) {
-      if(!myOffersRootPane.getChildren().contains(foreignOffersVBox)) myOffersRootPane.getChildren().add(foreignOffersVBox);
+    if (
+      userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)
+    ) {
+      if (
+        !myOffersRootPane.getChildren().contains(foreignOffersVBox)
+      ) myOffersRootPane.getChildren().add(foreignOffersVBox);
 
-      foreignOffersList.setItems(FXCollections.observableArrayList(offerController.getForeignOffers(userController.getLoggedInUser())));
+      foreignOffersList.setItems(
+        FXCollections.observableArrayList(
+          offerController.getForeignOffers(userController.getLoggedInUser())
+        )
+      );
     } else {
-      if(myOffersRootPane.getChildren().contains(foreignOffersVBox)) myOffersRootPane.getChildren().remove(foreignOffersVBox);
+      if (
+        myOffersRootPane.getChildren().contains(foreignOffersVBox)
+      ) myOffersRootPane.getChildren().remove(foreignOffersVBox);
     }
   }
 
   private void showInfoAlert() {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, selectedOffer.toString());
+    Alert alert = new Alert(
+      Alert.AlertType.INFORMATION,
+      selectedOffer.toString()
+    );
     alert.showAndWait();
   }
 }

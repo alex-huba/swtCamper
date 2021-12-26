@@ -206,11 +206,11 @@ public class OfferController implements IOfferController {
   }
 
   public List<OfferDTO> getForeignOffers(User user)
-          throws GenericServiceException {
+    throws GenericServiceException {
     return offers()
-            .stream()
-            .filter(offerDTO -> !offerDTO.getCreator().getId().equals(user.getId()))
-            .collect(Collectors.toList());
+      .stream()
+      .filter(offerDTO -> !offerDTO.getCreator().getId().equals(user.getId()))
+      .collect(Collectors.toList());
   }
 
   /**
