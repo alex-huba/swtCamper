@@ -55,7 +55,14 @@ public class LoggingMessage implements ILoggingMessage {
   @Override
   public String toString() {
     return (
-      "[" + logLevel + "] " + loggingMessage + " (ID: " + loggingMessageID + ")"
+      "[" +
+      logLevel +
+      "] " +
+      (logLevel.equals(LoggingLevel.INFO) ? "\t\t" : "\t") +
+      loggingMessage +
+      " (ID: " +
+      loggingMessageID +
+      ")"
     );
   }
 }
