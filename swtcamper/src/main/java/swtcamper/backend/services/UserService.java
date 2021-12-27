@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
@@ -20,7 +21,7 @@ public class UserService {
   private UserRepository userRepository;
 
   @Autowired
-  private LoggingService loggingService;
+  private LoggingController loggingController;
 
   private User loggedInUser;
 
@@ -69,7 +70,7 @@ public class UserService {
 
     // no is-present check because userRepository.save(user) will have definitely created this user
     long newId = userRepository.findByUsername(username).get().getId();
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -84,7 +85,7 @@ public class UserService {
   }
 
   public void delete(User user) {
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format("User with ID %s deleted.", user.getId())
@@ -94,7 +95,7 @@ public class UserService {
   }
 
   public void update(User user) {
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format("User with ID %s updated.", user.getId())
@@ -138,7 +139,7 @@ public class UserService {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format("User %s logged in.", username)
@@ -148,7 +149,7 @@ public class UserService {
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.WARNING,
           String.format("Wrong password entered for user %s.", username)
@@ -156,7 +157,7 @@ public class UserService {
       );
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.WARNING,
         String.format(
@@ -198,7 +199,7 @@ public class UserService {
       User userToLock = userOptional.get();
       userToLock.setLocked(true);
 
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -222,7 +223,7 @@ public class UserService {
       User userToUnlock = userOptional.get();
       userToUnlock.setLocked(false);
 
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -246,7 +247,7 @@ public class UserService {
       User userToEnable = userOptional.get();
       userToEnable.setEnabled(true);
 
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -290,7 +291,7 @@ public class UserService {
       user.setPassword(password);
       userRepository.save(user);
 
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format("User %s's password got reset.", username)

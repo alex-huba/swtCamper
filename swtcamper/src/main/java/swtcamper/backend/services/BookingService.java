@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
@@ -23,7 +24,7 @@ public class BookingService {
   private BookingRepository bookingRepository;
 
   @Autowired
-  private LoggingService loggingService;
+  private LoggingController loggingController;
 
   public Booking create(
     User user,
@@ -34,7 +35,7 @@ public class BookingService {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -63,7 +64,7 @@ public class BookingService {
       booking.setEndDate(endDate);
       booking.setActive(active);
 
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -89,7 +90,7 @@ public class BookingService {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
       // Update by setting active = false
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -117,7 +118,7 @@ public class BookingService {
     throws GenericServiceException {
     try {
       bookingRepository.deleteById(bookingID);
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -25,7 +26,7 @@ public class OfferService {
   private OfferRepository offerRepository;
 
   @Autowired
-  private LoggingService loggingService;
+  private LoggingController loggingController;
 
   public Offer create(
     // TODO validation
@@ -104,7 +105,7 @@ public class OfferService {
       depositInCash
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -116,7 +117,7 @@ public class OfferService {
     );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -206,7 +207,7 @@ public class OfferService {
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -228,7 +229,7 @@ public class OfferService {
     offer.setMinAge25(minAge25);
     offer.setBorderCrossingAllowed(borderCrossingAllowed);
     offer.setDepositInCash(depositInCash);
-    loggingService.log(
+    loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
@@ -290,7 +291,7 @@ public class OfferService {
   public void delete(long id, UserDTO user) throws GenericServiceException {
     try {
       offerRepository.deleteById(id);
-      loggingService.log(
+      loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(

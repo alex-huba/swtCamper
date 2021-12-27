@@ -20,13 +20,12 @@ public class LoggingController implements ILoggingController {
   @Autowired
   private ModelMapper modelMapper;
 
-  @Override
-  public List<LoggingMessage> getAllLogMessages() {
-    return loggingService.getAllLogMessages();
-  }
-
   public void log(LoggingMessage loggingMessage) {
     loggingService.log(loggingMessage);
+  }
+
+  public List<LoggingMessage> getAllLogMessages() {
+    return loggingService.getAllLogMessages();
   }
 
   public List<LoggingMessage> getLogForUser(User selectedUser) {
