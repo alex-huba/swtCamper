@@ -30,11 +30,7 @@
                 <!--                            TODO after Merging: include-->
                 <!--                            <fx:include source="approveDealView.fxml" />-->
             </Pane>
-            <Pane fx:id="myBookingsViewBox">
-                <Label style="-fx-text-fill: #FFF" text="My Bookings" />
-                <!--                            TODO after Merging: include-->
-                <!--                            <fx:include source="myBookingsView.fxml" />-->
-            </Pane>
+            <fx:include fx:id="myBookingsViewBox" source="myBookingsView.fxml" />
             <fx:include fx:id="loginViewBox" source="loginView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Pane fx:id="accountViewBox">
                 <Button onAction="#logout" text="Logout" />

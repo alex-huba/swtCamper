@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.backend.entities.Booking;
@@ -22,6 +24,10 @@ public class BookingService {
 
   @Autowired
   private BookingRepository bookingRepository;
+
+  public List<Booking> getAllBookings() {
+    return bookingRepository.findAll();
+  }
 
   public Booking create(
     User user,
