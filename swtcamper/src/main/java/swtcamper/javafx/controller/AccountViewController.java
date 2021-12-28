@@ -134,6 +134,7 @@ public class AccountViewController {
           verticalSeperator,
           logoutBtn
         );
+      // TODO: passiert nicht wenn sich als erstes ein Nicht-Operator einloggt
       accountRootPane.getChildren().add(operatorDashboard);
     }
 
@@ -174,11 +175,19 @@ public class AccountViewController {
     }
   }
 
-  public void enableUser() {}
+  public void enableUser() {
+    // TODO
+  }
 
-  public void blockUser() {}
+  public void blockUser() {
+    // TODO
+  }
 
-  public void degradeUser() {}
+  public void degradeUser() {
+    // TODO
+  }
 
-  public void promoteUser() {}
+  public void promoteUser() {
+    // TODO
+  }
 }
