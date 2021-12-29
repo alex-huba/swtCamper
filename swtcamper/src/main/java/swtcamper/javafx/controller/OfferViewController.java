@@ -262,10 +262,11 @@ public class OfferViewController {
     endDate.setVisible(false);
     this.isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
-      if (userController.getLoggedInUser()!=null) {
-      bookingButton.setVisible(true);
-      startDate.setVisible(true);
-      endDate.setVisible(true); }
+      if (userController.getLoggedInUser() != null) {
+        bookingButton.setVisible(true);
+        startDate.setVisible(true);
+        endDate.setVisible(true);
+      }
     } else {
       modifyButton.setVisible(true);
       startDate.setVisible(false);
