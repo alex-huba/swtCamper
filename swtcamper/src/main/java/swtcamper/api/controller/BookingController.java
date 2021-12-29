@@ -3,7 +3,6 @@ package swtcamper.api.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -25,16 +24,21 @@ public class BookingController implements IBookingController {
 
   @Autowired
   private ModelMapper modelMapper;
-  
+
   @Autowired
   private OfferViewController offerViewController;
-  
+
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
   }
 
   public List<Booking> getBookingsForUser(User user) {
-    return getAllBookings().stream().filter(booking -> booking.getOffer().getCreator().getId().equals(user.getId())).collect(Collectors.toList());
+    return getAllBookings()
+      .stream()
+      .filter(booking ->
+        booking.getOffer().getCreator().getId().equals(user.getId())
+      )
+      .collect(Collectors.toList());
   }
 
   @Override

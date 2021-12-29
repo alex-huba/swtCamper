@@ -1,8 +1,8 @@
 package swtcamper.javafx.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
