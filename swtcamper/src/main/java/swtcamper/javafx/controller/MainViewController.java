@@ -12,6 +12,7 @@ import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -22,6 +23,9 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
+
+  @Autowired
+  public UserController userController;
 
   @Autowired
   public MyOffersViewController myOffersViewController;
@@ -44,6 +48,9 @@ public class MainViewController {
   @Autowired
   public ResetPasswordViewController resetPasswordViewController;
 
+  @Autowired
+  public OfferViewController offerViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -52,6 +59,9 @@ public class MainViewController {
 
   @FXML
   public Node placeOfferViewBox;
+
+  @FXML
+  public Pane offerViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -79,6 +89,9 @@ public class MainViewController {
 
   @FXML
   public Pane forgotPasswordViewBox;
+
+  @FXML
+  public Pane moreAboutOfferViewBox;
 
   @FXML
   private void initialize() throws GenericServiceException {
@@ -125,6 +138,9 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
         );
+        break;
+      case "viewOffer":
+        mainStage.getChildren().add(offerViewBox);
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
@@ -184,6 +200,9 @@ public class MainViewController {
         );
         resetPasswordViewController.resetInputFields();
         break;
+      case "moreInfoOffer":
+        mainStage.getChildren().add(moreAboutOfferViewBox);
+        break;
     }
   }
 
@@ -216,6 +235,7 @@ public class MainViewController {
   }
 
   public void logout() throws GenericServiceException {
+    userController.logout();
     navigationViewController.logout();
   }
 }

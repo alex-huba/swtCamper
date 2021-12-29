@@ -4,6 +4,6 @@ CheckBox {
     -fx-text-fill: #FFFFFF;
 }
 
-.resetBtn {
-    -fx-font-size: 10;
+.resetBtn_small {
+    -fx-font-size: 8 !important;
 }

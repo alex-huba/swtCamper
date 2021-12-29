@@ -160,6 +160,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     passwordPf.clear();
   }
 
+  @FXML
   public void handleEnterKey(KeyEvent event) throws GenericServiceException {
     if (event.getCode() == KeyCode.ENTER) handleLogin();
   }
