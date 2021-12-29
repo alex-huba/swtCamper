@@ -40,6 +40,9 @@ public class MainViewController {
   public RentingViewController rentingViewController;
 
   @Autowired
+  public MyBookingsViewController myBookingsViewController;
+
+  @Autowired
   public RegisterViewController registerViewController;
 
   @Autowired
@@ -172,6 +175,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.myBookingsButton
         );
+        myBookingsViewController.reloadData();
         break;
       case "login":
         mainStage.getChildren().add(loginViewBox);

@@ -10,9 +10,13 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Booking;
+import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class MyBookingsViewController {
@@ -28,20 +32,23 @@ public class MyBookingsViewController {
 
     @FXML
     public void initialize() {
-        reloadData();
     }
 
     public void reloadData() {
-        bookingsListVBox.getChildren().removeIf(node -> true);
+        bookingsListVBox.getChildren().clear();
         List<Booking> bookingList = bookingController.getBookingsForUser(userController.getLoggedInUser());
 
         if(bookingList.size() > 0) {
             for (Booking booking : bookingList) {
-                Label bookingLabel = new Label(String.format("%s will dein %s %s %s von %s bis %s mieten.", booking.getRenter(), booking.getOffer().getOfferedObjectType(), booking.getOffer().getOfferedObject().getVehicleFeatures().getMake(), booking.getOffer().getOfferedObject().getVehicleFeatures().getModel(), booking.getStartDate(), booking.getEndDate()));
+                String vehicleType = booking.getOffer().getOfferedObject().getVehicleFeatures().getVehicleType().toString();
+                String vehicle = vehicleType.charAt(0) + vehicleType.substring(1).toLowerCase();
+
+                Label bookingLabel = new Label(String.format("%s will deinen %s %s %s von %s bis %s mieten.", booking.getRenter().getUsername(), vehicle, booking.getOffer().getOfferedObject().getVehicleFeatures().getMake(), booking.getOffer().getOfferedObject().getVehicleFeatures().getModel(), booking.getStartDate().format(DateTimeFormatter.ofPattern("dd.MM.YYYY")), booking.getEndDate().format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))));
 
                 Button acceptButton = new Button("Annehmen");
                 acceptButton.setOnAction(event -> {
                     try {
+                        // TODO: was soll passieren?
                         bookingController.update(booking.getId(),booking.getStartDate(),booking.getEndDate(),true);
                     } catch (GenericServiceException ignore) {
                     }
@@ -51,6 +58,7 @@ public class MyBookingsViewController {
                 rejectButton.setOnAction(event -> {
                     try {
                         bookingController.delete(booking.getId());
+                        reloadData();
                     } catch (GenericServiceException ignore) {
                     }
                 });
