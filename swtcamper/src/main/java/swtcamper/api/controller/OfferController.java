@@ -42,6 +42,14 @@ public class OfferController implements IOfferController {
     return modelMapper.offersToOfferDTOs(offerService.offers());
   }
 
+  public Offer getOfferById(long id) throws GenericServiceException {
+    Optional<Offer> offerResult = offerRepository.findById(id);
+    if (offerResult.isPresent()) {
+      return offerResult.get();
+    }
+    throw new GenericServiceException(String.format("Offer with ID %s could not be found.", id));
+  }
+
   public OfferDTO create(
     // Offer-Parameter
     String title,
@@ -274,15 +282,9 @@ public class OfferController implements IOfferController {
               filter.getBedAmount()
               : true
           ) &&
-          (filter.isExcludeInactive() ? offerDTO.isActive() : true) &&
           evalCheckBoxes(offerDTO, filter)
         )
         .collect(Collectors.toList());
-  }
-
-  public Offer offerDTOToOffer(OfferDTO offer) {
-    Optional<Offer> offerResponse = offerRepository.findById(offer.getID());
-    return offerResponse.get();
   }
 
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {

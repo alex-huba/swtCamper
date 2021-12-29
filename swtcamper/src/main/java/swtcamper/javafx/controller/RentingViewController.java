@@ -68,9 +68,6 @@ public class RentingViewController {
   public TextField bedAmountTextField;
 
   @FXML
-  public CheckBox excludeInactiveCheckBox;
-
-  @FXML
   public CheckBox roofTentCheckBox;
 
   @FXML
@@ -119,7 +116,6 @@ public class RentingViewController {
   private void initialize() throws GenericServiceException {
     reloadData();
 
-    excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
@@ -258,8 +254,7 @@ public class RentingViewController {
         try {
           mainViewController.changeView("viewOffer");
           offerViewController.initialize(offer, true);
-        } catch (GenericServiceException e) {
-          e.printStackTrace();
+        } catch (GenericServiceException ignore) {
         }
       });
 
@@ -315,7 +310,6 @@ public class RentingViewController {
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
       Integer.parseInt(bedAmountTextField.getText())
     );
-    newFilter.setExcludeInactive(excludeInactiveCheckBox.isSelected());
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
@@ -341,7 +335,6 @@ public class RentingViewController {
     transmissionComboBox.setValue(null);
     seatAmountTextField.clear();
     bedAmountTextField.clear();
-    excludeInactiveCheckBox.setSelected(true);
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);

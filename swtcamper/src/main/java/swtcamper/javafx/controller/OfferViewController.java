@@ -27,6 +27,7 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
@@ -50,22 +51,10 @@ public class OfferViewController {
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingService bookingService;
-
-  @Autowired
   private BookingController bookingController;
 
   @Autowired
   private OfferController offerController;
-
-  @Autowired
-  private VehicleRepository vehicleRepository;
-
-  @Autowired
-  private OfferRepository offerRepository;
-
-  @Autowired
-  private UserRepository userRepository;
 
   @Autowired
   private ValidationHelper validationHelper;
@@ -76,16 +65,12 @@ public class OfferViewController {
   @Autowired
   private UserController userController;
 
-  private long offerID;
-
-  private Vehicle offeredObject;
-
   LongStringConverter longStringConverter = new LongStringConverter();
 
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @FXML
-  public Label typeLabel;
+  public Label vehicleTypeLabel;
 
   @FXML
   public Label brandLabel;
@@ -183,8 +168,7 @@ public class OfferViewController {
 
   public void initialize(OfferDTO offer, boolean rentingMode) {
     checkMode(rentingMode);
-    this.offerID = offer.getID();
-    this.offeredObject = offer.getOfferedObject();
+    Vehicle offeredObject = offer.getOfferedObject();
     this.viewedOffer = offer;
 
     titleLabel.setText(offer.getTitle());
@@ -198,7 +182,7 @@ public class OfferViewController {
     );
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
-    //typeLabel.setText(offeredObject.getVehicleFeatures().getType().toString());
+    vehicleTypeLabel.setText(String.valueOf(offeredObject.getVehicleFeatures().getVehicleType()));
     brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
     modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
     transmissionLabel.setText(
@@ -251,7 +235,7 @@ public class OfferViewController {
     );
   }
 
-  public double labelOpacity(boolean checkBox) {
+  private double labelOpacity(boolean checkBox) {
     if (checkBox) {
       return 1;
     } else {
@@ -259,7 +243,7 @@ public class OfferViewController {
     }
   }
 
-  public void checkMode(boolean rentingMode) {
+  private void checkMode(boolean rentingMode) {
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     dateLabel.setVisible(false);
@@ -315,7 +299,7 @@ public class OfferViewController {
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-          Offer offer = offerController.offerDTOToOffer(viewedOffer);
+          Offer offer = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
           BookingDTO bookingDTO = bookingController.create(
             user,

@@ -67,16 +67,16 @@
                                         <Label fx:id="titleLabel" prefHeight="45" styleClass="heading" text="Titel"/>
                                     </children>
                                 </HBox>
-                                <HBox spacing="70.0">
+                                <HBox spacing="20.0">
                                     <children>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="140.0" styleClass="descriptionLabel"
+                                                <Label prefWidth="175.0" styleClass="descriptionLabel"
                                                        text="Kontaktdaten*: "/>
                                                 <Label fx:id="contactLabel" prefWidth="200.0" text="Keine Angabe"/>
                                             </children>
                                         </HBox>
-                                        <HBox alignment="CENTER_LEFT">
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0">
                                             <children>
                                                 <Label styleClass="descriptionLabel" text="Preis pro Tag*:"/>
                                                 <Label fx:id="priceLabel" text="Keine Angabe"/>
@@ -87,19 +87,19 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Abholort*:"/>
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel" text="Abholort*:"/>
                                         <Label fx:id="locationLabel" text="Keine Angabe"/>
                                     </children>
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Besonderheiten:"/>
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel" text="Besonderheiten:"/>
                                         <Label fx:id="particularitiesLabel" text="Keine Angabe"/>
                                     </children>
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel"
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel"
                                                text="Mietvorraussetzungen:"/>
                                         <VBox spacing="3.0">
                                             <children>
@@ -123,7 +123,7 @@
                                 <Label prefHeight="45" styleClass="heading" text="Angaben zum Fahrzeug"/>
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Fahrzeugtyp*: "/>
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel" text="Fahrzeugtyp*: "/>
                                         <Label fx:id="vehicleTypeLabel" prefWidth="150.0" text="Keine Angabe"/>
                                     </children>
                                 </HBox>
@@ -131,7 +131,7 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="140.0" styleClass="descriptionLabel"
+                                                <Label prefWidth="175.0" styleClass="descriptionLabel"
                                                        text="Hersteller*: "/>
                                                 <Label fx:id="brandLabel" text="Keine Angabe"/>
                                             </children>
@@ -146,7 +146,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Schaltung*:"/>
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel" text="Schaltung*:"/>
                                         <Label fx:id="transmissionLabel" prefHeight="25.0" prefWidth="149.0"
                                                text="Keine Angabe"/>
                                     </children>
@@ -155,7 +155,7 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="140.0" styleClass="descriptionLabel"
+                                                <Label prefWidth="175.0" styleClass="descriptionLabel"
                                                        text="Plätze*: "/>
                                                 <Label fx:id="seatsLabel" text="Keine Angabe"/>
                                             </children>
@@ -172,7 +172,7 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="140.0" styleClass="descriptionLabel" text="Baujahr:"/>
+                                                <Label prefWidth="175.0" styleClass="descriptionLabel" text="Baujahr:"/>
                                                 <Label fx:id="constructionLabel" text="Keine Angabe"/>
                                             </children>
                                         </HBox>
@@ -187,7 +187,7 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="140.0" text="Größe:"/>
+                                        <Label prefWidth="175.0" text="Größe:"/>
                                         <HBox spacing="10.0">
                                             <children>
                                                 <VBox>
@@ -217,7 +217,7 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Features:"/>
+                                        <Label prefWidth="175.0" styleClass="descriptionLabel" text="Features:"/>
                                         <HBox spacing="20.0">
                                             <children>
                                                 <VBox spacing="3.0">
