@@ -14,6 +14,8 @@ import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.UserDoesNotExistException;
+import swtcamper.javafx.controller.OfferViewController;
 
 @Component
 public class BookingController implements IBookingController {
@@ -23,7 +25,10 @@ public class BookingController implements IBookingController {
 
   @Autowired
   private ModelMapper modelMapper;
-
+  
+  @Autowired
+  private OfferViewController offerViewController;
+  
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
   }

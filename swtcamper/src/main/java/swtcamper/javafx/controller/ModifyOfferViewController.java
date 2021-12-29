@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
@@ -42,6 +43,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private OfferController offerController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
   LongStringConverter longStringConverter = new LongStringConverter();
@@ -157,6 +161,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private VehicleRepository vehicleRepository;
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
+
+  private final Background errorBackground = new Background(
+    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
+  );
+  private final Background neutralBackground = new Background(
+    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
+  );
+  private final Background successBackground = new Background(
+    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
+  );
 
   /**
    * Initialization method for placing a new offer.
@@ -516,8 +530,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTitle(String inputTitle) {
-    if (inputTitle.isEmpty() || inputTitle.length() < 5) {
-      errorLabel.setText("Ungültiger Titel");
+    //if (inputTitle.isEmpty() || inputTitle.length() < 5) {
+    if (!validationHelper.checkOfferTitle(inputTitle)) {
+      errorLabel.setText("Invalid title");
       validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
@@ -528,11 +543,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validatePrice(String inputPrice) {
-    if (
+    /*if (
       inputPrice.isEmpty() ||
       !inputPrice.matches("[0-9]*") ||
       Integer.parseInt(inputPrice) <= 0
-    ) {
+    ) */
+    if (!validationHelper.checkOfferPrice(inputPrice)) {
       errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
       isPriceOk.set(false);
