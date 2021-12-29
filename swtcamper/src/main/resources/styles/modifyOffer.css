@@ -2,6 +2,7 @@
 
 Label, CheckBox {
     -fx-text-fill: -fx-dark;
+    -fx-font-size: 15;
 }
 
 .heading {
@@ -11,4 +12,8 @@ Label, CheckBox {
 
 .descriptionLabel {
     -fx-font-weight: bold;
+}
+
+.handleBtn {
+    -fx-font-size: 15;
 }

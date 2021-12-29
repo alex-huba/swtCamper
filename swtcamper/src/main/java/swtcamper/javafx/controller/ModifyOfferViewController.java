@@ -175,11 +175,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public void initialize() {
     isEditMode.addListener((observable, oldValue, newValue) ->
       placeOfferButton.setText(
-        String.format("%s Offer", newValue ? "Update " : "Place")
+        String.format("Anzeige %s", newValue ? "bearbeiten " : "erstellen")
       )
     );
     isEditMode.set(false);
-    offerDetailsMainView.getChildren().remove(activeCheckBox);
+    activeCheckBox.visibleProperty().bind(isEditMode);
 
     resetFields();
 
@@ -230,7 +230,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
-    offerDetailsMainView.getChildren().add(activeCheckBox);
 
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
@@ -243,7 +242,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setText(String.valueOf(offer.getPrice()));
     locationTextField.setText(offer.getLocation());
     contactTextField.setText(offer.getContact());
-    particularitiesTextArea.setText(offer.getDescription());
+    particularitiesTextArea.setText(offer.getParticularities());
     activeCheckBox.setSelected(offer.isActive());
     minAgeCheckBox.setSelected(offer.isMinAge25());
     borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
@@ -329,16 +328,15 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     importPath.clear();
 
     // resets all backgrounds to neutral
-    titleTextField.setBackground(neutralBackground);
-    priceTextField.setBackground(neutralBackground);
-    locationTextField.setBackground(neutralBackground);
-    contactTextField.setBackground(neutralBackground);
-    vehicleTypeComboBox.setBackground(neutralBackground);
-    brandTextField.setBackground(neutralBackground);
-    modelTextField.setBackground(neutralBackground);
-    transmissionComboBox.setBackground(neutralBackground);
-    seatsTextField.setBackground(neutralBackground);
-    bedsTextField.setBackground(neutralBackground);
+    // mandatory fields
+    titleTextField.setStyle("");
+    priceTextField.setStyle("");
+    locationTextField.setStyle("");
+    contactTextField.setStyle("");
+    brandTextField.setStyle("");
+    modelTextField.setStyle("");
+    seatsTextField.setStyle("");
+    bedsTextField.setStyle("");
 
     // reset validated properties
     isTitleOk.set(false);
@@ -463,7 +461,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void cancelAction() throws GenericServiceException {
     Alert confirmDelete = new Alert(
-      Alert.AlertType.WARNING,
+      Alert.AlertType.CONFIRMATION,
       "Willst du wirklich abbrechen? Alle Änderungen gehen verloren!"
     );
     Optional<ButtonType> result = confirmDelete.showAndWait();
@@ -592,8 +590,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBrand(String inputBrand) {
-    if (inputBrand.isEmpty() || inputBrand.length() < 3) {
-      errorLabel.setText("Ungültige Hersteller");
+    if (inputBrand.isEmpty() || inputBrand.length() < 2) {
+      errorLabel.setText("Ungültiger Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
@@ -604,7 +602,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateModel(String inputModel) {
-    if (inputModel.isEmpty() || inputModel.length() < 3) {
+    if (inputModel.isEmpty() || inputModel.length() < 2) {
       errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);

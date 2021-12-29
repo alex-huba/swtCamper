@@ -36,7 +36,13 @@ public class MainViewController {
   public RentingViewController rentingViewController;
 
   @Autowired
+  public RegisterViewController registerViewController;
+
+  @Autowired
   public LoginViewController loginViewController;
+
+  @Autowired
+  public ResetPasswordViewController resetPasswordViewController;
 
   @Autowired
   public OfferViewController offerViewController;
@@ -180,12 +186,14 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
+        registerViewController.resetInputFields();
         break;
       case "forgotPassword":
         mainStage.getChildren().add(forgotPasswordViewBox);
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
+        resetPasswordViewController.resetInputFields();
         break;
       case "moreInfoOffer":
         mainStage.getChildren().add(moreAboutOfferViewBox);

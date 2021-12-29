@@ -98,4 +98,3 @@ public class UserController implements IUserController {
     return userService.isEnabled(username);
   }
 }
-

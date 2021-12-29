@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,17 +34,10 @@ public class App extends Application {
     Parent rootNode = fxmlLoader.load();
 
     primaryStage.setTitle("SWTCamper");
-    primaryStage.setScene(new Scene(rootNode));
-    // TODO: remove before merge
-    primaryStage
-      .titleProperty()
-      .bind(
-        Bindings.format(
-          "%sx%s",
-          primaryStage.widthProperty().asString("%1$,.0f"),
-          primaryStage.heightProperty().asString("%1$,.0f")
-        )
-      );
+    primaryStage.setScene(new Scene(rootNode, 1200, 850));
+    primaryStage.setMinWidth(950);
+    primaryStage.setMinHeight(850);
+    primaryStage.getIcons().add(new Image("pictures/logo.png"));
     primaryStage.show();
   }
 

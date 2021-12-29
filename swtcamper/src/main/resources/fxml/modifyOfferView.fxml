@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -17,23 +18,21 @@
 
 <BorderPane fx:id="offerDetailsMainView" stylesheets="@../styles/modifyOffer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.ModifyOfferViewController">
     <bottom>
-        <HBox alignment="CENTER" spacing="5.0">
+        <HBox alignment="TOP_RIGHT" spacing="5.0">
             <children>
-                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Angebot erstellen">
+                <Button fx:id="placeOfferButton" onAction="#placeOfferAction" text="Anzeige erstellen">
                <styleClass>
-                  <String fx:value="radius-20" />
-                  <String fx:value="border-dark" />
+                  <String fx:value="handleBtn" />
                   <String fx:value="bg-lightGreen" />
                </styleClass></Button>
                 <Button fx:id="cancelButton" onAction="#cancelAction" text="Abbrechen">
                <styleClass>
-                  <String fx:value="radius-20" />
-                  <String fx:value="border-dark" />
-                  <String fx:value="bg-warning" />
+                  <String fx:value="handleBtn" />
+                  <String fx:value="bg-danger" />
                </styleClass></Button>
             </children>
          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" />
+            <Insets bottom="15.0" right="5.0" />
          </BorderPane.margin>
          <padding>
             <Insets top="20.0" />
@@ -69,21 +68,21 @@
                               </HBox>
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
-                                        <Label prefWidth="140.0" styleClass="descriptionLabel" text="Titel*:" />
-                                        <TextField fx:id="titleTextField" prefWidth="420.0" promptText="Gib deinem Angebot einen bedeutungsvollen Titel" />
+                                        <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Titel*:" />
+                                        <TextField fx:id="titleTextField" prefWidth="445.0" promptText="Gib deinem Angebot einen bedeutungsvollen Titel" />
                                     </children>
                                 </HBox>
-                              <HBox spacing="70.0">
+                              <HBox spacing="60.0">
                            <children>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label prefWidth="140.0" styleClass="descriptionLabel" text="Kontaktdaten*: " />
+                                            <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Kontaktdaten*: " />
                                             <TextField fx:id="contactTextField" prefWidth="200.0" promptText="Wie können Mieter dich erreichen?" />
                                         </children>
                                     </HBox>
-                                      <HBox alignment="CENTER_LEFT">
+                                      <HBox alignment="CENTER_LEFT" spacing="2.0">
                                           <children>
-                                              <Label prefWidth="100.0" styleClass="descriptionLabel" text="Preis pro Tag*:" />
+                                              <Label styleClass="particularitiesLabel" text="Preis pro Tag*:" />
                                               <TextField fx:id="priceTextField" prefWidth="50.0" promptText="in" />
                                               <Label prefHeight="6.0" text=" €" />
                                           </children>
@@ -92,19 +91,19 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Abholort*:" />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Abholort*:" />
                                       <TextField fx:id="locationTextField" />
                                   </children>
                               </HBox>
                               <HBox>
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Besonderheiten:" />
-                                      <TextArea fx:id="particularitiesTextArea" prefColumnCount="35" prefRowCount="5" promptText="Was spricht sonst noch für dich und dein Auto?" />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Besonderheiten:" />
+                                      <TextArea fx:id="particularitiesTextArea" prefColumnCount="37" prefRowCount="5" promptText="Was spricht sonst noch für dich und dein Auto?" />
                                   </children>
                               </HBox>
                               <HBox>
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Mietvorraussetzungen:" />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Mietvorraussetzungen:" wrapText="true" />
                                       <VBox spacing="3.0">
                                           <children>
                                               <CheckBox fx:id="minAgeCheckBox" accessibleHelp="Min age will be 21" accessibleText="Min age will be 21" text="Soll der Mieter älter als 21 sein?" />
@@ -124,21 +123,21 @@
                               <Label prefHeight="45" styleClass="heading" text="Angaben zum Fahrzeug" />
                               <HBox alignment="CENTER_LEFT">
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Fahrzeugtyp*: " />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Fahrzeugtyp*: " />
                                       <ComboBox fx:id="vehicleTypeComboBox" prefWidth="150.0" />
                                   </children>
                               </HBox>
-                              <HBox spacing="45.0">
+                              <HBox spacing="55.0">
                                   <children>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="140.0" styleClass="descriptionLabel" text="Hersteller*: " />
+                                              <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Hersteller*: " />
                                               <TextField fx:id="brandTextField" />
                                           </children>
                                       </HBox>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="70.0" styleClass="descriptionLabel" text="Modell*: " />
+                                              <Label prefWidth="90.0" styleClass="particularitiesLabel" text="Modell*: " />
                                               <TextField fx:id="modelTextField" />
                                           </children>
                                       </HBox>
@@ -146,37 +145,37 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Schaltung*:" />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Schaltung*:" />
                                       <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="149.0" />
                                   </children>
                               </HBox>
-                              <HBox layoutX="10.0" layoutY="125.0" spacing="45.0">
+                              <HBox layoutX="10.0" layoutY="125.0" spacing="55.0">
                                   <children>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="140.0" styleClass="descriptionLabel" text="Plätze*: " />
+                                              <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Plätze*: " />
                                               <TextField fx:id="seatsTextField" />
                                           </children>
                                       </HBox>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="70.0" styleClass="descriptionLabel" text="Betten:" />
+                                              <Label prefWidth="90.0" styleClass="particularitiesLabel" text="Betten:" />
                                               <TextField fx:id="bedsTextField" />
                                           </children>
                                       </HBox>
                                   </children>
                               </HBox>
-                              <HBox layoutX="10.0" layoutY="154.0" spacing="45.0">
+                              <HBox layoutX="10.0" layoutY="154.0" spacing="55.0">
                                   <children>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="140.0" styleClass="descriptionLabel" text="Baujahr:" />
+                                              <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Baujahr:" />
                                               <TextField fx:id="constructionYearTextField" />
                                           </children>
                                       </HBox>
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
-                                              <Label prefWidth="70.0" styleClass="descriptionLabel" text="Kraftstoff:" />
+                                              <Label prefWidth="90.0" styleClass="particularitiesLabel" text="Kraftstoff:" />
                                               <TextField fx:id="engineTextField" />
                                           </children>
                                       </HBox>
@@ -184,11 +183,11 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Bilder:" />
+                                      <Label prefWidth="180.0" styleClass="particularitiesLabel" text="Bilder:" />
                                       <HBox spacing="2.0">
                                           <children>
                                               <TextField fx:id="importPath" editable="false" promptText="Zeig was dein Auto zu bieten hat!" />
-                                              <Button mnemonicParsing="false" onAction="#importFileChooserAction" prefHeight="26.0" styleClass="bg-primary" text="Bilder wählen" />
+                                              <Button mnemonicParsing="false" onAction="#importFileChooserAction" styleClass="bg-primary" text="Bilder wählen" />
                                               <Button mnemonicParsing="false" onAction="#importButtonAction" styleClass="bg-primary" text="Ausgewählte Bilder hochladen" />
                                           </children>
                                       </HBox>
@@ -199,24 +198,24 @@
                               </HBox>
                               <HBox>
                                   <children>
-                                      <Label prefWidth="140.0" />
+                                      <Label prefWidth="180.0" />
                                       <HBox spacing="5.0">
                                           <children>
                                               <VBox>
                                                   <children>
-                                                      <Label styleClass="descriptionLabel" text="Länge:" />
+                                                      <Label styleClass="particularitiesLabel" text="Länge:" />
                                                       <TextField fx:id="lengthTextField" prefWidth="80.0" promptText="in cm" />
                                                   </children>
                                               </VBox>
                                               <VBox>
                                                   <children>
-                                                      <Label styleClass="descriptionLabel" text="Breite:" />
+                                                      <Label styleClass="particularitiesLabel" text="Breite:" />
                                                       <TextField fx:id="widthTextField" prefWidth="80.0" promptText="in cm" />
                                                   </children>
                                               </VBox>
                                               <VBox>
                                                   <children>
-                                                      <Label styleClass="descriptionLabel" text="Höhe:" />
+                                                      <Label styleClass="particularitiesLabel" text="Höhe:" />
                                                       <TextField fx:id="heightTextField" prefWidth="80.0" promptText="in cm" />
                                                   </children>
                                               </VBox>
@@ -229,26 +228,35 @@
                               </HBox>
                               <HBox>
                                   <children>
-                                      <Label prefWidth="140.0" styleClass="descriptionLabel" text="Features:" />
-                                      <VBox spacing="3.0">
-                                          <children>
-                                              <CheckBox fx:id="roofTentCheckBox" prefWidth="130.0" text="Dachzelt" />
-                                              <CheckBox fx:id="roofRackCheckBox" prefWidth="130.0" text="Dachgepäckträger" />
-                                              <CheckBox fx:id="bikeRackCheckBox" prefWidth="130.0" text="Fahrradträger" />
-                                          </children>
-                                      </VBox>
-                                      <VBox spacing="3.0">
-                                          <children>
-                                              <CheckBox fx:id="showerCheckBox" prefWidth="130.0" text="Dusche" />
-                                              <CheckBox fx:id="toiletCheckBox" prefWidth="130.0" text="Toilette" />
-                                          </children>
-                                      </VBox>
-                                      <VBox spacing="3.0">
-                                          <children>
-                                              <CheckBox fx:id="kitchenUnitCheckBox" prefWidth="130.0" text="Küche / Kocheinheit" />
-                                              <CheckBox fx:id="fridgeCheckBox" prefWidth="130.0" text="Kühlschrank" />
-                                          </children>
-                                      </VBox>
+                                      <Label prefWidth="180.0" styleClass="descriptionLabel" text="Features:" />
+                              <HBox spacing="20.0">
+                                 <children>
+                                            <VBox spacing="3.0">
+                                                <children>
+                                                    <CheckBox fx:id="roofTentCheckBox" text="Dachzelt" />
+                                                    <CheckBox fx:id="roofRackCheckBox" text="Dachgepäckträger" />
+                                                    <CheckBox fx:id="bikeRackCheckBox" text="Fahrradträger" />
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="3.0">
+                                                <children>
+                                                    <CheckBox fx:id="showerCheckBox" text="Dusche" />
+                                                    <CheckBox fx:id="toiletCheckBox" text="Toilette" />
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="3.0">
+                                                <children>
+                                                    <CheckBox fx:id="kitchenUnitCheckBox" text="Küche / Kocheinheit">
+                                             <stylesheets>
+                                                <URL value="@../styles/modifyOffer.css" />
+                                                <URL value="@../styles/global.css" />
+                                             </stylesheets>
+                                          </CheckBox>
+                                                    <CheckBox fx:id="fridgeCheckBox" text="Kühlschrank" />
+                                                </children>
+                                            </VBox>
+                                 </children>
+                              </HBox>
                                   </children>
                            <VBox.margin>
                               <Insets top="10.0" />

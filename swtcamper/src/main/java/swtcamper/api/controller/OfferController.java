@@ -47,7 +47,7 @@ public class OfferController implements IOfferController {
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -80,7 +80,7 @@ public class OfferController implements IOfferController {
         title,
         location,
         contact,
-        description,
+        particularities,
         price,
         minAge25,
         borderCrossingAllowed,
@@ -117,7 +117,7 @@ public class OfferController implements IOfferController {
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     ArrayList<Long> bookings,
     long price,
     boolean active,
@@ -154,7 +154,7 @@ public class OfferController implements IOfferController {
         title,
         location,
         contact,
-        description,
+        particularities,
         bookings,
         price,
         active,
@@ -274,11 +274,7 @@ public class OfferController implements IOfferController {
               filter.getBedAmount()
               : true
           ) &&
-          (
-            filter.isExcludeInactive()
-              ? offerDTO.isActive()
-              : !offerDTO.isActive()
-          ) &&
+          (filter.isExcludeInactive() ? offerDTO.isActive() : true) &&
           evalCheckBoxes(offerDTO, filter)
         )
         .collect(Collectors.toList());

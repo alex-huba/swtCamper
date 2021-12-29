@@ -17,9 +17,15 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  private Long loggedInUserID;
-
   private User loggedInUser;
+
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
 
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
@@ -36,14 +42,14 @@ public class UserService {
    * @throws GenericServiceException
    */
   public User create(
-          String username,
-          String password,
-          String email,
-          String phone,
-          String name,
-          String surname,
-          UserRole userRole,
-          boolean enabled
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
   ) {
     User user = new User();
     user.setUsername(username);
@@ -73,18 +79,10 @@ public class UserService {
   public List<User> user() throws GenericServiceException {
     if (userRepository.findAll().isEmpty()) {
       throw new GenericServiceException(
-              "No users found. User database is empty."
+        "No users found. User database is empty."
       );
     }
     return userRepository.findAll();
-  }
-
-  public Long getLoggedInUserID() {
-    return loggedInUserID;
-  }
-
-  public void setLoggedInUserID(Long loggedInUserID) {
-    this.loggedInUserID = loggedInUserID;
   }
 
   public User getLoggedInUser() {
@@ -111,7 +109,6 @@ public class UserService {
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
-        this.setLoggedInUserID(user.getId());
         this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");

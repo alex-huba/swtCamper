@@ -18,6 +18,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class BookingService {
 
   @Autowired
+  private OfferRepository offerRepository;
+
+  @Autowired
   private BookingRepository bookingRepository;
 
   @Autowired
@@ -82,68 +85,113 @@ public class BookingService {
     }
   }
 
-  public List getBookedDays(long offerID) {
+  /**
+   * For a specific offer, this method gathers all days on which the offer is booked. <br> That means each startDate and endDate and all days in between.
+   *
+   * @param offerID
+   * @return a list of the booked days
+   * @throws GenericServiceException
+   */
+  public List<LocalDate> getBookedDays(long offerID)
+    throws GenericServiceException {
     List<LocalDate> bookedDays = new ArrayList<>();
+
     Optional<Offer> offerResponse = offerRepository.findById(offerID);
-    Offer offer = offerResponse.get();
-    ArrayList<Long> bookingIDs = offer.getBookings();
-    Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
-    for (Booking booking : bookings) {
-      LocalDate startDate = booking.getStartDate();
-      LocalDate endDate = booking.getEndDate();
-      long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
-      for (int i = 0; i <= amountOfDays; i++) {
-        bookedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+    if (offerResponse.isPresent()) {
+      Offer offer = offerResponse.get();
+      ArrayList<Long> bookingIDs = offer.getBookings();
+      Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
+
+      for (Booking booking : bookings) {
+        LocalDate startDate = booking.getStartDate();
+        LocalDate endDate = booking.getEndDate();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          bookedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
       }
+      return bookedDays;
     }
-    return bookedDays;
+    throw new GenericServiceException(
+      "Offer with following ID not found: " + offerID
+    );
   }
 
+  /**
+   * This method is used by the search functionality. It takes a startDate and an endDate and gathers all offers which are not booked on and in between these days, i.e. are available for the requested period.
+   * @param startDate
+   * @param endDate
+   * @return a list of offerIDs of the available offers
+   * @throws GenericServiceException
+   */
   public ArrayList<Long> getAvailableOffers(
-          LocalDate startDate,
-          LocalDate endDate
-  ) {
-    // Liste aller angefragten Tage
+    LocalDate startDate,
+    LocalDate endDate
+  ) throws GenericServiceException {
+    // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
     for (int i = 0; i <= amountOfDays; i++) {
       requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
     }
 
-    // Liste die returned wird
+    // List that is going to be returned
     ArrayList<Long> offerIDs = new ArrayList<>();
-    // Alle Offers holen und die angefragten Tage gegen die bereits gebuchten Tage gegenchecken
+
+    // Get all offers and check requested days against days that are already booked
     List<Offer> offerResponse = offerRepository.findAll();
     for (Offer offer : offerResponse) {
-      List<LocalDate> bookedDays = getBookedDays(offer.getOfferID());
-      for (LocalDate requestedDay : requestedDays) {
-        if (!bookedDays.contains(requestedDay)) {
+      try {
+        List<LocalDate> bookedDays = getBookedDays(offer.getOfferID());
+        boolean offerAvailable = true;
+        for (LocalDate requestedDay : requestedDays) {
+          if (bookedDays.contains(requestedDay)) {
+            offerAvailable = false;
+          }
+        }
+        if (offerAvailable) {
           offerIDs.add(offer.getOfferID());
         }
+      } catch (GenericServiceException e) {
+        throw new GenericServiceException(e.getMessage());
       }
     }
     return offerIDs;
   }
 
-  public boolean offerStillAvailable(long offerID, long bookingID) {
-    Optional<Offer> offerResponse = offerRepository.findById(offerID);
-    Offer offer = offerResponse.get();
+  /**
+   * Checks if a booking being re-activated is still available (in case the booked period was booked by someone else while the booking was deactivated).
+   * @param offerID
+   * @param bookingID
+   * @return <b>True</b>, if the offer is still available for the initially booked period (i.e. the booking can be reactivated). <br>
+   * <b>False</b>, if the offer is not available anymore for the initially booked period (i.e. the renter has to pick new start and end dates).
+   * @throws GenericServiceException
+   */
+  public boolean offerStillAvailable(long offerID, long bookingID)
+    throws GenericServiceException {
     Optional<Booking> bookingResponse = bookingRepository.findById(bookingID);
-    Booking booking = bookingResponse.get();
-    LocalDate startDate = booking.getStartDate();
-    LocalDate endDate = booking.getEndDate();
-    List<LocalDate> requestedDays = new ArrayList<>();
-    long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
-    for (int i = 0; i <= amountOfDays; i++) {
-      requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
-    }
+    if (bookingResponse.isPresent()) {
+      Booking booking = bookingResponse.get();
 
-    List<LocalDate> bookedDays = getBookedDays(offerID);
-    for (LocalDate requestedDay : requestedDays) {
-      if (bookedDays.contains(requestedDay)) {
-        return false;
+      LocalDate startDate = booking.getStartDate();
+      LocalDate endDate = booking.getEndDate();
+
+      List<LocalDate> requestedDays = new ArrayList<>();
+      long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+      for (int i = 0; i <= amountOfDays; i++) {
+        requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
       }
+
+      List<LocalDate> bookedDays = getBookedDays(offerID);
+      for (LocalDate requestedDay : requestedDays) {
+        if (bookedDays.contains(requestedDay)) {
+          return false;
+        }
+      }
+      return true;
     }
-    return true;
+    throw new GenericServiceException(
+      "Booking with following ID not found: " + bookingID
+    );
   }
 }

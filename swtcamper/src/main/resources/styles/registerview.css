@@ -1,51 +1,12 @@
-.usernameLabel {
-    -fx-padding: 7 118 0 0;
-}
-.passwordLabel {
-    -fx-padding: 7 121 0 0;
-}
-.repeatPasswordLabel{
-    -fx-padding: 7 46 0 0;
-}
-.emailLabel {
-    -fx-padding: 7 164 0 0;
-}
-.phoneLabel {
-    -fx-padding: 7 156 0 0;
-}
-.nameLabel {
-    -fx-padding: 7 162 0 0;
-}
-.surnameLabel {
-    -fx-padding: 7 130 0 0;
-}
-.inputField {
-    -fx-font-size: 20px;
+@import "global.css";
+
+.inputField, CheckBox {
+    -fx-font-size: 15px;
     -fx-font-family: "Arial Rounded MT Bold";
 }
-.operatorRb {
-    -fx-padding: 7 40 0 0;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-}
-.renterCb {
-    -fx-padding: 7 40 0 0;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-}
-.providerCb {
-    -fx-padding: 7 40 0 0;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
-}
-.cancelBtn {
-    -fx-font-size: 25px;
-}
-.registerBtn {
-    -fx-font-size: 25px;
-}
-Label {
-    -fx-font-size: 20px;
+
+Button {
+    -fx-font-size: 15px;
 }
 
 
