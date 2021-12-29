@@ -12,9 +12,10 @@
     </left>
     <center>
         <AnchorPane fx:id="mainStage">
-            <fx:include fx:id="homeViewBox" source="rentingView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="homeViewBox" source="rentingView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <fx:include fx:id="placeOfferViewBox" source="modifyOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <fx:include fx:id="activeOffersViewBox" source="myOffersView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="offerViewBox" source="offerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Pane fx:id="dealHistoryViewBox">
                 <Label style="-fx-text-fill: #FFF" text="Deal History" />
                 <!--                            TODO after Merging: include-->
@@ -43,6 +44,8 @@
             </Pane>
             <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <fx:include fx:id="moreAboutOfferViewBox" source="moreAboutOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
         </AnchorPane>
     </center>
 </BorderPane>

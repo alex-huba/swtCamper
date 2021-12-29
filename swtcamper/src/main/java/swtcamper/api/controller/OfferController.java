@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
@@ -38,6 +40,16 @@ public class OfferController implements IOfferController {
   @Override
   public List<OfferDTO> offers() throws GenericServiceException {
     return modelMapper.offersToOfferDTOs(offerService.offers());
+  }
+
+  public Offer getOfferById(long id) throws GenericServiceException {
+    Optional<Offer> offerResult = offerRepository.findById(id);
+    if (offerResult.isPresent()) {
+      return offerResult.get();
+    }
+    throw new GenericServiceException(
+      String.format("Offer with ID %s could not be found.", id)
+    );
   }
 
   public OfferDTO create(
@@ -272,7 +284,6 @@ public class OfferController implements IOfferController {
               filter.getBedAmount()
               : true
           ) &&
-          (filter.isExcludeInactive() ? offerDTO.isActive() : true) &&
           evalCheckBoxes(offerDTO, filter)
         )
         .collect(Collectors.toList());
