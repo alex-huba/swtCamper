@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
@@ -168,6 +169,9 @@ public class OfferViewController {
   public Button bookingButton;
 
   @FXML
+  public Label dateLabel;
+
+  @FXML
   public DatePicker startDate;
 
   @FXML
@@ -258,17 +262,20 @@ public class OfferViewController {
   public void checkMode(boolean rentingMode) {
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
+    dateLabel.setVisible(false);
     startDate.setVisible(false);
     endDate.setVisible(false);
     this.isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
         bookingButton.setVisible(true);
+        dateLabel.setVisible(true);
         startDate.setVisible(true);
         endDate.setVisible(true);
       }
     } else {
       modifyButton.setVisible(true);
+      dateLabel.setVisible(false);
       startDate.setVisible(false);
       endDate.setVisible(false);
     }

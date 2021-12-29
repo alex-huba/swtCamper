@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -114,23 +115,9 @@ public class RentingViewController {
   @FXML
   public AnchorPane rootAnchorPane;
 
-  //    @FXML
-  //    public ListView<OfferDTO> offersList;
-
   @FXML
   private void initialize() throws GenericServiceException {
     reloadData();
-    //        offersList.setOnMouseClicked(click -> {
-    //            OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-    //            //Listener for right click
-    //            if (click.isSecondaryButtonDown()) {
-    //                //ignore
-    //            }
-    //            //Listener for double click
-    //            if (click.getClickCount() == 2) {
-    //                showInfoAlert(selectedItem);
-    //            }
-    //        });
 
     excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
@@ -185,13 +172,22 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
+    loadData(offerController.offers());
+  }
+
+  private void loadData(List<OfferDTO> offersList) {
     offerListRoot.getChildren().clear();
 
-    Label header = new Label("Passende Angebote für Sie");
+    Label header = new Label(
+      String.format(
+        "%s Angebote für Sie",
+        offersList.size() > 0 ? "Passende" : "Keine passenden"
+      )
+    );
     header.setStyle("-fx-font-size: 30");
     offerListRoot.getChildren().add(header);
 
-    for (OfferDTO offer : offerController.offers()) {
+    for (OfferDTO offer : offersList) {
       VBox root = new VBox();
       root.setStyle(
         "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
@@ -199,7 +195,7 @@ public class RentingViewController {
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
-      //TODO: after finishing staff with image realize logic with image
+      //TODO: after finishing stuff with image realize logic with image
       if (false) {
         image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
       } else {
@@ -257,22 +253,15 @@ public class RentingViewController {
       detailsVBox.getChildren().add(locationPriceBrandModelBox);
 
       Button moreBtn = new Button("Mehr Information");
-      moreBtn.setStyle(
-        "-fx-background-radius: 8; -fx-background-color: #e79e69"
-      );
-      moreBtn.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            try {
-              mainViewController.changeView("viewOffer");
-              offerViewController.initialize(offer, true);
-            } catch (GenericServiceException e) {
-              e.printStackTrace();
-            }
-          }
+      moreBtn.getStyleClass().add("bg-primary");
+      moreBtn.setOnAction(event -> {
+        try {
+          mainViewController.changeView("viewOffer");
+          offerViewController.initialize(offer, true);
+        } catch (GenericServiceException e) {
+          e.printStackTrace();
         }
-      );
+      });
 
       HBox btnBox = new HBox();
       btnBox.setAlignment(Pos.TOP_RIGHT);
@@ -286,12 +275,6 @@ public class RentingViewController {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
-  }
-
-  private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
-    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-    alert.showAndWait();
   }
 
   /**
@@ -344,11 +327,8 @@ public class RentingViewController {
     newFilter.setMinAge21(min21CheckBox.isSelected());
     newFilter.setCrossingBordersAllowed(crossBordersCheckBox.isSelected());
     newFilter.setDepositInCash(payCashCheckBox.isSelected());
-    //        offersList.setItems(
-    //                FXCollections.observableArrayList(
-    //                        offerController.getFilteredOffers(newFilter)
-    //                )
-    //        );
+
+    loadData(offerController.getFilteredOffers(newFilter));
   }
 
   public void resetFilter() throws GenericServiceException {
@@ -372,6 +352,8 @@ public class RentingViewController {
     min21CheckBox.setSelected(false);
     crossBordersCheckBox.setSelected(false);
     payCashCheckBox.setSelected(false);
+
+    reloadData();
   }
 
   /**
