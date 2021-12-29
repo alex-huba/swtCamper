@@ -280,7 +280,7 @@ public class OfferController implements IOfferController {
         .collect(Collectors.toList());
   }
 
-  public Offer offerDTOToOffer (OfferDTO offer) {
+  public Offer offerDTOToOffer(OfferDTO offer) {
     Optional<Offer> offerResponse = offerRepository.findById(offer.getID());
     return offerResponse.get();
   }

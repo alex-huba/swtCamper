@@ -97,30 +97,30 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     isSurnameOk = new SimpleBooleanProperty(false);
 
     renterCb
-            .selectedProperty()
-            .addListener((observable, oldValue, newValue) -> {
-              if (newValue.equals(false)) providerCb.setSelected(false);
-            });
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue.equals(false)) providerCb.setSelected(false);
+      });
     providerCb
-            .selectedProperty()
-            .addListener((observable, oldValue, newValue) -> {
-              if (newValue.equals(true)) renterCb.setSelected(true);
-            });
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue.equals(true)) renterCb.setSelected(true);
+      });
 
     // Disable register button until every field contains valid input
     registerBtn
-            .disableProperty()
-            .bind(
-                    isUsernameOk
-                            .and(isPasswordOk)
-                            .and(isRepeatPasswordOk)
-                            .and(isEmailOk)
-                            .and(isPhoneOk)
-                            .and(isNameOk)
-                            .and(isSurnameOk)
-                            .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
-                            .not()
-            );
+      .disableProperty()
+      .bind(
+        isUsernameOk
+          .and(isPasswordOk)
+          .and(isRepeatPasswordOk)
+          .and(isEmailOk)
+          .and(isPhoneOk)
+          .and(isNameOk)
+          .and(isSurnameOk)
+          .and(renterCb.selectedProperty().or(providerCb.selectedProperty()))
+          .not()
+      );
     //    rootElement.setVgrow()
   }
 
@@ -138,13 +138,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
         validateUsernameTf();
       } catch (GenericServiceException e) {}
     } else if (passwordPf.equals(source)) validatePasswordPf(); else if (
-            repeatPasswordPf.equals(source)
+      repeatPasswordPf.equals(source)
     ) validateRepeatPasswordPf(); else if (emailTf.equals(source)) {
       try {
         validateEmailTf();
       } catch (GenericServiceException e) {}
     } else if (phoneTf.equals(source)) validatePhoneTf(); else if (
-            nameTf.equals(source)
+      nameTf.equals(source)
     ) validateNameTf(); else if (surnameTf.equals(source)) validateSurnameTf();
   }
 
@@ -160,13 +160,13 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = usernameTf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText(
-              "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
+        "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else if (!userController.isUsernameFree(input)) {
       errorLabel.setText(
-              "Ungültiger Nutzername: Nutzername ist bereits vergeben"
+        "Ungültiger Nutzername: Nutzername ist bereits vergeben"
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
@@ -181,7 +181,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
       errorLabel.setText(
-              "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
       );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
@@ -208,8 +208,8 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   private void validateEmailTf() throws GenericServiceException {
     String input = emailTf.getText();
     if (
-            input.length() < 5 ||
-                    !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
+      input.length() < 5 ||
+      !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     ) {
       errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
@@ -302,30 +302,30 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
     try {
       userController.register(
-              username,
-              password,
-              email,
-              phone,
-              name,
-              surname,
-              userRole,
-              enabled
+        username,
+        password,
+        email,
+        phone,
+        name,
+        surname,
+        userRole,
+        enabled
       );
       // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(
-                String.format(
-                        "Neuer Benutzer '%s' erstellt. \nMelden Sie sich an, um fortzufahren. \nIhre Daten werden in Kürze von einem Operator geprüft.",
-                        username
-                )
+          String.format(
+            "Neuer Benutzer '%s' erstellt. \nMelden Sie sich an, um fortzufahren. \nIhre Daten werden in Kürze von einem Operator geprüft.",
+            username
+          )
         );
         // User registered as renter
       } else {
         mainViewController.handleInformationMessage(
-                String.format(
-                        "Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.",
-                        username
-                )
+          String.format(
+            "Neuer Benutzer '%s' erstellt. Melden Sie sich an, um fortzufahren.",
+            username
+          )
         );
       }
       mainViewController.changeView("login");

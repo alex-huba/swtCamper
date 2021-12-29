@@ -78,7 +78,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputUsername = usernameTf.getText();
       if (inputUsername.contains(" ") || inputUsername.length() < 5) {
         errorLabel.setText(
-                "Ungültiger Nutzername: mindestens 5 Zeichen und keine Leerzeichen"
+          "Ungültiger Nutzername: mindestens 5 Zeichen und keine Leerzeichen"
         );
         isUsernameOk.setValue(false);
       } else {
@@ -90,7 +90,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       String inputPassword = passwordPf.getText();
       if (inputPassword.contains(" ") || inputPassword.length() < 5) {
         errorLabel.setText(
-                "Ungültiges Passwort: mindestens 5 Zeichen und keine Leerzeichen"
+          "Ungültiges Passwort: mindestens 5 Zeichen und keine Leerzeichen"
         );
         isPasswordOk.setValue(false);
       } else {
@@ -109,14 +109,14 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     // Try to login if user input matches data in database
     try {
       mainViewController.login(
-              userController.login(username, password),
-              userController.isEnabled(username)
+        userController.login(username, password),
+        userController.isEnabled(username)
       );
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
       Alert alert = new Alert(
-              Alert.AlertType.ERROR,
-              "Klicken Sie OK um das Passwort zurückzusetzen"
+        Alert.AlertType.ERROR,
+        "Klicken Sie OK um das Passwort zurückzusetzen"
       );
       alert.setTitle("Authentifizierung fehlgeschlagen!");
       alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
@@ -129,8 +129,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     } catch (UserDoesNotExistException e) {
       // Inform user that user account doesn't exist
       Alert alert = new Alert(
-              Alert.AlertType.ERROR,
-              "Klicke OK um einen neuen Account zu erstellen"
+        Alert.AlertType.ERROR,
+        "Klicke OK um einen neuen Account zu erstellen"
       );
       alert.setTitle("Authentifizierung fehlgeschlagen!");
       alert.setHeaderText("Es gibt keinen Account mit diesem Nutzernamen");
@@ -165,4 +165,3 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     if (event.getCode() == KeyCode.ENTER) handleLogin();
   }
 }
-

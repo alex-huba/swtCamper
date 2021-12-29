@@ -91,7 +91,7 @@ public class NavigationViewController {
   }
 
   public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
-          throws GenericServiceException {
+    throws GenericServiceException {
     navBarItems.getChildren().removeIf(b -> true);
 
     List<Button> toAdd = new ArrayList<>();
@@ -131,7 +131,6 @@ public class NavigationViewController {
       setLongTexts();
     }
   }
-
 
   public void logout() throws GenericServiceException {
     setStartButtons();

@@ -94,7 +94,7 @@ public class UserService {
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
   public UserRole login(String username, String password)
-          throws WrongPasswordException, UserDoesNotExistException {
+    throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (userRepository.existsByUsernameAndPassword(username, password)) {
       User user;
@@ -196,7 +196,7 @@ public class UserService {
    * @throws GenericServiceException if user account doesn't exist in database
    */
   public void resetPassword(String username, String email, String password)
-          throws GenericServiceException {
+    throws GenericServiceException {
     // Check if user exists in database
     if (userRepository.existsByUsernameAndEmail(username, email)) {
       // Get user if it exists in database, change password and save it back on database
@@ -205,7 +205,7 @@ public class UserService {
       userRepository.save(user);
     } else {
       throw new GenericServiceException(
-              "Couldn't change password. Username or password is not correct."
+        "Couldn't change password. Username or password is not correct."
       );
     }
   }

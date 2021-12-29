@@ -1,5 +1,6 @@
 package swtcamper.api.controller;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -13,8 +14,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
 
-import java.util.Optional;
-
 @Component
 public class UserController implements IUserController {
 
@@ -25,34 +24,36 @@ public class UserController implements IUserController {
   ModelMapper modelMapper;
 
   public UserDTO register(
-          String username,
-          String password,
-          String email,
-          String phone,
-          String name,
-          String surname,
-          UserRole userRole,
-          boolean enabled
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
   ) {
     return modelMapper.userToUserDTO(
-            userService.create(
-                    username,
-                    password,
-                    email,
-                    phone,
-                    name,
-                    surname,
-                    userRole,
-                    enabled
-            )
+      userService.create(
+        username,
+        password,
+        email,
+        phone,
+        name,
+        surname,
+        userRole,
+        enabled
+      )
     );
   }
 
-  public User getLoggedInUser () { return userService.getLoggedInUser(); }
+  public User getLoggedInUser() {
+    return userService.getLoggedInUser();
+  }
 
   @Override
   public UserRoleDTO login(String username, String password)
-          throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
+    throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
     try {
       return modelMapper.toUserRoleDTO(userService.login(username, password));
     } catch (WrongPasswordException e) {
@@ -76,7 +77,7 @@ public class UserController implements IUserController {
 
   @Override
   public void resetPassword(String username, String email, String password)
-          throws GenericServiceException {
+    throws GenericServiceException {
     try {
       userService.resetPassword(username, email, password);
     } catch (GenericServiceException e) {

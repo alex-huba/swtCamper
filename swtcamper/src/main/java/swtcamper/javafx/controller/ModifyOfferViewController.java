@@ -542,7 +542,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       !inputPrice.matches("[0-9]*") ||
       Integer.parseInt(inputPrice) <= 0
     ) */
-    if (!validationHelper.checkOfferPrice(inputPrice)){
+    if (!validationHelper.checkOfferPrice(inputPrice)) {
       errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
       isPriceOk.set(false);
