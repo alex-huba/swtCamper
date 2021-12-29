@@ -182,7 +182,9 @@ public class OfferViewController {
     );
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
-    vehicleTypeLabel.setText(String.valueOf(offeredObject.getVehicleFeatures().getVehicleType()));
+    vehicleTypeLabel.setText(
+      String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())
+    );
     brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
     modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
     transmissionLabel.setText(

@@ -254,8 +254,7 @@ public class RentingViewController {
         try {
           mainViewController.changeView("viewOffer");
           offerViewController.initialize(offer, true);
-        } catch (GenericServiceException ignore) {
-        }
+        } catch (GenericServiceException ignore) {}
       });
 
       HBox btnBox = new HBox();

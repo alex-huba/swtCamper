@@ -47,7 +47,9 @@ public class OfferController implements IOfferController {
     if (offerResult.isPresent()) {
       return offerResult.get();
     }
-    throw new GenericServiceException(String.format("Offer with ID %s could not be found.", id));
+    throw new GenericServiceException(
+      String.format("Offer with ID %s could not be found.", id)
+    );
   }
 
   public OfferDTO create(
