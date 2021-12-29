@@ -33,6 +33,8 @@ import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import static javafx.scene.control.SelectionMode.MULTIPLE;
+
 @Component
 public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
@@ -659,25 +661,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     ObservableList<String> myObservableList = FXCollections.observableList(
       rentalConditions
     );
-    rentalConditionsListView.setItems(myObservableList);
-
-    rentalConditionsListView.setCellFactory(
-      new Callback<ListView<String>, ListCell<String>>() {
-        @Override
-        public ListCell<String> call(ListView<String> p) {
-          ListCell<String> cell = new ListCell<String>() {
-            @Override
-            protected void updateItem(String t, boolean bln) {
-              super.updateItem(t, bln);
-              if (t != null) {
-                setText(t);
-              }
-            }
-          };
-
-          return cell;
-        }
-      }
-    );
+   rentalConditionsListView.setItems(myObservableList);
+   rentalConditionsListView.getSelectionModel().setSelectionMode(MULTIPLE);
   }
-}
+
+  public void removeButtonAction() {
+    rentalConditions.removeAll(rentalConditionsListView.getSelectionModel().getSelectedItems());
+    rentalConditionsListView.getSelectionModel().clearSelection();
+    }
+  }
+

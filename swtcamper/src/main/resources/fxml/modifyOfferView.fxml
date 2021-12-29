@@ -97,7 +97,19 @@
                                       <VBox spacing="3.0">
                                           <children>
                                               <TextField fx:id="rentalConditionsTextField" />
-                                              <Button mnemonicParsing="false" onAction="#addButtonAction" styleClass="bg-primary" text="Hinzufügen" />
+                                    <HBox prefHeight="0.0" prefWidth="200.0" spacing="5">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#addButtonAction" styleClass="bg-primary" text="Hinzufügen" />
+                                          <Button mnemonicParsing="false" onAction="#removeButtonAction" styleClass="bg-primary" text="Entfernen"><styleClass>
+                                              <String fx:value="bg-danger" />
+                                          </styleClass></Button>
+
+                                       </children>
+                                        <styleClass>
+
+                                        </styleClass>
+                                    </HBox>
+
                                               <ListView fx:id="rentalConditionsListView" prefHeight="100.0" prefWidth="184.0" />
                                           </children>
                                       </VBox>
