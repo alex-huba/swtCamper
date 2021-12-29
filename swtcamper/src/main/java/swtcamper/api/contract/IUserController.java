@@ -22,8 +22,6 @@ public interface IUserController {
           boolean enabled
   );
 
-  Long getLoggedInUserID();
-
   /**
    * see {@link UserService#login}
    */

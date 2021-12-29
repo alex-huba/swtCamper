@@ -372,12 +372,6 @@ public class RentingViewController {
     min21CheckBox.setSelected(false);
     crossBordersCheckBox.setSelected(false);
     payCashCheckBox.setSelected(false);
-    //        offersList.setItems(FXCollections.observableArrayList(offerController.offers()));
-  }
-
-    offersList.setItems(
-      FXCollections.observableArrayList(offerController.offers())
-    );
   }
 
   /**

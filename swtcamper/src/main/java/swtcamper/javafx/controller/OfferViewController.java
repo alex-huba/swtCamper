@@ -192,7 +192,7 @@ public class OfferViewController {
     contactLabel.setText(offer.getContact());
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
     locationLabel.setText(offer.getLocation());
-    particularitiesLabel.setText(offer.getDescription());
+    particularitiesLabel.setText(offer.getParticularities());
     minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
     borderCrossingLabel.setOpacity(labelOpacity(offer.isBorderCrossingAllowed()));
     depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
@@ -228,7 +228,7 @@ public class OfferViewController {
     modifyButton.setVisible(false);
     this.isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
-      if (userController.getLoggedInUserID()!=null) {
+      if (userController.getLoggedInUser()!=null) {
       bookingButton.setVisible(true); }
       startDate.setVisible(true);
       endDate.setVisible(true);

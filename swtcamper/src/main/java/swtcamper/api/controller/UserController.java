@@ -48,10 +48,6 @@ public class UserController implements IUserController {
     );
   }
 
-  public Long getLoggedInUserID() {
-    return userService.getLoggedInUserID();
-  }
-
   public User getLoggedInUser () { return userService.getLoggedInUser(); }
 
   @Override
