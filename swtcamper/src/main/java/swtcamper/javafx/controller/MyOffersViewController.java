@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -40,20 +41,18 @@ public class MyOffersViewController {
   @FXML
   public VBox offerListRoot;
 
-  @FXML
-  public void initialize() {}
-
   public void reloadData() throws GenericServiceException {
+    // create the "cards" that has been created by the logged-in user
+    createCards(userController.getLoggedInUser());
+  }
+
+  /**
+   * creates a new "card" for each offer that has been created by the given user
+   */
+  private void createCards(User user) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
-    for (OfferDTO offer : offerController.getOffersCreatedByUser(
-      userController.getLoggedInUser()
-    )) {
-      VBox root = new VBox();
-      root.setStyle(
-        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
-      );
-
+    for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
       //TODO: after finishing stuff with image realize logic with image
       if (false) {
@@ -64,53 +63,50 @@ public class MyOffersViewController {
 
       HBox offerDetails = new HBox();
 
+      // thumbnail
       ImageView thumbnail = new ImageView(image);
       thumbnail.setFitHeight(80);
       thumbnail.setFitWidth(90);
       offerDetails.getChildren().add(thumbnail);
 
+      // title
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
-        "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
+              "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
 
+      // location
       Label locationLabel = new Label("Abholort: " + offer.getLocation());
       locationLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // price
       Label priceLabel = new Label(
-        "Preis pro Tag: € " + Long.toString(offer.getPrice())
+              "Preis pro Tag: € " + Long.toString(offer.getPrice())
       );
       priceLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // brand
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+              "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
       );
       brandLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // model
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+              "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
       );
       modelLabel.setStyle(
-        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
-      VBox detailsVBox = new VBox();
-      detailsVBox.setAlignment(Pos.TOP_CENTER);
-      detailsVBox.getChildren().add(titleLabel);
-
-      VBox locationPriceBrandModelBox = new VBox();
+      VBox locationPriceBrandModelBox = new VBox(locationLabel,priceLabel,brandLabel,modelLabel);
       locationPriceBrandModelBox.setStyle("-fx-padding: 0 0 0 30");
-      locationPriceBrandModelBox.getChildren().add(locationLabel);
-      locationPriceBrandModelBox.getChildren().add(priceLabel);
-      locationPriceBrandModelBox.getChildren().add(brandLabel);
-      locationPriceBrandModelBox.getChildren().add(modelLabel);
-      detailsVBox.getChildren().add(locationPriceBrandModelBox);
 
       Button moreBtn = new Button("Mehr Information");
       moreBtn.getStyleClass().add("bg-primary");
@@ -134,8 +130,8 @@ public class MyOffersViewController {
       removeBtn.getStyleClass().add("bg-danger");
       removeBtn.setOnAction(event -> {
         Alert confirmDelete = new Alert(
-          Alert.AlertType.CONFIRMATION,
-          "Willst du dieses Angebot wirklich entfernen?"
+                Alert.AlertType.CONFIRMATION,
+                "Willst du dieses Angebot wirklich entfernen?"
         );
         Optional<ButtonType> result = confirmDelete.showAndWait();
 
@@ -149,16 +145,26 @@ public class MyOffersViewController {
         }
       });
 
+      // control buttons
       HBox btnBox = new HBox(moreBtn, updateBtn, removeBtn);
       btnBox.setAlignment(Pos.TOP_RIGHT);
       btnBox.setStyle("-fx-padding: 0 30 30 0");
       btnBox.setSpacing(5);
-      detailsVBox.getChildren().add(btnBox);
+
+      // card details
+      VBox detailsVBox = new VBox(titleLabel,locationPriceBrandModelBox, btnBox);
+      detailsVBox.setAlignment(Pos.TOP_CENTER);
 
       offerDetails.setHgrow(detailsVBox, Priority.ALWAYS);
       offerDetails.getChildren().add(detailsVBox);
 
-      root.getChildren().add(offerDetails);
+      // card
+      VBox root = new VBox(offerDetails);
+      root.setStyle(
+              "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+      );
+
+      // add to view
       offerListRoot.getChildren().add(root);
     }
   }
