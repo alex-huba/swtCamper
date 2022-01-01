@@ -350,7 +350,7 @@ public class OfferViewController {
             offer,
             startDate.getValue(),
             endDate.getValue(),
-            true
+            false
           );
           checkMode(true);
         }

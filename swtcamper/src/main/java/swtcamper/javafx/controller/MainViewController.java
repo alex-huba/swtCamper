@@ -126,8 +126,8 @@ public class MainViewController {
       if (
         bookingController
           .getBookingsForUser(userController.getLoggedInUser())
-          .size() >
-        0
+          .size() > 0 && !bookingController
+                .getBookingsForUser(userController.getLoggedInUser()).stream().allMatch(Booking::isActive)
       ) {
         navigationViewController.showBookingNotification();
       } else {
