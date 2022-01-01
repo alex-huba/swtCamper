@@ -88,13 +88,15 @@ public class MyBookingsViewController {
 
         // link to visit related offer
         Hyperlink linkToOffer = new Hyperlink("(zur Anzeige)");
-        linkToOffer.setAlignment(Pos.BASELINE_CENTER);
+        linkToOffer.setAlignment(Pos.TOP_CENTER);
         linkToOffer.setOnAction(event -> {
           try {
             mainViewController.changeView("viewOffer");
-            offerViewController.initialize(modelMapper.offerToOfferDTO(booking.getOffer()), false);
-          } catch (GenericServiceException ignore) {
-          }
+            offerViewController.initialize(
+              modelMapper.offerToOfferDTO(booking.getOffer()),
+              false
+            );
+          } catch (GenericServiceException ignore) {}
         });
 
         HBox bookingInfoHBox = new HBox(bookingLabel, linkToOffer);
@@ -125,10 +127,7 @@ public class MyBookingsViewController {
         });
 
         // button box
-        HBox buttonHBox = new HBox(
-          acceptButton,
-          rejectButton
-        );
+        HBox buttonHBox = new HBox(acceptButton, rejectButton);
         buttonHBox.setSpacing(5);
 
         // card
@@ -136,7 +135,7 @@ public class MyBookingsViewController {
         bookingVBox.setFillWidth(true);
         bookingVBox.setSpacing(5);
         bookingVBox.setStyle(
-                "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
+          "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
         );
 
         bookingsListVBox.getChildren().add(bookingVBox);

@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -315,7 +316,10 @@ public class OfferController implements IOfferController {
         .filter(offerDTO ->
           (
             filter.getLocation() == null ||
-            offerDTO.getLocation().equals(filter.getLocation())
+            offerDTO
+              .getLocation()
+              .toLowerCase()
+              .contains(filter.getLocation().toLowerCase())
           ) &&
           (
             filter.getVehicleType() == null ||
@@ -331,7 +335,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getMake()
-              .equals(filter.getVehicleBrand())
+              .toLowerCase()
+              .contains(filter.getVehicleBrand().toLowerCase())
           ) &&
           (
             filter.getConstructionYear() == 0 ||
@@ -350,7 +355,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getEngine()
-              .equals(filter.getEngine())
+              .toLowerCase()
+              .contains(filter.getEngine().toLowerCase())
           ) &&
           (
             filter.getTransmissionType() == null ||
