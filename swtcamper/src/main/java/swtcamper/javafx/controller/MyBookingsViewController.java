@@ -349,9 +349,16 @@ public class MyBookingsViewController {
    * @return true if the offer is already in another active booking, false if it is available
    */
   private boolean anotherBookingWithSameOfferIsActive(Booking booking) {
-    if(booking.isActive()) return true;
-    if(bookingController.getBookingsForUser(userController.getLoggedInUser()).stream().noneMatch(Booking::isActive)) return false;
-    for (Booking i : bookingController.getBookingsForUser(userController.getLoggedInUser())) {
+    if (booking.isActive()) return true;
+    if (
+      bookingController
+        .getBookingsForUser(userController.getLoggedInUser())
+        .stream()
+        .noneMatch(Booking::isActive)
+    ) return false;
+    for (Booking i : bookingController.getBookingsForUser(
+      userController.getLoggedInUser()
+    )) {
       if (i.getOffer().getOfferID() == booking.getOffer().getOfferID()) {
         return !i.isActive();
       }
