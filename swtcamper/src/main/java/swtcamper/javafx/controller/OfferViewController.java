@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -34,10 +36,7 @@ import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -162,14 +161,16 @@ public class OfferViewController {
   @FXML
   public DatePicker endDate;
 
-  public OfferDTO viewedOffer;
+  @FXML
+  public Label rentLabel;
 
+  public OfferDTO viewedOffer;
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   public void initialize(OfferDTO offer, boolean rentingMode) {
+    this.viewedOffer = offer;
     checkMode(rentingMode);
     Vehicle offeredObject = offer.getOfferedObject();
-    this.viewedOffer = offer;
 
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());
@@ -246,24 +247,50 @@ public class OfferViewController {
   }
 
   private void checkMode(boolean rentingMode) {
+    // visible
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     dateLabel.setVisible(false);
     startDate.setVisible(false);
     endDate.setVisible(false);
-    this.isRentingMode.set(rentingMode);
+    rentLabel.setVisible(false);
+    // disable
+    dateLabel.setDisable(false);
+    startDate.setDisable(false);
+    endDate.setDisable(false);
+
+    isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
-        bookingButton.setVisible(true);
-        dateLabel.setVisible(true);
-        startDate.setVisible(true);
-        endDate.setVisible(true);
+        // remove ability to book own offer
+          if(viewedOffer.getCreator().getId().equals(userController.getLoggedInUser().getId())) {
+            // ... but make it possible to make changes then
+            modifyButton.setVisible(true);
+          } else {
+            bookingButton.setVisible(true);
+            dateLabel.setVisible(true);
+            startDate.setVisible(true);
+            endDate.setVisible(true);
+          }
+
+          // remove possibility to sent a request twice at once
+        for(Booking booking : bookingController.getAllBookings().stream().filter(booking -> booking.getRenter().getId().equals(userController.getLoggedInUser().getId())).collect(Collectors.toList())) {
+          if(booking.getOffer().getOfferID() == viewedOffer.getID()) {
+            bookingButton.setVisible(false);
+            dateLabel.setDisable(true);
+            startDate.setDisable(true);
+            endDate.setDisable(true);
+            rentLabel.setText("Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId());
+            rentLabel.setVisible(true);
+          }
+        }
       }
     } else {
       modifyButton.setVisible(true);
       dateLabel.setVisible(false);
       startDate.setVisible(false);
       endDate.setVisible(false);
+      rentLabel.setVisible(false);
     }
   }
 
@@ -292,7 +319,7 @@ public class OfferViewController {
         )
       ) {
         Alert confirmBooking = new Alert(
-          Alert.AlertType.WARNING,
+          Alert.AlertType.CONFIRMATION,
           "Willst du das Angebot wirklich von " +
           startDate.getValue() +
           " bis " +
@@ -310,9 +337,7 @@ public class OfferViewController {
             endDate.getValue(),
             true
           );
-          mainViewController.handleInformationMessage(
-            "Buchungsanfrage verschickt. Buchungsnummer: " + bookingDTO.getId()
-          );
+          checkMode(true);
         }
       } else {
         mainViewController.handleExceptionMessage(

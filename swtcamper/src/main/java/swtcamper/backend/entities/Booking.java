@@ -98,4 +98,16 @@ public class Booking {
   public void setActive(boolean active) {
     this.active = active;
   }
+
+  @Override
+  public String toString() {
+    return "Booking{" +
+            "id=" + id +
+            ", renter=" + renter +
+            ", offer=" + offer +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", active=" + active +
+            '}';
+  }
 }
