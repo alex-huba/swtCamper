@@ -123,7 +123,12 @@ public class MainViewController {
   @Scheduled(fixedDelay = 1000)
   public void listenForDatabaseChanges() {
     if (userController.getLoggedInUser() != null) {
-      if(bookingController.getBookingsForUser(userController.getLoggedInUser()).size()>0) {
+      if (
+        bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .size() >
+        0
+      ) {
         navigationViewController.showBookingNotification();
       } else {
         navigationViewController.resetBookingNotification();

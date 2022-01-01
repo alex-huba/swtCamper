@@ -101,13 +101,21 @@ public class Booking {
 
   @Override
   public String toString() {
-    return "Booking{" +
-            "id=" + id +
-            ", renter=" + renter +
-            ", offer=" + offer +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
-            ", active=" + active +
-            '}';
+    return (
+      "Booking{" +
+      "id=" +
+      id +
+      ", renter=" +
+      renter +
+      ", offer=" +
+      offer +
+      ", startDate=" +
+      startDate +
+      ", endDate=" +
+      endDate +
+      ", active=" +
+      active +
+      '}'
+    );
   }
 }

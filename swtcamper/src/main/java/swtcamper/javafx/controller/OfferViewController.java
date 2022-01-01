@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -263,24 +262,40 @@ public class OfferViewController {
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
         // remove ability to book own offer
-          if(viewedOffer.getCreator().getId().equals(userController.getLoggedInUser().getId())) {
-            // ... but make it possible to make changes then
-            modifyButton.setVisible(true);
-          } else {
-            bookingButton.setVisible(true);
-            dateLabel.setVisible(true);
-            startDate.setVisible(true);
-            endDate.setVisible(true);
-          }
+        if (
+          viewedOffer
+            .getCreator()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        ) {
+          // ... but make it possible to make changes then
+          modifyButton.setVisible(true);
+        } else {
+          bookingButton.setVisible(true);
+          dateLabel.setVisible(true);
+          startDate.setVisible(true);
+          endDate.setVisible(true);
+        }
 
-          // remove possibility to sent a request twice at once
-        for(Booking booking : bookingController.getAllBookings().stream().filter(booking -> booking.getRenter().getId().equals(userController.getLoggedInUser().getId())).collect(Collectors.toList())) {
-          if(booking.getOffer().getOfferID() == viewedOffer.getID()) {
+        // remove possibility to sent a request twice at once
+        for (Booking booking : bookingController
+          .getAllBookings()
+          .stream()
+          .filter(booking ->
+            booking
+              .getRenter()
+              .getId()
+              .equals(userController.getLoggedInUser().getId())
+          )
+          .collect(Collectors.toList())) {
+          if (booking.getOffer().getOfferID() == viewedOffer.getID()) {
             bookingButton.setVisible(false);
             dateLabel.setDisable(true);
             startDate.setDisable(true);
             endDate.setDisable(true);
-            rentLabel.setText("Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId());
+            rentLabel.setText(
+              "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+            );
             rentLabel.setVisible(true);
           }
         }

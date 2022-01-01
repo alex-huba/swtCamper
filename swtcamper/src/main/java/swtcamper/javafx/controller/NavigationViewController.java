@@ -102,7 +102,9 @@ public class NavigationViewController {
 
     // Enable renter functionalities
     if (userRoleDTO == UserRoleDTO.RENTER) {
-      navBarItems.getChildren().addAll(homeButton, dealHistoryButton, myBookingsButton, accountButton);
+      navBarItems
+        .getChildren()
+        .addAll(homeButton, dealHistoryButton, myBookingsButton, accountButton);
       // Enable provider functionalities
     } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
       navBarItems.getChildren().add(homeButton);
@@ -114,12 +116,18 @@ public class NavigationViewController {
       navBarItems.getChildren().add(accountButton);
       // Enable operator functionalities
     } else {
-      navBarItems.getChildren().addAll(homeButton,newOfferButton,activeOffersButton,
-              dealHistoryButton,
-              excludeButton,
-              approveButton,
-              myBookingsButton,
-              accountButton);
+      navBarItems
+        .getChildren()
+        .addAll(
+          homeButton,
+          newOfferButton,
+          activeOffersButton,
+          dealHistoryButton,
+          excludeButton,
+          approveButton,
+          myBookingsButton,
+          accountButton
+        );
     }
 
     mainViewController.changeView("home");
@@ -183,7 +191,7 @@ public class NavigationViewController {
   }
 
   public void showBookingNotification() {
-      myBookingsNotificationDot.setVisible(true);
+    myBookingsNotificationDot.setVisible(true);
   }
 
   public void resetBookingNotification() {

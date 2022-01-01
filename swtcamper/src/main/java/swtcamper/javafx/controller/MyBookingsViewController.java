@@ -30,8 +30,7 @@ public class MyBookingsViewController {
   public VBox bookingsListVBox;
 
   @FXML
-  public void initialize() {
-  }
+  public void initialize() {}
 
   public void reloadData() {
     bookingsListVBox.getChildren().clear();
