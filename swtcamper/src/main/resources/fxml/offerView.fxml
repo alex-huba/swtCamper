@@ -241,14 +241,16 @@
                                         <DatePicker fx:id="startDate" promptText="Beginn:" />
                                         <DatePicker fx:id="endDate" promptText="Ende:" />
                                     </HBox>
-                           <Label fx:id="rentLabel" text="(Anfrage versendet. Warte auf Antwort vom Vermieter...)">
-                              <font>
-                                 <Font size="10.0" />
-                              </font>
-                              <VBox.margin>
-                                 <Insets top="5.0" />
-                              </VBox.margin>
-                           </Label>
+                           <HBox fx:id="rentHBox" spacing="5.0">
+                              <children>
+                                 <Label fx:id="rentLabel" text="(Anfrage versendet. Warte auf Antwort vom Vermieter...)">
+                                    <font>
+                                       <Font size="10.0" />
+                                    </font>
+                                 </Label>
+                                 <Button fx:id="abortBookingRequestBtn" mnemonicParsing="false" styleClass="bg-warning" text="Anfrage abbrechen" />
+                              </children>
+                           </HBox>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>

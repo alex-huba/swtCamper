@@ -20,22 +20,6 @@ public class Booking {
   LocalDate endDate;
   boolean active;
 
-  public Booking(
-    Long id,
-    User renter,
-    Offer offer,
-    LocalDate startDate,
-    LocalDate endDate,
-    boolean active
-  ) {
-    this.id = id;
-    this.renter = renter;
-    this.offer = offer;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.active = active;
-  }
-
   public Booking() {}
 
   public Booking(
@@ -48,7 +32,7 @@ public class Booking {
     this.offer = offer;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.active = true;
+    this.active = false;
   }
 
   public Long getId() {

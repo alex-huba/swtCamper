@@ -1,34 +1,18 @@
 package swtcamper.javafx.controller;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import javafx.util.Callback;
+import javafx.scene.layout.HBox;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
@@ -36,10 +20,6 @@ import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.UserRepository;
-import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -161,7 +141,13 @@ public class OfferViewController {
   public DatePicker endDate;
 
   @FXML
+  public HBox rentHBox;
+
+  @FXML
   public Label rentLabel;
+
+  @FXML
+  public Button abortBookingRequestBtn;
 
   public OfferDTO viewedOffer;
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
@@ -252,7 +238,7 @@ public class OfferViewController {
     dateLabel.setVisible(false);
     startDate.setVisible(false);
     endDate.setVisible(false);
-    rentLabel.setVisible(false);
+    rentHBox.setVisible(false);
     // disable
     dateLabel.setDisable(false);
     startDate.setDisable(false);
@@ -296,7 +282,17 @@ public class OfferViewController {
             rentLabel.setText(
               "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
             );
-            rentLabel.setVisible(true);
+            rentHBox.setVisible(true);
+
+            // abort open booking request
+            abortBookingRequestBtn.setOnAction(event -> {
+              try {
+                bookingController.delete(booking.getId());
+                checkMode(true);
+              } catch (GenericServiceException e) {
+                mainViewController.handleExceptionMessage(e.getMessage());
+              }
+            });
           }
         }
       }
@@ -305,7 +301,7 @@ public class OfferViewController {
       dateLabel.setVisible(false);
       startDate.setVisible(false);
       endDate.setVisible(false);
-      rentLabel.setVisible(false);
+      rentHBox.setVisible(false);
     }
   }
 
