@@ -277,7 +277,7 @@ public class OfferViewController {
           endDate.setVisible(true);
         }
 
-        // remove possibility to sent a request twice at once
+        // remove possibility to send a request twice at once
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
