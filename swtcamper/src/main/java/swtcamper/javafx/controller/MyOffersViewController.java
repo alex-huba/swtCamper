@@ -134,14 +134,16 @@ public class MyOffersViewController {
       // TODO: auch im {@link swtcamper.backend.services.BookingService} abchecken!
       boolean isOfferRentedRightNow = false;
       for (Booking booking : bookingController.getAllBookings()) {
-        if (booking.getOffer().getOfferID() == offer.getID() && booking.isActive()) {
+        if (
+          booking.getOffer().getOfferID() == offer.getID() && booking.isActive()
+        ) {
           isOfferRentedRightNow = true;
           break;
         }
       }
 
       Button updateBtn = new Button("Anzeige bearbeiten");
-      if(isOfferRentedRightNow) updateBtn.setDisable(true);
+      if (isOfferRentedRightNow) updateBtn.setDisable(true);
       updateBtn.getStyleClass().add("bg-secondary");
       updateBtn.setOnAction(event -> {
         try {
@@ -151,7 +153,7 @@ public class MyOffersViewController {
       });
 
       Button removeBtn = new Button("Löschen");
-      if(isOfferRentedRightNow) removeBtn.setDisable(true);
+      if (isOfferRentedRightNow) removeBtn.setDisable(true);
       removeBtn.getStyleClass().add("bg-danger");
       removeBtn.setOnAction(event -> {
         Alert confirmDelete = new Alert(

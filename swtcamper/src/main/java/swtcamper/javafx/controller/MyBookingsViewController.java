@@ -3,7 +3,6 @@ package swtcamper.javafx.controller;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -63,46 +62,49 @@ public class MyBookingsViewController {
           vehicleType.charAt(0) + vehicleType.substring(1).toLowerCase();
 
         Label bookingLabel = new Label(
-                !booking.isActive() ?
-                String.format(
-            "%s will deinen %s %s %s von %s bis %s mieten.",
-            booking.getRenter().getUsername(),
-            vehicle,
-            booking
-              .getOffer()
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getMake(),
-            booking
-              .getOffer()
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getModel(),
-            booking
-              .getStartDate()
-              .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-            booking
-              .getEndDate()
-              .format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))
-          ) : String.format("Dein %s %s %s ist von %s bis %s vermietet an %s.",
-                        vehicle,
-                        booking
-                                .getOffer()
-                                .getOfferedObject()
-                                .getVehicleFeatures()
-                                .getMake(),
-                        booking
-                                .getOffer()
-                                .getOfferedObject()
-                                .getVehicleFeatures()
-                                .getModel(),
-                        booking
-                                .getStartDate()
-                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-                        booking
-                                .getEndDate()
-                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-                        booking.getRenter().getUsername())
+          !booking.isActive()
+            ? String.format(
+              "%s will deinen %s %s %s von %s bis %s mieten.",
+              booking.getRenter().getUsername(),
+              vehicle,
+              booking
+                .getOffer()
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getMake(),
+              booking
+                .getOffer()
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getModel(),
+              booking
+                .getStartDate()
+                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+              booking
+                .getEndDate()
+                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))
+            )
+            : String.format(
+              "Dein %s %s %s ist von %s bis %s vermietet an %s.",
+              vehicle,
+              booking
+                .getOffer()
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getMake(),
+              booking
+                .getOffer()
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getModel(),
+              booking
+                .getStartDate()
+                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+              booking
+                .getEndDate()
+                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+              booking.getRenter().getUsername()
+            )
         );
 
         // link to visit related offer
@@ -154,24 +156,23 @@ public class MyBookingsViewController {
         abortButton.setDisable(!booking.isActive());
         abortButton.setOnAction(event -> {
           Alert confirmDelete = new Alert(
-                  Alert.AlertType.WARNING,
-                  "Willst du diese Buchung wirklich frühzeitig beenden?"
+            Alert.AlertType.WARNING,
+            "Willst du diese Buchung wirklich frühzeitig beenden?"
           );
           Optional<ButtonType> result = confirmDelete.showAndWait();
 
           if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
               bookingController.update(
-                      booking.getId(),
-                      booking.getStartDate(),
-                      booking.getEndDate(),
-                      false
+                booking.getId(),
+                booking.getStartDate(),
+                booking.getEndDate(),
+                false
               );
-//            bookingController.delete(booking.getId());
-            } catch (GenericServiceException ignore) {
-            }
+              //            bookingController.delete(booking.getId());
+            } catch (GenericServiceException ignore) {}
           }
-            reloadData();
+          reloadData();
         });
 
         // button box
