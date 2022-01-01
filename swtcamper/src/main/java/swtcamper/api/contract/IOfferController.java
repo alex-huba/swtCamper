@@ -2,14 +2,14 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 public interface IOfferController {
   List<OfferDTO> offers() throws GenericServiceException;
+
+  Offer getOfferById(long id) throws GenericServiceException;
 
   OfferDTO create(
     User creator,
@@ -85,6 +85,42 @@ public interface IOfferController {
 
   void delete(long id) throws GenericServiceException;
 
+  List<OfferDTO> getOffersCreatedByUser(User user)
+    throws GenericServiceException;
+
   List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException;
+
+  private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
+    List<Boolean> booleanList = new ArrayList<>();
+
+    if (filter.isRoofTent()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
+    );
+    if (filter.isRoofRack()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
+    );
+    if (filter.isBikeRack()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
+    );
+    if (filter.isShower()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
+    );
+    if (filter.isToilet()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
+    );
+    if (filter.isKitchen()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
+    );
+    if (filter.isFridge()) booleanList.add(
+      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
+    );
+    if (filter.isMinAge21()) booleanList.add(offerDTO.isMinAge25());
+    if (filter.isCrossingBordersAllowed()) booleanList.add(
+      offerDTO.isBorderCrossingAllowed()
+    );
+    if (filter.isDepositInCash()) booleanList.add(offerDTO.isDepositInCash());
+
+    return !booleanList.contains(false);
+  }
 }
