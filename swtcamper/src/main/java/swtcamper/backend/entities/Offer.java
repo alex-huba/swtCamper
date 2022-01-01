@@ -11,6 +11,9 @@ public class Offer implements IOffer {
   @GeneratedValue
   private long offerID;
 
+  @OneToOne
+  private User creator;
+
   private OfferedObjectType offeredObjectType;
 
   @OneToOne
@@ -30,6 +33,7 @@ public class Offer implements IOffer {
   boolean depositInCash;
 
   public Offer(
+    User creator,
     Vehicle vehicle,
     String title,
     String location,
@@ -40,6 +44,7 @@ public class Offer implements IOffer {
     boolean borderCrossingAllowed,
     boolean depositInCash
   ) {
+    this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
@@ -55,6 +60,7 @@ public class Offer implements IOffer {
   }
 
   public Offer(
+    User creator,
     Vehicle vehicle,
     ArrayList<Long> bookings,
     String title,
@@ -67,6 +73,7 @@ public class Offer implements IOffer {
     boolean borderCrossingAllowed,
     boolean depositInCash
   ) {
+    this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = bookings;
@@ -81,7 +88,8 @@ public class Offer implements IOffer {
     this.active = active;
   }
 
-  public Offer(Vehicle vehicle) {
+  public Offer(User creator, Vehicle vehicle) {
+    this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
     this.offeredObject = vehicle;
     this.bookings = new ArrayList<Long>();
@@ -101,6 +109,16 @@ public class Offer implements IOffer {
   @Override
   public void setOfferID(long offerID) {
     this.offerID = offerID;
+  }
+
+  @Override
+  public User getCreator() {
+    return this.creator;
+  }
+
+  @Override
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
   @Override
@@ -236,6 +254,46 @@ public class Offer implements IOffer {
       offeredObjectType == offer.offeredObjectType &&
       Objects.equals(offeredObject, offer.offeredObject) &&
       Objects.equals(bookings, offer.bookings)
+    );
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "Offer{" +
+      "offerID=" +
+      offerID +
+      ", creator=" +
+      creator.getUsername() +
+      ", offeredObjectType=" +
+      offeredObjectType +
+      ", offeredObject=" +
+      offeredObject +
+      ", title='" +
+      title +
+      '\'' +
+      ", location='" +
+      location +
+      '\'' +
+      ", contact='" +
+      contact +
+      '\'' +
+      ", particularities='" +
+      particularities +
+      '\'' +
+      ", bookings=" +
+      bookings +
+      ", price=" +
+      price +
+      ", active=" +
+      active +
+      ", minAge25=" +
+      minAge25 +
+      ", borderCrossingAllowed=" +
+      borderCrossingAllowed +
+      ", depositInCash=" +
+      depositInCash +
+      '}'
     );
   }
 }
