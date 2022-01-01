@@ -179,7 +179,7 @@ public class RentingViewController {
         for (Booking booking : bookingController.getAllBookings()) {
           if (booking.getOffer().getOfferID() == offerDTO.getID()) {
             thereIsABookingForThisOffer = true;
-            if (!booking.isActive()) offersThatAreNotRentedRightNow.add(
+            if (!booking.isActive() && !offersThatAreNotRentedRightNow.contains(offerDTO)) offersThatAreNotRentedRightNow.add(
               offerDTO
             );
           }

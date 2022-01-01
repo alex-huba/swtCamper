@@ -271,7 +271,7 @@ public class MyBookingsViewController {
         // Button for accepting the booking request
         Button acceptButton = new Button("Annehmen");
         acceptButton.getStyleClass().add("bg-primary");
-        acceptButton.setDisable(booking.isActive());
+        acceptButton.setDisable(anotherBookingWithSameOfferIsActive(booking));
         acceptButton.setOnAction(event -> {
           try {
             bookingController.update(
@@ -343,14 +343,32 @@ public class MyBookingsViewController {
     }
   }
 
+  /**
+   * Checks if the same offer is also in another booking that is active already
+   * @param booking the {@link Booking} that shall be evaluated
+   * @return true if the offer is already in another active booking, false if it is available
+   */
+  private boolean anotherBookingWithSameOfferIsActive(Booking booking) {
+    if(booking.isActive()) return true;
+    if(bookingController.getBookingsForUser(userController.getLoggedInUser()).stream().noneMatch(Booking::isActive)) return false;
+    for (Booking i : bookingController.getBookingsForUser(userController.getLoggedInUser())) {
+      if (i.getOffer().getOfferID() == booking.getOffer().getOfferID()) {
+        return !i.isActive();
+      }
+    }
+    return false;
+  }
+
   public void reloadData() {
     bookingsListVBox.getChildren().clear();
     if (
       !userController.getLoggedInUser().getUserRole().equals(UserRole.RENTER)
-    ) addRequestsForProvider();
-    Separator separator = new Separator();
-    separator.setOrientation(Orientation.HORIZONTAL);
-    bookingsListVBox.getChildren().add(separator);
+    ) {
+      addRequestsForProvider();
+      Separator separator = new Separator();
+      separator.setOrientation(Orientation.HORIZONTAL);
+      bookingsListVBox.getChildren().add(separator);
+    }
     addRequestsFromRenter();
   }
 }
