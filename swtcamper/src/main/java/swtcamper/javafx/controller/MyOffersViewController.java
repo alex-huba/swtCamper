@@ -126,13 +126,15 @@ public class MyOffersViewController {
       moreBtn.setOnAction(event -> {
         try {
           mainViewController.changeView("viewOffer");
-          offerViewController.initialize(offer, false);
+          offerViewController.initialize(offer, true);
         } catch (GenericServiceException ignore) {}
       });
 
       // check if offer is rented right now, in order to prevent the provider from updating or deleting it
       boolean isOfferRentedRightNow = false;
-      for (Booking booking : bookingController.getAllBookings()) {
+      for (Booking booking : bookingController.getBookingsForUser(
+              userController.getLoggedInUser()
+      )) {
         if (
           booking.getOffer().getOfferID() == offer.getID() && booking.isActive()
         ) {
