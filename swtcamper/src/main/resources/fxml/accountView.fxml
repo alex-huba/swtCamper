@@ -15,10 +15,10 @@
       <ToolBar fx:id="buttonToolbar" prefHeight="40.0" BorderPane.alignment="CENTER">
         <items>
             <Button fx:id="showLogBtn" mnemonicParsing="false" onAction="#showLogForUser" text="Zeige Logs zu diesem Nutzer" />
-            <Button fx:id="enableBtn" mnemonicParsing="false" onAction="#enableUser" text="Akzeptieren" />
-            <Button fx:id="blockBtn" mnemonicParsing="false" onAction="#blockUser" text="Blocken" />
-            <Button fx:id="degradeBtn" mnemonicParsing="false" onAction="#degradeUser" text="Degradieren" />
+            <Button fx:id="enableBtn" mnemonicParsing="false" text="Akzeptieren" />
+            <Button fx:id="blockBtn" mnemonicParsing="false" text="Blocken" />
             <Button fx:id="promoteBtn" mnemonicParsing="false" onAction="#promoteUser" text="Befördern" />
+            <Button fx:id="degradeBtn" mnemonicParsing="false" onAction="#degradeUser" text="Degradieren" />
             <Separator orientation="VERTICAL" />
                 <Button fx:id="logoutBtn" onAction="#logout" text="Logout" />
         </items>

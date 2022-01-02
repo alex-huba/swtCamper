@@ -98,4 +98,39 @@ public class UserController implements IUserController {
   public boolean isEnabled(String username) throws UserDoesNotExistException {
     return userService.isEnabled(username);
   }
+
+  @Override
+  public User getUserById(long id) throws GenericServiceException {
+    return userService.getUserById(id);
+  }
+
+  @Override
+  public void enableUserById(long id) {
+    userService.enable(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void ignoreUserById(long id) {
+    userService.ignore(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void blockUserById(long id) {
+    userService.lock(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void unblockUserById(long id) {
+    userService.unlock(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void degradeUserById(long id) throws GenericServiceException {
+    userService.degradeUser(id);
+  }
+
+  @Override
+  public void promoteUserById(long id) throws GenericServiceException {
+    userService.promoteUser(id);
+  }
 }

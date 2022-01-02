@@ -94,7 +94,7 @@ public class UserService {
     // TODO: implement user deletion
   }
 
-  public void update(User user) {
+  public void update(long userId, User user) {
     loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
@@ -102,6 +102,20 @@ public class UserService {
       )
     );
     // TODO: implement user update
+  }
+
+  /**
+   * Finds a specific user by its id.
+   * @param userId ID of user to find
+   * @return User with specified ID
+   * @throws GenericServiceException
+   */
+  public User getUserById(long userId) throws GenericServiceException {
+    Optional<User> userOptional = userRepository.findById(userId);
+    if (userOptional.isPresent()) {
+      return userOptional.get();
+    }
+    throw new GenericServiceException("There is no user with ID " + userId + ".");
   }
 
   /**
@@ -190,8 +204,9 @@ public class UserService {
   }
 
   /**
-   * Locks an user account.
+   * Locks/blocks a user account.
    * @param userID
+   * @param operator
    */
   public void lock(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
@@ -214,8 +229,9 @@ public class UserService {
   }
 
   /**
-   * Unlocks an user account.
+   * Unlocks/unblocks a user account.
    * @param userID
+   * @param operator
    */
   public void unlock(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
@@ -238,8 +254,9 @@ public class UserService {
   }
 
   /**
-   * Enables an user account.
+   * Enables a user account, so that provider will be able to offer vehicles.
    * @param userID
+   * @param operator
    */
   public void enable(Long userID, String operator) {
     Optional<User> userOptional = userRepository.findById(userID);
@@ -262,7 +279,32 @@ public class UserService {
   }
 
   /**
-   * Checks if an user account is enabled.
+   * Ignores a user account, so that provider will not be able to offer vehicles anymore.
+   * @param userID
+   * @param operator
+   */
+  public void ignore(Long userID, String operator) {
+    Optional<User> userOptional = userRepository.findById(userID);
+    if (userOptional.isPresent()) {
+      User userToEnable = userOptional.get();
+      userToEnable.setEnabled(false);
+
+      loggingController.log(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s was ignored by operator %s.",
+                              userToEnable.getUsername(),
+                              operator
+                      )
+              )
+      );
+      userRepository.save(userToEnable);
+    }
+  }
+
+  /**
+   * Checks if a user account is enabled.
    * @param username
    * @return
    * @throws UserDoesNotExistException if there is no user account found in database
@@ -276,7 +318,33 @@ public class UserService {
   }
 
   /**
-   * Changes an users' password.
+   * Promotes a specified user to the next best user role.
+   * @param id of the user to promote
+   * @return promoted user
+   * @throws GenericServiceException if there is no user with such ID
+   */
+  public User promoteUser(long id) throws GenericServiceException {
+    User user = getUserById(id);
+    if(user.getUserRole().equals(UserRole.RENTER)) user.setUserRole(UserRole.PROVIDER);
+    else if(user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(UserRole.OPERATOR);
+    return userRepository.save(user);
+  }
+
+  /**
+   * Degrades a specified user to the next worse user role.
+   * @param id of the user to degrade
+   * @return degraded user
+   * @throws GenericServiceException if there is no user with such ID
+   */
+  public User degradeUser(long id) throws GenericServiceException {
+    User user = getUserById(id);
+    if(user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(UserRole.RENTER);
+    else if(user.getUserRole().equals(UserRole.OPERATOR)) user.setUserRole(UserRole.PROVIDER);
+    return userRepository.save(user);
+  }
+
+  /**
+   * Changes a users' password.
    * @param username
    * @param email
    * @param password

@@ -55,4 +55,12 @@ public interface IUserController {
    * see {@link UserService#isEnabled}
    */
   boolean isEnabled(String username) throws UserDoesNotExistException;
+
+  User getUserById(long id) throws GenericServiceException;
+  void enableUserById(long id);
+  void ignoreUserById(long id);
+  void blockUserById(long id);
+  void unblockUserById(long id);
+  void degradeUserById(long id) throws GenericServiceException;
+  void promoteUserById(long id) throws GenericServiceException;
 }

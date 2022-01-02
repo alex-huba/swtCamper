@@ -63,57 +63,82 @@ public class AccountViewController {
   @FXML
   public void initialize() {
     showLogBtn
-      .disableProperty()
-      .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
+            .disableProperty()
+            .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
     enableBtn.setDisable(true);
     blockBtn.setDisable(true);
     degradeBtn.setDisable(true);
     promoteBtn.setDisable(true);
 
     usersListView
-      .getSelectionModel()
-      .selectedItemProperty()
-      .addListener((observable, oldValue, newValue) -> {
-        if (newValue == null) {
-          enableBtn.setDisable(true);
-          blockBtn.setDisable(true);
-          degradeBtn.setDisable(true);
-          promoteBtn.setDisable(true);
-        } else {
-          selectedUser = newValue;
-
-          if (
-            !newValue.getId().equals(userController.getLoggedInUser().getId())
-          ) {
-            enableBtn.setDisable(false);
-            enableBtn.setText(
-              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
-            );
-            blockBtn.setDisable(false);
-            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
-
-            switch (newValue.getUserRole()) {
-              case RENTER:
+            .getSelectionModel()
+            .selectedItemProperty()
+            .addListener((observable, oldValue, newValue) -> {
+              if (newValue == null) {
+                enableBtn.setDisable(true);
+                blockBtn.setDisable(true);
                 degradeBtn.setDisable(true);
-                promoteBtn.setDisable(false);
-                break;
-              case PROVIDER:
-                degradeBtn.setDisable(false);
-                promoteBtn.setDisable(false);
-                break;
-              case OPERATOR:
-                degradeBtn.setDisable(false);
                 promoteBtn.setDisable(true);
-                break;
-            }
-          } else {
-            enableBtn.setDisable(true);
-            blockBtn.setDisable(true);
-            degradeBtn.setDisable(true);
-            promoteBtn.setDisable(true);
-          }
-        }
-      });
+              } else {
+                selectedUser = newValue;
+
+                if (
+                        !newValue.getId().equals(userController.getLoggedInUser().getId())
+                ) {
+                  if(!newValue.isLocked()) enableBtn.setDisable(false);
+                  enableBtn.setText(
+                          newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
+                  );
+                  enableBtn.setOnAction(event -> {
+                    if (newValue.isEnabled()) {
+                      userController.ignoreUserById(selectedUser.getId());
+                    } else {
+                      userController.enableUserById(selectedUser.getId());
+                    }
+                    try {
+                      operatorInit();
+                    } catch (GenericServiceException ignore) {
+                    }
+                  });
+
+                  blockBtn.setDisable(false);
+                  blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
+                  blockBtn.setOnAction(event -> {
+                    if (newValue.isLocked()) {
+                      userController.unblockUserById(selectedUser.getId());
+                    } else {
+                      userController.blockUserById(selectedUser.getId());
+                      // also reset user's status
+                      userController.ignoreUserById(selectedUser.getId());
+                    }
+                    try {
+                      operatorInit();
+                    } catch (GenericServiceException ignore) {
+                    }
+                  });
+
+                  switch (newValue.getUserRole()) {
+                    case RENTER:
+                      degradeBtn.setDisable(true);
+                      promoteBtn.setDisable(false);
+                      break;
+                    case PROVIDER:
+                      degradeBtn.setDisable(false);
+                      promoteBtn.setDisable(false);
+                      break;
+                    case OPERATOR:
+                      degradeBtn.setDisable(false);
+                      promoteBtn.setDisable(true);
+                      break;
+                  }
+                } else {
+                  enableBtn.setDisable(true);
+                  blockBtn.setDisable(true);
+                  degradeBtn.setDisable(true);
+                  promoteBtn.setDisable(true);
+                }
+              }
+            });
   }
 
   public void operatorInit() throws GenericServiceException {
@@ -171,19 +196,13 @@ public class AccountViewController {
     }
   }
 
-  public void enableUser() {
-    // TODO
+  public void degradeUser() throws GenericServiceException {
+    userController.degradeUserById(selectedUser.getId());
+    operatorInit();
   }
 
-  public void blockUser() {
-    // TODO
-  }
-
-  public void degradeUser() {
-    // TODO
-  }
-
-  public void promoteUser() {
-    // TODO
+  public void promoteUser() throws GenericServiceException {
+    userController.promoteUserById(selectedUser.getId());
+    operatorInit();
   }
 }
