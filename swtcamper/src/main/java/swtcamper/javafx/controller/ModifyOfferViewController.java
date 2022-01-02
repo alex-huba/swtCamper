@@ -381,7 +381,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       String[] pictureURLs = null;
 
       OfferDTO offerDTO = offerController.create(
-        userController.getLoggedInUser(),
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),

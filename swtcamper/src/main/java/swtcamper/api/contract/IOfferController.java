@@ -12,7 +12,6 @@ public interface IOfferController {
   Offer getOfferById(long id) throws GenericServiceException;
 
   OfferDTO create(
-    User creator,
     // Offer-Parameter
     String title,
     String location,

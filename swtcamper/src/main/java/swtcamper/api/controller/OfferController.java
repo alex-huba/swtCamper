@@ -68,7 +68,6 @@ public class OfferController implements IOfferController {
 
   /**
    * Creates a new offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param creator {@link User} that wants to create the new offer
    * @param title of the new offer
    * @param location where the {@link Vehicle} can be picked up from
    * @param contact How the provider can be reached
@@ -99,7 +98,6 @@ public class OfferController implements IOfferController {
    * @return {@link OfferDTO} of the new offer
    */
   public OfferDTO create(
-    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -133,7 +131,7 @@ public class OfferController implements IOfferController {
   ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.create(
-        creator,
+        userController.getLoggedInUser(),
         //Offer-Parameter
         title,
         location,
@@ -163,15 +161,13 @@ public class OfferController implements IOfferController {
         shower,
         toilet,
         kitchenUnit,
-        fridge,
-        modelMapper.userToUserDTO(userController.getLoggedInUser())
+        fridge
       )
     );
   }
 
   /**
-   * Updated an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param creator {@link User} that wants to create the new offer
+   * Updates an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
    * @param title of the new offer
    * @param location where the {@link Vehicle} can be picked up from
    * @param contact How the provider can be reached

@@ -108,7 +108,7 @@ public class NavigationViewController {
       // Enable provider functionalities
     } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
       toAdd.add(homeButton);
-      toAdd.add(newOfferButton);
+      if (isEnabled) toAdd.add(newOfferButton);
       if (isEnabled) toAdd.add(activeOffersButton);
       toAdd.add(dealHistoryButton);
       if (isEnabled) toAdd.add(excludeButton);

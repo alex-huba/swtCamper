@@ -60,10 +60,9 @@ public class OfferService {
     boolean shower,
     boolean toilet,
     boolean kitchenUnit,
-    boolean fridge,
-    UserDTO user
+    boolean fridge
   ) throws GenericServiceException {
-    if (!user.isEnabled() || user.isLocked()) {
+    if (!creator.isEnabled() || creator.isLocked()) {
       throw new GenericServiceException(
         "User cannot create new offers as long as he/she is locked or not enabled."
       );
@@ -118,7 +117,7 @@ public class OfferService {
         String.format(
           "New vehicle with ID %s created by user %s.",
           newVehicleId,
-          user.getUsername()
+          creator.getUsername()
         )
       )
     );
@@ -130,7 +129,7 @@ public class OfferService {
         String.format(
           "New offer with ID %s created by user %s.",
           newOfferId,
-          user.getUsername()
+          creator.getUsername()
         )
       )
     );

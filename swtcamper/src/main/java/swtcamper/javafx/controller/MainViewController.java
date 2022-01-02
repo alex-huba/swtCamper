@@ -133,7 +133,7 @@ public class MainViewController {
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
-    if (latestLoggedInStatus != null && latestView != null) {
+    if (userController.getLoggedInUser()!=null&&latestLoggedInStatus != null && latestView != null) {
       // get the latest update for the logged-in user to check if there were made any changes
       User checkUser = userController.getUserById(
         userController.getLoggedInUser().getId()
