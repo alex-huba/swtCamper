@@ -131,7 +131,6 @@ public class MyOffersViewController {
       });
 
       // check if offer is rented right now, in order to prevent the provider from updating or deleting it
-      // TODO: auch im {@link swtcamper.backend.services.BookingService} abchecken!
       boolean isOfferRentedRightNow = false;
       for (Booking booking : bookingController.getAllBookings()) {
         if (

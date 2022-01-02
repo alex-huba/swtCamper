@@ -58,12 +58,22 @@ public class BookingController implements IBookingController {
   public BookingDTO update(
     Long bookingID,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.update(bookingID, startDate, endDate, active)
+        bookingService.update(bookingID, startDate, endDate)
+      );
+    } catch (GenericServiceException e) {
+      throw new GenericServiceException(e.getMessage());
+    }
+  }
+
+  @Override
+  public BookingDTO activate(Long bookingID) throws GenericServiceException {
+    try {
+      return modelMapper.bookingToBookingDTO(
+              bookingService.activate(bookingID)
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
@@ -81,6 +91,7 @@ public class BookingController implements IBookingController {
     }
   }
 
+  @Override
   public void delete(Long bookingID) throws GenericServiceException {
     bookingService.delete(bookingID);
   }

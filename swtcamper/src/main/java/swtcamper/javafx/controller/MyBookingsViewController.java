@@ -145,11 +145,8 @@ public class MyBookingsViewController {
         acceptButton.setDisable(anotherBookingWithSameOfferIsActive(booking));
         acceptButton.setOnAction(event -> {
           try {
-            bookingController.update(
-              booking.getId(),
-              booking.getStartDate(),
-              booking.getEndDate(),
-              true
+            bookingController.activate(
+              booking.getId()
             );
             reloadData();
           } catch (GenericServiceException ignore) {}
@@ -179,11 +176,8 @@ public class MyBookingsViewController {
 
           if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-              bookingController.update(
-                booking.getId(),
-                booking.getStartDate(),
-                booking.getEndDate(),
-                false
+              bookingController.deactivate(
+                booking.getId()
               );
               //            bookingController.delete(booking.getId());
             } catch (GenericServiceException ignore) {}
@@ -314,11 +308,8 @@ public class MyBookingsViewController {
           if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
               if (booking.isActive()) {
-                bookingController.update(
-                  booking.getId(),
-                  booking.getStartDate(),
-                  booking.getEndDate(),
-                  false
+                bookingController.deactivate(
+                  booking.getId()
                 );
               } else {
                 bookingController.delete(booking.getId());

@@ -256,6 +256,15 @@ public class OfferViewController {
         ) {
           // ... but make it possible to make changes then
           modifyButton.setVisible(true);
+            // ... if it's not booked right now
+          boolean offerIsInRent = false;
+          for (Booking booking : bookingController.getBookingsForUser(userController.getLoggedInUser())) {
+            if (booking.getOffer().getOfferID() == viewedOffer.getID() && booking.isActive()) {
+              offerIsInRent = true;
+              break;
+            }
+          }
+          modifyButton.setDisable(offerIsInRent);
         } else {
           bookingButton.setVisible(true);
           dateLabel.setVisible(true);
