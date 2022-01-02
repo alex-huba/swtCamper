@@ -7,6 +7,10 @@ public interface IOffer {
 
   public void setOfferID(long offerID);
 
+  User getCreator();
+
+  void setCreator(User creator);
+
   public OfferedObjectType getOfferedObjectType();
 
   public void setOfferedObjectType(OfferedObjectType offeredObjectType);

@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleFeatures;
-import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -31,12 +28,12 @@ public class OfferService {
 
   public Offer create(
     // TODO validation
-
+    User creator,
     // Offer-Parameter
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     long price,
     boolean minAge25,
     boolean borderCrossingAllowed,
@@ -94,11 +91,12 @@ public class OfferService {
     vehicle.setPictureURLs(pictureURLs);
 
     Offer offer = new Offer(
+      creator,
       vehicle,
       title,
       location,
       contact,
-      description,
+      particularities,
       price,
       minAge25,
       borderCrossingAllowed,
@@ -110,12 +108,13 @@ public class OfferService {
 
   public Offer update(
     long offerId,
+    User creator,
     Vehicle offeredObject,
     // Offer-Parameter
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     ArrayList<Long> bookings,
     long price,
     boolean active,
@@ -184,12 +183,13 @@ public class OfferService {
     vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
 
+    offer.setCreator(creator);
     offer.setOfferedObject(vehicle);
     offer.setBookings(bookings);
     offer.setTitle(title);
     offer.setLocation(location);
     offer.setContact(contact);
-    offer.setParticularities(description);
+    offer.setParticularities(particularities);
     offer.setPrice(price);
     offer.setActive(active);
     offer.setMinAge25(minAge25);

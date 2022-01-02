@@ -17,6 +17,8 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
+  private User loggedInUser;
+
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
@@ -75,6 +77,14 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
+
   /**
    * Checks if user exists in database and gets information about user role of the user if it does.
    * @param username
@@ -87,15 +97,16 @@ public class UserService {
     throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (userRepository.existsByUsernameAndPassword(username, password)) {
-      UserRole userRole;
-      Optional<User> user = userRepository.findByUsername(username);
-      if (user.isPresent()) {
-        userRole = user.get().getUserRole();
+      User user;
+      Optional<User> userOptional = userRepository.findByUsername(username);
+      if (userOptional.isPresent()) {
+        user = userOptional.get();
+        this.setLoggedInUser(user);
       } else {
         throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
-      return userRole;
+      return user.getUserRole();
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {
