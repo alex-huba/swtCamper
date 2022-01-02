@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -723,12 +724,21 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
-      Button deleteBtn = new Button(" x ");
+      Image deleteButtonImage = new Image(
+        "file:///C:\\Users\\User\\Desktop\\WS2122\\SWL\\SWTCamper\\swtcamper\\src\\main\\resources\\icons\\delete.png"
+      );
+      ImageView deleteButtonImageView = new ImageView(deleteButtonImage);
+      deleteButtonImageView.setFitHeight(15);
+      deleteButtonImageView.setFitWidth(15);
+      Button deleteBtn = new Button();
+      deleteBtn.setGraphic(deleteButtonImageView);
+
       deleteBtn.setOnAction(e -> removePicture(file.toString()));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
+      imageBox.setAlignment(Pos.BASELINE_CENTER);
 
       picturesHbox.getChildren().add(imageBox);
     }
