@@ -90,8 +90,11 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled, String startPage)
-    throws GenericServiceException {
+  public void login(
+    UserRoleDTO userRoleDTO,
+    boolean isEnabled,
+    String startPage
+  ) throws GenericServiceException {
     navBarItems.getChildren().clear();
 
     List<Button> toAdd = new ArrayList<>();

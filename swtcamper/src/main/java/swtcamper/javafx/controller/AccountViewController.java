@@ -63,103 +63,101 @@ public class AccountViewController {
   @FXML
   public void initialize() {
     showLogBtn
-            .disableProperty()
-            .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
+      .disableProperty()
+      .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
     enableBtn.setDisable(true);
     blockBtn.setDisable(true);
     degradeBtn.setDisable(true);
     promoteBtn.setDisable(true);
 
     usersListView
-            .getSelectionModel()
-            .selectedItemProperty()
-            .addListener((observable, oldValue, newValue) -> {
-              if (newValue == null) {
-                enableBtn.setDisable(true);
-                blockBtn.setDisable(true);
-                degradeBtn.setDisable(true);
-                promoteBtn.setDisable(true);
+      .getSelectionModel()
+      .selectedItemProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue == null) {
+          enableBtn.setDisable(true);
+          blockBtn.setDisable(true);
+          degradeBtn.setDisable(true);
+          promoteBtn.setDisable(true);
+        } else {
+          selectedUser = newValue;
+
+          if (
+            !newValue.getId().equals(userController.getLoggedInUser().getId())
+          ) {
+            if (!newValue.isLocked()) enableBtn.setDisable(false);
+            enableBtn.setText(
+              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
+            );
+            enableBtn.setOnAction(event -> {
+              if (newValue.isEnabled()) {
+                userController.ignoreUserById(selectedUser.getId());
               } else {
-                selectedUser = newValue;
-
-                if (
-                        !newValue.getId().equals(userController.getLoggedInUser().getId())
-                ) {
-                  if(!newValue.isLocked()) enableBtn.setDisable(false);
-                  enableBtn.setText(
-                          newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
-                  );
-                  enableBtn.setOnAction(event -> {
-                    if (newValue.isEnabled()) {
-                      userController.ignoreUserById(selectedUser.getId());
-                    } else {
-                      userController.enableUserById(selectedUser.getId());
-                    }
-                    try {
-                      operatorInit();
-                    } catch (GenericServiceException ignore) {
-                    }
-                  });
-
-                  blockBtn.setDisable(false);
-                  blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
-                  blockBtn.setOnAction(event -> {
-                    if (newValue.isLocked()) {
-                      userController.unblockUserById(selectedUser.getId());
-                    } else {
-                      userController.blockUserById(selectedUser.getId());
-                      // also reset user's status
-                      userController.ignoreUserById(selectedUser.getId());
-                    }
-                    try {
-                      operatorInit();
-                    } catch (GenericServiceException ignore) {
-                    }
-                  });
-
-                  switch (newValue.getUserRole()) {
-                    case RENTER:
-                      degradeBtn.setDisable(true);
-                      promoteBtn.setDisable(false);
-                      break;
-                    case PROVIDER:
-                      degradeBtn.setDisable(false);
-                      promoteBtn.setDisable(false);
-                      break;
-                    case OPERATOR:
-                      degradeBtn.setDisable(false);
-                      promoteBtn.setDisable(true);
-                      break;
-                  }
-                } else {
-                  enableBtn.setDisable(true);
-                  blockBtn.setDisable(true);
-                  degradeBtn.setDisable(true);
-                  promoteBtn.setDisable(true);
-                }
+                userController.enableUserById(selectedUser.getId());
               }
+              try {
+                operatorInit();
+              } catch (GenericServiceException ignore) {}
             });
+
+            blockBtn.setDisable(false);
+            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
+            blockBtn.setOnAction(event -> {
+              if (newValue.isLocked()) {
+                userController.unblockUserById(selectedUser.getId());
+              } else {
+                userController.blockUserById(selectedUser.getId());
+                // also reset user's status
+                userController.ignoreUserById(selectedUser.getId());
+              }
+              try {
+                operatorInit();
+              } catch (GenericServiceException ignore) {}
+            });
+
+            switch (newValue.getUserRole()) {
+              case RENTER:
+                degradeBtn.setDisable(true);
+                promoteBtn.setDisable(false);
+                break;
+              case PROVIDER:
+                degradeBtn.setDisable(false);
+                promoteBtn.setDisable(false);
+                break;
+              case OPERATOR:
+                degradeBtn.setDisable(false);
+                promoteBtn.setDisable(true);
+                break;
+            }
+          } else {
+            enableBtn.setDisable(true);
+            blockBtn.setDisable(true);
+            degradeBtn.setDisable(true);
+            promoteBtn.setDisable(true);
+          }
+        }
+      });
   }
 
   public void operatorInit() throws GenericServiceException {
-      buttonToolbar.getItems().clear();
+    buttonToolbar.getItems().clear();
 
-      Separator verticalSeparator = new Separator();
-      verticalSeparator.setOrientation(Orientation.VERTICAL);
+    Separator verticalSeparator = new Separator();
+    verticalSeparator.setOrientation(Orientation.VERTICAL);
 
-      buttonToolbar
-        .getItems()
-        .addAll(
-          showLogBtn,
-          enableBtn,
-          blockBtn,
-          degradeBtn,
-          promoteBtn,
-          verticalSeparator,
-          logoutBtn
-        );
+    buttonToolbar
+      .getItems()
+      .addAll(
+        showLogBtn,
+        enableBtn,
+        blockBtn,
+        degradeBtn,
+        promoteBtn,
+        verticalSeparator,
+        logoutBtn
+      );
 
-      operatorDashboard.setVisible(true);
+    operatorDashboard.setVisible(true);
 
     logListView.setItems(
       FXCollections.observableArrayList(loggingController.getAllLogMessages())
@@ -170,9 +168,9 @@ public class AccountViewController {
   }
 
   public void normalUserInit() {
-      buttonToolbar.getItems().clear();
-      buttonToolbar.getItems().add(logoutBtn);
-      operatorDashboard.setVisible(false);
+    buttonToolbar.getItems().clear();
+    buttonToolbar.getItems().add(logoutBtn);
+    operatorDashboard.setVisible(false);
   }
 
   public void logout() throws GenericServiceException {

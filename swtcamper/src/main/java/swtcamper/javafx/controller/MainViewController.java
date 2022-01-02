@@ -228,12 +228,15 @@ public class MainViewController {
   }
 
   public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
-          throws GenericServiceException {
-    login(userRoleDTO,isEnabled,startPageAfterLogin);
+    throws GenericServiceException {
+    login(userRoleDTO, isEnabled, startPageAfterLogin);
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled, String startPage)
-          throws GenericServiceException {
+  public void login(
+    UserRoleDTO userRoleDTO,
+    boolean isEnabled,
+    String startPage
+  ) throws GenericServiceException {
     navigationViewController.login(userRoleDTO, isEnabled, startPage);
   }
 

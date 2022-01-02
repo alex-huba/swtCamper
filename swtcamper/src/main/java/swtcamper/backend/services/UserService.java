@@ -115,7 +115,9 @@ public class UserService {
     if (userOptional.isPresent()) {
       return userOptional.get();
     }
-    throw new GenericServiceException("There is no user with ID " + userId + ".");
+    throw new GenericServiceException(
+      "There is no user with ID " + userId + "."
+    );
   }
 
   /**
@@ -290,14 +292,14 @@ public class UserService {
       userToEnable.setEnabled(false);
 
       loggingController.log(
-              new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was ignored by operator %s.",
-                              userToEnable.getUsername(),
-                              operator
-                      )
-              )
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was ignored by operator %s.",
+            userToEnable.getUsername(),
+            operator
+          )
+        )
       );
       userRepository.save(userToEnable);
     }
@@ -325,8 +327,11 @@ public class UserService {
    */
   public User promoteUser(long id) throws GenericServiceException {
     User user = getUserById(id);
-    if(user.getUserRole().equals(UserRole.RENTER)) user.setUserRole(UserRole.PROVIDER);
-    else if(user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(UserRole.OPERATOR);
+    if (user.getUserRole().equals(UserRole.RENTER)) user.setUserRole(
+      UserRole.PROVIDER
+    ); else if (user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(
+      UserRole.OPERATOR
+    );
     return userRepository.save(user);
   }
 
@@ -338,8 +343,11 @@ public class UserService {
    */
   public User degradeUser(long id) throws GenericServiceException {
     User user = getUserById(id);
-    if(user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(UserRole.RENTER);
-    else if(user.getUserRole().equals(UserRole.OPERATOR)) user.setUserRole(UserRole.PROVIDER);
+    if (user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(
+      UserRole.RENTER
+    ); else if (user.getUserRole().equals(UserRole.OPERATOR)) user.setUserRole(
+      UserRole.PROVIDER
+    );
     return userRepository.save(user);
   }
 
