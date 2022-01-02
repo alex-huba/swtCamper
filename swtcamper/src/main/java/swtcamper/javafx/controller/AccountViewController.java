@@ -117,11 +117,10 @@ public class AccountViewController {
   }
 
   public void operatorInit() throws GenericServiceException {
-    if (!accountRootPane.getChildren().contains(operatorDashboard)) {
-      buttonToolbar.getItems().removeIf(node -> true);
+      buttonToolbar.getItems().clear();
 
-      Separator verticalSeperator = new Separator();
-      verticalSeperator.setOrientation(Orientation.VERTICAL);
+      Separator verticalSeparator = new Separator();
+      verticalSeparator.setOrientation(Orientation.VERTICAL);
 
       buttonToolbar
         .getItems()
@@ -131,12 +130,11 @@ public class AccountViewController {
           blockBtn,
           degradeBtn,
           promoteBtn,
-          verticalSeperator,
+          verticalSeparator,
           logoutBtn
         );
-      // TODO: passiert nicht wenn sich als erstes ein Nicht-Operator einloggt
-      accountRootPane.getChildren().add(operatorDashboard);
-    }
+
+      operatorDashboard.setVisible(true);
 
     logListView.setItems(
       FXCollections.observableArrayList(loggingController.getAllLogMessages())
@@ -147,11 +145,9 @@ public class AccountViewController {
   }
 
   public void normalUserInit() {
-    if (accountRootPane.getChildren().contains(operatorDashboard)) {
-      buttonToolbar.getItems().removeIf(node -> true);
+      buttonToolbar.getItems().clear();
       buttonToolbar.getItems().add(logoutBtn);
-      accountRootPane.getChildren().remove(operatorDashboard);
-    }
+      operatorDashboard.setVisible(false);
   }
 
   public void logout() throws GenericServiceException {
