@@ -45,6 +45,180 @@ public class MyBookingsViewController {
   @FXML
   public void initialize() {}
 
+  public void reloadData() {
+    bookingsListVBox.getChildren().clear();
+    if (
+            !userController.getLoggedInUser().getUserRole().equals(UserRole.RENTER)
+    ) {
+      addRequestsForProvider();
+      Separator separator = new Separator();
+      separator.setOrientation(Orientation.HORIZONTAL);
+      bookingsListVBox.getChildren().add(separator);
+    }
+    addRequestsFromRenter();
+  }
+
+  /**
+   * get all booking requests for current user (as provider)
+   */
+  private void addRequestsForProvider() {
+    Label renterLabel = new Label("Buchungsanfragen zu meinen Anzeigen:");
+    renterLabel.setStyle("-fx-font-weight: bold");
+    bookingsListVBox.getChildren().add(renterLabel);
+
+    List<Booking> bookingList = bookingController.getBookingsForUser(
+            userController.getLoggedInUser()
+    );
+
+    if (bookingList.size() > 0) {
+      // create a card for each booking request
+      for (Booking booking : bookingList) {
+        String vehicleType = booking
+                .getOffer()
+                .getOfferedObject()
+                .getVehicleFeatures()
+                .getVehicleType()
+                .toString();
+        String vehicle =
+                vehicleType.charAt(0) + vehicleType.substring(1).toLowerCase();
+
+        Label bookingLabel = new Label(
+                !booking.isActive()
+                        ? String.format(
+                        "%s will deinen %s %s %s von %s bis %s mieten.",
+                        booking.getRenter().getUsername(),
+                        vehicle,
+                        booking
+                                .getOffer()
+                                .getOfferedObject()
+                                .getVehicleFeatures()
+                                .getMake(),
+                        booking
+                                .getOffer()
+                                .getOfferedObject()
+                                .getVehicleFeatures()
+                                .getModel(),
+                        booking
+                                .getStartDate()
+                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+                        booking
+                                .getEndDate()
+                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))
+                )
+                        : String.format(
+                        "Dein %s %s %s ist von %s bis %s vermietet an %s.",
+                        vehicle,
+                        booking
+                                .getOffer()
+                                .getOfferedObject()
+                                .getVehicleFeatures()
+                                .getMake(),
+                        booking
+                                .getOffer()
+                                .getOfferedObject()
+                                .getVehicleFeatures()
+                                .getModel(),
+                        booking
+                                .getStartDate()
+                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+                        booking
+                                .getEndDate()
+                                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
+                        booking.getRenter().getUsername()
+                )
+        );
+
+        // link to visit related offer
+        Hyperlink linkToOffer = new Hyperlink("(zur Anzeige)");
+        linkToOffer.setAlignment(Pos.TOP_CENTER);
+        linkToOffer.setOnAction(event -> {
+          try {
+            mainViewController.changeView("viewOffer");
+            offerViewController.initialize(
+                    modelMapper.offerToOfferDTO(booking.getOffer()),
+                    false
+            );
+          } catch (GenericServiceException ignore) {}
+        });
+
+        HBox bookingInfoHBox = new HBox(bookingLabel, linkToOffer);
+        bookingInfoHBox.setSpacing(10);
+
+        // Button for accepting the booking request
+        Button acceptButton = new Button("Annehmen");
+        acceptButton.getStyleClass().add("bg-primary");
+        acceptButton.setDisable(anotherBookingWithSameOfferIsActive(booking));
+        acceptButton.setOnAction(event -> {
+          try {
+            bookingController.update(
+                    booking.getId(),
+                    booking.getStartDate(),
+                    booking.getEndDate(),
+                    true
+            );
+            reloadData();
+          } catch (GenericServiceException ignore) {}
+        });
+
+        // Button for rejecting the booking request
+        Button rejectButton = new Button("Ablehnen");
+        rejectButton.getStyleClass().add("bg-warning");
+        rejectButton.setDisable(booking.isActive());
+        rejectButton.setOnAction(event -> {
+          try {
+            bookingController.delete(booking.getId());
+            reloadData();
+          } catch (GenericServiceException ignore) {}
+        });
+
+        // Button for aborting the booking
+        Button abortButton = new Button("Buchung beenden");
+        abortButton.getStyleClass().add("bg-danger");
+        abortButton.setDisable(!booking.isActive());
+        abortButton.setOnAction(event -> {
+          Alert confirmDelete = new Alert(
+                  Alert.AlertType.WARNING,
+                  "Willst du diese Buchung wirklich frühzeitig beenden?"
+          );
+          Optional<ButtonType> result = confirmDelete.showAndWait();
+
+          if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+              bookingController.update(
+                      booking.getId(),
+                      booking.getStartDate(),
+                      booking.getEndDate(),
+                      false
+              );
+              //            bookingController.delete(booking.getId());
+            } catch (GenericServiceException ignore) {}
+          }
+          reloadData();
+        });
+
+        // button box
+        HBox buttonHBox = new HBox(acceptButton, rejectButton, abortButton);
+        buttonHBox.setSpacing(5);
+
+        // card
+        VBox bookingVBox = new VBox(bookingInfoHBox, buttonHBox);
+        bookingVBox.setFillWidth(true);
+        bookingVBox.setSpacing(5);
+        bookingVBox.setStyle(
+                "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
+        );
+
+        bookingsListVBox.getChildren().add(bookingVBox);
+      }
+    } else {
+      Label bookingLabel = new Label(
+              "\tIm Moment gibt es keine Buchungsanfragen zu einer deiner Anzeigen."
+      );
+      bookingLabel.setDisable(true);
+      bookingsListVBox.getChildren().add(bookingLabel);
+    }
+  }
+
   /**
    * get all booking requests from current user (as renter)
    */
@@ -183,199 +357,16 @@ public class MyBookingsViewController {
   }
 
   /**
-   * get all booking requests for current user (as provider)
-   */
-  private void addRequestsForProvider() {
-    Label renterLabel = new Label("Buchungsanfragen zu meinen Anzeigen:");
-    renterLabel.setStyle("-fx-font-weight: bold");
-    bookingsListVBox.getChildren().add(renterLabel);
-
-    List<Booking> bookingList = bookingController.getBookingsForUser(
-      userController.getLoggedInUser()
-    );
-
-    if (bookingList.size() > 0) {
-      // create a card for each booking request
-      for (Booking booking : bookingList) {
-        String vehicleType = booking
-          .getOffer()
-          .getOfferedObject()
-          .getVehicleFeatures()
-          .getVehicleType()
-          .toString();
-        String vehicle =
-          vehicleType.charAt(0) + vehicleType.substring(1).toLowerCase();
-
-        Label bookingLabel = new Label(
-          !booking.isActive()
-            ? String.format(
-              "%s will deinen %s %s %s von %s bis %s mieten.",
-              booking.getRenter().getUsername(),
-              vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
-              booking
-                .getStartDate()
-                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-              booking
-                .getEndDate()
-                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))
-            )
-            : String.format(
-              "Dein %s %s %s ist von %s bis %s vermietet an %s.",
-              vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
-              booking
-                .getStartDate()
-                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-              booking
-                .getEndDate()
-                .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
-              booking.getRenter().getUsername()
-            )
-        );
-
-        // link to visit related offer
-        Hyperlink linkToOffer = new Hyperlink("(zur Anzeige)");
-        linkToOffer.setAlignment(Pos.TOP_CENTER);
-        linkToOffer.setOnAction(event -> {
-          try {
-            mainViewController.changeView("viewOffer");
-            offerViewController.initialize(
-              modelMapper.offerToOfferDTO(booking.getOffer()),
-              false
-            );
-          } catch (GenericServiceException ignore) {}
-        });
-
-        HBox bookingInfoHBox = new HBox(bookingLabel, linkToOffer);
-        bookingInfoHBox.setSpacing(10);
-
-        // Button for accepting the booking request
-        Button acceptButton = new Button("Annehmen");
-        acceptButton.getStyleClass().add("bg-primary");
-        acceptButton.setDisable(anotherBookingWithSameOfferIsActive(booking));
-        acceptButton.setOnAction(event -> {
-          try {
-            bookingController.update(
-              booking.getId(),
-              booking.getStartDate(),
-              booking.getEndDate(),
-              true
-            );
-            reloadData();
-          } catch (GenericServiceException ignore) {}
-        });
-
-        // Button for rejecting the booking request
-        Button rejectButton = new Button("Ablehnen");
-        rejectButton.getStyleClass().add("bg-warning");
-        rejectButton.setDisable(booking.isActive());
-        rejectButton.setOnAction(event -> {
-          try {
-            bookingController.delete(booking.getId());
-            reloadData();
-          } catch (GenericServiceException ignore) {}
-        });
-
-        // Button for aborting the booking
-        Button abortButton = new Button("Buchung beenden");
-        abortButton.getStyleClass().add("bg-danger");
-        abortButton.setDisable(!booking.isActive());
-        abortButton.setOnAction(event -> {
-          Alert confirmDelete = new Alert(
-            Alert.AlertType.WARNING,
-            "Willst du diese Buchung wirklich frühzeitig beenden?"
-          );
-          Optional<ButtonType> result = confirmDelete.showAndWait();
-
-          if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-              bookingController.update(
-                booking.getId(),
-                booking.getStartDate(),
-                booking.getEndDate(),
-                false
-              );
-              //            bookingController.delete(booking.getId());
-            } catch (GenericServiceException ignore) {}
-          }
-          reloadData();
-        });
-
-        // button box
-        HBox buttonHBox = new HBox(acceptButton, rejectButton, abortButton);
-        buttonHBox.setSpacing(5);
-
-        // card
-        VBox bookingVBox = new VBox(bookingInfoHBox, buttonHBox);
-        bookingVBox.setFillWidth(true);
-        bookingVBox.setSpacing(5);
-        bookingVBox.setStyle(
-          "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
-        );
-
-        bookingsListVBox.getChildren().add(bookingVBox);
-      }
-    } else {
-      Label bookingLabel = new Label(
-        "\tIm Moment gibt es keine Buchungsanfragen zu einer deiner Anzeigen."
-      );
-      bookingLabel.setDisable(true);
-      bookingsListVBox.getChildren().add(bookingLabel);
-    }
-  }
-
-  /**
    * Checks if the same offer is also in another booking that is active already
    * @param booking the {@link Booking} that shall be evaluated
    * @return true if the offer is already in another active booking, false if it is available
    */
   private boolean anotherBookingWithSameOfferIsActive(Booking booking) {
-    if (booking.isActive()) return true;
-    if (
-      bookingController
-        .getBookingsForUser(userController.getLoggedInUser())
-        .stream()
-        .noneMatch(Booking::isActive)
-    ) return false;
-    for (Booking i : bookingController.getBookingsForUser(
-      userController.getLoggedInUser()
-    )) {
-      if (i.getOffer().getOfferID() == booking.getOffer().getOfferID()) {
-        return !i.isActive();
+    for (Booking bookingI : bookingController.getBookingsForUser(userController.getLoggedInUser())) {
+      if (bookingI.getOffer().getOfferID() == booking.getOffer().getOfferID() && bookingI.isActive()) {
+        return true;
       }
     }
     return false;
-  }
-
-  public void reloadData() {
-    bookingsListVBox.getChildren().clear();
-    if (
-      !userController.getLoggedInUser().getUserRole().equals(UserRole.RENTER)
-    ) {
-      addRequestsForProvider();
-      Separator separator = new Separator();
-      separator.setOrientation(Orientation.HORIZONTAL);
-      bookingsListVBox.getChildren().add(separator);
-    }
-    addRequestsFromRenter();
   }
 }
