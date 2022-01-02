@@ -73,7 +73,7 @@ public class BookingController implements IBookingController {
   public BookingDTO activate(Long bookingID) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-              bookingService.activate(bookingID)
+        bookingService.activate(bookingID)
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());

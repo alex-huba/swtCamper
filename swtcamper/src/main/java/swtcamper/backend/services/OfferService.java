@@ -147,16 +147,22 @@ public class OfferService {
   ) throws GenericServiceException {
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
     Offer offer;
-    if(offerResponse.isPresent()) {
+    if (offerResponse.isPresent()) {
       offer = offerResponse.get();
     } else {
-      throw new GenericServiceException("There is no offer with specified ID " + offerId);
+      throw new GenericServiceException(
+        "There is no offer with specified ID " + offerId
+      );
     }
 
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
       if (booking.getOffer().getOfferID() == offerId) {
-        throw new GenericServiceException("Cannot modify offer with ID " + offerId + " while it is part of an active booking.");
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          offerId +
+          " while it is part of an active booking."
+        );
       }
     }
 
@@ -262,7 +268,11 @@ public class OfferService {
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
       if (booking.getOffer().getOfferID() == id) {
-        throw new GenericServiceException("Cannot modify offer with ID " + id + " while it is part of an active booking.");
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          id +
+          " while it is part of an active booking."
+        );
       }
     }
     try {

@@ -37,18 +37,19 @@ public class BookingService {
     return bookingRepository.save(new Booking(user, offer, startDate, endDate));
   }
 
-  public Booking update(
-    Long bookingID,
-    LocalDate startDate,
-    LocalDate endDate
-  ) throws GenericServiceException {
+  public Booking update(Long bookingID, LocalDate startDate, LocalDate endDate)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
       if (booking.isActive()) {
-        throw new GenericServiceException("The booking with ID " + bookingID + " cannot be deleted since it is still active.");
+        throw new GenericServiceException(
+          "The booking with ID " +
+          bookingID +
+          " cannot be deleted since it is still active."
+        );
       }
       booking.setStartDate(startDate);
       booking.setEndDate(endDate);
@@ -72,7 +73,7 @@ public class BookingService {
       return bookingRepository.save(booking);
     }
     throw new GenericServiceException(
-            "Booking not found. Activation not possible."
+      "Booking not found. Activation not possible."
     );
   }
 
@@ -99,12 +100,18 @@ public class BookingService {
       Booking booking = bookingOptional.get();
       // can't delete if booking is active
       if (booking.isActive()) {
-        throw new GenericServiceException("The booking with ID " + bookingID + " cannot be deleted since it is still active.");
+        throw new GenericServiceException(
+          "The booking with ID " +
+          bookingID +
+          " cannot be deleted since it is still active."
+        );
       }
       try {
         bookingRepository.deleteById(bookingID);
       } catch (IllegalArgumentException e) {
-        throw new GenericServiceException("The passed ID is not available: " + e);
+        throw new GenericServiceException(
+          "The passed ID is not available: " + e
+        );
       }
     }
   }

@@ -15,11 +15,8 @@ public interface IBookingController {
     boolean active
   ) throws UserDoesNotExistException, GenericServiceException;
 
-  BookingDTO update(
-    Long bookingID,
-    LocalDate startDate,
-    LocalDate endDate
-  ) throws GenericServiceException;
+  BookingDTO update(Long bookingID, LocalDate startDate, LocalDate endDate)
+    throws GenericServiceException;
 
   /**
    * Updates a booking by setting active = true.
