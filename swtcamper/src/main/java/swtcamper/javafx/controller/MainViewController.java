@@ -2,7 +2,6 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -134,64 +133,95 @@ public class MainViewController {
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
-    if(latestLoggedInStatus!=null && latestView!=null) {
+    if (latestLoggedInStatus != null && latestView != null) {
       // get the latest update for the logged-in user to check if there were made any changes
-      User checkUser = userController.getUserById(userController.getLoggedInUser().getId());
-      if(!updateHappening) {
+      User checkUser = userController.getUserById(
+        userController.getLoggedInUser().getId()
+      );
+      if (!updateHappening) {
         // user-role has changed
-        if (!checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())) {
+        if (
+          !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
+        ) {
           updateHappening = true;
           Platform.runLater(() -> {
             try {
-              handleInformationMessage("Deine Rolle hat sich geändert zu " + checkUser.getUserRole() + "!\nDie Oberfläche wird sich aktualisieren");
-              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              handleInformationMessage(
+                "Deine Rolle hat sich geändert zu " +
+                checkUser.getUserRole() +
+                "!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(
+                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
+                checkUser.isEnabled(),
+                "home"
+              );
               updateHappening = false;
-            } catch (GenericServiceException ignore) {
-            }
+            } catch (GenericServiceException ignore) {}
           });
           // user got enabled
         } else if (checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()) {
           updateHappening = true;
           Platform.runLater(() -> {
             try {
-              handleInformationMessage("Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren");
-              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), latestView);
+              handleInformationMessage(
+                "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(
+                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
+                checkUser.isEnabled(),
+                latestView
+              );
               updateHappening = false;
-            } catch (GenericServiceException ignore) {
-            }
+            } catch (GenericServiceException ignore) {}
           });
           // user got disabled
         } else if (!checkUser.isEnabled() && latestLoggedInStatus.isEnabled()) {
           updateHappening = true;
           Platform.runLater(() -> {
             try {
-              handleInformationMessage("Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren");
-              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              handleInformationMessage(
+                "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(
+                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
+                checkUser.isEnabled(),
+                "home"
+              );
               updateHappening = false;
-            } catch (GenericServiceException ignore) {
-            }
+            } catch (GenericServiceException ignore) {}
           });
           // user got locked
         } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
           updateHappening = true;
           Platform.runLater(() -> {
             try {
-              handleInformationMessage("Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren");
-              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              handleInformationMessage(
+                "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(
+                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
+                checkUser.isEnabled(),
+                "home"
+              );
               updateHappening = false;
-            } catch (GenericServiceException ignore) {
-            }
+            } catch (GenericServiceException ignore) {}
           });
           // user got unlocked
         } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
           updateHappening = true;
           Platform.runLater(() -> {
             try {
-              handleInformationMessage("Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren");
-              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), latestView);
+              handleInformationMessage(
+                "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(
+                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
+                checkUser.isEnabled(),
+                latestView
+              );
               updateHappening = false;
-            } catch (GenericServiceException ignore) {
-            }
+            } catch (GenericServiceException ignore) {}
           });
         }
       }
@@ -333,7 +363,8 @@ public class MainViewController {
     String startPage
   ) throws GenericServiceException {
     navigationViewController.login(userRoleDTO, isEnabled, startPage);
-    latestLoggedInStatus = userController.getUserById(userController.getLoggedInUser().getId());
+    latestLoggedInStatus =
+      userController.getUserById(userController.getLoggedInUser().getId());
   }
 
   public void logout() throws GenericServiceException {
