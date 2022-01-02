@@ -90,9 +90,9 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled, String startPage)
     throws GenericServiceException {
-    navBarItems.getChildren().removeIf(b -> true);
+    navBarItems.getChildren().clear();
 
     List<Button> toAdd = new ArrayList<>();
 
@@ -124,7 +124,7 @@ public class NavigationViewController {
     }
 
     navBarItems.getChildren().addAll(toAdd);
-    mainViewController.changeView("home");
+    mainViewController.changeView(startPage);
     if (isShortText) {
       setShortTexts();
     } else {

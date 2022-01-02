@@ -23,6 +23,7 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
+  public final String startPageAfterLogin = "account";
 
   @Autowired
   private UserController userController;
@@ -227,8 +228,13 @@ public class MainViewController {
   }
 
   public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
-    throws GenericServiceException {
-    navigationViewController.login(userRoleDTO, isEnabled);
+          throws GenericServiceException {
+    login(userRoleDTO,isEnabled,startPageAfterLogin);
+  }
+
+  public void login(UserRoleDTO userRoleDTO, boolean isEnabled, String startPage)
+          throws GenericServiceException {
+    navigationViewController.login(userRoleDTO, isEnabled, startPage);
   }
 
   public void logout() throws GenericServiceException {
