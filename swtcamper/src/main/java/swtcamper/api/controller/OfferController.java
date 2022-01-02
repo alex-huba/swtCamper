@@ -130,7 +130,7 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.create(
         creator,
@@ -237,7 +237,7 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.update(
         offerId,

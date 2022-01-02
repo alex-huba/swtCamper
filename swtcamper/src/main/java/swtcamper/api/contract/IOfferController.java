@@ -43,7 +43,7 @@ public interface IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  );
+  ) throws GenericServiceException;
 
   OfferDTO update(
     long offerId,
