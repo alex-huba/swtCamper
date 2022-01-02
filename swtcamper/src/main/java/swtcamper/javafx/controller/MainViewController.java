@@ -37,9 +37,6 @@ public class MainViewController {
   private UserController userController;
 
   @Autowired
-  public UserController userController;
-
-  @Autowired
   public MyOffersViewController myOffersViewController;
 
   @Autowired

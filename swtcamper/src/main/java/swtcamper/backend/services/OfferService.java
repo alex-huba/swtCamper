@@ -62,8 +62,10 @@ public class OfferService {
     boolean kitchenUnit,
     boolean fridge,
     UserDTO user
-  ) {
-
+  ) throws GenericServiceException {
+    if (!user.isEnabled() || user.isLocked()) {
+      throw new GenericServiceException("User cannot create new offers as long as he/she is locked or not enabled.");
+    }
 
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
@@ -171,7 +173,11 @@ public class OfferService {
     boolean kitchenUnit,
     boolean fridge,
     UserDTO user
-  ) {
+  ) throws GenericServiceException {
+    if (!user.isEnabled() || user.isLocked()) {
+      throw new GenericServiceException("User cannot update offers as long as he/she is locked or not enabled.");
+    }
+
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
     Offer offer = offerResponse.get();
 
