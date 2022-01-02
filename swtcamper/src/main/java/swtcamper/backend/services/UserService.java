@@ -325,13 +325,33 @@ public class UserService {
    * @return promoted user
    * @throws GenericServiceException if there is no user with such ID
    */
-  public User promoteUser(long id) throws GenericServiceException {
+  public User promoteUser(long id, String operator) throws GenericServiceException {
     User user = getUserById(id);
-    if (user.getUserRole().equals(UserRole.RENTER)) user.setUserRole(
-      UserRole.PROVIDER
-    ); else if (user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(
-      UserRole.OPERATOR
-    );
+    if (user.getUserRole().equals(UserRole.RENTER)) {
+      user.setUserRole(UserRole.PROVIDER);
+      loggingController.log(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s was promoted to UserRole 'Provider' by operator %s.",
+                              user.getUsername(),
+                              operator
+                      )
+              )
+      );
+    } else if (user.getUserRole().equals(UserRole.PROVIDER)) {
+      user.setUserRole(UserRole.OPERATOR);
+      loggingController.log(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s was promoted to UserRole 'Operator' by operator %s.",
+                              user.getUsername(),
+                              operator
+                      )
+              )
+      );
+    }
     return userRepository.save(user);
   }
 
@@ -341,13 +361,33 @@ public class UserService {
    * @return degraded user
    * @throws GenericServiceException if there is no user with such ID
    */
-  public User degradeUser(long id) throws GenericServiceException {
+  public User degradeUser(long id, String operator) throws GenericServiceException {
     User user = getUserById(id);
-    if (user.getUserRole().equals(UserRole.PROVIDER)) user.setUserRole(
-      UserRole.RENTER
-    ); else if (user.getUserRole().equals(UserRole.OPERATOR)) user.setUserRole(
-      UserRole.PROVIDER
-    );
+    if (user.getUserRole().equals(UserRole.PROVIDER)) {
+      user.setUserRole(UserRole.RENTER);
+      loggingController.log(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s was degraded to UserRole 'Renter' by operator %s.",
+                              user.getUsername(),
+                              operator
+                      )
+              )
+      );
+    }else if (user.getUserRole().equals(UserRole.OPERATOR)) {
+      user.setUserRole(UserRole.PROVIDER);
+      loggingController.log(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s was degraded to UserRole 'Provider' by operator %s.",
+                              user.getUsername(),
+                              operator
+                      )
+              )
+      );
+    }
     return userRepository.save(user);
   }
 

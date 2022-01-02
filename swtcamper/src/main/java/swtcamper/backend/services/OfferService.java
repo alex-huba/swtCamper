@@ -63,6 +63,8 @@ public class OfferService {
     boolean fridge,
     UserDTO user
   ) {
+
+
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
 

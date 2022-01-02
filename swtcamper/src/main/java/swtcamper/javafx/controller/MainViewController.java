@@ -2,6 +2,8 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -10,9 +12,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -23,7 +28,10 @@ public class MainViewController {
    * Quick Settings
    */
   public final boolean startNavigationHidden = true;
-  public final String startPageAfterLogin = "account";
+  public final String startPageAfterLogin = "home";
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   @Autowired
   private UserController userController;
@@ -88,6 +96,10 @@ public class MainViewController {
   @FXML
   public Pane forgotPasswordViewBox;
 
+  private User latestLoggedInStatus = null;
+  private String latestView = null;
+  boolean updateHappening = false;
+
   @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
@@ -111,12 +123,79 @@ public class MainViewController {
     mainStage.getChildren().removeAll(toRemove);
   }
 
+  @Scheduled(fixedDelay = 1000)
+  private void listenForDataBaseChanges() throws GenericServiceException {
+    if(latestLoggedInStatus!=null && latestView!=null) {
+      // get the latest update for the logged-in user to check if there were made any changes
+      User checkUser = userController.getUserById(userController.getLoggedInUser().getId());
+      if(!updateHappening) {
+        // user-role has changed
+        if (!checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage("Deine Rolle hat sich geändert zu " + checkUser.getUserRole() + "!\nDie Oberfläche wird sich aktualisieren");
+              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {
+            }
+          });
+          // user got enabled
+        } else if (checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage("Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren");
+              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), latestView);
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {
+            }
+          });
+          // user got disabled
+        } else if (!checkUser.isEnabled() && latestLoggedInStatus.isEnabled()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage("Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren");
+              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {
+            }
+          });
+          // user got locked
+        } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage("Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren");
+              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {
+            }
+          });
+          // user got unlocked
+        } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage("Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren");
+              login(modelMapper.toUserRoleDTO(checkUser.getUserRole()), checkUser.isEnabled(), latestView);
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {
+            }
+          });
+        }
+      }
+    }
+  }
+
   public void changeView(String switchTo) throws GenericServiceException {
     changeView(switchTo, true);
   }
 
   public void changeView(String switchTo, boolean reloadData)
     throws GenericServiceException {
+    latestView = switchTo;
     clearView();
 
     switch (switchTo) {
@@ -238,6 +317,7 @@ public class MainViewController {
     String startPage
   ) throws GenericServiceException {
     navigationViewController.login(userRoleDTO, isEnabled, startPage);
+    latestLoggedInStatus = userController.getUserById(userController.getLoggedInUser().getId());
   }
 
   public void logout() throws GenericServiceException {

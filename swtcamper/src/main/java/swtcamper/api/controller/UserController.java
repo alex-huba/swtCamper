@@ -126,11 +126,11 @@ public class UserController implements IUserController {
 
   @Override
   public void degradeUserById(long id) throws GenericServiceException {
-    userService.degradeUser(id);
+    userService.degradeUser(id, getLoggedInUser().getUsername());
   }
 
   @Override
   public void promoteUserById(long id) throws GenericServiceException {
-    userService.promoteUser(id);
+    userService.promoteUser(id, getLoggedInUser().getUsername());
   }
 }
