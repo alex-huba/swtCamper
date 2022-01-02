@@ -25,14 +25,6 @@ public class UserService {
 
   private User loggedInUser;
 
-  public User getLoggedInUser() {
-    return loggedInUser;
-  }
-
-  public void setLoggedInUser(User loggedInUser) {
-    this.loggedInUser = loggedInUser;
-  }
-
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
@@ -132,6 +124,14 @@ public class UserService {
       );
     }
     return userRepository.findAll();
+  }
+
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
   }
 
   /**

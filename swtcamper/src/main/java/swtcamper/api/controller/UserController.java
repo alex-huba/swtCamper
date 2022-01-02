@@ -1,6 +1,7 @@
 package swtcamper.api.controller;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -67,6 +68,10 @@ public class UserController implements IUserController {
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
+  }
+
+  public void logout() {
+    userService.setLoggedInUser(null);
   }
 
   @Override

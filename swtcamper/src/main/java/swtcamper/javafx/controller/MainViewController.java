@@ -37,6 +37,9 @@ public class MainViewController {
   private UserController userController;
 
   @Autowired
+  public UserController userController;
+
+  @Autowired
   public MyOffersViewController myOffersViewController;
 
   @Autowired
@@ -60,6 +63,9 @@ public class MainViewController {
   @Autowired
   public ResetPasswordViewController resetPasswordViewController;
 
+  @Autowired
+  public OfferViewController offerViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -68,6 +74,9 @@ public class MainViewController {
 
   @FXML
   public Node placeOfferViewBox;
+
+  @FXML
+  public Pane offerViewBox;
 
   @FXML
   public Pane activeOffersViewBox;
@@ -99,6 +108,9 @@ public class MainViewController {
   private User latestLoggedInStatus = null;
   private String latestView = null;
   boolean updateHappening = false;
+
+  @FXML
+  public Pane moreAboutOfferViewBox;
 
   @FXML
   private void initialize() throws GenericServiceException {
@@ -213,11 +225,15 @@ public class MainViewController {
           navigationViewController.newOfferButton
         );
         break;
+      case "viewOffer":
+        mainStage.getChildren().add(offerViewBox);
+        break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
         navigationViewController.setButtonActive(
           navigationViewController.activeOffersButton
         );
+        myOffersViewController.reloadData();
         break;
       case "history":
         mainStage.getChildren().add(dealHistoryViewBox);
@@ -280,6 +296,9 @@ public class MainViewController {
         );
         resetPasswordViewController.resetInputFields();
         break;
+      case "moreInfoOffer":
+        mainStage.getChildren().add(moreAboutOfferViewBox);
+        break;
     }
   }
 
@@ -321,6 +340,7 @@ public class MainViewController {
   }
 
   public void logout() throws GenericServiceException {
+    userController.logout();
     navigationViewController.logout();
   }
 }

@@ -2,6 +2,7 @@ package swtcamper.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.*;
 import swtcamper.backend.entities.*;
@@ -30,6 +31,7 @@ public class ModelMapper {
   public OfferDTO offerToOfferDTO(Offer offer) {
     return new OfferDTO(
       offer.getOfferID(),
+      offer.getCreator(),
       toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
       offer.getOfferedObject(),
       offer.getBookings(),
