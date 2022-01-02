@@ -12,14 +12,14 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -297,8 +297,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
-    // add pictures
-    //int cnt = 0;
     for (String file : vehicle.getPictureURLs()) {
       pictureURLs.add(file);
 
@@ -309,15 +307,14 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button(" x ");
-      //int finalCnt = cnt;
-      deleteBtn.setOnAction(event -> removePicture(file.toString()));
+
+      deleteBtn.setOnAction(event -> removePicture(file));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
 
       picturesHbox.getChildren().add(imageBox);
-      //cnt++;
     }
 
     validateMandatoryFields();
@@ -415,11 +412,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     double height = !heightTextField.getText().isEmpty()
       ? doubleStringConverter.fromString(heightTextField.getText())
       : 0;
-
-    /*String[] pictureArray = new String[pictureURLs.size()];
-        for (int i = 0; i < pictureURLs.size(); i++) {
-            pictureArray[i] = pictureURLs.get(i);
-        }*/
 
     if (!isEditMode.get()) {
       OfferDTO offerDTO = offerController.create(
@@ -715,6 +707,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Bilder hinzufügen");
+    fileChooser
+      .getExtensionFilters()
+      .add(
+        new FileChooser.ExtensionFilter("Bilder", "*.png", "*.jpg", "*.jpeg")
+      );
     List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
     for (File file : fileList) {
@@ -752,7 +749,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
         byte[] photo = Files.readAllBytes(photoPath1);
         Path pathWhereToSave = Path.of(
-          "./src/main/resources/pictures",
+          "./src/main/resources/pictures/uploads",
           userId,
           offerId
         );

@@ -14,11 +14,6 @@ public class Vehicle {
   @JoinColumn(name = "vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
 
-  //  @Type(type = "string-array")
-  //  @Column(
-  //          name = "picture_urls",
-  //          columnDefinition = "text[]"
-  //  )
   private String[] pictureURLs;
 
   public Vehicle(VehicleFeatures vehicleFeatures) {
