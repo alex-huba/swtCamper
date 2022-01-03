@@ -133,7 +133,7 @@ public class MyOffersViewController {
       // check if offer is rented right now, in order to prevent the provider from updating or deleting it
       boolean isOfferRentedRightNow = false;
       for (Booking booking : bookingController.getBookingsForUser(
-              userController.getLoggedInUser()
+        userController.getLoggedInUser()
       )) {
         if (
           booking.getOffer().getOfferID() == offer.getID() && booking.isActive()
