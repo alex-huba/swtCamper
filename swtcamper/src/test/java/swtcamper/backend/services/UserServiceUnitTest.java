@@ -1,17 +1,23 @@
 package swtcamper.backend.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.UserRepository;
+import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceUnitTest {
@@ -23,32 +29,22 @@ public class UserServiceUnitTest {
     private UserRepository userRepository;
 
     @Test
-    public void firstUserThatLogsInWillBeOperator() {
-        // given
-        User normalUser = new User();
-        normalUser.setUsername("Nicici");
-        normalUser.setPassword("nici123");
-        normalUser.setEmail("nici.mueller@gmail.com");
-        normalUser.setPhone("0174123123");
-        normalUser.setName("Nici");
-        normalUser.setSurname("Müller");
-        normalUser.setUserRole(UserRole.OPERATOR);
-        normalUser.setEnabled(false);
-
-        // when
-        when(userRepository.save(normalUser)).thenReturn(normalUser);
-
-        userServiceUnderTest.create("Nicici", "nici123", "nici.mueller@gmail.com", "0174123123", "Nici", "Müller", UserRole.PROVIDER, false);
-
-        // then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(
-                User.class
+    public void createProjectWorksForValidInputs()
+            throws GenericServiceException {
+        // When
+        userServiceUnderTest.create(
+                "ThomasK96",
+                "password",
+                "t.kretschmann@t-online.de",
+                "1829309182308213",
+                "Thomas",
+                "Kretschmann",
+                UserRole.PROVIDER,
+                false
         );
 
-        verify(userRepository).save(userArgumentCaptor.capture());
-
-        User capturedUser = userArgumentCaptor.getValue();
-
-        assertThat(capturedUser).isNotNull().isEqualTo(normalUser);
+        // Then
+        verify(userRepository, times(1)).save(any());
+        verifyNoMoreInteractions(userRepository);
     }
 }
