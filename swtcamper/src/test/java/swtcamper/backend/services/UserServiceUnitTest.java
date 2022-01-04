@@ -29,7 +29,7 @@ public class UserServiceUnitTest {
     private UserRepository userRepository;
 
     @Test
-    public void createProjectWorksForValidInputs()
+    public void createUserWorksForValidInputs()
             throws GenericServiceException {
         // When
         userServiceUnderTest.create(
@@ -45,6 +45,17 @@ public class UserServiceUnitTest {
 
         // Then
         verify(userRepository, times(1)).save(any());
+
+        assertThat(userServiceUnderTest.create(
+                "ThomasK96",
+                "password",
+                "t.kretschmann@t-online.de",
+                "1829309182308213",
+                "Thomas",
+                "Kretschmann",
+                UserRole.PROVIDER,
+                false
+        ).getUserRole()).isEqualTo(UserRole.OPERATOR);
         verifyNoMoreInteractions(userRepository);
     }
 }
