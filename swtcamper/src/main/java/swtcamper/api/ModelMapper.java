@@ -95,4 +95,20 @@ public class ModelMapper {
       booking.isActive()
     );
   }
+
+  public PictureDTO pictureToPictureDTO(Picture picture) {
+    return new PictureDTO(picture.getPictureID(),picture.getVehicleID(),picture.getByteArray());
+  }
+
+  public Picture pictureDTOToPicture(PictureDTO pictureDTO) {
+    return new Picture(pictureDTO.getVehicleID(),pictureDTO.getByteArray());
+  }
+
+  public List<PictureDTO> picturesToPictureDTOs(List<Picture> pictures) {
+    List<PictureDTO> pictureDTOs = new ArrayList<>();
+    for (Picture picture : pictures) {
+      pictureDTOs.add(pictureToPictureDTO(picture));
+    }
+    return pictureDTOs;
+  }
 }
