@@ -3,6 +3,7 @@ package swtcamper.backend.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.nio.file.Path;
 
 @Entity
 public class Picture implements IPicture {
@@ -13,15 +14,15 @@ public class Picture implements IPicture {
 
     private long vehicleID;
 
-    private byte[] byteArray;
+    private String path;
 
-    public Picture(long vehicleID, byte[] byteArray) {
+    public Picture(long vehicleID, String path) {
         this.vehicleID = vehicleID;
-        this.byteArray = byteArray;
+        this.path = path;
     }
 
-    public Picture(byte[] byteArray) {
-        this.byteArray = byteArray;
+    public Picture(String path) {
+        this.path = path;
     }
 
     public Picture() {
@@ -43,11 +44,11 @@ public class Picture implements IPicture {
         this.vehicleID = vehicleID;
     }
 
-    public byte[] getByteArray() {
-        return byteArray;
+    public String getPath() {
+        return path;
     }
 
-    public void setByteArray(byte[] byteArray) {
-        this.byteArray = byteArray;
+    public void setPath(String path) {
+        this.path = String.valueOf(path);
     }
 }

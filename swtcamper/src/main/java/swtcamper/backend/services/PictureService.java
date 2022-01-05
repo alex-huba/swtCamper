@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.PictureDTO;
+import swtcamper.backend.entities.Picture;
 import swtcamper.backend.repositories.PictureRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,17 @@ public class PictureService {
     }
 
     public List<PictureDTO> getPicturesForVehicle(long vehicleId) {
-        return modelMapper.picturesToPictureDTOs(pictureRepository.findAll().stream().filter(picture -> picture.getVehicleID() == vehicleId).collect(Collectors.toList()));
+        List<PictureDTO> pictureList = new ArrayList<>();
+        for (Picture picture : pictureRepository.findAll()) {
+            if (picture.getVehicleID() == vehicleId) {
+                System.out.println(picture.getPictureID());
+                pictureList.add(modelMapper.pictureToPictureDTO(picture));
+            } else {
+                System.out.println(picture.getPictureID() + " + does not fit to vehicle " + vehicleId);
+            }
+        }
+        return pictureList;
+//        return modelMapper.picturesToPictureDTOs(pictureRepository.findAll().stream().filter(picture -> picture.getVehicleID() == vehicleId).collect(Collectors.toList()));
     }
 
     public void deletePictureById(long id) {

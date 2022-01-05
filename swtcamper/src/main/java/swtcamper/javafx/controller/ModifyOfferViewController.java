@@ -307,11 +307,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
-    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(vehicle.getVehicleID())) {
+    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID())) {
       pictures.clear();
       pictures.add(modelMapper.pictureDTOToPicture(pictureDTO));
 
-      ImageView thumbnail = new ImageView(new Image(new BufferedInputStream(new ByteArrayInputStream(pictureDTO.getByteArray()))));
+      ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
@@ -723,17 +723,17 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
     for (File file : fileList) {
-      byte[] byteArray = Files.readAllBytes(Path.of(file.getPath()));
-      Picture newPicture = new Picture(byteArray);
-      pictures.add(newPicture);
+//      byte[] byteArray = Files.readAllBytes(Path.of(file.getPath()));
+      Picture newPicturePath = new Picture("file:///" + file.getAbsolutePath());
+      pictures.add(newPicturePath);
 
-      ImageView thumbnail = new ImageView(new Image(new BufferedInputStream(new ByteArrayInputStream(newPicture.getByteArray()))));
+      ImageView thumbnail = new ImageView(new Image(newPicturePath.getPath()));
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button("X");
 
-      deleteBtn.setOnAction(e -> removePicture(newPicture));
+      deleteBtn.setOnAction(e -> removePicture(newPicturePath));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
@@ -749,8 +749,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * @return
    */
   public void savePictures() {
+    // TODO save vehicle ID
     for(Picture picture : pictures) {
-      pictureController.create(new PictureDTO(picture.getByteArray()));
+      pictureController.create(new PictureDTO(picture.getPath()));
     }
   }
 }
