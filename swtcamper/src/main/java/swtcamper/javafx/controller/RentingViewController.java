@@ -170,28 +170,7 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    List<OfferDTO> offersThatAreNotRentedRightNow = new ArrayList<>();
-    for (OfferDTO offerDTO : offerController.offers()) {
-      if (bookingController.getAllBookings().isEmpty()) {
-        offersThatAreNotRentedRightNow.add(offerDTO);
-      } else {
-        boolean thereIsABookingForThisOffer = false;
-        for (Booking booking : bookingController.getAllBookings()) {
-          if (booking.getOffer().getOfferID() == offerDTO.getID()) {
-            thereIsABookingForThisOffer = true;
-            if (
-              !booking.isActive() &&
-              !offersThatAreNotRentedRightNow.contains(offerDTO)
-            ) offersThatAreNotRentedRightNow.add(offerDTO);
-          }
-        }
-        if (!thereIsABookingForThisOffer) offersThatAreNotRentedRightNow.add(
-          offerDTO
-        );
-      }
-    }
-
-    loadData(offersThatAreNotRentedRightNow);
+    loadData(offerController.offers());
   }
 
   private void loadData(List<OfferDTO> offersList) {
