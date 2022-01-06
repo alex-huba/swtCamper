@@ -156,10 +156,7 @@ public class MainViewController {
                 checkUser.getUserRole() +
                 "!\nDie Oberfläche wird sich aktualisieren"
               );
-              login(
-                      modelMapper.userToUserDTO(checkUser),
-                "home"
-              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
               updateHappening = false;
             } catch (GenericServiceException ignore) {}
           });
@@ -171,10 +168,7 @@ public class MainViewController {
               handleInformationMessage(
                 "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
               );
-              login(
-                      modelMapper.userToUserDTO(checkUser),
-                latestView
-              );
+              login(modelMapper.userToUserDTO(checkUser), latestView);
               updateHappening = false;
             } catch (GenericServiceException ignore) {}
           });
@@ -186,10 +180,7 @@ public class MainViewController {
               handleInformationMessage(
                 "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
               );
-              login(
-                      modelMapper.userToUserDTO(checkUser),
-                "home"
-              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
               updateHappening = false;
             } catch (GenericServiceException ignore) {}
           });
@@ -201,10 +192,7 @@ public class MainViewController {
               handleInformationMessage(
                 "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
-              login(
-                      modelMapper.userToUserDTO(checkUser),
-                "home"
-              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
               updateHappening = false;
             } catch (GenericServiceException ignore) {}
           });
@@ -216,10 +204,7 @@ public class MainViewController {
               handleInformationMessage(
                 "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
-              login(
-                modelMapper.userToUserDTO(checkUser),
-                latestView
-              );
+              login(modelMapper.userToUserDTO(checkUser), latestView);
               updateHappening = false;
             } catch (GenericServiceException ignore) {}
           });
@@ -352,15 +337,12 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserDTO userDTO)
-    throws GenericServiceException {
+  public void login(UserDTO userDTO) throws GenericServiceException {
     login(userDTO, startPageAfterLogin);
   }
 
-  public void login(
-    UserDTO userDTO,
-    String startPage
-  ) throws GenericServiceException {
+  public void login(UserDTO userDTO, String startPage)
+    throws GenericServiceException {
     navigationViewController.login(userDTO, startPage);
     latestLoggedInStatus =
       userController.getUserById(userController.getLoggedInUser().getId());

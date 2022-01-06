@@ -2,7 +2,6 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -95,10 +94,8 @@ public class NavigationViewController {
     btn.getStyleClass().add("active");
   }
 
-  public void login(
-    UserDTO userDTO,
-    String startPage
-  ) throws GenericServiceException {
+  public void login(UserDTO userDTO, String startPage)
+    throws GenericServiceException {
     UserRole userRole = userDTO.getUserRole();
     boolean isEnabled = userDTO.isEnabled();
     boolean isLocked = userDTO.isLocked();
@@ -113,39 +110,49 @@ public class NavigationViewController {
       switch (userRole) {
         // Enable renter functionalities
         case RENTER:
-          navBarList.addAll(homeButton,dealHistoryButton,
-                  myBookingsButton,
-                  accountButton);
+          navBarList.addAll(
+            homeButton,
+            dealHistoryButton,
+            myBookingsButton,
+            accountButton
+          );
           break;
         // Enable provider functionalities
         case PROVIDER:
           if (isEnabled) {
-            navBarList.addAll(homeButton,
-                    newOfferButton,
-                    activeOffersButton,
-                    dealHistoryButton,
-                    excludeButton,
-                    myBookingsButton,
-                    accountButton);
+            navBarList.addAll(
+              homeButton,
+              newOfferButton,
+              activeOffersButton,
+              dealHistoryButton,
+              excludeButton,
+              myBookingsButton,
+              accountButton
+            );
           } else {
-            navBarList.addAll(homeButton,
-                    dealHistoryButton,
-                    myBookingsButton,
-                    accountButton);
+            navBarList.addAll(
+              homeButton,
+              dealHistoryButton,
+              myBookingsButton,
+              accountButton
+            );
           }
           break;
         // Enable operator functionalities
         case OPERATOR:
-          navBarList.addAll(homeButton,newOfferButton,
-                  activeOffersButton,
-                  dealHistoryButton,
-                  excludeButton,
-                  approveButton,
-                  myBookingsButton,
-                  accountButton);
+          navBarList.addAll(
+            homeButton,
+            newOfferButton,
+            activeOffersButton,
+            dealHistoryButton,
+            excludeButton,
+            approveButton,
+            myBookingsButton,
+            accountButton
+          );
           break;
         default:
-          navBarList.addAll(homeButton,accountButton);
+          navBarList.addAll(homeButton, accountButton);
           break;
       }
     }
