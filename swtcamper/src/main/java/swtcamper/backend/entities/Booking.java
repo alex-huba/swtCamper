@@ -11,7 +11,7 @@ public class Booking {
   Long id;
 
   @ManyToOne
-  User renter;
+  User user;
 
   @ManyToOne
   Offer offer;
@@ -20,19 +20,35 @@ public class Booking {
   LocalDate endDate;
   boolean active;
 
+  public Booking(
+    Long id,
+    User user,
+    Offer offer,
+    LocalDate startDate,
+    LocalDate endDate,
+    boolean active
+  ) {
+    this.id = id;
+    this.user = user;
+    this.offer = offer;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.active = active;
+  }
+
   public Booking() {}
 
   public Booking(
-    User renter,
+    User user,
     Offer offer,
     LocalDate startDate,
     LocalDate endDate
   ) {
-    this.renter = renter;
+    this.user = user;
     this.offer = offer;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.active = false;
+    this.active = true;
   }
 
   public Long getId() {
@@ -43,12 +59,12 @@ public class Booking {
     this.id = id;
   }
 
-  public User getRenter() {
-    return renter;
+  public User getUser() {
+    return user;
   }
 
-  public void setRenter(User renter) {
-    this.renter = renter;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public Offer getOffer() {
@@ -81,25 +97,5 @@ public class Booking {
 
   public void setActive(boolean active) {
     this.active = active;
-  }
-
-  @Override
-  public String toString() {
-    return (
-      "Booking{" +
-      "id=" +
-      id +
-      ", renter=" +
-      renter +
-      ", offer=" +
-      offer +
-      ", startDate=" +
-      startDate +
-      ", endDate=" +
-      endDate +
-      ", active=" +
-      active +
-      '}'
-    );
   }
 }

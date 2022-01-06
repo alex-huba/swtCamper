@@ -88,7 +88,7 @@ public class ModelMapper {
   public BookingDTO bookingToBookingDTO(Booking booking) {
     return new BookingDTO(
       booking.getId(),
-      booking.getRenter(),
+      booking.getUser(),
       booking.getOffer(),
       booking.getStartDate(),
       booking.getEndDate(),

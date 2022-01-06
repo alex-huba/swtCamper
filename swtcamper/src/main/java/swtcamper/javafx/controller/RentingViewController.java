@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -16,9 +15,11 @@ import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
-import swtcamper.backend.entities.*;
+import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.TransmissionType;
+import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -29,9 +30,6 @@ public class RentingViewController {
 
   @Autowired
   private OfferViewController offerViewController;
-
-  @Autowired
-  private BookingController bookingController;
 
   @Autowired
   private OfferController offerController;
@@ -166,7 +164,7 @@ public class RentingViewController {
   }
 
   /**
-   * Gets all available offers from the database that are not rented right now
+   * Gets all available offers from the database .
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {

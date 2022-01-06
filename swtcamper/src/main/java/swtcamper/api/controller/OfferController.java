@@ -2,7 +2,6 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,7 +230,7 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) throws GenericServiceException {
+  ) {
     return modelMapper.offerToOfferDTO(
       offerService.update(
         offerId,
@@ -316,10 +315,7 @@ public class OfferController implements IOfferController {
         .filter(offerDTO ->
           (
             filter.getLocation() == null ||
-            offerDTO
-              .getLocation()
-              .toLowerCase()
-              .contains(filter.getLocation().toLowerCase())
+            offerDTO.getLocation().equals(filter.getLocation())
           ) &&
           (
             filter.getVehicleType() == null ||
@@ -335,8 +331,7 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getMake()
-              .toLowerCase()
-              .contains(filter.getVehicleBrand().toLowerCase())
+              .equals(filter.getVehicleBrand())
           ) &&
           (
             filter.getConstructionYear() == 0 ||
@@ -355,8 +350,7 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getEngine()
-              .toLowerCase()
-              .contains(filter.getEngine().toLowerCase())
+              .equals(filter.getEngine())
           ) &&
           (
             filter.getTransmissionType() == null ||

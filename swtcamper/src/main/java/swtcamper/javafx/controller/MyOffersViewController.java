@@ -1,8 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -15,10 +12,8 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
-import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -27,9 +22,6 @@ public class MyOffersViewController {
 
   @Autowired
   private MainViewController mainViewController;
-
-  @Autowired
-  private BookingController bookingController;
 
   @Autowired
   private OfferController offerController;
@@ -126,25 +118,11 @@ public class MyOffersViewController {
       moreBtn.setOnAction(event -> {
         try {
           mainViewController.changeView("viewOffer");
-          offerViewController.initialize(offer, true);
+          offerViewController.initialize(offer, false);
         } catch (GenericServiceException ignore) {}
       });
 
-      // check if offer is rented right now, in order to prevent the provider from updating or deleting it
-      boolean isOfferRentedRightNow = false;
-      for (Booking booking : bookingController.getBookingsForUser(
-        userController.getLoggedInUser()
-      )) {
-        if (
-          booking.getOffer().getOfferID() == offer.getID() && booking.isActive()
-        ) {
-          isOfferRentedRightNow = true;
-          break;
-        }
-      }
-
       Button updateBtn = new Button("Anzeige bearbeiten");
-      if (isOfferRentedRightNow) updateBtn.setDisable(true);
       updateBtn.getStyleClass().add("bg-secondary");
       updateBtn.setOnAction(event -> {
         try {
@@ -154,7 +132,6 @@ public class MyOffersViewController {
       });
 
       Button removeBtn = new Button("Löschen");
-      if (isOfferRentedRightNow) removeBtn.setDisable(true);
       removeBtn.getStyleClass().add("bg-danger");
       removeBtn.setOnAction(event -> {
         Alert confirmDelete = new Alert(

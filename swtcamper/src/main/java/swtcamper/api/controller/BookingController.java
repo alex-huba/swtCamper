@@ -1,8 +1,6 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -28,19 +26,6 @@ public class BookingController implements IBookingController {
   @Autowired
   private OfferViewController offerViewController;
 
-  public List<Booking> getAllBookings() {
-    return bookingService.getAllBookings();
-  }
-
-  public List<Booking> getBookingsForUser(User user) {
-    return getAllBookings()
-      .stream()
-      .filter(booking ->
-        booking.getOffer().getCreator().getId().equals(user.getId())
-      )
-      .collect(Collectors.toList());
-  }
-
   @Override
   public BookingDTO create(
     User user,
@@ -58,22 +43,12 @@ public class BookingController implements IBookingController {
   public BookingDTO update(
     Long bookingID,
     LocalDate startDate,
-    LocalDate endDate
+    LocalDate endDate,
+    boolean active
   ) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.update(bookingID, startDate, endDate)
-      );
-    } catch (GenericServiceException e) {
-      throw new GenericServiceException(e.getMessage());
-    }
-  }
-
-  @Override
-  public BookingDTO activate(Long bookingID) throws GenericServiceException {
-    try {
-      return modelMapper.bookingToBookingDTO(
-        bookingService.activate(bookingID)
+        bookingService.update(bookingID, startDate, endDate, active)
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
@@ -89,10 +64,5 @@ public class BookingController implements IBookingController {
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
-  }
-
-  @Override
-  public void delete(Long bookingID) throws GenericServiceException {
-    bookingService.delete(bookingID);
   }
 }
