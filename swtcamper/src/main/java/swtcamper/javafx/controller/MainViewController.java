@@ -135,6 +135,21 @@ public class MainViewController {
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
     if (
+            userController
+                    .getLoggedInUser()
+                    .getUserRole()
+                    .equals(UserRole.OPERATOR) &&
+                    userController
+                            .getAllUsers()
+                            .stream()
+                            .anyMatch(user -> !user.isEnabled())
+    ) {
+      navigationViewController.showApproveNotification();
+    } else {
+      navigationViewController.hideApproveNotification();
+    }
+
+    if (
       userController.getLoggedInUser() != null &&
       latestLoggedInStatus != null &&
       latestView != null

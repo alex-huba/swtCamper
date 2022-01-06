@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -223,6 +224,9 @@ public class NavigationViewController {
   }
 
   public void showApproveNotification() {
+    Tooltip t = new Tooltip("Es können neue Nutzer akzeptiert werden");
+    Tooltip.install(approveNotificationDot, t);
+
     approveNotificationDot.setVisible(true);
   }
 
