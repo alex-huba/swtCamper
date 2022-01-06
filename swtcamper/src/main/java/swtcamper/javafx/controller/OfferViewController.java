@@ -1,47 +1,25 @@
 package swtcamper.javafx.controller;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import javafx.util.Callback;
+import javafx.scene.layout.HBox;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.UserRepository;
-import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.BookingService;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -162,14 +140,22 @@ public class OfferViewController {
   @FXML
   public DatePicker endDate;
 
-  public OfferDTO viewedOffer;
+  @FXML
+  public HBox rentHBox;
 
+  @FXML
+  public Label rentLabel;
+
+  @FXML
+  public Button abortBookingRequestBtn;
+
+  public OfferDTO viewedOffer;
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   public void initialize(OfferDTO offer, boolean rentingMode) {
+    this.viewedOffer = offer;
     checkMode(rentingMode);
     Vehicle offeredObject = offer.getOfferedObject();
-    this.viewedOffer = offer;
 
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());
@@ -246,24 +232,90 @@ public class OfferViewController {
   }
 
   private void checkMode(boolean rentingMode) {
+    // visible
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     dateLabel.setVisible(false);
     startDate.setVisible(false);
     endDate.setVisible(false);
-    this.isRentingMode.set(rentingMode);
+    rentHBox.setVisible(false);
+    // disable
+    dateLabel.setDisable(false);
+    startDate.setDisable(false);
+    endDate.setDisable(false);
+
+    isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
-        bookingButton.setVisible(true);
-        dateLabel.setVisible(true);
-        startDate.setVisible(true);
-        endDate.setVisible(true);
+        // remove ability to book own offer
+        if (
+          viewedOffer
+            .getCreator()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        ) {
+          // ... but make it possible to make changes then
+          modifyButton.setVisible(true);
+          // ... if it's not booked right now
+          boolean offerIsInRent = false;
+          for (Booking booking : bookingController.getBookingsForUser(
+            userController.getLoggedInUser()
+          )) {
+            if (
+              booking.getOffer().getOfferID() == viewedOffer.getID() &&
+              booking.isActive()
+            ) {
+              offerIsInRent = true;
+              break;
+            }
+          }
+          modifyButton.setDisable(offerIsInRent);
+        } else {
+          bookingButton.setVisible(true);
+          dateLabel.setVisible(true);
+          startDate.setVisible(true);
+          endDate.setVisible(true);
+        }
+
+        // remove possibility to send a request twice at once
+        for (Booking booking : bookingController
+          .getAllBookings()
+          .stream()
+          .filter(booking ->
+            booking
+              .getRenter()
+              .getId()
+              .equals(userController.getLoggedInUser().getId())
+          )
+          .collect(Collectors.toList())) {
+          if (booking.getOffer().getOfferID() == viewedOffer.getID()) {
+            bookingButton.setVisible(false);
+            dateLabel.setDisable(true);
+            startDate.setDisable(true);
+            endDate.setDisable(true);
+            rentLabel.setText(
+              "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+            );
+            rentHBox.setVisible(true);
+
+            // abort open booking request
+            abortBookingRequestBtn.setOnAction(event -> {
+              try {
+                bookingController.delete(booking.getId());
+                checkMode(true);
+              } catch (GenericServiceException e) {
+                mainViewController.handleExceptionMessage(e.getMessage());
+              }
+            });
+          }
+        }
       }
     } else {
       modifyButton.setVisible(true);
       dateLabel.setVisible(false);
       startDate.setVisible(false);
       endDate.setVisible(false);
+      rentHBox.setVisible(false);
     }
   }
 
@@ -292,7 +344,7 @@ public class OfferViewController {
         )
       ) {
         Alert confirmBooking = new Alert(
-          Alert.AlertType.WARNING,
+          Alert.AlertType.CONFIRMATION,
           "Willst du das Angebot wirklich von " +
           startDate.getValue() +
           " bis " +
@@ -308,11 +360,9 @@ public class OfferViewController {
             offer,
             startDate.getValue(),
             endDate.getValue(),
-            true
+            false
           );
-          mainViewController.handleInformationMessage(
-            "Buchungsanfrage verschickt. Buchungsnummer: " + bookingDTO.getId()
-          );
+          checkMode(true);
         }
       } else {
         mainViewController.handleExceptionMessage(

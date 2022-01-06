@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserRoleDTO;
@@ -18,6 +19,9 @@ public class NavigationViewController {
 
   @Autowired
   private MainViewController mainViewController;
+
+  @Autowired
+  private NavigationViewController navigationViewController;
 
   @Autowired
   private UserController userController;
@@ -50,6 +54,9 @@ public class NavigationViewController {
   public Button myBookingsButton;
 
   @FXML
+  public Circle myBookingsNotificationDot;
+
+  @FXML
   public Button loginButton;
 
   @FXML
@@ -69,9 +76,8 @@ public class NavigationViewController {
   }
 
   private void setStartButtons() {
-    navBarItems.getChildren().removeIf(b -> true);
-    navBarItems.getChildren().add(homeButton);
-    navBarItems.getChildren().add(loginButton);
+    navBarItems.getChildren().clear();
+    navBarItems.getChildren().addAll(homeButton, loginButton);
   }
 
   @FXML
@@ -92,38 +98,38 @@ public class NavigationViewController {
 
   public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
     throws GenericServiceException {
-    navBarItems.getChildren().removeIf(b -> true);
-
-    List<Button> toAdd = new ArrayList<>();
+    navBarItems.getChildren().clear();
 
     // Enable renter functionalities
     if (userRoleDTO == UserRoleDTO.RENTER) {
-      toAdd.add(homeButton);
-      toAdd.add(dealHistoryButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
+      navBarItems
+        .getChildren()
+        .addAll(homeButton, dealHistoryButton, myBookingsButton, accountButton);
       // Enable provider functionalities
     } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
-      toAdd.add(homeButton);
-      toAdd.add(newOfferButton);
-      if (isEnabled) toAdd.add(activeOffersButton);
-      toAdd.add(dealHistoryButton);
-      if (isEnabled) toAdd.add(excludeButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
+      navBarItems.getChildren().add(homeButton);
+      navBarItems.getChildren().add(newOfferButton);
+      if (isEnabled) navBarItems.getChildren().add(activeOffersButton);
+      navBarItems.getChildren().add(dealHistoryButton);
+      if (isEnabled) navBarItems.getChildren().add(excludeButton);
+      navBarItems.getChildren().add(myBookingsButton);
+      navBarItems.getChildren().add(accountButton);
       // Enable operator functionalities
     } else {
-      toAdd.add(homeButton);
-      toAdd.add(newOfferButton);
-      toAdd.add(activeOffersButton);
-      toAdd.add(dealHistoryButton);
-      toAdd.add(excludeButton);
-      toAdd.add(approveButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
+      navBarItems
+        .getChildren()
+        .addAll(
+          homeButton,
+          newOfferButton,
+          activeOffersButton,
+          dealHistoryButton,
+          excludeButton,
+          approveButton,
+          myBookingsButton,
+          accountButton
+        );
     }
 
-    navBarItems.getChildren().addAll(toAdd);
     mainViewController.changeView("home");
     if (isShortText) {
       setShortTexts();
@@ -182,5 +188,13 @@ public class NavigationViewController {
         ((Button) child).setPrefWidth(172);
       }
     }
+  }
+
+  public void showBookingNotification() {
+    myBookingsNotificationDot.setVisible(true);
+  }
+
+  public void resetBookingNotification() {
+    myBookingsNotificationDot.setVisible(false);
   }
 }

@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -10,10 +8,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
-import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.entities.Booking;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -28,6 +28,9 @@ public class MainViewController {
   public UserController userController;
 
   @Autowired
+  public BookingController bookingController;
+
+  @Autowired
   public MyOffersViewController myOffersViewController;
 
   @Autowired
@@ -38,6 +41,9 @@ public class MainViewController {
 
   @Autowired
   public RentingViewController rentingViewController;
+
+  @Autowired
+  public MyBookingsViewController myBookingsViewController;
 
   @Autowired
   public RegisterViewController registerViewController;
@@ -107,17 +113,31 @@ public class MainViewController {
   }
 
   public void clearView() {
-    List<Pane> toRemove = new ArrayList<>();
-    for (Object child : mainStage.getChildren()) {
-      if (child instanceof Pane) {
-        toRemove.add((Pane) child);
-      }
-    }
-    mainStage.getChildren().removeAll(toRemove);
+    mainStage.getChildren().removeIf(node -> node instanceof Pane);
   }
 
   public void changeView(String switchTo) throws GenericServiceException {
     changeView(switchTo, true);
+  }
+
+  @Scheduled(fixedDelay = 1000)
+  public void listenForDatabaseChanges() {
+    if (userController.getLoggedInUser() != null) {
+      if (
+        bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .size() >
+        0 &&
+        !bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .stream()
+          .allMatch(Booking::isActive)
+      ) {
+        navigationViewController.showBookingNotification();
+      } else {
+        navigationViewController.resetBookingNotification();
+      }
+    }
   }
 
   public void changeView(String switchTo, boolean reloadData)
@@ -172,6 +192,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.myBookingsButton
         );
+        myBookingsViewController.reloadData();
         break;
       case "login":
         mainStage.getChildren().add(loginViewBox);
