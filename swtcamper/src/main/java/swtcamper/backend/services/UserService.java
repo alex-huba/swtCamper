@@ -142,7 +142,7 @@ public class UserService {
    * @throws WrongPasswordException if the password doesn't match with the username
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
-  public UserRole login(String username, String password)
+  public User login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (userRepository.existsByUsernameAndPassword(username, password)) {
@@ -161,7 +161,7 @@ public class UserService {
           String.format("User %s logged in.", username)
         )
       );
-      return user.getUserRole();
+      return user;
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {

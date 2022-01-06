@@ -26,8 +26,9 @@ public interface IUserController {
 
   /**
    * see {@link UserService#login}
+   * @return
    */
-  UserRoleDTO login(String username, String password)
+  UserDTO login(String username, String password)
     throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
 
   /**

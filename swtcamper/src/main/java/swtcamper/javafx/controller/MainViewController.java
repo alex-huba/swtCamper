@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.User;
@@ -156,8 +157,7 @@ public class MainViewController {
                 "!\nDie Oberfläche wird sich aktualisieren"
               );
               login(
-                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
-                checkUser.isEnabled(),
+                      modelMapper.userToUserDTO(checkUser),
                 "home"
               );
               updateHappening = false;
@@ -172,8 +172,7 @@ public class MainViewController {
                 "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
               );
               login(
-                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
-                checkUser.isEnabled(),
+                      modelMapper.userToUserDTO(checkUser),
                 latestView
               );
               updateHappening = false;
@@ -188,8 +187,7 @@ public class MainViewController {
                 "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
               );
               login(
-                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
-                checkUser.isEnabled(),
+                      modelMapper.userToUserDTO(checkUser),
                 "home"
               );
               updateHappening = false;
@@ -204,8 +202,7 @@ public class MainViewController {
                 "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
               login(
-                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
-                checkUser.isEnabled(),
+                      modelMapper.userToUserDTO(checkUser),
                 "home"
               );
               updateHappening = false;
@@ -220,8 +217,7 @@ public class MainViewController {
                 "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
               login(
-                modelMapper.toUserRoleDTO(checkUser.getUserRole()),
-                checkUser.isEnabled(),
+                modelMapper.userToUserDTO(checkUser),
                 latestView
               );
               updateHappening = false;
@@ -356,17 +352,16 @@ public class MainViewController {
     handleExceptionMessage(e.getMessage());
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
+  public void login(UserDTO userDTO)
     throws GenericServiceException {
-    login(userRoleDTO, isEnabled, startPageAfterLogin);
+    login(userDTO, startPageAfterLogin);
   }
 
   public void login(
-    UserRoleDTO userRoleDTO,
-    boolean isEnabled,
+    UserDTO userDTO,
     String startPage
   ) throws GenericServiceException {
-    navigationViewController.login(userRoleDTO, isEnabled, startPage);
+    navigationViewController.login(userDTO, startPage);
     latestLoggedInStatus =
       userController.getUserById(userController.getLoggedInUser().getId());
   }

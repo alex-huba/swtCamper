@@ -109,8 +109,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
     // Try to login if user input matches data in database
     try {
       mainViewController.login(
-        userController.login(username, password),
-        userController.isEnabled(username)
+        userController.login(username, password)
       );
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
