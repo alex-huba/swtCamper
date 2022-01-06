@@ -142,7 +142,9 @@ public class MyBookingsViewController {
         // Button for accepting the booking request
         Button acceptButton = new Button("Annehmen");
         acceptButton.getStyleClass().add("bg-primary");
-        acceptButton.setDisable(anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking));
+        acceptButton.setDisable(
+          anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking)
+        );
         acceptButton.setOnAction(event -> {
           try {
             bookingController.activate(booking.getId());
@@ -341,13 +343,19 @@ public class MyBookingsViewController {
    * @param booking the {@link Booking} that shall be evaluated
    * @return true if the offer is already in another active booking, false if it is available
    */
-  private boolean anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(Booking booking) {
+  private boolean anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(
+    Booking booking
+  ) {
     for (Booking bookingI : bookingController.getBookingsForUser(
       userController.getLoggedInUser()
     )) {
       if (
         bookingI.getOffer().getOfferID() == booking.getOffer().getOfferID() &&
-        bookingI.isActive() && ((booking.getStartDate().compareTo(bookingI.getEndDate()) <= 0) && (bookingI.getStartDate().compareTo(booking.getEndDate()) <= 0))
+        bookingI.isActive() &&
+        (
+          (booking.getStartDate().compareTo(bookingI.getEndDate()) <= 0) &&
+          (bookingI.getStartDate().compareTo(booking.getEndDate()) <= 0)
+        )
       ) {
         return true;
       }
