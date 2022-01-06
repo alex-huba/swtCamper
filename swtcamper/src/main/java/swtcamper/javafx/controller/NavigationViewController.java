@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
@@ -49,6 +50,9 @@ public class NavigationViewController {
 
   @FXML
   public Button approveButton;
+
+  @FXML
+  public Circle approveNotificationDot;
 
   @FXML
   public Button myBookingsButton;
@@ -216,5 +220,13 @@ public class NavigationViewController {
         ((Button) child).setPrefWidth(172);
       }
     }
+  }
+
+  public void showApproveNotification() {
+    approveNotificationDot.setVisible(true);
+  }
+
+  public void hideApproveNotification() {
+    approveNotificationDot.setVisible(false);
   }
 }

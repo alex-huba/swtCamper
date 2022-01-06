@@ -8,6 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.shape.Circle?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane fx:id="navigationRoot" maxHeight="1.7976931348623157E308" styleClass="navBar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.NavigationViewController">
    <children>
       <Button layoutX="5.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleNavBar" styleClass="hamburgerMenu" text="☰" textFill="WHITE">
@@ -64,11 +67,20 @@
             </Button>
             <Button fx:id="approveButton" accessibleHelp="approve" accessibleText="Nutzer Akzeptieren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Nutzer Akzeptieren" textFill="WHITE">
                <graphic>
-                  <ImageView fx:id="approveButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/approvement.png" />
-                     </image>
-                  </ImageView>
+                  <HBox>
+                     <children>
+                        <ImageView fx:id="approveButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/approvement.png" />
+                           </image>
+                        </ImageView>
+                        <Circle fx:id="approveNotificationDot" fill="#ff1f1f" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
+                           <HBox.margin>
+                              <Insets left="-8.0" />
+                           </HBox.margin>
+                        </Circle>
+                     </children>
+                  </HBox>
                </graphic>
             </Button>
             <Button fx:id="myBookingsButton" accessibleHelp="myBookings" accessibleText="Meine Buchungen" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Meine Buchungen" textFill="WHITE">
@@ -103,6 +115,5 @@
    </children>
    <stylesheets>
       <URL value="@../styles/navigation.css" />
-      <URL value="@../styles/global.css" />
    </stylesheets>
 </AnchorPane>
