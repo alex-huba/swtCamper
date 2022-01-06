@@ -1,0 +1,826 @@
+% Author: Eugene Yip
+% Last modified: 15 October 2019
+
+
+% ----------------------------------------------------
+% Settings common to all documents
+\makeatletter
+    \if@twoside%
+        \usepackage[a4paper, margin = 2.3cm]{geometry}
+    \else%
+        \usepackage[a4paper, top = 2cm, bottom = 2.5cm, left = 3cm, right = 3cm, includehead, includefoot]{geometry}
+    \fi%
+\makeatother
+
+\pdfminorversion=6
+
+% Boolean variables to control the document style
+\newif\ifsolutionmode	% To switch between blank answer mode or solution mode
+\newif\ifshowmarkingbox	% To switch the marking box beside the allocated marks on or off
+
+\usepackage{graphicx}
+
+\newcommand\swtheader{
+	\noindent\raisebox{-1.8ex}{\includegraphics[height=1cm]{\includedirectory/SWT-Logo}}
+	\hfill\parbox{0.7\linewidth}{\centering \heading Lehrstuhl Softwaretechnik \& Programmiersprachen\\Fakult{\"a}t Wirtschaftsinformatik \& Angewandte Informatik}
+	\hfill\raisebox{-4ex}{\includegraphics[height=1.8cm]{\includedirectory/UB-Logo}}
+}
+
+\newcommand\swtfullheader[1]{
+	\swtheader
+	\begin{center}
+		{\large \heading #1\\[1ex]\courseacronym: \coursename}\\[3ex]
+		{\heading \semesterlong}
+	\end{center}
+	\rule{\textwidth}{1pt}
+	\vspace{0em}
+}
+
+\newcommand\swtcompactheader{
+	\swtheader
+	\begin{center}
+		{\large \heading \courseacronym: \coursename}\\[3ex]
+	\end{center}
+	{\sffamily \lecturer \hfill \semesterlong}
+	\newline
+	\rule{\textwidth}{1pt}
+	\vspace{0em}
+}
+
+\newcommand\genericheader[1]{
+	\thispagestyle{footeronly}
+	\clearpage
+	\mbox{}\vspace{-1.5cm}
+
+	\swtcompactheader
+
+	\makemaintitle{#1}
+}
+
+% Global definition of headings
+\usepackage{fancyhdr}
+\setlength{\headheight}{14.5pt}
+\pagestyle{fancy}
+\lhead{\courseacronym (\semester)} \chead{} \rhead{\documentheader}
+\lfoot{\issuedate}                 \cfoot{} \rfoot{\thepage~of~\pageref{LastPage}}
+
+% Define a specific style for assignments and exercise sheets
+\fancypagestyle{footeronly}{
+	\lhead{}           \chead{} \rhead{}
+	\renewcommand{\headrulewidth}{0pt}
+	\lfoot{\issuedate} \cfoot{} \rfoot{\thepage~of~\pageref{LastPage}}
+}
+
+% Define a specific style for the proposal sheet of written exams
+\fancypagestyle{proposalfooter}{
+	\lhead{}           \chead{} \rhead{}
+	\renewcommand{\headrulewidth}{0pt}
+	\lfoot{\issuedate} \cfoot{} \rfoot{(\romannumeral\thepage)}
+}
+
+% Define a specific style for reports
+\fancypagestyle{report}{
+	\fancyhead{}
+	\fancyhead[RE,LO]{\nouppercase\rightmark}
+	\fancyhead[LE,RO]{\nouppercase\leftmark}
+	
+	\fancyfoot{}
+	\fancyfoot[RE,LO]{\maintitle}
+	\fancyfoot[LE,RO]{\thepage~of~\pageref{LastPage}}
+}
+
+% Copyright watermark
+\usepackage{xifthen}
+\newboolean{displaycopyright}
+\setboolean{displaycopyright}{true}
+\usepackage{atbegshi}
+\AtBeginShipout{
+	\ifthenelse{\boolean{displaycopyright}}{
+		\AtBeginShipoutUpperLeft{
+			\begin{tikzpicture}[remember picture,overlay]
+				\draw (current page.south east) node[rotate=90,anchor=south west,inner sep=10pt] 
+					{\color{black}\textnormal{\tiny\textrm{\textcopyright}~Lehrstuhl SWT \the\year{} (\author/\version). Die Weitergabe dieses Dokuments ist untersagt / The unauthorised distribution of this document is prohibited.}};
+			\end{tikzpicture}
+		}
+	}{
+		% Nothing
+	}
+}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}		% For straight quote marks in code listings
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage{forloop}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+\usepackage{lastpage}
+\usepackage{parskip}
+\usepackage{listings}
+\usepackage{marginnote}
+\usepackage[innertopmargin = 1em, innerbottommargin = 1em, skipabove = 1em]{mdframed}
+\usepackage[hypertexnames = false, hidelinks]{hyperref}
+
+\usepackage{sectsty}
+\allsectionsfont{\sffamily}
+\makeatletter	% Adjust spacing after section and subsection titles
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+      {-3.5ex \@plus -1ex \@minus -.2ex}% <beforeskip>
+      {1ex \@plus.2ex}% <afterskip>
+      {\normalfont\Large\bfseries\SS@sectfont}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+      {-3.25ex\@plus -1ex \@minus -.2ex}% <beforeskip>
+      {0.5ex \@plus .2ex}% <afterskip>
+      {\normalfont\large\bfseries\SS@subsectfont}}
+\makeatother
+
+
+\renewcommand{\ttdefault}{lmtt}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows, calc, shapes}
+
+
+% Redefinition of marginnote to force margin notes to be on the right hand side.
+% This is needed to keep the marking boxes next to the allocated marks.
+% https://tex.stackexchange.com/a/69624
+\makeatletter
+\long\def\@mn@@@marginnote[#1]#2[#3]{%
+  \begingroup
+    \ifmmode\mn@strut\let\@tempa\mn@vadjust\else
+      \if@inlabel\leavevmode\fi
+      \ifhmode\mn@strut\let\@tempa\mn@vadjust\else\let\@tempa\mn@vlap\fi
+    \fi
+    \@tempa{%
+      \vbox to\z@{%
+        \vss
+        \@mn@margintest
+        \if@reversemargin\if@tempswa
+            \@tempswafalse
+          \else
+            \@tempswatrue
+        \fi\fi
+          \rlap{%
+            \ifx\@mn@currxpos\relax
+              \kern\marginnoterightadjust
+              \if@mn@verbose
+                \PackageInfo{marginnote}{%
+                  xpos not known,\MessageBreak
+                  using \string\marginnoterightadjust}%
+              \fi
+            \else\ifx\@mn@currxpos\@empty
+                \kern\marginnoterightadjust
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos not known,\MessageBreak
+                    using \string\marginnoterightadjust}%
+                \fi
+              \else
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos seems to be \@mn@currxpos,\MessageBreak
+                    \string\marginnoterightadjust
+                    \space ignored}%
+                \fi
+                \begingroup
+                  \setlength{\@tempdima}{\@mn@currxpos}%
+                  \kern-\@tempdima
+                  \if@twoside\ifodd\@mn@currpage\relax
+                      \kern\oddsidemargin
+                    \else
+                      \kern\evensidemargin
+                    \fi
+                  \else
+                    \kern\oddsidemargin
+                  \fi
+                  \kern 1in
+                \endgroup
+              \fi
+            \fi
+            \kern\marginnotetextwidth\kern\marginparsep
+            \vbox to\z@{\kern\marginnotevadjust\kern #3
+              \vbox to\z@{%
+                \hsize\marginparwidth
+                \linewidth\hsize
+                \kern-\parskip
+                \marginfont\raggedrightmarginnote\strut\hspace{\z@}%
+                \ignorespaces#2\endgraf
+                \vss}%
+              \vss}%
+          }%
+      }%
+    }%
+  \endgroup
+}
+\makeatother
+
+
+% ----------------------------------------------------
+% Settings for question headings
+
+% Heading font style
+\newcommand\heading{\sffamily\bfseries}
+
+% Empty box for writing in the achieved marks
+\newcommand\markbox[1][]{%
+	\ifshowmarkingbox{%
+		\ifthenelse{\isempty{#1}}{%
+			\marginnote{\tikz\draw (0,0) rectangle (1.2cm,1.2cm);}%
+		}{%
+			\marginnote{\tikz\draw[#1] (0,0) rectangle (1.5cm,1.5cm);}[-0.5cm]%
+		}%
+	}%
+	\else%
+		% Nothing
+	\fi%
+}
+
+% Creating questions and sub-questions
+% For example, Question x.y
+% where x = \thequestion and y = \thesubquestion
+\newcounter{question}
+\renewcommand\thequestion{\arabic{question}}
+\setcounter{question}{0}
+
+\newcounter{subquestion}
+\renewcommand\thesubquestion{\arabic{subquestion}}
+\setcounter{subquestion}{0}
+
+\makeatletter	% For getting a proper reference number that displays the question and subquestion numbers
+	\renewcommand\p@subquestion{\thequestion.}
+\makeatother
+
+\newcommand\question[2][]{
+	\refstepcounter{question}
+	\ifthenelse{\isempty{#1}}{
+		\clearpage{\Large \heading Question \thequestion: #2\markbox[double, double distance=1mm]}
+	}{
+		\clearpage{\Large \heading Question \thequestion: #2 \hfill [#1m]\markbox[double, double distance=1mm]}
+		
+		% The new line immediately above allows the marks to appear flush against the right margin!
+	}
+	\setcounter{subquestion}{0}
+	
+	\newcounter{questiontotalmarks\arabic{question}}
+	\setcounter{questiontotalmarks\arabic{question}}{0}
+}
+
+% Creating sub-questions
+\newcommand\subquestion[1][]{
+	\refstepcounter{subquestion}
+	\par\vspace{1em}
+	\ifthenelse{\isempty{#1}}{
+		{\heading Question \thequestion.\thesubquestion}
+	}{
+		{\heading Question \thequestion.\thesubquestion \hfill [#1m]\markbox}
+
+		% The new line immediately above allows the marks to appear flush against the right text area!
+	}
+
+	\addtocounter{questiontotalmarks\arabic{question}}{#1}
+}
+
+% Creating points/marks
+\newcommand\pointsunbold[1]{{\sffamily [#1m]\xspace}}	% Needed when a breakdown of points is needed for a large question
+\newcommand\points[1]{{\heading \pointsunbold{#1}}}
+
+
+% Print out the marks
+\newcommand\printpoints[1]{
+	\newcounter{totalmarks}
+	\setcounter{totalmarks}{0}
+	\newcounter{questionnumber}
+	\forLoop[1]{1}{\value{question}}{questionnumber}{
+		\typeout{#1Question \thequestionnumber: \arabic{questiontotalmarks\thequestionnumber} marks}
+		\addtocounter{totalmarks}{\value{questiontotalmarks\thequestionnumber}}
+	}
+	\typeout{#1Total: \arabic{totalmarks} marks}
+}
+
+% ----------------------------------------------------
+% Settings for exercise headings
+
+\newcounter{exercisenumber}
+\renewcommand\theexercisenumber{\exercisesheetnumber.\arabic{exercisenumber}}
+\setcounter{exercisenumber}{0}
+
+\newcounter{subexercisenumber}
+\renewcommand\thesubexercisenumber{\arabic{subexercisenumber}}
+\setcounter{subexercisenumber}{0}
+
+\makeatletter	% For getting a proper reference number that displays the exercise and subexercise numbers
+	\renewcommand\p@subexercisenumber{\theexercisenumber.}
+\makeatother
+
+\newcommand{\exercise}[1]{
+	\refstepcounter{exercisenumber}
+	\pagebreak[0]	% Suggest to LaTeX to break a page if the end of the previous exercise flows to a new page.
+	\par\vspace{2em}	% Vertical space is ignored at the start of a new page with the par command.
+	{\Large \heading \theexercisenumber \hspace{1ex} #1}
+	\setcounter{subexercisenumber}{0}
+}
+
+% Creating sub-exercises
+\newcommand\subexercise[1][]{
+	\refstepcounter{subexercisenumber}
+	\pagebreak[0]
+	\par\vspace{1em}
+	{\heading Exercise \theexercisenumber.\thesubexercisenumber \hspace{1ex}}
+}
+
+
+% ----------------------------------------------------
+% Settings mostly relevant to written exams 
+
+\newcount{\gridcellcount}
+\gridcellcount = 32
+\newlength{\areawidth}
+\newlength{\areaheight}
+\newlength{\gridcellsize}
+\newcommand\gridarea[1][]{% Draws a gridded area for written answers. Optional argument for the height of the gridded area. Fills in the remaining page by default.
+	\vspace{1em}
+	\setlength\areawidth{\textwidth - 8\pgflinewidth}
+	\setlength\gridcellsize{\areawidth / \gridcellcount}
+	\setlength\areaheight{\dimexpr \pagegoal - \pagetotal - 2\baselineskip}	% (Height of page body) - (Height of page body that has been used so far) - 2*(Height between two paragraphs)
+
+	% Convert the grid cell size into a dimensionless value
+	\newcount\gridcellvalue
+	\gridcellvalue = \gridcellsize		
+
+	% Convert the area height into a dimensionless value
+	\newcount\areaheightvalue
+	\ifthenelse{\isempty{#1}}{
+		\areaheightvalue = \dimexpr\areaheight
+	}{
+		\areaheightvalue = \dimexpr#1			
+	}
+
+	% Convert the height into the number grid cells
+	\divide\areaheightvalue by\gridcellvalue	
+
+	\begin{center}	% Centering needed to prevent overfull or underfull warnings
+		\tikz\draw[step = \gridcellsize, color = gray!50] (0,0) grid (\areawidth, \the\areaheightvalue\gridcellsize);
+	\end{center}
+}
+
+\newcommand\gridpage{		% Fills in the rest of the page with grids for written answers
+	\clearpage
+	\textbf{(Additional space; carefully label the question you are answering.)}
+	
+	\gridarea
+	\clearpage
+}
+
+\newcommand\xarea[1][]{	% Crosses out the rest of the page to prevent written answers
+	\ifsolutionmode \else
+		\ifthenelse{\isempty{#1}}{
+			\setlength\areaheight{\dimexpr \pagegoal - \pagetotal - 2\baselineskip}	% (Height of page body) - (Height of page body that has been used so far) - 2*(Height between two paragraphs)
+		}{
+			\areaheight=\dimexpr#1			
+		}
+		\tikz[remember picture,overlay]
+			\draw[gray](0,0) -- (\textwidth,-\areaheight) 
+					   (\textwidth,0) -- (0,-\areaheight) 
+					   (\textwidth/2,-\areaheight/2) node[font=\LARGE\bfseries]{Do not write in this space.};
+		\clearpage
+	\fi
+}
+
+\newcommand\xpage{ % Crosses out an entire page to prevent written answers
+	\ifsolutionmode \else
+		\clearpage
+		\setboolean{displaycopyright}{false}
+		\tikz[remember picture,overlay]
+			\draw[gray](current page.north west) -- (current page.south east) 
+					   (current page.south west) -- (current page.north east) 
+					   (current page.center) node[font=\LARGE\bfseries]{Do not write on this page.};
+	\fi
+	\clearpage
+	\setboolean{displaycopyright}{true}
+}
+
+% Project proposal sheet
+\newcommand\proposalsheet[2]{
+	% ----------------------------------------------------
+	% Front side of the proposal sheet
+	
+	\thispagestyle{proposalfooter}
+	\mbox{}\vspace{-1.5cm}
+
+	\swtfullheader{Klausur zum Modul}
+
+	\noindent
+	\textbf{Name:}~~\underline{\hspace{7.5cm}}\hfill 
+	\textbf{Matrikelnr.:}~~\underline{\hspace{4cm}}
+
+	\vspace{1em}
+
+	\noindent
+	\textbf{Studiengang:}~~\underline{\hspace{6.26cm}}\hfill 
+	\textbf{Fachsemester:}~~\underline{\hspace{3.64cm}}
+	
+	\vspace{2cm}
+
+	\textbf{Carefully read the following proposal, which concerns most exam questions.}
+
+	\textbf{This sheet is to be handed in with the questions \& answers' part of the exam.}
+
+	\vspace{1cm}
+	
+	% Proposal is inserted here
+	#1
+	
+	\vfill
+
+	\textbf{Note: Where there is a lack of detail in the proposal above,
+	you are permitted to make assumptions. However, you shall always clearly
+	state those assumptions~in your answers.}
+	
+	\clearpage
+	
+	% ----------------------------------------------------
+	% Back side of the proposal sheet
+	
+	\thispagestyle{proposalfooter}
+	
+	% Contents of the second page are inserted here
+	#2
+}
+
+% Front and back pages
+\newcommand\examfrontpage[1]{
+	\ifsolutionmode \else 
+		\setboolean{displaycopyright}{false}
+		\includepdf[pages=1]{\includedirectory/Umschlag-SS16.pdf}
+		\setboolean{displaycopyright}{true}
+	\fi
+	
+	\thispagestyle{empty}
+	\setcounter{page}{0}
+	\clearpage
+	\mbox{}\vspace{-1.5cm}
+
+	\swtfullheader{Klausur zum Modul}
+	
+	% Insert contents of the front page here
+	#1
+}
+
+\newcommand\exambackpage{
+	\ifsolutionmode \else
+		\pagestyle{empty}
+		\setboolean{displaycopyright}{false}
+		\includepdf[pages={2,3}]{\includedirectory/Umschlag-SS16.pdf}
+		\addtocounter{page}{-2}
+		\setboolean{displaycopyright}{true}
+	\fi
+	
+	% Log messages
+	\typeout{}
+	\typeout{-----------------------------------------------------}
+
+	\printpoints{ }
+	\typeout{}
+	
+	\typeout{ Total number of exam pages must be divisible by 4!}
+	\typeout{-----------------------------------------------------}
+}
+
+
+% ----------------------------------------------------
+% Settings mostly relevant to written test exams 
+
+\newcommand\testexamfrontpage[3]{
+	\thispagestyle{empty}
+	\setcounter{page}{0}
+	\mbox{}\vspace{-1.5cm}
+	
+	\swtfullheader{#1}
+	
+	\noindent
+	\textbf{Name:}~~\underline{\hspace{7.5cm}}\hfill 
+	\textbf{Matrikelnr.:}~~\underline{\hspace{4cm}}
+
+	\vspace{1em}
+
+	\noindent
+	\textbf{Studiengang:}~~\underline{\hspace{6.26cm}}\hfill 
+	\textbf{Fachsemester:}~~\underline{\hspace{3.64cm}}
+	
+	\vspace{2cm}
+	
+	% Insert contents of the front page here
+	#2
+	
+	\clearpage
+
+	\textbf{Note: Carefully read the following proposal, which concerns most test exam questions.}
+	
+	\textbf{Where there is a lack of detail in the proposal above,
+	you are permitted to make assumptions. However, you shall always clearly
+	state those assumptions~in your answers.}
+	
+	\vspace{4em}
+	
+	% Insert project brief here
+	#3
+
+	\clearpage
+}
+
+
+% ----------------------------------------------------
+% Settings mostly relevant to written assignments and exercise sheets
+
+\newcommand\makemaintitle[1]{
+	\begin{center}
+		\Large \sffamily \textbf{#1}\\[1.5ex]
+	\end{center}
+}
+
+\newcommand\makesubtitle[1]{
+	\begin{center}
+		\Large \sffamily #1\\[1.5ex]
+	\end{center}
+}
+
+\newcommand\assignmentfrontpage[3][]{
+	\thispagestyle{footeronly}
+	\mbox{}\vspace{-1.5cm}
+
+	\swtcompactheader
+	
+	% Main document title is inserted here
+	\makemaintitle{#2}
+	\ifthenelse{\isempty{#1}}{
+	}{
+		\makesubtitle{#1}
+	}
+
+	\vspace{1em}
+	
+	\begin{center}
+		\textbf{\Large \sffamily Strict deadline: \deadlinedate at \deadlinetime}
+	\end{center}
+
+	% Rest of the front page is inserted here
+	#3
+	
+	\clearpage
+}
+
+\newcommand\declaration[1]{
+	\thispagestyle{footeronly}
+	\mbox{}\vspace{-1.5cm}
+
+	\swtcompactheader
+	\makemaintitle{#1}
+
+	\vspace{1em}
+
+	\section*{Ehrenwörtliche Erklärung}
+	\label{sec:erklaerung}
+	Ich habe die vorliegende Hausarbeit einschließlich der digitalen Abgabe
+	selbständig verfasst und keine anderen als die angegebenen Quellen und
+	Hilfsmittel benutzt.
+
+	\vspace{2cm}
+
+	\hrule
+	Matrikelnummer \hspace{4cm} Name
+
+	\vspace{2cm}
+
+	\hrule
+	Ort/Datum \hspace{4.9cm} Unterschrift
+	
+	\vfill
+	
+	\hrule
+	Gesamtnote \hspace{4.9cm} Datum
+
+	\vspace{2cm}
+
+	\hrule
+	Prüfer \hspace{5.9cm} Unterschrift
+	
+	\vspace{1cm}
+	
+	% Log messages
+	\typeout{}
+	\typeout{-----------------------------------------------------}
+	\printpoints{ }
+	\typeout{}
+	\typeout{ Student declaration page must be single sided!}
+	\typeout{-----------------------------------------------------}
+}
+
+
+% ----------------------------------------------------
+% Settings mostly relevant to exercise sheets
+
+\newcommand\practicalheader[1]{
+	\thispagestyle{footeronly}
+	\clearpage
+	\mbox{}\vspace{-1.5cm}
+
+	\swtcompactheader
+
+	\makemaintitle{#1 Sheet \exercisesheetnumber: \documentheader}
+}
+
+\newcommand\exerciseheader{\practicalheader{Exercise}}
+\newcommand\supplementaryheader{\practicalheader{Supplementary}}
+
+
+% ----------------------------------------------------
+% Settings mostly relevant to reports
+
+\newcommand\reportfrontpage[1]{
+	\setboolean{displaycopyright}{false}
+
+	\thispagestyle{empty}
+	\clearpage
+	
+	\mbox{}\vspace{-1.5cm}
+
+	\swtheader
+
+	\vspace{2cm}
+
+	\makemaintitle{\maintitle}
+	\makesubtitle{\subtitle}
+	
+	\vspace{2cm}
+		
+	\begin{center}
+		\sffamily
+		
+		\preparedfor.
+	
+		By \reportauthor, \affiliation.
+	
+		\vspace{1em}
+	
+		Version: \publishdate
+	
+		\vfill
+	
+		\begin{minipage}{11cm}
+			\textbf{Abstract:}
+			\setlength{\parindent}{1pc}
+			 #1
+		\end{minipage}
+
+		\vfill
+	\end{center}
+	
+	
+	% Verify that abstract is not too long
+	\ifnum \value{page}>1
+		\errhelp{Please ensure that the abstract remains short enough to remain on the title page}
+		\errmessage{Abstract too long}
+	\else
+	\fi
+	
+	\clearpage
+	\pagestyle{report}
+}
+	
+\newcommand\studentreportfrontpagetop[5]{
+	\newgeometry{margin = 2.3 cm}			% Front page has narrower margins
+	\setboolean{displaycopyright}{false}
+
+	\pagestyle{empty}
+	\clearpage
+	
+	\mbox{}\vspace{-1.5cm}
+
+	\swtheader
+
+	\vspace{2cm}
+
+	\makemaintitle{#1}
+	
+	\vspace{1em}
+	
+	\makemaintitle{#2}
+	
+	\vspace{1em}
+	
+	\makesubtitle{#3}
+	\makesubtitle{#4}
+	
+	\vspace{2cm}
+	
+	\begin{center}
+		\sffamily
+		
+		#5
+	
+		\vfill
+	\end{center}
+	
+	% Restore the page margins 
+	\restoregeometry
+}
+
+\newcommand\studentdetails[4]{
+	\textbf{#1}						\\
+	Student Number: #2				\\
+	Degree Course/Semester: #3/#4
+	
+	\vspace{1em}
+}
+
+\newcommand\studentsignature[1]{
+	\vspace{0.5cm}
+
+	\begin{mdframed}
+		\vspace{0.5em}
+		\hspace{5.9cm} \emph{\large #1}
+		\vspace{0.5em}
+		\hrule
+		Matrikelnummer \hspace{3cm} Name
+
+		\vspace{1.4cm}
+
+		\hrule
+		Ort, Datum \hspace{3.77cm} Unterschrift
+	\end{mdframed}
+}
+
+% ----------------------------------------------------
+% Settings for code formating
+
+\usepackage{xcolor}
+\definecolor{darkviolet}{rgb}{0.5,0,0.4}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{darkgreen}{rgb}{0,0.4,0.2}
+\definecolor{darkblue}{rgb}{0.1,0.1,0.9}
+\definecolor{darkgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{lightblue}{rgb}{0.4,0.4,1}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{eclipsish}{
+	basicstyle=\normalsize\ttfamily,
+	emphstyle=\color{red}\bfseries,
+	keywordstyle=\color{darkgreen}\bfseries,
+	keywordstyle=[2]\color{darkviolet}\bfseries,
+	commentstyle=\color{darkgrey},
+	stringstyle=\color{darkblue},
+	numberstyle=\color{darkgrey}\ttfamily\tiny,
+	emphstyle=\color{red},
+	morecomment=[s][\color{lightblue}]{/**}{*/},
+	showstringspaces=false,
+	numbers=left,
+	numbersep=5pt,
+	captionpos=b,                   % sets the caption-position to bottom
+	xleftmargin=3.5ex,
+	xrightmargin=2.4ex,
+	breakindent=3ex,
+	breakautoindent,
+	breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+	escapeinside={(*@}{@*)},
+	mathescape=true,
+	breaklines=true,
+	tabsize=4,
+	upquote=true
+}
+
+\lstdefinestyle{cpp}{
+	numbers=none,	%left
+	stringstyle=\color{red},
+	keywordstyle=\color{darkred},
+	commentstyle=\color{darkgreen},
+	morekeywords={}% list your attributes here
+}
+
+\lstdefinelanguage{WHILE}[]{C}{
+	morekeywords=[2]{skip,i,abort,par},
+	alsoletter={^},
+	morekeywords= {begin,end,fi,then,protect,repeat,do,od,until,end}
+}
+
+\lstdefinelanguage{SMV}[]{C}{
+	morekeywords=[2]{:=,FALSE,TRUE},
+	alsoletter={^},
+	morekeywords= {MODULE,VAR,ASSIGN,DEFINE,case,esac,init,next},
+	morecomment=[l]{--},
+}
+
+\lstdefinelanguage{XML}{
+	morestring=[s][\color{mauve}]{"}{"},
+	morestring=[s][\color{black}]{>}{<},
+	morecomment=[s]{<?}{?>},
+	morecomment=[s][\color{darkgreen}]{<!--}{-->},
+	stringstyle=\color{black},
+	identifierstyle=\color{lightblue},
+	keywordstyle=\color{red},
+	morekeywords={}% list your attributes here
+}
+
+\lstset{language=SMV,style=eclipsish}
