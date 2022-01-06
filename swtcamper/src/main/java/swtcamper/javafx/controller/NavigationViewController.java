@@ -73,9 +73,8 @@ public class NavigationViewController {
   }
 
   private void setStartButtons() {
-    navBarItems.getChildren().removeIf(b -> true);
-    navBarItems.getChildren().add(homeButton);
-    navBarItems.getChildren().add(loginButton);
+    navBarItems.getChildren().clear();
+    navBarItems.getChildren().addAll(homeButton, loginButton);
   }
 
   @FXML
@@ -86,10 +85,12 @@ public class NavigationViewController {
 
   public void setButtonActive(Button btn) {
     // remove all active classes first
-    for (Object child : navBarItems.getChildren()) {
-      if (child instanceof Button) ((Button) child).getStyleClass()
-        .removeIf(c -> c.contains("active"));
-    }
+    navBarItems
+      .getChildren()
+      .stream()
+      .filter(node -> node instanceof Button)
+      .forEach(node -> node.getStyleClass().removeIf(s -> s.contains("active"))
+      );
 
     btn.getStyleClass().add("active");
   }
