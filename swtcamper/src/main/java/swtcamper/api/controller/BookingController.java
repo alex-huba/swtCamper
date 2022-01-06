@@ -25,9 +25,6 @@ public class BookingController implements IBookingController {
   @Autowired
   private ModelMapper modelMapper;
 
-  @Autowired
-  private OfferViewController offerViewController;
-
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
   }
