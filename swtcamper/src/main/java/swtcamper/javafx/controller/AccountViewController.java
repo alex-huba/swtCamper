@@ -104,8 +104,6 @@ public class AccountViewController {
                 userController.unblockUserById(selectedUser.getId());
               } else {
                 userController.blockUserById(selectedUser.getId());
-                // also reset user's status
-                userController.ignoreUserById(selectedUser.getId());
               }
               try {
                 operatorInit();
