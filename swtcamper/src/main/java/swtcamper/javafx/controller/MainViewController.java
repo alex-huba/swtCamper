@@ -134,74 +134,72 @@ public class MainViewController {
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
-    if(userController.getLoggedInUser() != null) {
+    if (userController.getLoggedInUser() != null) {
       // check for new providers that need to be enabled
       if (
-              userController
-                      .getLoggedInUser()
-                      .getUserRole()
-                      .equals(UserRole.OPERATOR) &&
-                      userController
-                              .getAllUsers()
-                              .stream()
-                              .anyMatch(user -> !user.isEnabled())
+        userController
+          .getLoggedInUser()
+          .getUserRole()
+          .equals(UserRole.OPERATOR) &&
+        userController
+          .getAllUsers()
+          .stream()
+          .anyMatch(user -> !user.isEnabled())
       ) {
         navigationViewController.showApproveNotification();
       } else {
         navigationViewController.hideApproveNotification();
       }
 
-      if (
-              latestLoggedInStatus != null &&
-                      latestView != null
-      ) {
+      if (latestLoggedInStatus != null && latestView != null) {
         // get the latest update for the logged-in user to check if there were made any changes
         User checkUser = userController.getUserById(
-                userController.getLoggedInUser().getId()
+          userController.getLoggedInUser().getId()
         );
         if (!updateHappening) {
           // user-role has changed
           if (
-                  !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
+            !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
           ) {
             updateHappening = true;
             Platform.runLater(() -> {
               try {
                 handleInformationMessage(
-                        "Deine Rolle hat sich geändert zu " +
-                                checkUser.getUserRole() +
-                                "!\nDie Oberfläche wird sich aktualisieren"
+                  "Deine Rolle hat sich geändert zu " +
+                  checkUser.getUserRole() +
+                  "!\nDie Oberfläche wird sich aktualisieren"
                 );
                 login(modelMapper.userToUserDTO(checkUser), "home");
                 updateHappening = false;
-              } catch (GenericServiceException ignore) {
-              }
+              } catch (GenericServiceException ignore) {}
             });
             // user got enabled
-          } else if (checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()) {
+          } else if (
+            checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()
+          ) {
             updateHappening = true;
             Platform.runLater(() -> {
               try {
                 handleInformationMessage(
-                        "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
+                  "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
                 );
                 login(modelMapper.userToUserDTO(checkUser), latestView);
                 updateHappening = false;
-              } catch (GenericServiceException ignore) {
-              }
+              } catch (GenericServiceException ignore) {}
             });
             // user got disabled
-          } else if (!checkUser.isEnabled() && latestLoggedInStatus.isEnabled()) {
+          } else if (
+            !checkUser.isEnabled() && latestLoggedInStatus.isEnabled()
+          ) {
             updateHappening = true;
             Platform.runLater(() -> {
               try {
                 handleInformationMessage(
-                        "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
+                  "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
                 );
                 login(modelMapper.userToUserDTO(checkUser), "home");
                 updateHappening = false;
-              } catch (GenericServiceException ignore) {
-              }
+              } catch (GenericServiceException ignore) {}
             });
             // user got locked
           } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
@@ -209,12 +207,11 @@ public class MainViewController {
             Platform.runLater(() -> {
               try {
                 handleInformationMessage(
-                        "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+                  "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
                 );
                 login(modelMapper.userToUserDTO(checkUser), "home");
                 updateHappening = false;
-              } catch (GenericServiceException ignore) {
-              }
+              } catch (GenericServiceException ignore) {}
             });
             // user got unlocked
           } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
@@ -222,12 +219,11 @@ public class MainViewController {
             Platform.runLater(() -> {
               try {
                 handleInformationMessage(
-                        "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+                  "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
                 );
                 login(modelMapper.userToUserDTO(checkUser), latestView);
                 updateHappening = false;
-              } catch (GenericServiceException ignore) {
-              }
+              } catch (GenericServiceException ignore) {}
             });
           }
         }

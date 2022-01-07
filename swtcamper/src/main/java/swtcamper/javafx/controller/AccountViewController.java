@@ -80,23 +80,25 @@ public class AccountViewController {
           if (
             !newValue.getId().equals(userController.getLoggedInUser().getId())
           ) {
-//            if (!newValue.isLocked()) enableBtn.setDisable(false);
-//            enableBtn.setText(
-//              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
-//            );
-//            enableBtn.setOnAction(event -> {
-//              if (newValue.isEnabled()) {
-//                userController.ignoreUserById(selectedUser.getId());
-//              } else {
-//                userController.enableUserById(selectedUser.getId());
-//              }
-//              try {
-//                operatorInit();
-//              } catch (GenericServiceException ignore) {}
-//            });
+            //            if (!newValue.isLocked()) enableBtn.setDisable(false);
+            //            enableBtn.setText(
+            //              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
+            //            );
+            //            enableBtn.setOnAction(event -> {
+            //              if (newValue.isEnabled()) {
+            //                userController.ignoreUserById(selectedUser.getId());
+            //              } else {
+            //                userController.enableUserById(selectedUser.getId());
+            //              }
+            //              try {
+            //                operatorInit();
+            //              } catch (GenericServiceException ignore) {}
+            //            });
 
             blockBtn.setDisable(false);
-            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Global Blockieren");
+            blockBtn.setText(
+              newValue.isLocked() ? "Entblocken" : "Global Blockieren"
+            );
             blockBtn.setOnAction(event -> {
               if (newValue.isLocked()) {
                 userController.unblockUserById(selectedUser.getId());
