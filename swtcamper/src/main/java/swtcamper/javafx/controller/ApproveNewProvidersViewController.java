@@ -29,9 +29,18 @@ public class ApproveNewProvidersViewController {
 
     private void reloadData() throws GenericServiceException {
         toApproveListView.getChildren().clear();
+
         for(User user : userController.getAllUsers()) {
             if(user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()) {
-                Label descriptionLabel = new Label(String.format("Der neue Nutzer %s %s (%s) will Provider sein.", user.getName(), user.getSurname(),user.getUsername()));
+                Label headingLabel = new Label(String.format("Neue Provider-Anfrage von Nutzer '%s'", user.getUsername()));
+                headingLabel.setStyle("-fx-font-size: 20;");
+
+                Label usernameLabel = new Label(String.format("Benutzername: %s",user.getUsername()));
+                Label nameLabel = new Label(String.format("Name: %s %s",user.getName(), user.getSurname()));
+                Label emailLabel = new Label(String.format("E-mail: %s",user.getEmail()));
+                Label phoneLabel = new Label(String.format("Telefon: %s",user.getPhone()));
+
+                // accept button
                 Button acceptButton = new Button("Akzeptieren");
                 acceptButton.getStyleClass().add("bg-primary");
                 acceptButton.setOnAction(event -> {
@@ -44,6 +53,7 @@ public class ApproveNewProvidersViewController {
                 Tooltip t1 = new Tooltip(String.format("Dadurch wird %s Anzeigen erstellen können", user.getUsername()));
                 Tooltip.install(acceptButton, t1);
 
+                // reject button
                 Button rejectButton = new Button("Ablehnen");
                 rejectButton.getStyleClass().add("bg-warning");
                 rejectButton.setOnAction(event -> {
@@ -60,12 +70,19 @@ public class ApproveNewProvidersViewController {
                 Tooltip t2 = new Tooltip(String.format("Dadurch bekommt %s die Rolle 'Renter'", user.getUsername()));
                 Tooltip.install(rejectButton, t2);
 
+                HBox buttonHBox = new HBox(acceptButton, rejectButton);
+                buttonHBox.setSpacing(10);
 
-                HBox providerToApproveHBox = new HBox(descriptionLabel,
-                        acceptButton,
-                        rejectButton);
+                // card
+                VBox bookingVBox = new VBox(headingLabel, usernameLabel, nameLabel, emailLabel, phoneLabel,buttonHBox);
+                bookingVBox.setFillWidth(true);
+                bookingVBox.setSpacing(5);
+                bookingVBox.setStyle(
+                        "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
+                );
 
-                toApproveListView.getChildren().add(providerToApproveHBox);
+                // add card to view
+                toApproveListView.getChildren().add(bookingVBox);
             }
         }
     }
