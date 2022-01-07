@@ -29,7 +29,7 @@
                          <!--                            TODO after Merging: include-->
                          <!--                            <fx:include source="excludeRenterView.fxml" />-->
                      </Pane>
-                     <fx:include fx:id="approveDealViewBox" source="approveDealView.fxml" />
+                     <fx:include fx:id="approveDealViewBox" source="approveNewProvidersView.fxml" />
                      <Pane fx:id="myBookingsViewBox">
                          <Label style="-fx-text-fill: #FFF" text="My Bookings" />
                          <!--                            TODO after Merging: include-->

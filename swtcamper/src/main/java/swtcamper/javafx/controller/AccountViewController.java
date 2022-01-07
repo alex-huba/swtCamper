@@ -35,9 +35,6 @@ public class AccountViewController {
   public Button showLogBtn;
 
   @FXML
-  public Button enableBtn;
-
-  @FXML
   public Button blockBtn;
 
   @FXML
@@ -65,7 +62,6 @@ public class AccountViewController {
     showLogBtn
       .disableProperty()
       .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
-    enableBtn.setDisable(true);
     blockBtn.setDisable(true);
     degradeBtn.setDisable(true);
     promoteBtn.setDisable(true);
@@ -75,7 +71,6 @@ public class AccountViewController {
       .selectedItemProperty()
       .addListener((observable, oldValue, newValue) -> {
         if (newValue == null) {
-          enableBtn.setDisable(true);
           blockBtn.setDisable(true);
           degradeBtn.setDisable(true);
           promoteBtn.setDisable(true);
@@ -85,23 +80,23 @@ public class AccountViewController {
           if (
             !newValue.getId().equals(userController.getLoggedInUser().getId())
           ) {
-            if (!newValue.isLocked()) enableBtn.setDisable(false);
-            enableBtn.setText(
-              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
-            );
-            enableBtn.setOnAction(event -> {
-              if (newValue.isEnabled()) {
-                userController.ignoreUserById(selectedUser.getId());
-              } else {
-                userController.enableUserById(selectedUser.getId());
-              }
-              try {
-                operatorInit();
-              } catch (GenericServiceException ignore) {}
-            });
+//            if (!newValue.isLocked()) enableBtn.setDisable(false);
+//            enableBtn.setText(
+//              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
+//            );
+//            enableBtn.setOnAction(event -> {
+//              if (newValue.isEnabled()) {
+//                userController.ignoreUserById(selectedUser.getId());
+//              } else {
+//                userController.enableUserById(selectedUser.getId());
+//              }
+//              try {
+//                operatorInit();
+//              } catch (GenericServiceException ignore) {}
+//            });
 
             blockBtn.setDisable(false);
-            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Blocken");
+            blockBtn.setText(newValue.isLocked() ? "Entblocken" : "Global Blockieren");
             blockBtn.setOnAction(event -> {
               if (newValue.isLocked()) {
                 userController.unblockUserById(selectedUser.getId());
@@ -130,7 +125,6 @@ public class AccountViewController {
                 break;
             }
           } else {
-            enableBtn.setDisable(true);
             blockBtn.setDisable(true);
             degradeBtn.setDisable(true);
             promoteBtn.setDisable(true);
@@ -149,7 +143,6 @@ public class AccountViewController {
       .getItems()
       .addAll(
         showLogBtn,
-        enableBtn,
         blockBtn,
         degradeBtn,
         promoteBtn,
