@@ -178,7 +178,9 @@ public class OfferViewController {
     this.viewedOffer = offer;
 
     pictureHorizontHBox.getChildren().clear();
-    for(PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID())) {
+    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
+      offer.getOfferedObject().getVehicleID()
+    )) {
       ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
       thumbnail.setFitHeight(150);
       thumbnail.setPreserveRatio(true);

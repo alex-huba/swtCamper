@@ -7,5 +7,5 @@ import swtcamper.backend.entities.Picture;
 
 @Repository
 public interface PictureRepository extends CrudRepository<Picture, Long> {
-    List<Picture> findAll();
+  List<Picture> findAll();
 }

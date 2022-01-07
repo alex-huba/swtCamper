@@ -1,62 +1,60 @@
 package swtcamper.backend.entities;
 
-import swtcamper.api.contract.PictureDTO;
-
+import java.nio.file.Path;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.nio.file.Path;
+import swtcamper.api.contract.PictureDTO;
 
 @Entity
 public class Picture implements IPicture {
 
-    @Id
-    @GeneratedValue
-    private long pictureID;
+  @Id
+  @GeneratedValue
+  private long pictureID;
 
-    private long vehicleID;
+  private long vehicleID;
 
-    private String path;
+  private String path;
 
-    public Picture(PictureDTO pictureDTO) {
-        this.pictureID = pictureDTO.getPictureID();
-        this.vehicleID = pictureDTO.getVehicleID();
-        this.path = pictureDTO.getPath();
-    }
+  public Picture(PictureDTO pictureDTO) {
+    this.pictureID = pictureDTO.getPictureID();
+    this.vehicleID = pictureDTO.getVehicleID();
+    this.path = pictureDTO.getPath();
+  }
 
-    public Picture(long vehicleID, String path) {
-        this.vehicleID = vehicleID;
-        this.path = path;
-    }
+  public Picture(long vehicleID, String path) {
+    this.vehicleID = vehicleID;
+    this.path = path;
+  }
 
-    public Picture(String path) {
-        this.path = path;
-    }
+  public Picture(String path) {
+    this.path = path;
+  }
 
-    public Picture() {
-    }
+  public Picture() {}
 
-    public long getPictureID() {
-        return pictureID;
-    }
+  public long getPictureID() {
+    return pictureID;
+  }
 
-    public void setPictureID(long pictureID) {
-        this.pictureID = pictureID;
-    }
+  public void setPictureID(long pictureID) {
+    this.pictureID = pictureID;
+  }
 
-    public long getVehicleID() {
-        return vehicleID;
-    }
+  public long getVehicleID() {
+    return vehicleID;
+  }
 
-    public void setVehicleID(long vehicleID) {
-        this.vehicleID = vehicleID;
-    }
+  public void setVehicleID(long vehicleID) {
+    this.vehicleID = vehicleID;
+  }
 
-    public String getPath() {
-        return path;
-    }
+  public String getPath() {
+    return path;
+  }
 
-    public void setPath(String path) {
-        this.path = String.valueOf(path);
-    }
+  public void setPath(String path) {
+    this.path = String.valueOf(path);
+  }
 }

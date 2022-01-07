@@ -46,8 +46,8 @@
                          <!--                            TODO after Merging: include-->
                          <!--                            <fx:include source="accountView.fxml" />-->
                      </Pane>
-                     <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                     <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      <fx:include fx:id="moreAboutOfferViewBox" source="moreAboutOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>

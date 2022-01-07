@@ -308,7 +308,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
     pictures.clear();
-    for(PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID())) {
+    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
+      offer.getOfferedObject().getVehicleID()
+    )) {
       pictures.add(modelMapper.pictureDTOToPicture(pictureDTO));
     }
     loadPictures(pictures);
@@ -322,10 +324,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void loadPictures(List<Picture> pictureList) {
-    picturesHbox.getChildren().subList(1, picturesHbox.getChildren().size()).clear();
+    picturesHbox
+      .getChildren()
+      .subList(1, picturesHbox.getChildren().size())
+      .clear();
 
     for (Picture picture : pictureList) {
-
       ImageView thumbnail = new ImageView(new Image(picture.getPath()));
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
@@ -438,7 +442,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         minAgeCheckBox.isSelected(),
         borderCrossingCheckBox.isSelected(),
         depositCheckBox.isSelected(),
-              new String[0],
+        new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -749,23 +753,31 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    */
   public void savePictures() {
     // filter for pictures that are already in the database
-    for(PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offeredObject.getVehicleID())) {
+    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
+      offeredObject.getVehicleID()
+    )) {
       boolean pictureIsInDatabaseAlready = false;
-      for(Picture picture:pictures) {
+      for (Picture picture : pictures) {
         if (picture.getPictureID() == pictureDTO.getPictureID()) {
           pictureIsInDatabaseAlready = true;
           break;
         }
       }
       // delete picture if it is not needed anymore
-      if(!pictureIsInDatabaseAlready) {
+      if (!pictureIsInDatabaseAlready) {
         pictureController.deletePictureById(pictureDTO.getPictureID());
       }
     }
 
     // add all newly needed pictures to the database
     for (Picture picture : pictures) {
-      pictureController.create(new PictureDTO(picture.getPictureID(), offeredObject.getVehicleID(), picture.getPath()));
+      pictureController.create(
+        new PictureDTO(
+          picture.getPictureID(),
+          offeredObject.getVehicleID(),
+          picture.getPath()
+        )
+      );
     }
   }
 }

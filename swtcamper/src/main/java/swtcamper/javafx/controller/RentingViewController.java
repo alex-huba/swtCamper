@@ -195,8 +195,19 @@ public class RentingViewController {
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
-      if (pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).size() > 0) {
-        image = new Image(pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).get(0).getPath());
+      if (
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
+      ) {
+        image =
+          new Image(
+            pictureController
+              .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+              .get(0)
+              .getPath()
+          );
       } else {
         image = new Image("/pictures/noImg.png");
       }
@@ -219,9 +230,7 @@ public class RentingViewController {
       );
 
       // price
-      Label priceLabel = new Label(
-        "Preis pro Tag: € " + offer.getPrice()
-      );
+      Label priceLabel = new Label("Preis pro Tag: € " + offer.getPrice());
       priceLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
@@ -242,10 +251,12 @@ public class RentingViewController {
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
-      VBox locationPriceBrandModelBox = new VBox(locationLabel,
-              priceLabel,
-              brandLabel,
-              modelLabel);
+      VBox locationPriceBrandModelBox = new VBox(
+        locationLabel,
+        priceLabel,
+        brandLabel,
+        modelLabel
+      );
       locationPriceBrandModelBox.setStyle("-fx-padding: 0 0 0 30");
 
       Button moreBtn = new Button("Mehr Information");
@@ -261,11 +272,15 @@ public class RentingViewController {
       btnBox.setAlignment(Pos.TOP_RIGHT);
       btnBox.setStyle("-fx-padding: 0 30 30 0");
 
-      VBox detailsVBox = new VBox(titleLabel,locationPriceBrandModelBox,btnBox);
+      VBox detailsVBox = new VBox(
+        titleLabel,
+        locationPriceBrandModelBox,
+        btnBox
+      );
       detailsVBox.setAlignment(Pos.TOP_CENTER);
       HBox.setHgrow(detailsVBox, Priority.ALWAYS);
 
-      HBox offerDetails = new HBox(thumbnail,detailsVBox);
+      HBox offerDetails = new HBox(thumbnail, detailsVBox);
 
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
