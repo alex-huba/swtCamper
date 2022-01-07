@@ -1,13 +1,13 @@
 package swtcamper.javafx.controller;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import static javafx.scene.control.SelectionMode.MULTIPLE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -65,9 +65,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
-  public BorderPane offerDetailsMainView;
-
-  @FXML
   public TextField titleTextField;
 
   @FXML
@@ -84,15 +81,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @FXML
   public CheckBox activeCheckBox;
-
-  @FXML
-  public CheckBox minAgeCheckBox;
-
-  @FXML
-  public CheckBox borderCrossingCheckBox;
-
-  @FXML
-  public CheckBox depositCheckBox;
 
   @FXML
   public ComboBox<VehicleType> vehicleTypeComboBox;
@@ -156,6 +144,14 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @FXML
   public Button placeOfferButton;
+
+  @FXML
+  public TextField rentalConditionsTextField;
+
+  @FXML
+  ListView<String> rentalConditionsListView;
+
+  List<String> rentalConditions = new ArrayList<>();
 
   SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
   SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
@@ -263,10 +259,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     locationTextField.setText(offer.getLocation());
     contactTextField.setText(offer.getContact());
     particularitiesTextArea.setText(offer.getParticularities());
+
+    rentalConditions = offer.getRentalConditions();
+    rentalConditionsListView.setItems(FXCollections.observableArrayList(rentalConditions));
+
     activeCheckBox.setSelected(offer.isActive());
-    minAgeCheckBox.setSelected(offer.isMinAge25());
-    borderCrossingCheckBox.setSelected(offer.isBorderCrossingAllowed());
-    depositCheckBox.setSelected(offer.isDepositInCash());
 
     assert vehicle != null;
     vehicleTypeComboBox.setValue(vehicle.getVehicleFeatures().getVehicleType());
@@ -356,9 +353,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     locationTextField.clear();
     contactTextField.clear();
     particularitiesTextArea.clear();
-    minAgeCheckBox.setSelected(false);
-    borderCrossingCheckBox.setSelected(false);
-    depositCheckBox.setSelected(false);
+
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
@@ -439,9 +434,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         contactTextField.getText(),
         particularitiesTextArea.getText(),
         longStringConverter.fromString(priceTextField.getText()),
-        minAgeCheckBox.isSelected(),
-        borderCrossingCheckBox.isSelected(),
-        depositCheckBox.isSelected(),
+        (ArrayList<String>) rentalConditions,
         new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
@@ -483,9 +476,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         bookings,
         longStringConverter.fromString(priceTextField.getText()),
         activeCheckBox.isSelected(),
-        minAgeCheckBox.isSelected(),
-        borderCrossingCheckBox.isSelected(),
-        depositCheckBox.isSelected(),
+        (ArrayList<String>) rentalConditions,
         new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
@@ -748,7 +739,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   /**
-   * Uploads one or more before selected pictures.
+   * Uploads one or more before selected pictures to the database
    * @return
    */
   public void savePictures() {
@@ -779,5 +770,29 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         )
       );
     }
+  }
+
+  /**
+   * action for adding new rental conditions
+   */
+  public void addButtonAction() {
+    String rentalCondition = rentalConditionsTextField.getText();
+    rentalConditionsTextField.clear();
+    rentalConditions.add(rentalCondition);
+    ObservableList<String> myObservableList = FXCollections.observableList(
+      rentalConditions
+    );
+    rentalConditionsListView.setItems(myObservableList);
+    rentalConditionsListView.getSelectionModel().setSelectionMode(MULTIPLE);
+  }
+
+  /**
+   * action for removing rental conditions
+   */
+  public void removeButtonAction() {
+    rentalConditions.removeAll(
+      rentalConditionsListView.getSelectionModel().getSelectedItems()
+    );
+    rentalConditionsListView.getSelectionModel().clearSelection();
   }
 }

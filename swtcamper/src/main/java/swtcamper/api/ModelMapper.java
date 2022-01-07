@@ -39,9 +39,7 @@ public class ModelMapper {
       offer.getContact(),
       offer.getParticularities(),
       offer.getPrice(),
-      offer.isMinAge25(),
-      offer.isBorderCrossingAllowed(),
-      offer.isDepositInCash(),
+      offer.getRentalConditions(),
       offer.isActive()
     );
   }
