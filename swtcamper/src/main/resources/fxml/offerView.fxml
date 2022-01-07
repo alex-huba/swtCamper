@@ -96,13 +96,7 @@
                                 <HBox>
                                     <children>
                                         <Label prefWidth="175.0" styleClass="descriptionLabel" text="Mietvorraussetzungen:" />
-                                        <VBox spacing="3.0">
-                                            <children>
-                                                <Label fx:id="minAgeLabel" text="- ein Mindestalter von 21 ist erforderlich" />
-                                                <Label fx:id="borderCrossingLabel" text="- sie dürfen mit dem Fahrzeug Grenzen überqueren" />
-                                                <Label fx:id="depositLabel" text="- eine Bezahlung im Voraus ist erforderlich" />
-                                            </children>
-                                        </VBox>
+                                        <VBox fx:id="rentalConditionsVBox" />
                                     </children>
                                     <VBox.margin>
                                         <Insets top="10.0" />
