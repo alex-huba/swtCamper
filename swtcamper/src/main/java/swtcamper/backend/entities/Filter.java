@@ -11,7 +11,6 @@ public class Filter {
   private TransmissionType transmissionType;
   private int seatAmount;
   private int bedAmount;
-  private boolean excludeInactive;
   private boolean roofTent;
   private boolean roofRack;
   private boolean bikeRack;
@@ -92,14 +91,6 @@ public class Filter {
     this.bedAmount = bedAmount;
   }
 
-  public boolean isExcludeInactive() {
-    return excludeInactive;
-  }
-
-  public void setExcludeInactive(boolean excludeInactive) {
-    this.excludeInactive = excludeInactive;
-  }
-
   public boolean isRoofTent() {
     return roofTent;
   }
@@ -167,7 +158,6 @@ public class Filter {
       transmissionType == null &&
       seatAmount == 0 &&
       bedAmount == 0 &&
-      !excludeInactive &&
       !roofTent &&
       !roofRack &&
       !bikeRack &&
@@ -203,8 +193,6 @@ public class Filter {
       seatAmount +
       ", bedAmount=" +
       bedAmount +
-      ", excludeInactive=" +
-      excludeInactive +
       ", roofTent=" +
       roofTent +
       ", roofRack=" +

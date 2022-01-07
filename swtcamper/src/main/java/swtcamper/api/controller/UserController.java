@@ -1,11 +1,13 @@
 package swtcamper.api.controller;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -45,6 +47,10 @@ public class UserController implements IUserController {
     );
   }
 
+  public User getLoggedInUser() {
+    return userService.getLoggedInUser();
+  }
+
   @Override
   public UserRoleDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
@@ -57,6 +63,10 @@ public class UserController implements IUserController {
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
+  }
+
+  public void logout() {
+    userService.setLoggedInUser(null);
   }
 
   @Override

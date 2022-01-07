@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.IBookingController;
@@ -11,7 +12,9 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
+import swtcamper.javafx.controller.OfferViewController;
 
+@Component
 public class BookingController implements IBookingController {
 
   @Autowired
@@ -19,6 +22,9 @@ public class BookingController implements IBookingController {
 
   @Autowired
   private ModelMapper modelMapper;
+
+  @Autowired
+  private OfferViewController offerViewController;
 
   @Override
   public BookingDTO create(

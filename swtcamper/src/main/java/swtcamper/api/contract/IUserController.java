@@ -1,5 +1,6 @@
 package swtcamper.api.contract;
 
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -20,6 +21,8 @@ public interface IUserController {
     UserRole userRole,
     boolean enabled
   );
+
+  User getLoggedInUser();
 
   /**
    * see {@link UserService#login}

@@ -2,17 +2,19 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
 
   private long offerID;
+  private User creator;
   private OfferedObjectTypeDTO offeredObjectType;
   private Vehicle offeredObject;
   private String title;
   private String location;
   private String contact;
-  private String description;
+  private String particularities;
   private ArrayList<Long> bookings;
   private long price;
   ArrayList<String> rentalConditions;
@@ -20,25 +22,27 @@ public class OfferDTO {
 
   public OfferDTO(
     long offerID,
+    User creator,
     OfferedObjectTypeDTO offeredObjectType,
     Vehicle offeredObject,
     ArrayList<Long> bookings,
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     long price,
     ArrayList<String> rentalConditions,
     boolean active
   ) {
     this.offerID = offerID;
+    this.creator = creator;
     this.offeredObjectType = offeredObjectType;
     this.offeredObject = offeredObject;
     this.bookings = bookings;
     this.title = title;
     this.location = location;
     this.contact = contact;
-    this.description = description;
+    this.particularities = particularities;
     this.price = price;
     this.rentalConditions = rentalConditions;
     this.active = active;
@@ -50,6 +54,14 @@ public class OfferDTO {
 
   public void setID(long offerID) {
     this.offerID = offerID;
+  }
+
+  public User getCreator() {
+    return this.creator;
+  }
+
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
   public OfferedObjectTypeDTO getOfferedObjectType() {
@@ -100,12 +112,12 @@ public class OfferDTO {
     this.contact = contact;
   }
 
-  public String getDescription() {
-    return description;
+  public String getParticularities() {
+    return particularities;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setParticularities(String particularities) {
+    this.particularities = particularities;
   }
 
   public long getPrice() {
@@ -135,23 +147,34 @@ public class OfferDTO {
   @Override
   public String toString() {
     return (
-      "offerID: " +
+      "OfferDTO{" +
+      "offerID=" +
       offerID +
-      ", Fahrzeug: " +
-      offeredObject.getVehicleFeatures().getMake() +
-      " " +
-      offeredObject.getVehicleFeatures().getModel() +
-      " (" +
-      offeredObject.getVehicleFeatures().getVehicleType() +
-      ") (Bj. " +
-      offeredObject.getVehicleFeatures().getYear() +
-      ")" +
-      ", Sitzplätze: " +
-      offeredObject.getVehicleFeatures().getSeats() +
-      ", Preis pro Tag: " +
+      ", creator=" +
+      creator.getUsername() +
+      ", offeredObjectType=" +
+      offeredObjectType +
+      ", offeredObject=" +
+      offeredObject +
+      ", title='" +
+      title +
+      '\'' +
+      ", location='" +
+      location +
+      '\'' +
+      ", contact='" +
+      contact +
+      '\'' +
+      ", particularities='" +
+      particularities +
+      '\'' +
+      ", bookings=" +
+      bookings +
+      ", price=" +
       price +
-      ", aktiv: " +
-      active
+      ", active=" +
+      active +
+      '}'
     );
   }
 }
