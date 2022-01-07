@@ -84,13 +84,6 @@
                                                 <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kühlschrank" />
                                             </children>
                                         </VBox>
-                                        <VBox spacing="13.0">
-                                            <children>
-                                                <CheckBox fx:id="min21CheckBox" mnemonicParsing="false" styleClass="text-dark" text="mindestens 21 Jahre" />
-                                                <CheckBox fx:id="crossBordersCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Grenzen passieren" />
-                                                <CheckBox fx:id="payCashCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Vorauszahlung" />
-                                            </children>
-                                        </VBox>
                                     </children>
                                 </HBox>
                             </children>
