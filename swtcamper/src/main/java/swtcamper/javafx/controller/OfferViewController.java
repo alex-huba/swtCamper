@@ -173,9 +173,14 @@ public class OfferViewController {
 
     // show rental conditions
     rentalConditionsVBox.getChildren().clear();
-    if(offer.getRentalConditions() != null && offer.getRentalConditions().size()>0) {
+    if (
+      offer.getRentalConditions() != null &&
+      offer.getRentalConditions().size() > 0
+    ) {
       for (String rentalCondition : offer.getRentalConditions()) {
-        rentalConditionsVBox.getChildren().add(new Label("- " + rentalCondition));
+        rentalConditionsVBox
+          .getChildren()
+          .add(new Label("- " + rentalCondition));
       }
     } else {
       rentalConditionsVBox.getChildren().add(new Label(" / "));

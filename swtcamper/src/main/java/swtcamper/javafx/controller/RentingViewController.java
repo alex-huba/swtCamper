@@ -108,49 +108,49 @@ public class RentingViewController {
     reloadData();
 
     vehicleTypeComboBox.setItems(
-            FXCollections.observableArrayList(VehicleType.values())
+      FXCollections.observableArrayList(VehicleType.values())
     );
     vehicleTypeComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(VehicleType item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(vehicleTypeComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(VehicleType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(vehicleTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
     resetVehicleTypeBtn
-            .visibleProperty()
-            .bind(vehicleTypeComboBox.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(vehicleTypeComboBox.valueProperty().isNotNull());
     transmissionComboBox.setItems(
-            FXCollections.observableArrayList(TransmissionType.values())
+      FXCollections.observableArrayList(TransmissionType.values())
     );
     transmissionComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(TransmissionType item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(transmissionComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(TransmissionType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(transmissionComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
     resetTransmissionTypeBtn
-            .visibleProperty()
-            .bind(transmissionComboBox.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(transmissionComboBox.valueProperty().isNotNull());
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
     offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setPrefHeight(
-            rootVBOX.getHeight() - rootAnchorPane.getHeight()
+      rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
   }
 
@@ -166,10 +166,10 @@ public class RentingViewController {
     offerListRoot.getChildren().clear();
 
     Label header = new Label(
-            String.format(
-                    "%s Angebote für Sie",
-                    offersList.size() > 0 ? "Passende" : "Keine passenden"
-            )
+      String.format(
+        "%s Angebote für Sie",
+        offersList.size() > 0 ? "Passende" : "Keine passenden"
+      )
     );
     header.setStyle("-fx-font-size: 30");
     offerListRoot.getChildren().add(header);
@@ -177,7 +177,7 @@ public class RentingViewController {
     for (OfferDTO offer : offersList) {
       VBox root = new VBox();
       root.setStyle(
-              "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
       );
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
@@ -198,33 +198,33 @@ public class RentingViewController {
 
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
-              "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
+        "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
 
       Label locationLabel = new Label("Abholort: " + offer.getLocation());
       locationLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label priceLabel = new Label(
-              "Preis pro Tag: € " + Long.toString(offer.getPrice())
+        "Preis pro Tag: € " + Long.toString(offer.getPrice())
       );
       priceLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label brandLabel = new Label(
-              "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
       );
       brandLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       Label modelLabel = new Label(
-              "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
       );
       modelLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
       VBox detailsVBox = new VBox();
@@ -270,35 +270,35 @@ public class RentingViewController {
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
-            locationTextField.getText()
+      locationTextField.getText()
     );
     if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
-            vehicleTypeComboBox.getValue()
+      vehicleTypeComboBox.getValue()
     );
     if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
-            vehicleBrandTextField.getText()
+      vehicleBrandTextField.getText()
     );
     if (
-            !constructionYearTextField.getText().isEmpty()
+      !constructionYearTextField.getText().isEmpty()
     ) newFilter.setConstructionYear(
-            Integer.parseInt(constructionYearTextField.getText())
+      Integer.parseInt(constructionYearTextField.getText())
     );
     if (
-            !maxPricePerDayTextField.getText().isEmpty()
+      !maxPricePerDayTextField.getText().isEmpty()
     ) newFilter.setMaxPricePerDay(
-            Integer.parseInt(maxPricePerDayTextField.getText())
+      Integer.parseInt(maxPricePerDayTextField.getText())
     );
     if (!engineTextField.getText().isEmpty()) newFilter.setEngine(
-            engineTextField.getText()
+      engineTextField.getText()
     );
     if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
-            transmissionComboBox.getValue()
+      transmissionComboBox.getValue()
     );
     if (!seatAmountTextField.getText().isEmpty()) newFilter.setSeatAmount(
-            Integer.parseInt(seatAmountTextField.getText())
+      Integer.parseInt(seatAmountTextField.getText())
     );
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
-            Integer.parseInt(bedAmountTextField.getText())
+      Integer.parseInt(bedAmountTextField.getText())
     );
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
