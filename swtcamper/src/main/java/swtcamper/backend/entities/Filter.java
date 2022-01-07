@@ -1,5 +1,9 @@
 package swtcamper.backend.entities;
 
+import net.bytebuddy.asm.Advice;
+
+import java.time.LocalDate;
+
 public class Filter {
 
   private String location;
@@ -18,6 +22,8 @@ public class Filter {
   private boolean toilet;
   private boolean kitchen;
   private boolean fridge;
+  private LocalDate startDate;
+  private LocalDate endDate;
 
   public String getLocation() {
     return location;
@@ -145,6 +151,22 @@ public class Filter {
 
   public void setFridge(boolean fridge) {
     this.fridge = fridge;
+  }
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
   }
 
   public boolean isEmpty() {

@@ -155,7 +155,7 @@ public class BookingService {
    * @return a list of offerIDs of the available offers
    * @throws GenericServiceException
    */
-  public ArrayList<Long> getAvailableOffers(
+  public List<Offer> getAvailableOffers(
     LocalDate startDate,
     LocalDate endDate
   ) throws GenericServiceException {
@@ -167,7 +167,7 @@ public class BookingService {
     }
 
     // List that is going to be returned
-    ArrayList<Long> offerIDs = new ArrayList<>();
+    List<Offer> offers = new ArrayList<>();
 
     // Get all offers and check requested days against days that are already booked
     List<Offer> offerResponse = offerRepository.findAll();
@@ -181,13 +181,13 @@ public class BookingService {
           }
         }
         if (offerAvailable) {
-          offerIDs.add(offer.getOfferID());
+          offers.add(offer);
         }
       } catch (GenericServiceException e) {
         throw new GenericServiceException(e.getMessage());
       }
     }
-    return offerIDs;
+    return offers;
   }
 
   /**

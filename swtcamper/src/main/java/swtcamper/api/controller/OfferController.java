@@ -1,5 +1,6 @@
 package swtcamper.api.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +19,7 @@ import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -36,6 +38,9 @@ public class OfferController implements IOfferController {
   @Autowired
   VehicleFeaturesRepository vehicleFeaturesRepository;
 
+  @Autowired
+  private BookingService bookingService;
+
   /**
    * Get a List of OfferDTOs of all available offers in the database
    * @return List of OfferDTOs
@@ -43,6 +48,10 @@ public class OfferController implements IOfferController {
    */
   public List<OfferDTO> offers() throws GenericServiceException {
     return modelMapper.offersToOfferDTOs(offerService.offers());
+  }
+
+  public List<OfferDTO> offersFilteredByDate(LocalDate startDate, LocalDate endDate) throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(bookingService.getAvailableOffers(startDate, endDate));
   }
 
   /**
@@ -69,9 +78,6 @@ public class OfferController implements IOfferController {
    * @param contact How the provider can be reached
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
-   * @param minAge25
-   * @param borderCrossingAllowed
-   * @param depositInCash
    * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
@@ -167,9 +173,6 @@ public class OfferController implements IOfferController {
    * @param contact How the provider can be reached
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
-   * @param minAge25
-   * @param borderCrossingAllowed
-   * @param depositInCash
    * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
@@ -303,7 +306,7 @@ public class OfferController implements IOfferController {
     throws GenericServiceException {
     return filter.isEmpty()
       ? offers()
-      : offers()
+      : offersFilteredByDate(filter.getStartDate(), filter.getEndDate())
         .stream()
         .filter(offerDTO ->
           (

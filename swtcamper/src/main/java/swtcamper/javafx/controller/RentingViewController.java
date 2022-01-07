@@ -91,6 +91,12 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public DatePicker startDatePicker;
+
+  @FXML
+  public DatePicker endDatePicker;
+
+  @FXML
   public HBox offerListBox;
 
   @FXML
@@ -302,6 +308,9 @@ public class RentingViewController {
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
             Integer.parseInt(bedAmountTextField.getText())
     );
+    if(startDatePicker.getValue() != null) newFilter.setStartDate(startDatePicker.getValue());
+    if(endDatePicker.getValue() != null) newFilter.setEndDate(endDatePicker.getValue());
+
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
