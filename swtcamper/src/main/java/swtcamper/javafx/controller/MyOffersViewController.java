@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -28,6 +29,9 @@ public class MyOffersViewController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private PictureController pictureController;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
@@ -55,8 +59,8 @@ public class MyOffersViewController {
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
       //TODO: after finishing stuff with image realize logic with image
-      if (false) {
-        image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
+      if (pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).size() > 0) {
+        image = new Image(pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).get(0).getPath());
       } else {
         image = new Image("/pictures/noImg.png");
       }
