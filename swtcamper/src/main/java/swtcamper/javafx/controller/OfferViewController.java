@@ -82,15 +82,6 @@ public class OfferViewController {
   public Label constructionLabel;
 
   @FXML
-  public Label minAgeLabel;
-
-  @FXML
-  public Label borderCrossingLabel;
-
-  @FXML
-  public Label depositLabel;
-
-  @FXML
   public Label priceLabel;
 
   @FXML
@@ -139,6 +130,9 @@ public class OfferViewController {
   public Label particularitiesLabel;
 
   @FXML
+  public VBox rentalConditionsVBox;
+
+  @FXML
   public Label seatsLabel;
 
   @FXML
@@ -176,11 +170,21 @@ public class OfferViewController {
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
     locationLabel.setText(offer.getLocation());
     particularitiesLabel.setText(offer.getParticularities());
-    minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
-    borderCrossingLabel.setOpacity(
-      labelOpacity(offer.isBorderCrossingAllowed())
-    );
-    depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
+
+    // show rental conditions
+    rentalConditionsVBox.getChildren().clear();
+    if (
+      offer.getRentalConditions() != null &&
+      offer.getRentalConditions().size() > 0
+    ) {
+      for (String rentalCondition : offer.getRentalConditions()) {
+        rentalConditionsVBox
+          .getChildren()
+          .add(new Label("- " + rentalCondition));
+      }
+    } else {
+      rentalConditionsVBox.getChildren().add(new Label(" / "));
+    }
 
     vehicleTypeLabel.setText(
       String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())

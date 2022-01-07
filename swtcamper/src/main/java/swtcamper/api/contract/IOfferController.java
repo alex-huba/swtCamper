@@ -19,9 +19,7 @@ public interface IOfferController {
     String contact,
     String particularities,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -57,9 +55,7 @@ public interface IOfferController {
     ArrayList<Long> bookings,
     long price,
     boolean active,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -115,11 +111,6 @@ public interface IOfferController {
     if (filter.isFridge()) booleanList.add(
       offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
-    if (filter.isMinAge21()) booleanList.add(offerDTO.isMinAge25());
-    if (filter.isCrossingBordersAllowed()) booleanList.add(
-      offerDTO.isBorderCrossingAllowed()
-    );
-    if (filter.isDepositInCash()) booleanList.add(offerDTO.isDepositInCash());
 
     return !booleanList.contains(false);
   }
