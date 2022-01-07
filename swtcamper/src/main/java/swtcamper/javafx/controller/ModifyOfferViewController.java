@@ -454,6 +454,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         fridgeCheckBox.isSelected()
       );
 
+      offeredObject = offerDTO.getOfferedObject();
+      savePictures();
+
       mainViewController.handleInformationMessage(
         String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
       );
@@ -751,7 +754,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public void savePictures() {
     // TODO save vehicle ID
     for(Picture picture : pictures) {
-      pictureController.create(new PictureDTO(picture.getPath()));
+      pictureController.create(new PictureDTO(picture.getPictureID(),offeredObject.getVehicleID(), picture.getPath()));
     }
   }
 }
