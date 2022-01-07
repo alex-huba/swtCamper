@@ -1,7 +1,8 @@
 package swtcamper.javafx.controller;
 
-import java.io.*;
 import static javafx.scene.control.SelectionMode.MULTIPLE;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -261,7 +262,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     particularitiesTextArea.setText(offer.getParticularities());
 
     rentalConditions = offer.getRentalConditions();
-    rentalConditionsListView.setItems(FXCollections.observableArrayList(rentalConditions));
+    rentalConditionsListView.setItems(
+      FXCollections.observableArrayList(rentalConditions)
+    );
 
     activeCheckBox.setSelected(offer.isActive());
 
