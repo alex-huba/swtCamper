@@ -101,9 +101,7 @@ public class OfferController implements IOfferController {
     String contact,
     String particularities,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -135,9 +133,7 @@ public class OfferController implements IOfferController {
         contact,
         particularities,
         price,
-        minAge25,
-        borderCrossingAllowed,
-        depositInCash,
+        rentalConditions,
         //Vehicle-Parameter
         pictureURLs,
         //VehicleFeatures-Parameter
@@ -207,9 +203,7 @@ public class OfferController implements IOfferController {
     ArrayList<Long> bookings,
     long price,
     boolean active,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     //Vehicle-Parameter
     String[] pictureURLs,
     //VehicleFeatures-Parameter
@@ -245,9 +239,7 @@ public class OfferController implements IOfferController {
         bookings,
         price,
         active,
-        minAge25,
-        borderCrossingAllowed,
-        depositInCash,
+        rentalConditions,
         //Vehicle-Parameter
         pictureURLs,
         //VehicleFeatures-Parameter
@@ -412,12 +404,6 @@ public class OfferController implements IOfferController {
     if (filter.isFridge()) booleanList.add(
       offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
-    if (filter.isMinAge21()) booleanList.add(offerDTO.isMinAge25());
-    if (filter.isCrossingBordersAllowed()) booleanList.add(
-      offerDTO.isBorderCrossingAllowed()
-    );
-    if (filter.isDepositInCash()) booleanList.add(offerDTO.isDepositInCash());
-
     return !booleanList.contains(false);
   }
 }

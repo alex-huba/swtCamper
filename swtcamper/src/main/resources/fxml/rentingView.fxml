@@ -30,7 +30,7 @@
                                                     <styleClass>
                                                         <String fx:value="bg-danger" />
                                                         <String fx:value="radius-30" />
-                                          <String fx:value="resetBtn_small" />
+                                                        <String fx:value="resetBtn_small" />
                                                     </styleClass>
                                                     <font>
                                                         <Font size="8.0" />
@@ -47,7 +47,7 @@
                                                     <styleClass>
                                                         <String fx:value="bg-danger" />
                                                         <String fx:value="radius-30" />
-                                          <String fx:value="resetBtn_small" />
+                                                        <String fx:value="resetBtn_small" />
                                                     </styleClass>
                                                     <font>
                                                         <Font size="8.0" />
@@ -79,13 +79,6 @@
                                         <CheckBox fx:id="toiletCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Toilette" />
                                         <CheckBox fx:id="kitchenCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Küche" />
                                         <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kühlschrank" />
-                                    </children>
-                                </VBox>
-                                <VBox spacing="13.0">
-                                    <children>
-                                        <CheckBox fx:id="min21CheckBox" mnemonicParsing="false" styleClass="text-dark" text="mindestens 21 Jahre" />
-                                        <CheckBox fx:id="crossBordersCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Grenzen passieren" />
-                                        <CheckBox fx:id="payCashCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Vorauszahlung" />
                                     </children>
                                 </VBox>
                             </children>

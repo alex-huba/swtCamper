@@ -60,15 +60,6 @@ public class OfferViewController {
   public Label constructionLabel;
 
   @FXML
-  public Label minAgeLabel;
-
-  @FXML
-  public Label borderCrossingLabel;
-
-  @FXML
-  public Label depositLabel;
-
-  @FXML
   public Label priceLabel;
 
   @FXML
@@ -162,11 +153,6 @@ public class OfferViewController {
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
     locationLabel.setText(offer.getLocation());
     particularitiesLabel.setText(offer.getParticularities());
-    minAgeLabel.setOpacity(labelOpacity(offer.isMinAge25()));
-    borderCrossingLabel.setOpacity(
-      labelOpacity(offer.isBorderCrossingAllowed())
-    );
-    depositLabel.setOpacity(labelOpacity(offer.isDepositInCash()));
 
     vehicleTypeLabel.setText(
       String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())
