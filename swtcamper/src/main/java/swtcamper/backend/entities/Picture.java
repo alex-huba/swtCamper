@@ -1,5 +1,7 @@
 package swtcamper.backend.entities;
 
+import swtcamper.api.contract.PictureDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,12 @@ public class Picture implements IPicture {
     private long vehicleID;
 
     private String path;
+
+    public Picture(PictureDTO pictureDTO) {
+        this.pictureID = pictureDTO.getPictureID();
+        this.vehicleID = pictureDTO.getVehicleID();
+        this.path = pictureDTO.getPath();
+    }
 
     public Picture(long vehicleID, String path) {
         this.vehicleID = vehicleID;

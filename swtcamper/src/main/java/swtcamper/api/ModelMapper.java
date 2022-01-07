@@ -101,7 +101,7 @@ public class ModelMapper {
   }
 
   public Picture pictureDTOToPicture(PictureDTO pictureDTO) {
-    return new Picture(pictureDTO.getVehicleID(),pictureDTO.getPath());
+    return new Picture(pictureDTO);
   }
 
   public List<PictureDTO> picturesToPictureDTOs(List<Picture> pictures) {

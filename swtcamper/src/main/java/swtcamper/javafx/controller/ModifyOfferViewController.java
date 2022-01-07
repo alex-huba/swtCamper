@@ -307,17 +307,32 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
 
-    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID())) {
-      pictures.clear();
+    pictures.clear();
+    for(PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID())) {
       pictures.add(modelMapper.pictureDTOToPicture(pictureDTO));
+    }
+    loadPictures(pictures);
 
-      ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
+    validateMandatoryFields();
+  }
+
+  private void removePicture(long pictureId) {
+    pictures.removeIf(picture -> picture.getPictureID() == pictureId);
+    loadPictures(pictures);
+  }
+
+  private void loadPictures(List<Picture> pictureList) {
+    picturesHbox.getChildren().subList(1, picturesHbox.getChildren().size()).clear();
+
+    for (Picture picture : pictureList) {
+
+      ImageView thumbnail = new ImageView(new Image(picture.getPath()));
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button(" x ");
 
-      deleteBtn.setOnAction(event -> removePicture(modelMapper.pictureDTOToPicture(pictureDTO)));
+      deleteBtn.setOnAction(event -> removePicture(picture.getPictureID()));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
@@ -325,16 +340,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
       picturesHbox.getChildren().add(imageBox);
     }
-
-    validateMandatoryFields();
-  }
-
-  private void addPicture() {}
-
-  private void removePicture(Picture picture) {
-    int index = pictures.indexOf(picture);
-    pictures.remove(index);
-    picturesHbox.getChildren().remove(index + 1);
   }
 
   /**
@@ -576,7 +581,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTitle(String inputTitle) {
-    //if (inputTitle.isEmpty() || inputTitle.length() < 5) {
     if (!validationHelper.checkOfferTitle(inputTitle)) {
       errorLabel.setText("Invalid title");
       validateFalse(titleTextField);
@@ -589,11 +593,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validatePrice(String inputPrice) {
-    /*if (
-      inputPrice.isEmpty() ||
-      !inputPrice.matches("[0-9]*") ||
-      Integer.parseInt(inputPrice) <= 0
-    ) */
     if (!validationHelper.checkOfferPrice(inputPrice)) {
       errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
@@ -726,7 +725,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     List<File> fileList = fileChooser.showOpenMultipleDialog(window);
 
     for (File file : fileList) {
-//      byte[] byteArray = Files.readAllBytes(Path.of(file.getPath()));
       Picture newPicturePath = new Picture("file:///" + file.getAbsolutePath());
       pictures.add(newPicturePath);
 
@@ -735,8 +733,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button("X");
-
-      deleteBtn.setOnAction(e -> removePicture(newPicturePath));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
@@ -752,9 +748,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * @return
    */
   public void savePictures() {
-    // TODO save vehicle ID
-    for(Picture picture : pictures) {
-      pictureController.create(new PictureDTO(picture.getPictureID(),offeredObject.getVehicleID(), picture.getPath()));
+    // filter for pictures that are already in the database
+    for(PictureDTO pictureDTO : pictureController.getPicturesForVehicle(offeredObject.getVehicleID())) {
+      boolean pictureIsInDatabaseAlready = false;
+      for(Picture picture:pictures) {
+        if (picture.getPictureID() == pictureDTO.getPictureID()) {
+          pictureIsInDatabaseAlready = true;
+          break;
+        }
+      }
+      // delete picture if it is not needed anymore
+      if(!pictureIsInDatabaseAlready) {
+        pictureController.deletePictureById(pictureDTO.getPictureID());
+      }
+    }
+
+    // add all newly needed pictures to the database
+    for (Picture picture : pictures) {
+      pictureController.create(new PictureDTO(picture.getPictureID(), offeredObject.getVehicleID(), picture.getPath()));
     }
   }
 }
