@@ -130,6 +130,9 @@ public class OfferViewController {
   public Label particularitiesLabel;
 
   @FXML
+  public VBox rentalConditionsVBox;
+
+  @FXML
   public Label seatsLabel;
 
   @FXML
@@ -167,6 +170,16 @@ public class OfferViewController {
     priceLabel.setText(longStringConverter.toString(offer.getPrice()));
     locationLabel.setText(offer.getLocation());
     particularitiesLabel.setText(offer.getParticularities());
+
+    // show rental conditions
+    rentalConditionsVBox.getChildren().clear();
+    if(offer.getRentalConditions() != null && offer.getRentalConditions().size()>0) {
+      for (String rentalCondition : offer.getRentalConditions()) {
+        rentalConditionsVBox.getChildren().add(new Label("- " + rentalCondition));
+      }
+    } else {
+      rentalConditionsVBox.getChildren().add(new Label(" / "));
+    }
 
     vehicleTypeLabel.setText(
       String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())
