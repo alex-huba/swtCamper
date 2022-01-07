@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.PictureController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.TransmissionType;
@@ -33,6 +34,9 @@ public class RentingViewController {
 
   @Autowired
   private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
 
   @FXML
   public TextField locationTextField;
@@ -191,37 +195,38 @@ public class RentingViewController {
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
-      //TODO: after finishing stuff with image realize logic with image
-      if (false) {
-        image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
+      if (pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).size() > 0) {
+        image = new Image(pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).get(0).getPath());
       } else {
         image = new Image("/pictures/noImg.png");
       }
 
-      HBox offerDetails = new HBox();
-
+      // thumbnail
       ImageView thumbnail = new ImageView(image);
-      thumbnail.setFitHeight(80);
-      thumbnail.setFitWidth(90);
-      offerDetails.getChildren().add(thumbnail);
+      thumbnail.setFitHeight(150);
+      thumbnail.setPreserveRatio(true);
 
+      // title
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
         "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
 
+      // location
       Label locationLabel = new Label("Abholort: " + offer.getLocation());
       locationLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // price
       Label priceLabel = new Label(
-        "Preis pro Tag: € " + Long.toString(offer.getPrice())
+        "Preis pro Tag: € " + offer.getPrice()
       );
       priceLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // brand
       Label brandLabel = new Label(
         "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
       );
@@ -229,6 +234,7 @@ public class RentingViewController {
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // model
       Label modelLabel = new Label(
         "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
       );
@@ -236,17 +242,11 @@ public class RentingViewController {
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
-      VBox detailsVBox = new VBox();
-      detailsVBox.setAlignment(Pos.TOP_CENTER);
-      detailsVBox.getChildren().add(titleLabel);
-
-      VBox locationPriceBrandModelBox = new VBox();
+      VBox locationPriceBrandModelBox = new VBox(locationLabel,
+              priceLabel,
+              brandLabel,
+              modelLabel);
       locationPriceBrandModelBox.setStyle("-fx-padding: 0 0 0 30");
-      locationPriceBrandModelBox.getChildren().add(locationLabel);
-      locationPriceBrandModelBox.getChildren().add(priceLabel);
-      locationPriceBrandModelBox.getChildren().add(brandLabel);
-      locationPriceBrandModelBox.getChildren().add(modelLabel);
-      detailsVBox.getChildren().add(locationPriceBrandModelBox);
 
       Button moreBtn = new Button("Mehr Information");
       moreBtn.getStyleClass().add("bg-primary");
@@ -257,14 +257,15 @@ public class RentingViewController {
         } catch (GenericServiceException ignore) {}
       });
 
-      HBox btnBox = new HBox();
+      HBox btnBox = new HBox(moreBtn);
       btnBox.setAlignment(Pos.TOP_RIGHT);
       btnBox.setStyle("-fx-padding: 0 30 30 0");
-      btnBox.getChildren().add(moreBtn);
-      detailsVBox.getChildren().add(btnBox);
 
-      offerDetails.setHgrow(detailsVBox, Priority.ALWAYS);
-      offerDetails.getChildren().add(detailsVBox);
+      VBox detailsVBox = new VBox(titleLabel,locationPriceBrandModelBox,btnBox);
+      detailsVBox.setAlignment(Pos.TOP_CENTER);
+      HBox.setHgrow(detailsVBox, Priority.ALWAYS);
+
+      HBox offerDetails = new HBox(thumbnail,detailsVBox);
 
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);

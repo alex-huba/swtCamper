@@ -58,20 +58,16 @@ public class MyOffersViewController {
 
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
-      //TODO: after finishing stuff with image realize logic with image
       if (pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).size() > 0) {
         image = new Image(pictureController.getPicturesForVehicle(offer.getOfferedObject().getVehicleID()).get(0).getPath());
       } else {
         image = new Image("/pictures/noImg.png");
       }
 
-      HBox offerDetails = new HBox();
-
       // thumbnail
       ImageView thumbnail = new ImageView(image);
-      thumbnail.setFitHeight(80);
-      thumbnail.setFitWidth(90);
-      offerDetails.getChildren().add(thumbnail);
+      thumbnail.setFitHeight(150);
+      thumbnail.setPreserveRatio(true);
 
       // title
       Label titleLabel = new Label(offer.getTitle());
@@ -87,7 +83,7 @@ public class MyOffersViewController {
 
       // price
       Label priceLabel = new Label(
-        "Preis pro Tag: € " + Long.toString(offer.getPrice())
+        "Preis pro Tag: € " + offer.getPrice()
       );
       priceLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -168,17 +164,15 @@ public class MyOffersViewController {
       );
       detailsVBox.setAlignment(Pos.TOP_CENTER);
 
-      offerDetails.setHgrow(detailsVBox, Priority.ALWAYS);
-      offerDetails.getChildren().add(detailsVBox);
-
       // card
-      VBox root = new VBox(offerDetails);
-      root.setStyle(
+      HBox offerDetails = new HBox(thumbnail,detailsVBox);
+      HBox.setHgrow(detailsVBox, Priority.ALWAYS);
+      offerDetails.setStyle(
         "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
       );
 
       // add to view
-      offerListRoot.getChildren().add(root);
+      offerListRoot.getChildren().add(offerDetails);
     }
   }
 }
