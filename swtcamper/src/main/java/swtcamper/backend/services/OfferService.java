@@ -37,7 +37,6 @@ public class OfferService {
     long price,
     ArrayList<String> rentalConditions,
     //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -86,7 +85,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
 
     Offer offer = new Offer(
       creator,
@@ -116,7 +114,6 @@ public class OfferService {
     boolean active,
     ArrayList<String> rentalConditions,
     //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -174,7 +171,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
 
     offer.setCreator(creator);

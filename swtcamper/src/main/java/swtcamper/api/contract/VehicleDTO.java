@@ -10,8 +10,6 @@ public class VehicleDTO {
 
   private long vehicleFeaturesID;
 
-  private String[] pictureURLs;
-
   private String[] particularities;
 
   // Getters & Setters
@@ -40,14 +38,6 @@ public class VehicleDTO {
     this.vehicleFeaturesID = vehicleFeaturesID;
   }
 
-  public String[] getPictureURLs() {
-    return pictureURLs;
-  }
-
-  public void setPictureURLs(String[] pictureURLs) {
-    this.pictureURLs = pictureURLs;
-  }
-
   public String[] getParticularities() {
     return particularities;
   }
@@ -66,14 +56,12 @@ public class VehicleDTO {
     long vehicleID,
     VehicleTypeDTO vehicleType,
     long vehicleFeaturesID,
-    String[] pictureURLs,
     String[] particularities
   ) {
     super();
     this.vehicleID = vehicleID;
     this.vehicleType = vehicleType;
     this.vehicleFeaturesID = vehicleFeaturesID;
-    this.pictureURLs = pictureURLs;
     this.particularities = particularities;
   }
 }

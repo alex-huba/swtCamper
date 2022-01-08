@@ -11,10 +11,8 @@ public class Vehicle {
   private long vehicleID;
 
   @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-  @JoinColumn(name = "vehicleFeatures_id")
+  @JoinColumn(name = "vehicle_features_id")
   private VehicleFeatures vehicleFeatures;
-
-  private String[] pictureURLs;
 
   public Vehicle(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
@@ -40,12 +38,4 @@ public class Vehicle {
     this.vehicleFeatures = vehicleFeatures;
   }
 
-  public String[] getPictureURLs() {
-    return pictureURLs;
-  }
-
-  public void setPictureURLs(String[] pictureURLs) {
-    this.pictureURLs = new String[pictureURLs.length];
-    this.pictureURLs = pictureURLs;
-  }
 }

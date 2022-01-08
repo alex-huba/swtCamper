@@ -175,16 +175,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
-  private final Background errorBackground = new Background(
-    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-  private final Background neutralBackground = new Background(
-    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-  private final Background successBackground = new Background(
-    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
   /**
    * Initialization method for placing a new offer.
    */
@@ -440,7 +430,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         particularitiesTextArea.getText(),
         longStringConverter.fromString(priceTextField.getText()),
         (ArrayList<String>) rentalConditions,
-        new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -482,7 +471,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         longStringConverter.fromString(priceTextField.getText()),
         activeCheckBox.isSelected(),
         (ArrayList<String>) rentalConditions,
-        new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),

@@ -21,7 +21,6 @@ public interface IOfferController {
     long price,
     ArrayList<String> rentalConditions,
     //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -57,7 +56,6 @@ public interface IOfferController {
     boolean active,
     ArrayList<String> rentalConditions,
     //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
