@@ -1,47 +1,24 @@
 package swtcamper.javafx.controller;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.ValidationHelper;
+import swtcamper.api.contract.PictureDTO;
+import swtcamper.api.controller.*;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.UserRepository;
-import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -57,6 +34,9 @@ public class OfferViewController {
   private OfferController offerController;
 
   @Autowired
+  private PictureController pictureController;
+
+  @Autowired
   private ValidationHelper validationHelper;
 
   @Autowired
@@ -68,6 +48,9 @@ public class OfferViewController {
   LongStringConverter longStringConverter = new LongStringConverter();
 
   DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+
+  @FXML
+  public HBox pictureHorizontHBox;
 
   @FXML
   public Label vehicleTypeLabel;
@@ -164,6 +147,17 @@ public class OfferViewController {
     checkMode(rentingMode);
     Vehicle offeredObject = offer.getOfferedObject();
     this.viewedOffer = offer;
+
+    pictureHorizontHBox.getChildren().clear();
+    for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
+      offer.getOfferedObject().getVehicleID()
+    )) {
+      ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
+      thumbnail.setFitHeight(150);
+      thumbnail.setPreserveRatio(true);
+
+      pictureHorizontHBox.getChildren().add(thumbnail);
+    }
 
     titleLabel.setText(offer.getTitle());
     contactLabel.setText(offer.getContact());

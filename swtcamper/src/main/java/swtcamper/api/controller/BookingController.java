@@ -6,12 +6,10 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.IBookingController;
-import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.javafx.controller.OfferViewController;
 
 @Component

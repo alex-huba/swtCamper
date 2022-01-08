@@ -1,81 +1,42 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javafx.scene.control.DatePicker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.ModelMapper;
-import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ValidationHelper {
 
   public boolean lengthOverFive(String toCheck) {
-    if (toCheck.length() < 5) {
-      return false;
-    } else {
-      return true;
-    }
+    return toCheck.length() >= 5;
   }
 
   public boolean lengthOverThree(String toCheck) {
-    if (toCheck.length() < 3) {
-      return false;
-    } else {
-      return true;
-    }
+    return toCheck.length() >= 3;
   }
 
   public boolean isNumber(String toCheck) {
-    if (!toCheck.matches("[0-9]*")) {
-      return false;
-    } else {
-      return true;
-    }
+    return toCheck.matches("[0-9]*");
   }
 
   public boolean checkOfferTitle(String toCheck) {
-    if (toCheck.isEmpty() || !lengthOverFive(toCheck)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !toCheck.isEmpty() && lengthOverFive(toCheck);
   }
 
   public boolean checkOfferPrice(String toCheck) {
-    if (
-      toCheck.isEmpty() || !isNumber(toCheck) || Integer.parseInt(toCheck) <= 0
-    ) {
-      return false;
-    } else {
-      return true;
-    }
+    return (
+      !toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0
+    );
   }
 
   public boolean checkOfferLocation(String toCheck) {
-    if (toCheck.isEmpty() || !lengthOverThree(toCheck)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
   public boolean checkOfferContact(String toCheck) {
-    if (toCheck.isEmpty() || !lengthOverThree(toCheck)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
   public boolean checkRentingDate(LocalDate startDate, LocalDate endDate) {
-    if (startDate.isBefore(endDate)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !startDate.isBefore(endDate);
   }
 }

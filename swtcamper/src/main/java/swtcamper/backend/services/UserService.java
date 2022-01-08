@@ -22,6 +22,7 @@ public class UserService {
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
+   *
    * @param username
    * @param password
    * @param email
@@ -65,6 +66,7 @@ public class UserService {
 
   /**
    * Finds all user.
+   *
    * @return
    * @throws GenericServiceException if there are no user in the database
    */
@@ -87,10 +89,11 @@ public class UserService {
 
   /**
    * Checks if user exists in database and gets information about user role of the user if it does.
+   *
    * @param username
    * @param password
    * @return the user role of the user if user already exists in database
-   * @throws WrongPasswordException if the password doesn't match with the username
+   * @throws WrongPasswordException    if the password doesn't match with the username
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
   public UserRole login(String username, String password)
@@ -117,8 +120,8 @@ public class UserService {
 
   /**
    * Checks if username is already existing in database.
+   *
    * @param username
-   * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
    */
   public boolean isUsernameFree(String username) {
@@ -127,8 +130,8 @@ public class UserService {
 
   /**
    * Checks if email is already existing in database.
+   *
    * @param email
-   * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
    */
   public boolean isEmailFree(String email) {
@@ -137,6 +140,7 @@ public class UserService {
 
   /**
    * Locks an user account.
+   *
    * @param userID
    */
   public void lock(Long userID) {
@@ -150,6 +154,7 @@ public class UserService {
 
   /**
    * Unlocks an user account.
+   *
    * @param userID
    */
   public void unlock(Long userID) {
@@ -163,6 +168,7 @@ public class UserService {
 
   /**
    * Enables an user account.
+   *
    * @param userID
    */
   public void enable(Long userID) {
@@ -176,6 +182,7 @@ public class UserService {
 
   /**
    * Checks if an user account is enabled.
+   *
    * @param username
    * @return
    * @throws UserDoesNotExistException if there is no user account found in database
@@ -190,6 +197,7 @@ public class UserService {
 
   /**
    * Changes an users' password.
+   *
    * @param username
    * @param email
    * @param password
@@ -212,6 +220,7 @@ public class UserService {
 
   /**
    * Counts the number of user accounts that exist in the database.
+   *
    * @return
    */
   public long countUser() {
