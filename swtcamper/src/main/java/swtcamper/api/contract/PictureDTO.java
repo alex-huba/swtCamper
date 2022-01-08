@@ -1,7 +1,5 @@
 package swtcamper.api.contract;
 
-import java.nio.file.Path;
-
 public class PictureDTO {
 
   private long pictureID;

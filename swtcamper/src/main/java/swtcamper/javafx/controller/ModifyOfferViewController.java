@@ -2,7 +2,8 @@ package swtcamper.javafx.controller;
 
 import static javafx.scene.control.SelectionMode.MULTIPLE;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -331,16 +332,37 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     for (Picture picture : pictureList) {
       ImageView thumbnail = new ImageView(new Image(picture.getPath()));
+
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
-      Button deleteBtn = new Button(" x ");
+      Image deleteIconImage = new Image(
+        "file:///C:\\Users\\User\\Desktop\\WS2122\\SWL\\SWTCamper\\swtcamper\\src\\main\\resources\\icons\\delete.png"
+      );
+      ImageView deleteIconImageView = new ImageView(deleteIconImage);
+      deleteIconImageView.setFitWidth(20);
+      deleteIconImageView.setFitHeight(20);
+
+      Button deleteBtn = new Button();
+      deleteBtn.setGraphic(deleteIconImageView);
+      deleteBtn.setStyle(
+        "-fx-background-color: transparent;\n" +
+        "    -fx-background-radius:  30 30 30 30 !important;\n" +
+        "    -fx-border-color: transparent !important;"
+      );
+      deleteBtn.setPadding(new Insets(0, 0, 0, 0));
 
       deleteBtn.setOnAction(event -> removePicture(picture.getPictureID()));
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
+      imageBox.setAlignment(Pos.BOTTOM_CENTER);
+      imageBox.setStyle(
+        "-fx-background-color: white;" +
+        "-fx-padding: 5 5 0 5;\n" +
+        "-fx-background-radius:  10 10 10 10 !important;\n"
+      );
 
       picturesHbox.getChildren().add(imageBox);
     }
@@ -438,7 +460,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         particularitiesTextArea.getText(),
         longStringConverter.fromString(priceTextField.getText()),
         (ArrayList<String>) rentalConditions,
-        new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -480,7 +501,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         longStringConverter.fromString(priceTextField.getText()),
         activeCheckBox.isSelected(),
         (ArrayList<String>) rentalConditions,
-        new String[0],
         vehicleTypeComboBox.getValue(),
         brandTextField.getText(),
         modelTextField.getText(),
@@ -730,12 +750,35 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
-      Button deleteBtn = new Button("X");
+      Image deleteIconImage = new Image(
+        "file:///C:\\Users\\User\\Desktop\\WS2122\\SWL\\SWTCamper\\swtcamper\\src\\main\\resources\\icons\\delete.png"
+      );
+      ImageView deleteIconImageView = new ImageView(deleteIconImage);
+      deleteIconImageView.setFitWidth(20);
+      deleteIconImageView.setFitHeight(20);
+
+      Button deleteBtn = new Button();
+      deleteBtn.setGraphic(deleteIconImageView);
+      deleteBtn.setStyle(
+        "-fx-background-color: transparent;\n" +
+        "    -fx-background-radius:  30 30 30 30 !important;\n" +
+        "    -fx-border-color: transparent !important;"
+      );
+      deleteBtn.setPadding(new Insets(0, 0, 0, 0));
+
+      deleteBtn.setOnAction(actionEvent ->
+        removePicture(newPicturePath.getPictureID())
+      );
 
       VBox imageBox = new VBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
-      imageBox.setAlignment(Pos.BASELINE_CENTER);
+      imageBox.setAlignment(Pos.BOTTOM_CENTER);
+      imageBox.setStyle(
+        "-fx-background-color: white;" +
+        "-fx-padding: 5 5 0 5;\n" +
+        "-fx-background-radius:  10 10 10 10 !important;\n"
+      );
 
       picturesHbox.getChildren().add(imageBox);
     }
@@ -743,6 +786,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Uploads one or more before selected pictures to the database
+   *
    * @return
    */
   public void savePictures() {

@@ -1,7 +1,6 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class Vehicle {
@@ -13,8 +12,6 @@ public class Vehicle {
   @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
   @JoinColumn(name = "vehicleFeatures_id")
   private VehicleFeatures vehicleFeatures;
-
-  private String[] pictureURLs;
 
   public Vehicle(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
@@ -38,14 +35,5 @@ public class Vehicle {
 
   public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
-  }
-
-  public String[] getPictureURLs() {
-    return pictureURLs;
-  }
-
-  public void setPictureURLs(String[] pictureURLs) {
-    this.pictureURLs = new String[pictureURLs.length];
-    this.pictureURLs = pictureURLs;
   }
 }

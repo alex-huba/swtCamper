@@ -1,13 +1,11 @@
 package swtcamper.backend.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.PictureDTO;
-import swtcamper.backend.entities.Picture;
 import swtcamper.backend.repositories.PictureRepository;
 
 @Service
