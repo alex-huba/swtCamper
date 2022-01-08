@@ -326,11 +326,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button("x");
-      deleteBtn.getStyleClass().addAll("bg-danger","border-0");
+      deleteBtn.getStyleClass().addAll("bg-danger", "border-0");
 
       deleteBtn.setOnAction(event -> removePicture(picture.getPictureID()));
 
-      HBox imageBox = new HBox(thumbnail,deleteBtn);
+      HBox imageBox = new HBox(thumbnail, deleteBtn);
       imageBox.setSpacing(-15);
 
       picturesHbox.getChildren().add(imageBox);
@@ -714,42 +714,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     for (File file : fileList) {
       Picture newPicturePath = new Picture("file:///" + file.getAbsolutePath());
       pictures.add(newPicturePath);
-
-      // ImageView thumbnail = new ImageView(new Image(newPicturePath.getPath()));
-      // thumbnail.setFitHeight(50);
-      // thumbnail.setPreserveRatio(true);
-
-      // Image deleteIconImage = new Image(
-      //   "file:///C:\\Users\\User\\Desktop\\WS2122\\SWL\\SWTCamper\\swtcamper\\src\\main\\resources\\icons\\delete.png"
-      // );
-      // ImageView deleteIconImageView = new ImageView(deleteIconImage);
-      // deleteIconImageView.setFitWidth(20);
-      // deleteIconImageView.setFitHeight(20);
-
-      // Button deleteBtn = new Button();
-      // deleteBtn.setGraphic(deleteIconImageView);
-      // deleteBtn.setStyle(
-      //   "-fx-background-color: transparent;\n" +
-      //   "    -fx-background-radius:  30 30 30 30 !important;\n" +
-      //   "    -fx-border-color: transparent !important;"
-      // );
-      // deleteBtn.setPadding(new Insets(0, 0, 0, 0));
-
-      // deleteBtn.setOnAction(actionEvent ->
-      //   removePicture(newPicturePath.getPictureID())
-      // );
-
-      // VBox imageBox = new VBox();
-      // imageBox.getChildren().add(thumbnail);
-      // imageBox.getChildren().add(deleteBtn);
-      // imageBox.setAlignment(Pos.BOTTOM_CENTER);
-      // imageBox.setStyle(
-      //   "-fx-background-color: white;" +
-      //   "-fx-padding: 5 5 0 5;\n" +
-      //   "-fx-background-radius:  10 10 10 10 !important;\n"
-      // );
-
-      // picturesHbox.getChildren().add(imageBox);
     }
 
     loadPictures(pictures);
