@@ -334,13 +334,15 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       thumbnail.setFitHeight(50);
       thumbnail.setPreserveRatio(true);
 
-      Button deleteBtn = new Button(" x ");
+      Button deleteBtn = new Button("x");
+      deleteBtn.getStyleClass().addAll("bg-danger","radius-30");
 
       deleteBtn.setOnAction(event -> removePicture(picture.getPictureID()));
 
-      VBox imageBox = new VBox();
+      HBox imageBox = new HBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
+      deleteBtn.setLayoutX(-50);
 
       picturesHbox.getChildren().add(imageBox);
     }
