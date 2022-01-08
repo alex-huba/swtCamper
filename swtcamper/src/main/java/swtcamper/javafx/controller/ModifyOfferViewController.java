@@ -331,18 +331,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     for (Picture picture : pictureList) {
       ImageView thumbnail = new ImageView(new Image(picture.getPath()));
-      thumbnail.setFitHeight(50);
+      thumbnail.setFitHeight(60);
       thumbnail.setPreserveRatio(true);
 
       Button deleteBtn = new Button("x");
-      deleteBtn.getStyleClass().addAll("bg-danger","radius-30");
+      deleteBtn.getStyleClass().addAll("bg-danger","border-0");
 
       deleteBtn.setOnAction(event -> removePicture(picture.getPictureID()));
 
       HBox imageBox = new HBox();
       imageBox.getChildren().add(thumbnail);
       imageBox.getChildren().add(deleteBtn);
-      deleteBtn.setLayoutX(-50);
+      imageBox.setSpacing(-15);
 
       picturesHbox.getChildren().add(imageBox);
     }
