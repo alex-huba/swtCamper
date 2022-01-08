@@ -15,6 +15,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class OfferService {
 
   @Autowired
+  OfferService offerService;
+
+  @Autowired
   private VehicleRepository vehicleRepository;
 
   @Autowired
@@ -22,9 +25,6 @@ public class OfferService {
 
   @Autowired
   private OfferRepository offerRepository;
-
-  @Autowired
-  OfferService offerService;
 
   public Offer create(
     // TODO validation
@@ -36,7 +36,6 @@ public class OfferService {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -113,7 +112,6 @@ public class OfferService {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

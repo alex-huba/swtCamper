@@ -207,6 +207,9 @@ public class RentingViewController {
       ImageView thumbnail = new ImageView(image);
       thumbnail.setFitHeight(150);
       thumbnail.setPreserveRatio(true);
+      HBox thumbnailHbox = new HBox(thumbnail);
+      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
 
       // title
       Label titleLabel = new Label(offer.getTitle());
@@ -271,7 +274,7 @@ public class RentingViewController {
       detailsVBox.setAlignment(Pos.TOP_CENTER);
       HBox.setHgrow(detailsVBox, Priority.ALWAYS);
 
-      HBox offerDetails = new HBox(thumbnail, detailsVBox);
+      HBox offerDetails = new HBox(thumbnailHbox, detailsVBox);
 
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);

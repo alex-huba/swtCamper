@@ -10,7 +10,7 @@
 
 .navBtn {
     -fx-background-color: -fx-alt-primary;
-    -fx-background-radius:  30 0 0 30 !important;
+    -fx-background-radius: 30 0 0 30 !important;
     -fx-border-color: transparent !important;
 }
 
@@ -23,5 +23,5 @@
 }
 
 .navBtn:hover {
-    -fx-background-color:  -fx-alt-active;
+    -fx-background-color: -fx-alt-active;
 }

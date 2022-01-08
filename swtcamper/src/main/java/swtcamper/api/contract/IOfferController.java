@@ -3,7 +3,6 @@ package swtcamper.api.contract;
 import java.util.ArrayList;
 import java.util.List;
 import swtcamper.backend.entities.*;
-import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 public interface IOfferController {
@@ -20,7 +19,6 @@ public interface IOfferController {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -55,7 +53,6 @@ public interface IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

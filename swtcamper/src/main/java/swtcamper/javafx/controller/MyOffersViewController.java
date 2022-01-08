@@ -80,6 +80,10 @@ public class MyOffersViewController {
       thumbnail.setFitHeight(150);
       thumbnail.setPreserveRatio(true);
 
+      HBox thumbnailHbox = new HBox(thumbnail);
+      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
+
       // title
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
@@ -174,7 +178,7 @@ public class MyOffersViewController {
       detailsVBox.setAlignment(Pos.TOP_CENTER);
 
       // card
-      HBox offerDetails = new HBox(thumbnail, detailsVBox);
+      HBox offerDetails = new HBox(thumbnailHbox, detailsVBox);
       HBox.setHgrow(detailsVBox, Priority.ALWAYS);
       offerDetails.setStyle(
         "-fx-background-color: #c9dfce; -fx-background-radius: 20px"

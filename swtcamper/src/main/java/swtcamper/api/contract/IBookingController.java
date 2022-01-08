@@ -24,6 +24,7 @@ public interface IBookingController {
 
   /**
    * Updates an offer by setting active = false.
+   *
    * @param bookingID
    * @throws GenericServiceException
    */

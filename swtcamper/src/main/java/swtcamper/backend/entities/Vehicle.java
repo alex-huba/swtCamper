@@ -1,7 +1,6 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class Vehicle {
@@ -37,5 +36,4 @@ public class Vehicle {
   public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
   }
-
 }
