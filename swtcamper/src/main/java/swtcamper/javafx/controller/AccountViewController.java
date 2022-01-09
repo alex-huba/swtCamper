@@ -1,10 +1,14 @@
 package swtcamper.javafx.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.LoggingController;
@@ -80,21 +84,6 @@ public class AccountViewController {
           if (
             !newValue.getId().equals(userController.getLoggedInUser().getId())
           ) {
-            //            if (!newValue.isLocked()) enableBtn.setDisable(false);
-            //            enableBtn.setText(
-            //              newValue.isEnabled() ? "Ignorieren" : "Akzeptieren"
-            //            );
-            //            enableBtn.setOnAction(event -> {
-            //              if (newValue.isEnabled()) {
-            //                userController.ignoreUserById(selectedUser.getId());
-            //              } else {
-            //                userController.enableUserById(selectedUser.getId());
-            //              }
-            //              try {
-            //                operatorInit();
-            //              } catch (GenericServiceException ignore) {}
-            //            });
-
             blockBtn.setDisable(false);
             blockBtn.setText(
               newValue.isLocked() ? "Entblocken" : "Global Blockieren"
@@ -152,9 +141,9 @@ public class AccountViewController {
 
     operatorDashboard.setVisible(true);
 
-    logListView.setItems(
-      FXCollections.observableArrayList(loggingController.getAllLogMessages())
-    );
+    ObservableList<LoggingMessage> logList = FXCollections.observableArrayList(loggingController.getAllLogMessages());
+    FXCollections.reverse(logList);
+    logListView.setItems(logList);
     usersListView.setItems(
       FXCollections.observableArrayList(userController.getAllUsers())
     );
