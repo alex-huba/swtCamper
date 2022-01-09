@@ -105,9 +105,7 @@ public class MyOffersViewController {
       );
 
       // price
-      Label priceLabel = new Label(
-        "Preis pro Tag: € " + offer.getPrice()
-      );
+      Label priceLabel = new Label("Preis pro Tag: € " + offer.getPrice());
       priceLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );

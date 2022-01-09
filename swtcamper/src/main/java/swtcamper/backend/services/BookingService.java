@@ -38,8 +38,12 @@ public class BookingService {
     return bookingRepository.save(new Booking(user, offer, startDate, endDate));
   }
 
-  public Booking update(Long bookingID, LocalDate startDate, LocalDate endDate, boolean active)
-    throws GenericServiceException {
+  public Booking update(
+    Long bookingID,
+    LocalDate startDate,
+    LocalDate endDate,
+    boolean active
+  ) throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
@@ -152,7 +156,7 @@ public class BookingService {
 
   /**
    * This method is used by the search functionality. It takes a startDate and an endDate and gathers all offers which are not booked on and in between these days, i.e. are available for the requested period.
-   * 
+   *
    * @param startDate
    * @param endDate
    * @return a list of offerIDs of the available offers
@@ -195,7 +199,7 @@ public class BookingService {
 
   /**
    * Checks if a booking being re-activated is still available (in case the booked period was booked by someone else while the booking was deactivated).
-   * 
+   *
    * @param offerID
    * @param bookingID
    * @return <b>True</b>, if the offer is still available for the initially booked period (i.e. the booking can be reactivated). <br>

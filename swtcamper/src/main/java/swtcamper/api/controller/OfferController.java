@@ -256,7 +256,7 @@ public class OfferController implements IOfferController {
 
   /**
    * Deletes an existing offer from the database
-   * 
+   *
    * @param id ID of the offer to delete
    * @throws GenericServiceException if there is no offer with the given ID
    */
@@ -270,7 +270,7 @@ public class OfferController implements IOfferController {
 
   /**
    * Gets all offers from the database that were created by a user
-   * 
+   *
    * @param user {@link User} whose offers shall be searched
    * @return List of OfferDTOs of offers that were created by the user
    * @throws GenericServiceException

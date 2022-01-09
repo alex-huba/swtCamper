@@ -116,14 +116,14 @@ public class MainViewController {
   public void listenForDatabaseChanges() {
     if (userController.getLoggedInUser() != null) {
       if (
-              bookingController
-                      .getBookingsForUser(userController.getLoggedInUser())
-                      .size() >
-                      0 &&
-                      !bookingController
-                              .getBookingsForUser(userController.getLoggedInUser())
-                              .stream()
-                              .allMatch(Booking::isActive)
+        bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .size() >
+        0 &&
+        !bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .stream()
+          .allMatch(Booking::isActive)
       ) {
         navigationViewController.showBookingNotification();
       } else {
