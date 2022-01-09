@@ -1,12 +1,12 @@
 package swtcamper.api.contract;
 
 import java.util.ArrayList;
-import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
 
+  ArrayList<String> rentalConditions;
   private long offerID;
   private User creator;
   private OfferedObjectTypeDTO offeredObjectType;
@@ -17,7 +17,6 @@ public class OfferDTO {
   private String particularities;
   private ArrayList<Long> bookings;
   private long price;
-  ArrayList<String> rentalConditions;
   private boolean active;
 
   public OfferDTO(
