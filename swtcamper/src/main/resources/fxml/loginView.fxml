@@ -9,37 +9,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/loginview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
+<VBox alignment="CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/loginview.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="swtcamper.javafx.controller.LoginViewController">
 
-    <Label styleClass="heading" text="Login" />
-   <Label fx:id="errorLabel" styleClass="errorMessage" />
+    <Label styleClass="heading" text="Login"/>
+    <Label fx:id="errorLabel" styleClass="errorMessage"/>
 
     <HBox alignment="CENTER" spacing="30">
-      <VBox spacing="30">
-         <Label styleClass="descriptionLabel" text="Nutzername" />
-         <Label styleClass="descriptionLabel" text="Passwort" />
-      </VBox>
-      <VBox spacing="13">
-         <TextField fx:id="usernameTf" promptText="Nutzername" styleClass="inputField" />
-         <PasswordField fx:id="passwordPf" onKeyReleased="#handleEnterKey" promptText="Passwort" styleClass="inputField" />
-      </VBox>
-   </HBox>
+        <VBox spacing="30">
+            <Label styleClass="descriptionLabel" text="Nutzername"/>
+            <Label styleClass="descriptionLabel" text="Passwort"/>
+        </VBox>
+        <VBox spacing="13">
+            <TextField fx:id="usernameTf" promptText="Nutzername" styleClass="inputField"/>
+            <PasswordField fx:id="passwordPf" onKeyReleased="#handleEnterKey" promptText="Passwort"
+                           styleClass="inputField"/>
+        </VBox>
+    </HBox>
 
     <Button fx:id="loginButton" onAction="#handleLogin" text="Login">
-      <styleClass>
-         <String fx:value="loginButton" />
-         <String fx:value="bg-lightGreen" />
-      </styleClass></Button>
+        <styleClass>
+            <String fx:value="loginButton"/>
+            <String fx:value="bg-lightGreen"/>
+        </styleClass>
+    </Button>
 
-   <VBox spacing="20">
-      <children>
-         <HBox alignment="CENTER_RIGHT" spacing="10.0">
-            <Label styleClass="descriptionLabel" text="Du hast noch keinen Account?" />
-            <Hyperlink fx:id="registerButton" onAction="#handleRegister" text="Registrieren" />
-         </HBox>
-         <HBox alignment="CENTER_RIGHT">
-            <Hyperlink fx:id="forgotPasswordButton" onAction="#handleForgotPassword" text="Passwort vergessen?" />
-         </HBox>
-      </children>
-   </VBox>
+    <VBox spacing="20">
+        <children>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Label styleClass="descriptionLabel" text="Du hast noch keinen Account?"/>
+                <Hyperlink fx:id="registerButton" onAction="#handleRegister" text="Registrieren"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Hyperlink fx:id="forgotPasswordButton" onAction="#handleForgotPassword" text="Passwort vergessen?"/>
+            </HBox>
+        </children>
+    </VBox>
 </VBox>

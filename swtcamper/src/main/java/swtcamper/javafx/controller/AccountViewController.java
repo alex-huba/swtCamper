@@ -1,14 +1,12 @@
 package swtcamper.javafx.controller;
 
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.LoggingController;
@@ -141,7 +139,9 @@ public class AccountViewController {
 
     operatorDashboard.setVisible(true);
 
-    ObservableList<LoggingMessage> logList = FXCollections.observableArrayList(loggingController.getAllLogMessages());
+    ObservableList<LoggingMessage> logList = FXCollections.observableArrayList(
+      loggingController.getAllLogMessages()
+    );
     FXCollections.reverse(logList);
     logListView.setItems(logList);
     usersListView.setItems(

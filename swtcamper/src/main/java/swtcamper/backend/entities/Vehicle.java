@@ -10,7 +10,7 @@ public class Vehicle {
   private long vehicleID;
 
   @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-  @JoinColumn(name = "vehicleFeatures_id")
+  @JoinColumn(name = "vehicle_features_id")
   private VehicleFeatures vehicleFeatures;
 
   private String[] pictureURLs;

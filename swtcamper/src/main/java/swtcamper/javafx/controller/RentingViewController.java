@@ -2,7 +2,6 @@ package swtcamper.javafx.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -161,7 +160,13 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    loadData(offerController.offers().stream().filter(OfferDTO::isActive).collect(Collectors.toList()));
+    loadData(
+      offerController
+        .offers()
+        .stream()
+        .filter(OfferDTO::isActive)
+        .collect(Collectors.toList())
+    );
   }
 
   private void loadData(List<OfferDTO> offersList) {
