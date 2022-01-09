@@ -112,32 +112,32 @@ public class MainViewController {
     }
   }
 
-  public void clearView() {
-    mainStage.getChildren().removeIf(node -> node instanceof Pane);
-  }
-
-  public void changeView(String switchTo) throws GenericServiceException {
-    changeView(switchTo, true);
-  }
-
   @Scheduled(fixedDelay = 1000)
   public void listenForDatabaseChanges() {
     if (userController.getLoggedInUser() != null) {
       if (
-        bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .size() >
-        0 &&
-        !bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .stream()
-          .allMatch(Booking::isActive)
+              bookingController
+                      .getBookingsForUser(userController.getLoggedInUser())
+                      .size() >
+                      0 &&
+                      !bookingController
+                              .getBookingsForUser(userController.getLoggedInUser())
+                              .stream()
+                              .allMatch(Booking::isActive)
       ) {
         navigationViewController.showBookingNotification();
       } else {
         navigationViewController.resetBookingNotification();
       }
     }
+  }
+
+  public void clearView() {
+    mainStage.getChildren().removeIf(node -> node instanceof Pane);
+  }
+
+  public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo, true);
   }
 
   public void changeView(String switchTo, boolean reloadData)

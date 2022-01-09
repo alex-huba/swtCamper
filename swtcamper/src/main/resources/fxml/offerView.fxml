@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane fx:id="offerView" stylesheets="@../styles/modifyOffer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.OfferViewController">
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="5.0">
@@ -61,7 +63,12 @@
                             <children>
                                 <HBox alignment="CENTER_LEFT" spacing="50.0">
                                     <children>
-                                        <Label fx:id="titleLabel" prefHeight="45" styleClass="heading" text="Titel" />
+                                        <Label fx:id="titleLabel" prefHeight="45" styleClass="title-heading"
+                                               text="Titel">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                        </Label>
                                     </children>
                                 </HBox>
                                 <HBox spacing="20.0">
@@ -256,4 +263,16 @@
             </children>
         </GridPane>
     </center>
+    <top>
+        <ScrollPane fitToWidth="true" focusTraversable="false" style="-fx-background-color: transparent;"
+                    vbarPolicy="NEVER" BorderPane.alignment="CENTER_LEFT">
+            <content>
+                <AnchorPane>
+                    <children>
+                        <HBox fx:id="pictureHorizontHBox"/>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </top>
 </BorderPane>

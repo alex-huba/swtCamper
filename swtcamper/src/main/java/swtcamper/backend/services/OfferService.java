@@ -17,6 +17,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class OfferService {
 
   @Autowired
+  OfferService offerService;
+
+  @Autowired
   private VehicleRepository vehicleRepository;
 
   @Autowired
@@ -38,8 +41,6 @@ public class OfferService {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -88,7 +89,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
 
     Offer offer = new Offer(
       creator,
@@ -117,8 +117,6 @@ public class OfferService {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -151,7 +149,7 @@ public class OfferService {
 
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
-      if (booking.getOffer().getOfferID() == offerId) {
+      if (booking.getOffer().getOfferID() == offerId && booking.isActive()) {
         throw new GenericServiceException(
           "Cannot modify offer with ID " +
           offerId +
@@ -194,7 +192,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
 
     offer.setCreator(creator);
