@@ -26,6 +26,9 @@ public class NavigationViewController {
   private MainViewController mainViewController;
 
   @Autowired
+  private NavigationViewController navigationViewController;
+
+  @Autowired
   private UserController userController;
 
   @FXML
@@ -57,6 +60,9 @@ public class NavigationViewController {
 
   @FXML
   public Button myBookingsButton;
+
+  @FXML
+  public Circle myBookingsNotificationDot;
 
   @FXML
   public Button loginButton;
@@ -232,5 +238,16 @@ public class NavigationViewController {
 
   public void hideApproveNotification() {
     approveNotificationDot.setVisible(false);
+  }
+
+  public void showBookingNotification() {
+    Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
+    Tooltip.install(approveNotificationDot, t);
+
+    myBookingsNotificationDot.setVisible(true);
+  }
+
+  public void resetBookingNotification() {
+    myBookingsNotificationDot.setVisible(false);
   }
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
+import swtcamper.api.controller.BookingController;
+import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -15,6 +17,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Service
 public class OfferService {
+
+  @Autowired
+  OfferService offerService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -28,6 +33,9 @@ public class OfferService {
   @Autowired
   private LoggingController loggingController;
 
+  @Autowired
+  private BookingController bookingController;
+
   public Offer create(
     // TODO validation
     User creator,
@@ -38,8 +46,6 @@ public class OfferService {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -94,7 +100,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
 
     Offer offer = new Offer(
       creator,
@@ -146,8 +151,6 @@ public class OfferService {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -176,7 +179,25 @@ public class OfferService {
     }
 
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
-    Offer offer = offerResponse.get();
+    Offer offer;
+    if (offerResponse.isPresent()) {
+      offer = offerResponse.get();
+    } else {
+      throw new GenericServiceException(
+        "There is no offer with specified ID " + offerId
+      );
+    }
+
+    // check if offer is in rent right now
+    for (Booking booking : bookingController.getAllBookings()) {
+      if (booking.getOffer().getOfferID() == offerId && booking.isActive()) {
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          offerId +
+          " while it is part of an active booking."
+        );
+      }
+    }
 
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
       offeredObject.getVehicleID()
@@ -212,7 +233,6 @@ public class OfferService {
     vehicleFeaturesRepository.save(vehicleFeatures);
 
     vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicle.setPictureURLs(pictureURLs);
     vehicleRepository.save(vehicle);
     loggingController.log(
       new LoggingMessage(
@@ -295,6 +315,16 @@ public class OfferService {
    * @throws GenericServiceException if the given ID is not available
    */
   public void delete(long id, UserDTO user) throws GenericServiceException {
+    // check if offer is in rent right now
+    for (Booking booking : bookingController.getAllBookings()) {
+      if (booking.getOffer().getOfferID() == id) {
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          id +
+          " while it is part of an active booking."
+        );
+      }
+    }
     try {
       offerRepository.deleteById(id);
       loggingController.log(

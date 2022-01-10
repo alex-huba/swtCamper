@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,6 @@ public class OfferController implements IOfferController {
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
    * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
    * @param model model of the offered {@link Vehicle}
@@ -104,7 +104,6 @@ public class OfferController implements IOfferController {
     long price,
     ArrayList<String> rentalConditions,
     //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -135,8 +134,6 @@ public class OfferController implements IOfferController {
         particularities,
         price,
         rentalConditions,
-        //Vehicle-Parameter
-        pictureURLs,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -202,8 +199,6 @@ public class OfferController implements IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -239,7 +234,6 @@ public class OfferController implements IOfferController {
         active,
         rentalConditions,
         //Vehicle-Parameter
-        pictureURLs,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -266,6 +260,7 @@ public class OfferController implements IOfferController {
 
   /**
    * Deletes an existing offer from the database
+   *
    * @param id ID of the offer to delete
    * @throws GenericServiceException if there is no offer with the given ID
    */
@@ -282,6 +277,7 @@ public class OfferController implements IOfferController {
 
   /**
    * Gets all offers from the database that were created by a user
+   *
    * @param user {@link User} whose offers shall be searched
    * @return List of OfferDTOs of offers that were created by the user
    * @throws GenericServiceException
@@ -310,7 +306,10 @@ public class OfferController implements IOfferController {
         .filter(offerDTO ->
           (
             filter.getLocation() == null ||
-            offerDTO.getLocation().equals(filter.getLocation())
+            offerDTO
+              .getLocation()
+              .toLowerCase()
+              .contains(filter.getLocation().toLowerCase())
           ) &&
           (
             filter.getVehicleType() == null ||
@@ -326,7 +325,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getMake()
-              .equals(filter.getVehicleBrand())
+              .toLowerCase()
+              .contains(filter.getVehicleBrand().toLowerCase())
           ) &&
           (
             filter.getConstructionYear() == 0 ||
@@ -345,7 +345,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getEngine()
-              .equals(filter.getEngine())
+              .toLowerCase()
+              .contains(filter.getEngine().toLowerCase())
           ) &&
           (
             filter.getTransmissionType() == null ||

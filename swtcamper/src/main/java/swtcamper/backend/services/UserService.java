@@ -28,6 +28,7 @@ public class UserService {
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
+   *
    * @param username
    * @param password
    * @param email
@@ -114,6 +115,7 @@ public class UserService {
 
   /**
    * Finds all user.
+   *
    * @return
    * @throws GenericServiceException if there are no user in the database
    */
@@ -136,6 +138,7 @@ public class UserService {
 
   /**
    * Checks if user exists in database and gets information about user role of the user if it does.
+   *
    * @param username
    * @param password
    * @return the user role of the user if user already exists in database
@@ -187,6 +190,7 @@ public class UserService {
 
   /**
    * Checks if username is already existing in database.
+   *
    * @param username
    * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
@@ -197,6 +201,7 @@ public class UserService {
 
   /**
    * Checks if email is already existing in database.
+   *
    * @param email
    * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
@@ -206,7 +211,8 @@ public class UserService {
   }
 
   /**
-   * Locks/blocks a user account.
+   * Locks an user account.
+   *
    * @param userID
    * @param operator
    */
@@ -231,7 +237,8 @@ public class UserService {
   }
 
   /**
-   * Unlocks/unblocks a user account.
+   * Unlocks an user account.
+   *
    * @param userID
    * @param operator
    */
@@ -256,7 +263,8 @@ public class UserService {
   }
 
   /**
-   * Enables a user account, so that provider will be able to offer vehicles.
+   * Enables an user account.
+   *
    * @param userID
    * @param operator
    */
@@ -424,7 +432,8 @@ public class UserService {
 
   /**
    * Counts the number of user accounts that exist in the database.
-   * @return
+   *
+   * @return the amount of registered users
    */
   public long countUser() {
     return userRepository.count();

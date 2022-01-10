@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
@@ -26,11 +27,16 @@ public class BookingService {
   @Autowired
   private LoggingController loggingController;
 
+  public List<Booking> getAllBookings() {
+    return bookingRepository.findAll();
+  }
+
   public Booking create(
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate
+    LocalDate endDate,
+    boolean active
   ) {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))
@@ -60,6 +66,13 @@ public class BookingService {
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
+      if (booking.isActive()) {
+        throw new GenericServiceException(
+          "The booking with ID " +
+          bookingID +
+          " cannot be deleted since it is still active."
+        );
+      }
       booking.setStartDate(startDate);
       booking.setEndDate(endDate);
       booking.setActive(active);
@@ -82,14 +95,15 @@ public class BookingService {
     );
   }
 
-  public Booking deactivate(Long bookingID, UserDTO user)
-    throws GenericServiceException {
+  public Booking activate(Long bookingID, UserDTO user) throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
-      // Update by setting active = false
+      // Update by setting active = true
+      booking.setActive(true);
+
       loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
@@ -97,28 +111,60 @@ public class BookingService {
             "Booking with ID %s was deactivated by user %s.",
             bookingID,
             user.getUsername()
-          )
-        )
-      );
+            )
+            )
+            );
       // Save update back to database
-      return this.update(
-          booking.getId(),
-          booking.getStartDate(),
-          booking.getEndDate(),
-          false,
-          user
-        );
+      return bookingRepository.save(booking);
+    }
+    throw new GenericServiceException(
+      "Booking not found. Activation not possible."
+    );
+  }
+
+  public Booking deactivate(Long bookingID, UserDTO user) throws GenericServiceException {
+    // Search for booking in database
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      // Booking found so update can be made
+      Booking booking = bookingOptional.get();          
+            // Update by setting active = false
+      booking.setActive(false);
+
+      loggingController.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s was deactivated by user %s.",
+            bookingID,
+            user.getUsername()
+            )
+            )
+            );
+      // Save update back to database
+      return bookingRepository.save(booking);
     }
     throw new GenericServiceException(
       "Booking not found. Deactivation not possible."
     );
   }
 
-  public void delete(Long bookingID, UserDTO user)
-    throws GenericServiceException {
-    try {
-      bookingRepository.deleteById(bookingID);
-      loggingController.log(
+  public void delete(Long bookingID) throws GenericServiceException {
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      // Booking found
+      Booking booking = bookingOptional.get();
+      // can't delete if booking is active
+      if (booking.isActive()) {
+        throw new GenericServiceException(
+          "The booking with ID " +
+          bookingID +
+          " cannot be deleted since it is still active."
+        );
+      }
+      try {
+        bookingRepository.deleteById(bookingID);
+        loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -128,8 +174,11 @@ public class BookingService {
           )
         )
       );
-    } catch (IllegalArgumentException e) {
-      throw new GenericServiceException("The passed ID is not available: " + e);
+      } catch (IllegalArgumentException e) {
+        throw new GenericServiceException(
+          "The passed ID is not available: " + e
+        );
+      }
     }
   }
 
@@ -167,6 +216,7 @@ public class BookingService {
 
   /**
    * This method is used by the search functionality. It takes a startDate and an endDate and gathers all offers which are not booked on and in between these days, i.e. are available for the requested period.
+   *
    * @param startDate
    * @param endDate
    * @return a list of offerIDs of the available offers
@@ -209,6 +259,7 @@ public class BookingService {
 
   /**
    * Checks if a booking being re-activated is still available (in case the booked period was booked by someone else while the booking was deactivated).
+   *
    * @param offerID
    * @param bookingID
    * @return <b>True</b>, if the offer is still available for the initially booked period (i.e. the booking can be reactivated). <br>
