@@ -239,8 +239,8 @@
                                 <VBox>
                                     <Label fx:id="dateLabel" text="Wählen sie ihr gewünschtes Mietdatum aus" />
                                     <HBox spacing="5.0">
-                                        <DatePicker fx:id="startDate" promptText="Beginn:" />
-                                        <DatePicker fx:id="endDate" promptText="Ende:" />
+                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
+                                        <DatePicker fx:id="endDatePicker" promptText="Ende:" />
                                     </HBox>
                            <HBox fx:id="rentHBox" spacing="5.0">
                               <children>

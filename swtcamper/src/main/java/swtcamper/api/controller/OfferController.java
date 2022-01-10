@@ -78,7 +78,6 @@ public class OfferController implements IOfferController {
    * @param contact How the provider can be reached
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
-   * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
    * @param model model of the offered {@link Vehicle}
@@ -108,8 +107,6 @@ public class OfferController implements IOfferController {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -140,8 +137,6 @@ public class OfferController implements IOfferController {
         particularities,
         price,
         rentalConditions,
-        //Vehicle-Parameter
-        pictureURLs,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -173,7 +168,6 @@ public class OfferController implements IOfferController {
    * @param contact How the provider can be reached
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
-   * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
    * @param model model of the offered {@link Vehicle}
@@ -207,8 +201,7 @@ public class OfferController implements IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
-    String[] pictureURLs,
+
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -243,8 +236,6 @@ public class OfferController implements IOfferController {
         price,
         active,
         rentalConditions,
-        //Vehicle-Parameter
-        pictureURLs,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
