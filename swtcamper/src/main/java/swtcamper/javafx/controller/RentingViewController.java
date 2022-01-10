@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -16,9 +15,12 @@ import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
-import swtcamper.backend.entities.*;
+import swtcamper.api.controller.PictureController;
+import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.TransmissionType;
+import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -31,10 +33,10 @@ public class RentingViewController {
   private OfferViewController offerViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private OfferController offerController;
 
   @Autowired
-  private OfferController offerController;
+  private PictureController pictureController;
 
   @FXML
   public TextField locationTextField;
@@ -116,54 +118,54 @@ public class RentingViewController {
     reloadData();
 
     vehicleTypeComboBox.setItems(
-            FXCollections.observableArrayList(VehicleType.values())
+      FXCollections.observableArrayList(VehicleType.values())
     );
     vehicleTypeComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(VehicleType item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(vehicleTypeComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(VehicleType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(vehicleTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
     resetVehicleTypeBtn
-            .visibleProperty()
-            .bind(vehicleTypeComboBox.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(vehicleTypeComboBox.valueProperty().isNotNull());
     transmissionComboBox.setItems(
-            FXCollections.observableArrayList(TransmissionType.values())
+      FXCollections.observableArrayList(TransmissionType.values())
     );
     transmissionComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(TransmissionType item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(transmissionComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(TransmissionType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(transmissionComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
     resetTransmissionTypeBtn
-            .visibleProperty()
-            .bind(transmissionComboBox.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(transmissionComboBox.valueProperty().isNotNull());
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
     offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setPrefHeight(
-            rootVBOX.getHeight() - rootAnchorPane.getHeight()
+      rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
   }
 
   /**
-   * Gets all available offers from the database that are not rented right now
+   * Gets all available offers from the database .
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
@@ -174,10 +176,10 @@ public class RentingViewController {
     offerListRoot.getChildren().clear();
 
     Label header = new Label(
-            String.format(
-                    "%s Angebote für Sie",
-                    offersList.size() > 0 ? "Passende" : "Keine passenden"
-            )
+      String.format(
+        "%s Angebote für Sie",
+        offersList.size() > 0 ? "Passende" : "Keine passenden"
+      )
     );
     header.setStyle("-fx-font-size: 30");
     offerListRoot.getChildren().add(header);
@@ -185,67 +187,77 @@ public class RentingViewController {
     for (OfferDTO offer : offersList) {
       VBox root = new VBox();
       root.setStyle(
-              "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
       );
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
-      //TODO: after finishing stuff with image realize logic with image
-      if (false) {
-        image = new Image(offer.getOfferedObject().getPictureURLs()[0]);
+      if (
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
+      ) {
+        image =
+          new Image(
+            pictureController
+              .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+              .get(0)
+              .getPath()
+          );
       } else {
         image = new Image("/pictures/noImg.png");
       }
 
-      HBox offerDetails = new HBox();
-
+      // thumbnail
       ImageView thumbnail = new ImageView(image);
-      thumbnail.setFitHeight(80);
-      thumbnail.setFitWidth(90);
-      offerDetails.getChildren().add(thumbnail);
+      thumbnail.setFitHeight(150);
+      thumbnail.setPreserveRatio(true);
+      HBox thumbnailHbox = new HBox(thumbnail);
+      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
 
+      // title
       Label titleLabel = new Label(offer.getTitle());
       titleLabel.setStyle(
-              "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
+        "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
       );
 
+      // location
       Label locationLabel = new Label("Abholort: " + offer.getLocation());
       locationLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
-      Label priceLabel = new Label(
-              "Preis pro Tag: € " + Long.toString(offer.getPrice())
-      );
+      // price
+      Label priceLabel = new Label("Preis pro Tag: € " + offer.getPrice());
       priceLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // brand
       Label brandLabel = new Label(
-              "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
       );
       brandLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
+      // model
       Label modelLabel = new Label(
-              "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
       );
       modelLabel.setStyle(
-              "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
       );
 
-      VBox detailsVBox = new VBox();
-      detailsVBox.setAlignment(Pos.TOP_CENTER);
-      detailsVBox.getChildren().add(titleLabel);
-
-      VBox locationPriceBrandModelBox = new VBox();
+      VBox locationPriceBrandModelBox = new VBox(
+        locationLabel,
+        priceLabel,
+        brandLabel,
+        modelLabel
+      );
       locationPriceBrandModelBox.setStyle("-fx-padding: 0 0 0 30");
-      locationPriceBrandModelBox.getChildren().add(locationLabel);
-      locationPriceBrandModelBox.getChildren().add(priceLabel);
-      locationPriceBrandModelBox.getChildren().add(brandLabel);
-      locationPriceBrandModelBox.getChildren().add(modelLabel);
-      detailsVBox.getChildren().add(locationPriceBrandModelBox);
 
       Button moreBtn = new Button("Mehr Information");
       moreBtn.getStyleClass().add("bg-primary");
@@ -256,14 +268,19 @@ public class RentingViewController {
         } catch (GenericServiceException ignore) {}
       });
 
-      HBox btnBox = new HBox();
+      HBox btnBox = new HBox(moreBtn);
       btnBox.setAlignment(Pos.TOP_RIGHT);
       btnBox.setStyle("-fx-padding: 0 30 30 0");
-      btnBox.getChildren().add(moreBtn);
-      detailsVBox.getChildren().add(btnBox);
 
-      offerDetails.setHgrow(detailsVBox, Priority.ALWAYS);
-      offerDetails.getChildren().add(detailsVBox);
+      VBox detailsVBox = new VBox(
+        titleLabel,
+        locationPriceBrandModelBox,
+        btnBox
+      );
+      detailsVBox.setAlignment(Pos.TOP_CENTER);
+      HBox.setHgrow(detailsVBox, Priority.ALWAYS);
+
+      HBox offerDetails = new HBox(thumbnailHbox, detailsVBox);
 
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
@@ -278,35 +295,35 @@ public class RentingViewController {
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
     if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
-            locationTextField.getText()
+      locationTextField.getText()
     );
     if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
-            vehicleTypeComboBox.getValue()
+      vehicleTypeComboBox.getValue()
     );
     if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
-            vehicleBrandTextField.getText()
+      vehicleBrandTextField.getText()
     );
     if (
-            !constructionYearTextField.getText().isEmpty()
+      !constructionYearTextField.getText().isEmpty()
     ) newFilter.setConstructionYear(
-            Integer.parseInt(constructionYearTextField.getText())
+      Integer.parseInt(constructionYearTextField.getText())
     );
     if (
-            !maxPricePerDayTextField.getText().isEmpty()
+      !maxPricePerDayTextField.getText().isEmpty()
     ) newFilter.setMaxPricePerDay(
-            Integer.parseInt(maxPricePerDayTextField.getText())
+      Integer.parseInt(maxPricePerDayTextField.getText())
     );
     if (!engineTextField.getText().isEmpty()) newFilter.setEngine(
-            engineTextField.getText()
+      engineTextField.getText()
     );
     if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
-            transmissionComboBox.getValue()
+      transmissionComboBox.getValue()
     );
     if (!seatAmountTextField.getText().isEmpty()) newFilter.setSeatAmount(
-            Integer.parseInt(seatAmountTextField.getText())
+      Integer.parseInt(seatAmountTextField.getText())
     );
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
-            Integer.parseInt(bedAmountTextField.getText())
+      Integer.parseInt(bedAmountTextField.getText())
     );
     if(startDatePicker.getValue() != null) newFilter.setStartDate(startDatePicker.getValue());
     if(endDatePicker.getValue() != null) newFilter.setEndDate(endDatePicker.getValue());

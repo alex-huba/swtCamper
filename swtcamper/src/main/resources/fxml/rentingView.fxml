@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+<VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
     <children>
         <AnchorPane fx:id="rootAnchorPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #ffc107;" styleClass="bg-warning">
             <children>
@@ -65,8 +71,8 @@
                                         <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachzelt" />
                                         <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachgepäckträger" />
                                         <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Fahrradträger" />
-                              <DatePicker fx:id="startDatePicker" promptText="Beginn der Miete" />
-                              <DatePicker fx:id="endDatePicker" promptText="Ende der Miete" />
+                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
+                                        <DatePicker fx:id="endDatePicker" promptText="Ende:" />
                                     </children>
                                 </VBox>
                                 <VBox spacing="13.0">

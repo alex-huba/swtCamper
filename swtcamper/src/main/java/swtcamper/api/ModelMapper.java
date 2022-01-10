@@ -2,7 +2,6 @@ package swtcamper.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.*;
 import swtcamper.backend.entities.*;
@@ -92,5 +91,25 @@ public class ModelMapper {
       booking.getEndDate(),
       booking.isActive()
     );
+  }
+
+  public PictureDTO pictureToPictureDTO(Picture picture) {
+    return new PictureDTO(
+      picture.getPictureID(),
+      picture.getVehicleID(),
+      picture.getPath()
+    );
+  }
+
+  public Picture pictureDTOToPicture(PictureDTO pictureDTO) {
+    return new Picture(pictureDTO);
+  }
+
+  public List<PictureDTO> picturesToPictureDTOs(List<Picture> pictures) {
+    List<PictureDTO> pictureDTOs = new ArrayList<>();
+    for (Picture picture : pictures) {
+      pictureDTOs.add(pictureToPictureDTO(picture));
+    }
+    return pictureDTOs;
   }
 }

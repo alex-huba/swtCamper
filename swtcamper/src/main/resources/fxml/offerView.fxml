@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane fx:id="offerView" stylesheets="@../styles/modifyOffer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.OfferViewController">
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="5.0">
@@ -61,7 +63,12 @@
                             <children>
                                 <HBox alignment="CENTER_LEFT" spacing="50.0">
                                     <children>
-                                        <Label fx:id="titleLabel" prefHeight="45" styleClass="heading" text="Titel" />
+                                        <Label fx:id="titleLabel" prefHeight="45" styleClass="title-heading"
+                                               text="Titel">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                        </Label>
                                     </children>
                                 </HBox>
                                 <HBox spacing="20.0">
@@ -96,13 +103,7 @@
                                 <HBox>
                                     <children>
                                         <Label prefWidth="175.0" styleClass="descriptionLabel" text="Mietvorraussetzungen:" />
-                                        <VBox spacing="3.0">
-                                            <children>
-                                                <Label fx:id="minAgeLabel" text="- ein Mindestalter von 21 ist erforderlich" />
-                                                <Label fx:id="borderCrossingLabel" text="- sie dürfen mit dem Fahrzeug Grenzen überqueren" />
-                                                <Label fx:id="depositLabel" text="- eine Bezahlung im Voraus ist erforderlich" />
-                                            </children>
-                                        </VBox>
+                                        <VBox fx:id="rentalConditionsVBox" />
                                     </children>
                                     <VBox.margin>
                                         <Insets top="10.0" />
@@ -262,4 +263,16 @@
             </children>
         </GridPane>
     </center>
+    <top>
+        <ScrollPane fitToWidth="true" focusTraversable="false" style="-fx-background-color: transparent;"
+                    vbarPolicy="NEVER" BorderPane.alignment="CENTER_LEFT">
+            <content>
+                <AnchorPane>
+                    <children>
+                        <HBox fx:id="pictureHorizontHBox"/>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </top>
 </BorderPane>

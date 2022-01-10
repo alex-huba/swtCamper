@@ -2,7 +2,10 @@ package swtcamper.backend.entities;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Offer implements IOffer {

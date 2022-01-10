@@ -47,7 +47,7 @@ public class BookingController implements IBookingController {
     boolean active
   ) {
     return modelMapper.bookingToBookingDTO(
-      bookingService.create(user, offer, startDate, endDate)
+      bookingService.create(user, offer, startDate, endDate, active)
     );
   }
 
@@ -55,11 +55,12 @@ public class BookingController implements IBookingController {
   public BookingDTO update(
     Long bookingID,
     LocalDate startDate,
-    LocalDate endDate
+    LocalDate endDate,
+    boolean active
   ) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.update(bookingID, startDate, endDate)
+        bookingService.update(bookingID, startDate, endDate, active)
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());

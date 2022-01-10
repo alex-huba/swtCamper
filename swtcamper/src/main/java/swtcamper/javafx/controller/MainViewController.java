@@ -112,14 +112,6 @@ public class MainViewController {
     }
   }
 
-  public void clearView() {
-    mainStage.getChildren().removeIf(node -> node instanceof Pane);
-  }
-
-  public void changeView(String switchTo) throws GenericServiceException {
-    changeView(switchTo, true);
-  }
-
   @Scheduled(fixedDelay = 1000)
   public void listenForDatabaseChanges() {
     if (userController.getLoggedInUser() != null) {
@@ -138,6 +130,14 @@ public class MainViewController {
         navigationViewController.resetBookingNotification();
       }
     }
+  }
+
+  public void clearView() {
+    mainStage.getChildren().removeIf(node -> node instanceof Pane);
+  }
+
+  public void changeView(String switchTo) throws GenericServiceException {
+    changeView(switchTo, true);
   }
 
   public void changeView(String switchTo, boolean reloadData)
