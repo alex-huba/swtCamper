@@ -93,7 +93,7 @@ public class UserService {
    * @param username
    * @param password
    * @return the user role of the user if user already exists in database
-   * @throws WrongPasswordException    if the password doesn't match with the username
+   * @throws WrongPasswordException if the password doesn't match with the username
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
   public UserRole login(String username, String password)
@@ -122,6 +122,7 @@ public class UserService {
    * Checks if username is already existing in database.
    *
    * @param username
+   * @return true if username doesn't exist in database yet
    * @return false if username is already taken in database
    */
   public boolean isUsernameFree(String username) {
@@ -132,6 +133,7 @@ public class UserService {
    * Checks if email is already existing in database.
    *
    * @param email
+   * @return true if email doesn't exist in database yet
    * @return false if email is already taken in database
    */
   public boolean isEmailFree(String email) {
@@ -221,7 +223,7 @@ public class UserService {
   /**
    * Counts the number of user accounts that exist in the database.
    *
-   * @return
+   * @return the amount of registered users
    */
   public long countUser() {
     return userRepository.count();
