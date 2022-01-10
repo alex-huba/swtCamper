@@ -23,25 +23,11 @@ public class UserController implements IUserController {
   ModelMapper modelMapper;
 
   public UserDTO register(
-    String username,
-    String password,
-    String email,
-    String phone,
-    String name,
-    String surname,
-    UserRole userRole,
-    boolean enabled
+    User user
   ) {
     return modelMapper.userToUserDTO(
       userService.create(
-        username,
-        password,
-        email,
-        phone,
-        name,
-        surname,
-        userRole,
-        enabled
+        user
       )
     );
   }

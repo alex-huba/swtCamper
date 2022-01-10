@@ -30,36 +30,13 @@ public class UserService {
   /**
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
-   * @param username
-   * @param password
-   * @param email
-   * @param phone
-   * @param name
-   * @param surname
-   * @param userRole
-   * @param enabled
-   * @return
+   * @param user User to create
+   * @return created User
    * @throws GenericServiceException
    */
   public User create(
-    String username,
-    String password,
-    String email,
-    String phone,
-    String name,
-    String surname,
-    UserRole userRole,
-    boolean enabled
+    User user
   ) {
-    User user = new User();
-    user.setUsername(username);
-    user.setName(name);
-    user.setSurname(surname);
-    user.setEmail(email);
-    user.setPhone(phone);
-    user.setPassword(password);
-    user.setUserRole(userRole);
-    user.setEnabled(enabled);
     return userRepository.save(user);
   }
 

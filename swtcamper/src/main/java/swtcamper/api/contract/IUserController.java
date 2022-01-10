@@ -12,14 +12,7 @@ public interface IUserController {
    * see {@link UserService#create}
    */
   UserDTO register(
-    String username,
-    String password,
-    String email,
-    String phone,
-    String name,
-    String surname,
-    UserRole userRole,
-    boolean enabled
+    User user
   );
 
   User getLoggedInUser();

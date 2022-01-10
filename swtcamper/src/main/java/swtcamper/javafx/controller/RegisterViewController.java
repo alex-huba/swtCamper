@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -301,15 +302,17 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     }
 
     try {
-      userController.register(
-        username,
-        password,
-        email,
-        phone,
-        name,
-        surname,
-        userRole,
-        enabled
+      User newUser = new User();
+      newUser.setUsername(username);
+              newUser.setPassword(password);
+              newUser.setEmail(email);
+              newUser.setPhone(phone);
+              newUser.setName(name);
+              newUser.setSurname(surname);
+              newUser.setUserRole(userRole);
+              newUser.setEnabled(enabled);
+                      userController.register(
+              newUser
       );
       // User registered as provider
       if (providerCb.isSelected()) {
