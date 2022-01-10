@@ -39,10 +39,10 @@ public class UserServiceUnitTest {
     false
   );
 
-  @BeforeEach
-  public void saveTestUser() {
-    when(userRepository.save(testUser)).thenReturn(testUser);
-  }
+//  @BeforeEach
+//  public void saveTestUser() {
+//    when(userRepository.save(testUser)).thenReturn(testUser);
+//  }
 
   @Test
   public void whenSaveValidUserItShouldReturnUser() {
