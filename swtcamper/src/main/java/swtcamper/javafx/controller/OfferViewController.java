@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -12,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
 import swtcamper.backend.entities.*;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -46,6 +50,9 @@ public class OfferViewController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+          private BookingService bookingService;
 
   LongStringConverter longStringConverter = new LongStringConverter();
 
@@ -136,10 +143,10 @@ public class OfferViewController {
   public Label dateLabel;
 
   @FXML
-  public DatePicker startDate;
+  public DatePicker startDatePicker;
 
   @FXML
-  public DatePicker endDate;
+  public DatePicker endDatePicker;
 
   @FXML
   public HBox rentHBox;
@@ -244,6 +251,54 @@ public class OfferViewController {
     fridgeLabel.setOpacity(
       labelOpacity(offeredObject.getVehicleFeatures().isFridge())
     );
+    startDatePicker.getEditor().clear();
+    endDatePicker.getEditor().clear();
+    try {
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(offer.getID());
+      endDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell(){
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+              super.updateItem(item, empty);
+              if (!empty && item != null) {
+                if(bookedDays.contains(item)) {
+                  // Aussehen und Verhalten der Zellen setzen
+                  this.setStyle("-fx-background-color: pink");
+                  setDisable(true);
+                }
+              }
+            }
+          };
+        }
+      });
+    } catch (GenericServiceException e) {
+      mainViewController.handleExceptionMessage(e.getMessage());
+    }
+    try {
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(offer.getID());
+      startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell(){
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+              super.updateItem(item, empty);
+              if (!empty && item != null) {
+                if(bookedDays.contains(item)) {
+                  // Aussehen und Verhalten der Zellen setzen
+                  this.setStyle("-fx-background-color: pink");
+                  setDisable(true);
+                }
+              }
+            }
+          };
+        }
+      });
+    } catch (GenericServiceException e) {
+      mainViewController.handleExceptionMessage(e.getMessage());
+    }
   }
 
   private double labelOpacity(boolean checkBox) {
@@ -259,13 +314,13 @@ public class OfferViewController {
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     dateLabel.setVisible(false);
-    startDate.setVisible(false);
-    endDate.setVisible(false);
+    startDatePicker.setVisible(false);
+    endDatePicker.setVisible(false);
     rentHBox.setVisible(false);
     // disable
     dateLabel.setDisable(false);
-    startDate.setDisable(false);
-    endDate.setDisable(false);
+    startDatePicker.setDisable(false);
+    endDatePicker.setDisable(false);
 
     isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
@@ -296,8 +351,8 @@ public class OfferViewController {
         } else {
           bookingButton.setVisible(true);
           dateLabel.setVisible(true);
-          startDate.setVisible(true);
-          endDate.setVisible(true);
+          startDatePicker.setVisible(true);
+          endDatePicker.setVisible(true);
         }
 
         // remove possibility to send a request twice at once
@@ -314,8 +369,8 @@ public class OfferViewController {
           if (booking.getOffer().getOfferID() == viewedOffer.getID()) {
             bookingButton.setVisible(false);
             dateLabel.setDisable(true);
-            startDate.setDisable(true);
-            endDate.setDisable(true);
+            startDatePicker.setDisable(true);
+            endDatePicker.setDisable(true);
             rentLabel.setText(
               "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
             );
@@ -336,8 +391,8 @@ public class OfferViewController {
     } else {
       modifyButton.setVisible(true);
       dateLabel.setVisible(false);
-      startDate.setVisible(false);
-      endDate.setVisible(false);
+      startDatePicker.setVisible(false);
+      endDatePicker.setVisible(false);
       rentHBox.setVisible(false);
     }
   }
@@ -359,19 +414,19 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    if (startDate.getValue() != null && endDate.getValue() != null) {
+    if (startDatePicker.getValue() != null && endDatePicker.getValue() != null) {
       if (
         !validationHelper.checkRentingDate(
-          startDate.getValue(),
-          endDate.getValue()
+          startDatePicker.getValue(),
+          endDatePicker.getValue()
         )
       ) {
         Alert confirmBooking = new Alert(
           Alert.AlertType.CONFIRMATION,
           "Willst du das Angebot wirklich von " +
-          startDate.getValue() +
+          startDatePicker.getValue() +
           " bis " +
-          endDate.getValue() +
+          endDatePicker.getValue() +
           " buchen?"
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
@@ -381,8 +436,8 @@ public class OfferViewController {
           BookingDTO bookingDTO = bookingController.create(
             user,
             offer,
-            startDate.getValue(),
-            endDate.getValue(),
+            startDatePicker.getValue(),
+            endDatePicker.getValue(),
             false
           );
           checkMode(true);
