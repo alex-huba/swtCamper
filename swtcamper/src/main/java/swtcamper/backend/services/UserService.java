@@ -34,9 +34,7 @@ public class UserService {
    * @return created User
    * @throws GenericServiceException
    */
-  public User create(
-    User user
-  ) {
+  public User create(User user) {
     return userRepository.save(user);
   }
 

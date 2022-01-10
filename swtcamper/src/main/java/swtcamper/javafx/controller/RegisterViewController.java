@@ -304,16 +304,14 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     try {
       User newUser = new User();
       newUser.setUsername(username);
-              newUser.setPassword(password);
-              newUser.setEmail(email);
-              newUser.setPhone(phone);
-              newUser.setName(name);
-              newUser.setSurname(surname);
-              newUser.setUserRole(userRole);
-              newUser.setEnabled(enabled);
-                      userController.register(
-              newUser
-      );
+      newUser.setPassword(password);
+      newUser.setEmail(email);
+      newUser.setPhone(phone);
+      newUser.setName(name);
+      newUser.setSurname(surname);
+      newUser.setUserRole(userRole);
+      newUser.setEnabled(enabled);
+      userController.register(newUser);
       // User registered as provider
       if (providerCb.isSelected()) {
         mainViewController.handleInformationMessage(

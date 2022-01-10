@@ -22,14 +22,8 @@ public class UserController implements IUserController {
   @Autowired
   ModelMapper modelMapper;
 
-  public UserDTO register(
-    User user
-  ) {
-    return modelMapper.userToUserDTO(
-      userService.create(
-        user
-      )
-    );
+  public UserDTO register(User user) {
+    return modelMapper.userToUserDTO(userService.create(user));
   }
 
   public User getLoggedInUser() {

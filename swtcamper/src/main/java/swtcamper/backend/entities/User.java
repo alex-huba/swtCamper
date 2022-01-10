@@ -30,7 +30,16 @@ public class User {
     this.enabled = false;
   }
 
-  public User(String username, String password, String email, String phone, String name, String surname, UserRole userRole, boolean enabled) {
+  public User(
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
+  ) {
     this.username = username;
     this.password = password;
     this.email = email;

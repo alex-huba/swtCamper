@@ -11,9 +11,7 @@ public interface IUserController {
   /**
    * see {@link UserService#create}
    */
-  UserDTO register(
-    User user
-  );
+  UserDTO register(User user);
 
   User getLoggedInUser();
 
