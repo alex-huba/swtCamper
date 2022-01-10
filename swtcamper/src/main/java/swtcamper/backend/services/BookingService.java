@@ -95,7 +95,8 @@ public class BookingService {
     );
   }
 
-  public Booking activate(Long bookingID, UserDTO user) throws GenericServiceException {
+  public Booking activate(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
@@ -111,9 +112,9 @@ public class BookingService {
             "Booking with ID %s was deactivated by user %s.",
             bookingID,
             user.getUsername()
-            )
-            )
-            );
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -122,13 +123,14 @@ public class BookingService {
     );
   }
 
-  public Booking deactivate(Long bookingID, UserDTO user) throws GenericServiceException {
+  public Booking deactivate(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
-      Booking booking = bookingOptional.get();          
-            // Update by setting active = false
+      Booking booking = bookingOptional.get();
+      // Update by setting active = false
       booking.setActive(false);
 
       loggingController.log(
@@ -138,9 +140,9 @@ public class BookingService {
             "Booking with ID %s was deactivated by user %s.",
             bookingID,
             user.getUsername()
-            )
-            )
-            );
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -149,7 +151,8 @@ public class BookingService {
     );
   }
 
-  public void delete(Long bookingID, UserDTO user) throws GenericServiceException {
+  public void delete(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found
@@ -165,15 +168,15 @@ public class BookingService {
       try {
         bookingRepository.deleteById(bookingID);
         loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "UBooking with ID %s was deleted by user %s",
-            bookingID,
-            user.getUsername()
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "UBooking with ID %s was deleted by user %s",
+              bookingID,
+              user.getUsername()
+            )
           )
-        )
-      );
+        );
       } catch (IllegalArgumentException e) {
         throw new GenericServiceException(
           "The passed ID is not available: " + e

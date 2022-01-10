@@ -18,9 +18,9 @@ import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
-import swtcamper.backend.entities.Booking;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -139,14 +139,14 @@ public class MainViewController {
     if (userController.getLoggedInUser() != null) {
       // check for new booking requests
       if (
-              bookingController
-                      .getBookingsForUser(userController.getLoggedInUser())
-                      .size() >
-                      0 &&
-                      !bookingController
-                              .getBookingsForUser(userController.getLoggedInUser())
-                              .stream()
-                              .allMatch(Booking::isActive)
+        bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .size() >
+        0 &&
+        !bookingController
+          .getBookingsForUser(userController.getLoggedInUser())
+          .stream()
+          .allMatch(Booking::isActive)
       ) {
         navigationViewController.showBookingNotification();
       } else {

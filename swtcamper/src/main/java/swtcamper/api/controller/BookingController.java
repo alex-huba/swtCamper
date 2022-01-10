@@ -80,7 +80,10 @@ public class BookingController implements IBookingController {
   public BookingDTO activate(Long bookingID) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.activate(bookingID,modelMapper.userToUserDTO(userController.getLoggedInUser()))
+        bookingService.activate(
+          bookingID,
+          modelMapper.userToUserDTO(userController.getLoggedInUser())
+        )
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
@@ -103,6 +106,9 @@ public class BookingController implements IBookingController {
 
   @Override
   public void delete(Long bookingID) throws GenericServiceException {
-    bookingService.delete(bookingID,modelMapper.userToUserDTO(userController.getLoggedInUser()));
+    bookingService.delete(
+      bookingID,
+      modelMapper.userToUserDTO(userController.getLoggedInUser())
+    );
   }
 }
