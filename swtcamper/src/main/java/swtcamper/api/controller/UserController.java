@@ -50,6 +50,14 @@ public class UserController implements IUserController {
     return userService.getLoggedInUser();
   }
 
+  public void excludeRenterForCurrentlyLoggedInUser(User renterToExclude) {
+    userService.excludeRenterForCurrentlyLoggedInUser(renterToExclude);
+  }
+
+  public void removeExcludedRenterForCurrentlyLoggedInUser(User renterToInclude) {
+    userService.removeExcludedRenterForCurrentlyLoggedInUser(renterToInclude);
+  }
+
   @Override
   public UserRoleDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {

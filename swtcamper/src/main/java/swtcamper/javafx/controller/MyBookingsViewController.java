@@ -163,6 +163,18 @@ public class MyBookingsViewController {
           } catch (GenericServiceException ignore) {}
         });
 
+        // Button for excluding this renter
+        Button excludeButton = new Button("Diesen Nutzer blockieren");
+        excludeButton.getStyleClass().add("bg-danger");
+        excludeButton.setDisable(booking.isActive());
+        excludeButton.setOnAction(event -> {
+          try {
+            userController.excludeRenterForCurrentlyLoggedInUser(booking.getRenter());
+            bookingController.delete(booking.getId());
+            reloadData();
+          } catch (GenericServiceException ignore) {}
+        });
+
         // Button for aborting the booking
         Button abortButton = new Button("Buchung beenden");
         abortButton.getStyleClass().add("bg-danger");
@@ -184,7 +196,7 @@ public class MyBookingsViewController {
         });
 
         // button box
-        HBox buttonHBox = new HBox(acceptButton, rejectButton, abortButton);
+        HBox buttonHBox = new HBox(acceptButton, rejectButton, abortButton, excludeButton);
         buttonHBox.setSpacing(5);
 
         // card

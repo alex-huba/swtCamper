@@ -1,5 +1,6 @@
 package swtcamper.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,18 @@ public class UserService {
 
   public void setLoggedInUser(User loggedInUser) {
     this.loggedInUser = loggedInUser;
+  }
+
+  public void excludeRenterForCurrentlyLoggedInUser(User renterToExclude) {
+    ArrayList<User> excludedRenters = new ArrayList<>(getLoggedInUser().getExcludedRenters());
+    excludedRenters.add(renterToExclude);
+    getLoggedInUser().setExcludedRenters(excludedRenters);
+  }
+
+  public void removeExcludedRenterForCurrentlyLoggedInUser(User renterToInclude) {
+    ArrayList<User> excludedRenters = getLoggedInUser().getExcludedRenters();
+    excludedRenters.remove(renterToInclude);
+    getLoggedInUser().setExcludedRenters(excludedRenters);
   }
 
   /**

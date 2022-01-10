@@ -1,12 +1,14 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class User {
 
   @Id
   @GeneratedValue
+  @Column(name = "id")
   private Long id;
 
   @Column(unique = true, nullable = false)
@@ -14,7 +16,11 @@ public class User {
 
   private String name;
   private String surname;
+
+  @Column(unique = true, nullable = false)
   private String email;
+
+  @Column(unique = true, nullable = false)
   private String phone;
   private String password;
 
@@ -23,6 +29,10 @@ public class User {
 
   private boolean locked;
   private boolean enabled;
+
+//  @OneToMany
+//	@CollectionTable(name = "excluded_renters", joinColumns = @JoinColumn(name = "id"))
+  private ArrayList<User> excludedRenters;
 
   public User() {
     super();
@@ -143,4 +153,8 @@ public class User {
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
+
+  public ArrayList<User> getExcludedRenters() { return this.excludedRenters; }
+
+  public void setExcludedRenters(ArrayList<User> excludedRenters) { this.excludedRenters = excludedRenters; }
 }
