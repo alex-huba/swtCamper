@@ -35,7 +35,16 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) {
-    return bookingRepository.save(new Booking(user, offer, startDate, endDate));
+    // Create new booking and add its ID to the offer
+    Booking booking = new Booking(user, offer, startDate, endDate);
+    bookingRepository.save(booking);
+    Optional<Offer> offerResponse = offerRepository.findById(offer.getOfferID());
+    Offer tempOffer = offerResponse.get();
+    ArrayList<Long> bookings = tempOffer.getBookings();
+    bookings.add(booking.getId());
+    tempOffer.setBookings(bookings);
+    offerRepository.save(tempOffer);
+    return booking;
   }
 
   public Booking update(
