@@ -30,7 +30,7 @@ public class ApproveNewProvidersViewController {
   private void reloadData() throws GenericServiceException {
     toApproveListView.getChildren().clear();
 
-    if (userController.countUser() != 0) {
+    if (userController.getAllUsers().size() > 0) {
       for (User user : userController.getAllUsers()) {
         if (user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()) {
           Label headingLabel = new Label(
