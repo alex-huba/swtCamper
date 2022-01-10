@@ -325,8 +325,12 @@ public class RentingViewController {
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
       Integer.parseInt(bedAmountTextField.getText())
     );
-    if(startDatePicker.getValue() != null) newFilter.setStartDate(startDatePicker.getValue());
-    if(endDatePicker.getValue() != null) newFilter.setEndDate(endDatePicker.getValue());
+    if (startDatePicker.getValue() != null) newFilter.setStartDate(
+      startDatePicker.getValue()
+    );
+    if (endDatePicker.getValue() != null) newFilter.setEndDate(
+      endDatePicker.getValue()
+    );
 
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());

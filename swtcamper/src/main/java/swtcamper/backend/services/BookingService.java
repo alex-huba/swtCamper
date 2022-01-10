@@ -38,7 +38,9 @@ public class BookingService {
     // Create new booking and add its ID to the offer
     Booking booking = new Booking(user, offer, startDate, endDate);
     bookingRepository.save(booking);
-    Optional<Offer> offerResponse = offerRepository.findById(offer.getOfferID());
+    Optional<Offer> offerResponse = offerRepository.findById(
+      offer.getOfferID()
+    );
     Offer tempOffer = offerResponse.get();
     ArrayList<Long> bookings = tempOffer.getBookings();
     bookings.add(booking.getId());
@@ -171,10 +173,8 @@ public class BookingService {
    * @return a list of offerIDs of the available offers
    * @throws GenericServiceException
    */
-  public List<Offer> getAvailableOffers(
-    LocalDate startDate,
-    LocalDate endDate
-  ) throws GenericServiceException {
+  public List<Offer> getAvailableOffers(LocalDate startDate, LocalDate endDate)
+    throws GenericServiceException {
     // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);

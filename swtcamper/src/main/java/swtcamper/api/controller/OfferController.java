@@ -50,8 +50,13 @@ public class OfferController implements IOfferController {
     return modelMapper.offersToOfferDTOs(offerService.offers());
   }
 
-  public List<OfferDTO> offersFilteredByDate(LocalDate startDate, LocalDate endDate) throws GenericServiceException {
-    return modelMapper.offersToOfferDTOs(bookingService.getAvailableOffers(startDate, endDate));
+  public List<OfferDTO> offersFilteredByDate(
+    LocalDate startDate,
+    LocalDate endDate
+  ) throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(
+      bookingService.getAvailableOffers(startDate, endDate)
+    );
   }
 
   /**
@@ -201,7 +206,6 @@ public class OfferController implements IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
-
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

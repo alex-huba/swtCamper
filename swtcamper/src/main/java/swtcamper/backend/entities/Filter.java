@@ -1,8 +1,7 @@
 package swtcamper.backend.entities;
 
-import net.bytebuddy.asm.Advice;
-
 import java.time.LocalDate;
+import net.bytebuddy.asm.Advice;
 
 public class Filter {
 

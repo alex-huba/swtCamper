@@ -52,7 +52,7 @@ public class OfferViewController {
   private UserController userController;
 
   @Autowired
-          private BookingService bookingService;
+  private BookingService bookingService;
 
   LongStringConverter longStringConverter = new LongStringConverter();
 
@@ -254,48 +254,60 @@ public class OfferViewController {
     startDatePicker.getEditor().clear();
     endDatePicker.getEditor().clear();
     try {
-      final List<LocalDate> bookedDays = bookingService.getBookedDays(offer.getID());
-      endDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-        @Override
-        public DateCell call(DatePicker param) {
-          return new DateCell(){
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-              super.updateItem(item, empty);
-              if (!empty && item != null) {
-                if(bookedDays.contains(item)) {
-                  // Aussehen und Verhalten der Zellen setzen
-                  this.setStyle("-fx-background-color: pink");
-                  setDisable(true);
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(
+        offer.getID()
+      );
+      endDatePicker.setDayCellFactory(
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(DatePicker param) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (!empty && date != null) {
+                  LocalDate today = LocalDate.now();
+                  setDisable(empty || date.compareTo(today) < 0);
+                  if (bookedDays.contains(date)) {
+                    // Aussehen und Verhalten der Zellen setzen
+                    this.setStyle("-fx-background-color: pink");
+                    setDisable(true);
+                  }
                 }
               }
-            }
-          };
+            };
+          }
         }
-      });
+      );
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());
     }
     try {
-      final List<LocalDate> bookedDays = bookingService.getBookedDays(offer.getID());
-      startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-        @Override
-        public DateCell call(DatePicker param) {
-          return new DateCell(){
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-              super.updateItem(item, empty);
-              if (!empty && item != null) {
-                if(bookedDays.contains(item)) {
-                  // Aussehen und Verhalten der Zellen setzen
-                  this.setStyle("-fx-background-color: pink");
-                  setDisable(true);
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(
+        offer.getID()
+      );
+      startDatePicker.setDayCellFactory(
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(DatePicker param) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (!empty && date != null) {
+                  LocalDate today = LocalDate.now();
+                  setDisable(empty || date.compareTo(today) < 0);
+                  if (bookedDays.contains(date)) {
+                    // Aussehen und Verhalten der Zellen setzen
+                    this.setStyle("-fx-background-color: pink");
+                    setDisable(true);
+                  }
                 }
               }
-            }
-          };
+            };
+          }
         }
-      });
+      );
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());
     }
@@ -414,13 +426,33 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    if (startDatePicker.getValue() != null && endDatePicker.getValue() != null) {
+    if (
+      startDatePicker.getValue() != null && endDatePicker.getValue() != null
+    ) {
+      // Liegt Startdatum nach Enddatum?
+      // Startdatum == Enddatum?
       if (
-        !validationHelper.checkRentingDate(
+        !validationHelper.checkRentingDates(
           startDatePicker.getValue(),
           endDatePicker.getValue()
         )
       ) {
+        mainViewController.handleExceptionMessage(
+          "Das Startdatum darf nicht nach oder am selben Tag wie das Enddatum liegen!"
+        );
+        // Gibt es gebuchte Tage zwischen Start- und Enddatum?
+      } else if (
+        !validationHelper.checkRentingDatesWithOffer(
+          startDatePicker.getValue(),
+          endDatePicker.getValue(),
+          this.viewedOffer
+        )
+      ) {
+        mainViewController.handleExceptionMessage(
+          "Zwischen Start- und Enddatum darf keine andere Buchung liegen!"
+        );
+        // Alles ok!
+      } else {
         Alert confirmBooking = new Alert(
           Alert.AlertType.CONFIRMATION,
           "Willst du das Angebot wirklich von " +
@@ -442,10 +474,6 @@ public class OfferViewController {
           );
           checkMode(true);
         }
-      } else {
-        mainViewController.handleExceptionMessage(
-          "Bitte wähle ein korrektes Datum aus!"
-        );
       }
     } else {
       mainViewController.handleExceptionMessage(
