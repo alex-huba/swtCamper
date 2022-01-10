@@ -149,7 +149,7 @@ public class BookingService {
     );
   }
 
-  public void delete(Long bookingID) throws GenericServiceException {
+  public void delete(Long bookingID, UserDTO user) throws GenericServiceException {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found

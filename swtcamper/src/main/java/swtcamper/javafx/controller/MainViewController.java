@@ -130,26 +130,6 @@ public class MainViewController {
     }
   }
 
-  @Scheduled(fixedDelay = 1000)
-  public void listenForDatabaseChanges() {
-    if (userController.getLoggedInUser() != null) {
-      if (
-        bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .size() >
-        0 &&
-        !bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .stream()
-          .allMatch(Booking::isActive)
-      ) {
-        navigationViewController.showBookingNotification();
-      } else {
-        navigationViewController.resetBookingNotification();
-      }
-    }
-  }
-
   public void clearView() {
     mainStage.getChildren().removeIf(node -> node instanceof Pane);
   }
@@ -157,6 +137,22 @@ public class MainViewController {
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
     if (userController.getLoggedInUser() != null) {
+      // check for new booking requests
+      if (
+              bookingController
+                      .getBookingsForUser(userController.getLoggedInUser())
+                      .size() >
+                      0 &&
+                      !bookingController
+                              .getBookingsForUser(userController.getLoggedInUser())
+                              .stream()
+                              .allMatch(Booking::isActive)
+      ) {
+        navigationViewController.showBookingNotification();
+      } else {
+        navigationViewController.resetBookingNotification();
+      }
+
       // check for new providers that need to be enabled
       if (
         userController

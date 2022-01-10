@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.IBookingController;
+import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
@@ -79,7 +80,7 @@ public class BookingController implements IBookingController {
   public BookingDTO activate(Long bookingID) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.activate(bookingID)
+        bookingService.activate(bookingID,modelMapper.userToUserDTO(userController.getLoggedInUser()))
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
@@ -102,6 +103,6 @@ public class BookingController implements IBookingController {
 
   @Override
   public void delete(Long bookingID) throws GenericServiceException {
-    bookingService.delete(bookingID);
+    bookingService.delete(bookingID,modelMapper.userToUserDTO(userController.getLoggedInUser()));
   }
 }
