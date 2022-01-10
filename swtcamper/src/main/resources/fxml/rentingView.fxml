@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.DatePicker?>
 <VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
     <children>
         <AnchorPane fx:id="rootAnchorPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #ffc107;" styleClass="bg-warning">
