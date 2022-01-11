@@ -5,7 +5,7 @@ import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 
 public interface ILoggingController {
-  void log(LoggingMessage loggingMessage);
-  List<LoggingMessage> getAllLogMessages();
-  List<LoggingMessage> getLogForUser(User selectedUser);
+  void log(LoggingMessageDTO loggingMessageDTO);
+  List<LoggingMessageDTO> getAllLogMessages();
+  List<LoggingMessageDTO> getLogForUser(User selectedUser);
 }

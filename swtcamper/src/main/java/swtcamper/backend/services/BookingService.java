@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.*;
@@ -27,6 +28,9 @@ public class BookingService {
   @Autowired
   private LoggingController loggingController;
 
+  @Autowired
+  private ModelMapper modelMapper;
+
   public List<Booking> getAllBookings() {
     return bookingRepository.findAll();
   }
@@ -42,13 +46,15 @@ public class BookingService {
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
     loggingController.log(
-      new LoggingMessage(
-        LoggingLevel.INFO,
-        String.format(
-          "User %s booked offer with ID %s.",
-          user.getUsername(),
-          offer.getOfferID()
-        )
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+              new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "User %s booked offer with ID %s.",
+                              user.getUsername(),
+                              offer.getOfferID()
+                      )
+              )
       )
     );
     return bookingRepository.findById(newBookingId).get();
@@ -78,14 +84,14 @@ public class BookingService {
       booking.setActive(active);
 
       loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Booking with ID %s got updated by user %s.",
-            bookingID,
-            user.getUsername()
-          )
-        )
+              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "Booking with ID %s got updated by user %s.",
+                              bookingID,
+                              user.getUsername()
+                      )
+              ))
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -106,14 +112,14 @@ public class BookingService {
       booking.setActive(true);
 
       loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Booking with ID %s was deactivated by user %s.",
-            bookingID,
-            user.getUsername()
-          )
-        )
+              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "Booking with ID %s was deactivated by user %s.",
+                              bookingID,
+                              user.getUsername()
+                      )
+              ))
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -134,14 +140,14 @@ public class BookingService {
       booking.setActive(false);
 
       loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Booking with ID %s was deactivated by user %s.",
-            bookingID,
-            user.getUsername()
-          )
-        )
+              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
+                      LoggingLevel.INFO,
+                      String.format(
+                              "Booking with ID %s was deactivated by user %s.",
+                              bookingID,
+                              user.getUsername()
+                      )
+              ))
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -168,14 +174,14 @@ public class BookingService {
       try {
         bookingRepository.deleteById(bookingID);
         loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "UBooking with ID %s was deleted by user %s",
-              bookingID,
-              user.getUsername()
-            )
-          )
+                modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
+                        LoggingLevel.INFO,
+                        String.format(
+                                "UBooking with ID %s was deleted by user %s",
+                                bookingID,
+                                user.getUsername()
+                        )
+                ))
         );
       } catch (IllegalArgumentException e) {
         throw new GenericServiceException(

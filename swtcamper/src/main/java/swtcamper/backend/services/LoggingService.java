@@ -5,6 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.repositories.LoggingRepository;
 
@@ -12,16 +14,19 @@ import swtcamper.backend.repositories.LoggingRepository;
 public class LoggingService {
 
   @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
   private LoggingRepository loggingRepository;
 
-  private static Logger logger = LogManager.getLogger(LoggingService.class);
+  private static final Logger logger = LogManager.getLogger(LoggingService.class);
 
   /**
    * Logs a LoggingMessage to console and to the database
    * @param loggingMessage Message to be logged
    */
-  public void log(LoggingMessage loggingMessage) {
-    loggingRepository.save(loggingMessage);
+  public void log(LoggingMessageDTO loggingMessage) {
+    loggingRepository.save(modelMapper.LoggingMessageDTOToLoggingMessage(loggingMessage));
 
     switch (loggingMessage.getLogLevel()) {
       case INFO:
@@ -42,7 +47,7 @@ public class LoggingService {
     }
   }
 
-  public List<LoggingMessage> getAllLogMessages() {
-    return loggingRepository.findAll();
+  public List<LoggingMessageDTO> getAllLogMessages() {
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(loggingRepository.findAll());
   }
 }

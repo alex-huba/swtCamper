@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.LoggingMessage;
@@ -51,7 +52,7 @@ public class AccountViewController {
   public SplitPane operatorDashboard;
 
   @FXML
-  public ListView<LoggingMessage> logListView;
+  public ListView<LoggingMessageDTO> logListView;
 
   @FXML
   public ListView<User> usersListView;
@@ -151,7 +152,7 @@ public class AccountViewController {
     operatorDashboard.setVisible(true);
 
     // fill in all log messages DESC
-    ObservableList<LoggingMessage> logList = FXCollections.observableArrayList(
+    ObservableList<LoggingMessageDTO> logList = FXCollections.observableArrayList(
       loggingController.getAllLogMessages()
     );
     if(!ascending) FXCollections.reverse(logList);

@@ -18,10 +18,6 @@ public class LoggingMessage implements ILoggingMessage {
   private String loggingMessage;
 
   public LoggingMessage() {
-    this.time = LocalDateTime.now();
-    this.logLevel = LoggingLevel.ERROR;
-    this.loggingMessage =
-      "Unauthorized use of LoggingMessage! Please formally instantiate with LoggingLevel and log-message when using.";
   }
 
   /**
@@ -35,6 +31,22 @@ public class LoggingMessage implements ILoggingMessage {
 
     this.logLevel = logLvl;
     this.loggingMessage = message;
+  }
+
+  public long getLoggingMessageID() {
+    return loggingMessageID;
+  }
+
+  public void setLoggingMessageID(long loggingMessageID) {
+    this.loggingMessageID = loggingMessageID;
+  }
+
+  public LocalDateTime getTime() {
+    return time;
+  }
+
+  public void setTime(LocalDateTime time) {
+    this.time = time;
   }
 
   public LoggingLevel getLogLevel() {
@@ -62,7 +74,7 @@ public class LoggingMessage implements ILoggingMessage {
       "]" +
       (logLevel.equals(LoggingLevel.INFO) ? "\t\t" : "\t") +
       loggingMessage +
-      " (ID: " +
+      " (Log.ID: " +
       loggingMessageID +
       ")"
     );

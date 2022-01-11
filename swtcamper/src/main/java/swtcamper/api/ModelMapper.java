@@ -112,4 +112,27 @@ public class ModelMapper {
     }
     return pictureDTOs;
   }
+
+  public LoggingMessageDTO LoggingMessageToLoggingMessageDTO(LoggingMessage loggingMessage) {
+    return new LoggingMessageDTO(loggingMessage.getLoggingMessageID(),loggingMessage.getTime(),loggingMessage.getLogLevel(),loggingMessage.getLoggingMessage());
+  }
+
+  public LoggingMessage LoggingMessageDTOToLoggingMessage(LoggingMessageDTO loggingMessageDTO) {
+    LoggingMessage loggingMessage = new LoggingMessage();
+    loggingMessage.setLoggingMessageID(loggingMessageDTO.getLoggingMessageID());
+    loggingMessage.setTime(loggingMessageDTO.getTime());
+    loggingMessage.setLogLevel(loggingMessageDTO.getLogLevel());
+    loggingMessage.setLoggingMessage(loggingMessageDTO.getLoggingMessage());
+
+    return loggingMessage;
+  }
+
+  public List<LoggingMessageDTO> LoggingMessagesToLoggingMessageDTOs(List<LoggingMessage> loggingMessageList) {
+    List<LoggingMessageDTO> loggingMessageDTOList = new ArrayList<>();
+    for(LoggingMessage loggingMessage : loggingMessageList) {
+      loggingMessageDTOList.add(LoggingMessageToLoggingMessageDTO(loggingMessage));
+    }
+    
+    return loggingMessageDTOList;
+  }
 }

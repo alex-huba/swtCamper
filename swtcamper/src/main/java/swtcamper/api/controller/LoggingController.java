@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.ILoggingController;
+import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
@@ -17,18 +18,15 @@ public class LoggingController implements ILoggingController {
   @Autowired
   private LoggingService loggingService;
 
-  @Autowired
-  private ModelMapper modelMapper;
-
-  public void log(LoggingMessage loggingMessage) {
-    loggingService.log(loggingMessage);
+  public void log(LoggingMessageDTO loggingMessageDTO) {
+    loggingService.log(loggingMessageDTO);
   }
 
-  public List<LoggingMessage> getAllLogMessages() {
+  public List<LoggingMessageDTO> getAllLogMessages() {
     return loggingService.getAllLogMessages();
   }
 
-  public List<LoggingMessage> getLogForUser(User selectedUser) {
+  public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
     return getAllLogMessages()
       .stream()
       .filter(loggingMessage ->

@@ -17,10 +17,10 @@ import swtcamper.backend.services.exceptions.WrongPasswordException;
 public class UserController implements IUserController {
 
   @Autowired
-  UserService userService;
+  private UserService userService;
 
   @Autowired
-  ModelMapper modelMapper;
+  private ModelMapper modelMapper;
 
   public UserDTO register(
     String username,
