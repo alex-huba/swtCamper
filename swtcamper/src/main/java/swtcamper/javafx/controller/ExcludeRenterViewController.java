@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,20 +31,25 @@ public class ExcludeRenterViewController {
 
     @FXML
     public void initialize() throws GenericServiceException {
-            reloadExcludedRenters();
+        reloadExcludedRenters();
     }
 
     private void reloadExcludedRenters() throws GenericServiceException {
-        if(userController.getLoggedInUser()==null) return;
+        // do not continue if no one is logged in right now
+        if (userController.getLoggedInUser() == null) return;
+
         excludedRentersVBox.getChildren().clear();
-        if(userController.getLoggedInUser().getExcludedRenters().isEmpty()) {
+
+        // give info message if no one is excluded
+        if (userController.getLoggedInUser().getExcludedRenters().isEmpty()) {
             Label infoLabel = new Label("Du hast keine Nutzer von deinen Anzeigen ausgeschlossen");
             infoLabel.setDisable(true);
             excludedRentersVBox.getChildren().add(infoLabel);
             return;
         }
 
-        for(Long excludedUserId : userController.getLoggedInUser().getExcludedRenters()) {
+        // load excluded renters
+        for (Long excludedUserId : userController.getLoggedInUser().getExcludedRenters()) {
             User user = userController.getUserById(excludedUserId);
 
             Label usernameLabel = new Label(
@@ -58,7 +62,7 @@ public class ExcludeRenterViewController {
                     String.format("E-mail: %s", user.getEmail())
             );
 
-            // block button
+            // include button
             Button includeButton = new Button("Ausschließen beenden");
             includeButton.getStyleClass().add("bg-primary");
             includeButton.setOnAction(event -> {
@@ -70,20 +74,20 @@ public class ExcludeRenterViewController {
             });
 
             // card
-            VBox bookingVBox = new VBox(
+            VBox excludedUserVBox = new VBox(
                     usernameLabel,
                     nameLabel,
                     emailLabel,
                     includeButton
             );
-            bookingVBox.setFillWidth(true);
-            bookingVBox.setSpacing(5);
-            bookingVBox.setStyle(
+            excludedUserVBox.setFillWidth(true);
+            excludedUserVBox.setSpacing(5);
+            excludedUserVBox.setStyle(
                     "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
             );
 
             // add card to view
-            excludedRentersVBox.getChildren().add(bookingVBox);
+            excludedRentersVBox.getChildren().add(excludedUserVBox);
         }
     }
 
@@ -94,8 +98,11 @@ public class ExcludeRenterViewController {
 
     private void findUsers(String searchText) throws GenericServiceException {
         userResultsVBox.getChildren().clear();
-        if(searchText.isEmpty())return;
-        for(User user : userController.getAllUsers().parallelStream().filter(user -> user.getUsername().equals(searchText)).collect(Collectors.toList())) {
+        if (searchText.isEmpty()) return;
+
+        // only show results if searchText fully equals the needed username (privacy reasons)
+        for (User user : userController.getAllUsers().parallelStream().filter(user -> user.getUsername().equals(searchText)).collect(Collectors.toList())) {
+            // info message in case this user is already excluded
             if (userController.getLoggedInUser().getExcludedRenters().contains(user.getId())) {
                 Label infoLabel = new Label("Dieser Nutzer wurde bereits von deinen Anzeigen ausgeschlossen.");
                 infoLabel.setDisable(true);
@@ -113,14 +120,17 @@ public class ExcludeRenterViewController {
                     String.format("E-mail: %s", user.getEmail())
             );
 
-            // block button
-            Button excludeButton = new Button("Ausschließen");
+            // exclude button
+            Button excludeButton = new Button(userController.getLoggedInUser().getId().equals(user.getId()) ? "Das bist du ;)" : "Ausschließen");
+            excludeButton.setDisable(userController.getLoggedInUser().getId().equals(user.getId()));
             excludeButton.getStyleClass().add("bg-warning");
             excludeButton.setOnAction(event -> {
                 userController.excludeRenterForCurrentlyLoggedInUser(user.getId());
                 try {
+                    // reset search
                     findUsersTextField.setText("");
                     findUsers("");
+
                     reloadExcludedRenters();
                 } catch (GenericServiceException ignore) {
                 }
@@ -134,20 +144,20 @@ public class ExcludeRenterViewController {
             Tooltip.install(excludeButton, t1);
 
             // card
-            VBox bookingVBox = new VBox(
+            VBox excludeUserVBox = new VBox(
                     usernameLabel,
                     nameLabel,
                     emailLabel,
                     excludeButton
             );
-            bookingVBox.setFillWidth(true);
-            bookingVBox.setSpacing(5);
-            bookingVBox.setStyle(
+            excludeUserVBox.setFillWidth(true);
+            excludeUserVBox.setSpacing(5);
+            excludeUserVBox.setStyle(
                     "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
             );
 
             // add card to view
-            userResultsVBox.getChildren().add(bookingVBox);
+            userResultsVBox.getChildren().add(excludeUserVBox);
         }
     }
 }

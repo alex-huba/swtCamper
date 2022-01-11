@@ -2,41 +2,50 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane styleClass="rootNodeBackground" stylesheets="@../styles/excludeRenter-view.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.ExcludeRenterViewController">
+   <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Nutzer finden" />
+                <TextField fx:id="findUsersTextField" onKeyTyped="#findUsers" promptText="Vollständiger Nutzername" />
+                <VBox fx:id="userResultsVBox" spacing="10.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </VBox>
+            </children>
+         <padding>
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </padding>
+        </VBox>
+   </top>
    <center>
-      <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
-         <items>
-              <VBox>
-                  <children>
-                      <Label text="Von mir ausgeschlossene Nutzer" />
-                      <VBox fx:id="excludedRentersVBox" spacing="10.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></VBox>
-                  </children>
-               <padding>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </padding>
-              </VBox>
-              <VBox>
-                  <children>
-                      <Label text="Nutzer finden" />
-                      <TextField fx:id="findUsersTextField" onKeyTyped="#findUsers" promptText="Vollständiger Nutzername" />
-                      <VBox fx:id="userResultsVBox" spacing="10.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></VBox>
-                  </children>
-               <padding>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </padding>
-              </VBox>
-         </items>
-      </SplitPane>
+      <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" styleClass="rootNodeBackground">
+               <children>
+                    <VBox>
+                        <children>
+                            <Label text="Von mir ausgeschlossene Nutzer" />
+                            <VBox fx:id="excludedRentersVBox" spacing="10.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                    </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </center>
 </BorderPane>
