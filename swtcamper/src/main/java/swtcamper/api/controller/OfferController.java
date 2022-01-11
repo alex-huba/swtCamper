@@ -165,7 +165,6 @@ public class OfferController implements IOfferController {
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
    * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
    * @param model model of the offered {@link Vehicle}
