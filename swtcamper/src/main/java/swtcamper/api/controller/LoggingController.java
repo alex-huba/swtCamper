@@ -1,8 +1,5 @@
 package swtcamper.api.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -10,6 +7,9 @@ import swtcamper.api.contract.ILoggingController;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LoggingController implements ILoggingController {

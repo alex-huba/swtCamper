@@ -1,6 +1,7 @@
 package swtcamper.backend.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -55,9 +56,10 @@ public class LoggingMessage implements ILoggingMessage {
   @Override
   public String toString() {
     return (
-      "[" +
+      time.format(DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm")) +
+      "\t[" +
       logLevel +
-      "] " +
+      "]" +
       (logLevel.equals(LoggingLevel.INFO) ? "\t\t" : "\t") +
       loggingMessage +
       " (ID: " +

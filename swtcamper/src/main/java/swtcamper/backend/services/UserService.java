@@ -289,31 +289,6 @@ public class UserService {
   }
 
   /**
-   * Ignores a user account, so that provider will not be able to offer vehicles anymore.
-   * @param userID
-   * @param operator
-   */
-  public void ignore(Long userID, String operator) {
-    Optional<User> userOptional = userRepository.findById(userID);
-    if (userOptional.isPresent()) {
-      User userToEnable = userOptional.get();
-      userToEnable.setEnabled(false);
-
-      loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "User %s was ignored by operator %s.",
-            userToEnable.getUsername(),
-            operator
-          )
-        )
-      );
-      userRepository.save(userToEnable);
-    }
-  }
-
-  /**
    * Checks if a user account is enabled.
    * @param username
    * @return

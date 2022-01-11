@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -61,6 +60,7 @@ public class AccountViewController {
 
   @FXML
   public void initialize() {
+    // disable all control buttons by default and enable needed ones later
     showLogBtn
       .disableProperty()
       .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
@@ -68,11 +68,13 @@ public class AccountViewController {
     degradeBtn.setDisable(true);
     promoteBtn.setDisable(true);
 
+    // listen for selected list elements (= users) and get their roles
     usersListView
       .getSelectionModel()
       .selectedItemProperty()
       .addListener((observable, oldValue, newValue) -> {
         if (newValue == null) {
+          // if no element is selected (ctrl + click on already selected user)
           blockBtn.setDisable(true);
           degradeBtn.setDisable(true);
           promoteBtn.setDisable(true);
@@ -80,6 +82,7 @@ public class AccountViewController {
           selectedUser = newValue;
 
           if (
+            // an operator can only (un)block or change the UserRole of other users
             !newValue.getId().equals(userController.getLoggedInUser().getId())
           ) {
             blockBtn.setDisable(false);
@@ -93,10 +96,12 @@ public class AccountViewController {
                 userController.blockUserById(selectedUser.getId());
               }
               try {
-                operatorInit();
+                // reload UI
+                operatorInit(false);
               } catch (GenericServiceException ignore) {}
             });
 
+            // evaluate if selected user can be promoted/degraded any further
             switch (newValue.getUserRole()) {
               case RENTER:
                 degradeBtn.setDisable(true);
@@ -120,7 +125,13 @@ public class AccountViewController {
       });
   }
 
-  public void operatorInit() throws GenericServiceException {
+  /**
+   * Initialization method for operators
+   *
+   * @param ascending if true, order all log messages from oldest to newest, if false from newest to oldest
+   * @throws GenericServiceException
+   */
+  public void operatorInit(boolean ascending) throws GenericServiceException {
     buttonToolbar.getItems().clear();
 
     Separator verticalSeparator = new Separator();
@@ -139,16 +150,22 @@ public class AccountViewController {
 
     operatorDashboard.setVisible(true);
 
+    // fill in all log messages DESC
     ObservableList<LoggingMessage> logList = FXCollections.observableArrayList(
       loggingController.getAllLogMessages()
     );
-    FXCollections.reverse(logList);
+    if(!ascending) FXCollections.reverse(logList);
     logListView.setItems(logList);
+
+    // fill in all users
     usersListView.setItems(
       FXCollections.observableArrayList(userController.getAllUsers())
     );
   }
 
+  /**
+   * Initialization method for non-Operators
+   */
   public void normalUserInit() {
     buttonToolbar.getItems().clear();
     buttonToolbar.getItems().add(logoutBtn);
@@ -159,6 +176,9 @@ public class AccountViewController {
     mainViewController.logout();
   }
 
+  /**
+   * Filters all log messages that include the selected user
+   */
   public void showLogForUser() {
     if (showLogBtn.getText().equals("Zeige alle Logs")) {
       usersListView.getSelectionModel().select(null);
@@ -178,11 +198,11 @@ public class AccountViewController {
 
   public void degradeUser() throws GenericServiceException {
     userController.degradeUserById(selectedUser.getId());
-    operatorInit();
+    operatorInit(false);
   }
 
   public void promoteUser() throws GenericServiceException {
     userController.promoteUserById(selectedUser.getId());
-    operatorInit();
+    operatorInit(false);
   }
 }

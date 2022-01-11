@@ -111,11 +111,6 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public void ignoreUserById(long id) {
-    userService.ignore(id, getLoggedInUser().getUsername());
-  }
-
-  @Override
   public void blockUserById(long id) {
     userService.lock(id, getLoggedInUser().getUsername());
   }

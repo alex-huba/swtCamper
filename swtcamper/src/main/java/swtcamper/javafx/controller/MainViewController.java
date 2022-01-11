@@ -39,37 +39,40 @@ public class MainViewController {
   private UserController userController;
 
   @Autowired
-  public BookingController bookingController;
+  private BookingController bookingController;
 
   @Autowired
-  public MyOffersViewController myOffersViewController;
+  private MyOffersViewController myOffersViewController;
 
   @Autowired
-  public NavigationViewController navigationViewController;
+  private NavigationViewController navigationViewController;
 
   @Autowired
-  public ModifyOfferViewController modifyOfferViewController;
+  private ModifyOfferViewController modifyOfferViewController;
 
   @Autowired
-  public RentingViewController rentingViewController;
+  private RentingViewController rentingViewController;
 
   @Autowired
-  public MyBookingsViewController myBookingsViewController;
+  private MyBookingsViewController myBookingsViewController;
 
   @Autowired
-  public RegisterViewController registerViewController;
+  private RegisterViewController registerViewController;
 
   @Autowired
-  public AccountViewController accountViewController;
+  private AccountViewController accountViewController;
 
   @Autowired
-  public LoginViewController loginViewController;
+  private LoginViewController loginViewController;
 
   @Autowired
-  public ResetPasswordViewController resetPasswordViewController;
+  private ResetPasswordViewController resetPasswordViewController;
 
   @Autowired
-  public OfferViewController offerViewController;
+  private ApproveNewProvidersViewController approveNewProvidersViewController;
+
+  @Autowired
+  private OfferViewController offerViewController;
 
   @FXML
   public AnchorPane mainStage;
@@ -300,6 +303,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.approveButton
         );
+        approveNewProvidersViewController.reloadData();
         break;
       case "myBookings":
         mainStage.getChildren().add(myBookingsViewBox);
@@ -326,7 +330,7 @@ public class MainViewController {
             .getUserRole()
             .equals(UserRole.OPERATOR)
         ) {
-          accountViewController.operatorInit();
+          accountViewController.operatorInit(false);
         } else {
           accountViewController.normalUserInit();
         }
