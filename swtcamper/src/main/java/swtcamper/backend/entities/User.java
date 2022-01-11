@@ -32,7 +32,7 @@ public class User {
 
 //  @OneToMany
 //	@CollectionTable(name = "excluded_renters", joinColumns = @JoinColumn(name = "id"))
-  private ArrayList<User> excludedRenters;
+  private ArrayList<Long> excludedRenters;
 
   public User() {
     super();
@@ -136,7 +136,7 @@ public class User {
     this.enabled = enabled;
   }
 
-  public ArrayList<User> getExcludedRenters() { return this.excludedRenters; }
+  public ArrayList<Long> getExcludedRenters() { return this.excludedRenters; }
 
-  public void setExcludedRenters(ArrayList<User> excludedRenters) { this.excludedRenters = excludedRenters; }
+  public void setExcludedRenters(ArrayList<Long> excludedRenters) { this.excludedRenters = excludedRenters; }
 }

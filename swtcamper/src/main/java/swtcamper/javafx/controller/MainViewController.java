@@ -54,6 +54,9 @@ public class MainViewController {
   private RentingViewController rentingViewController;
 
   @Autowired
+  private ExcludeRenterViewController excludeRenterViewController;
+
+  @Autowired
   private MyBookingsViewController myBookingsViewController;
 
   @Autowired
@@ -297,6 +300,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.excludeButton
         );
+        excludeRenterViewController.initialize();
         break;
       case "approve":
         mainStage.getChildren().add(approveDealViewBox);
