@@ -166,7 +166,7 @@ public class UserService {
           String.format(
             "User %s excluded by %s.",
             getUserById(idOfRenterToExclude).getUsername(),
-            loggedInUser
+            loggedInUser.getUsername()
           )
         )
       )
@@ -189,7 +189,7 @@ public class UserService {
           String.format(
             "User %s included by %s.",
             getUserById(idOfRenterToInclude).getUsername(),
-            loggedInUser
+            loggedInUser.getUsername()
           )
         )
       )

@@ -225,7 +225,7 @@ public class MainViewController {
                 updateHappening = false;
               } catch (GenericServiceException ignore) {}
             });
-            // user got locked
+            // user got locked globally
           } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
             updateHappening = true;
             Platform.runLater(() -> {
@@ -237,7 +237,7 @@ public class MainViewController {
                 updateHappening = false;
               } catch (GenericServiceException ignore) {}
             });
-            // user got unlocked
+            // user got unlocked from global lock
           } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
             updateHappening = true;
             Platform.runLater(() -> {
