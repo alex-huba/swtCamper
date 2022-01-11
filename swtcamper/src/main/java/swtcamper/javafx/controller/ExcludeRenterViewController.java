@@ -40,7 +40,7 @@ public class ExcludeRenterViewController {
     excludedRentersVBox.getChildren().clear();
 
     // give info message if no one is excluded
-    if (userController.getLoggedInUser().getExcludedRenters().isEmpty()) {
+    if (userController.getLoggedInUser().getExcludedRenters() == null || userController.getLoggedInUser().getExcludedRenters().isEmpty()) {
       Label infoLabel = new Label(
         "Du hast keine Nutzer von deinen Anzeigen ausgeschlossen"
       );
@@ -115,7 +115,9 @@ public class ExcludeRenterViewController {
       .filter(user -> user.getUsername().equals(searchText))
       .collect(Collectors.toList())) {
       // info message in case this user is already excluded
-      if (
+      if (userController
+              .getLoggedInUser()
+              .getExcludedRenters() != null &&
         userController
           .getLoggedInUser()
           .getExcludedRenters()

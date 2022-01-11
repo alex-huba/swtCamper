@@ -169,29 +169,22 @@ public class RentingViewController {
    */
   public void reloadData() throws GenericServiceException {
     // filter out inactive offers and offers by creators who excluded the current user
-    if (userController.getLoggedInUser() == null) {
-      loadData(
-        offerController
-          .offers()
-          .parallelStream()
-          .filter(OfferDTO::isActive)
-          .collect(Collectors.toList())
-      );
-    } else {
       loadData(
         offerController
           .offers()
           .parallelStream()
           .filter(OfferDTO::isActive)
           .filter(offerDTO ->
-            !offerDTO
-              .getCreator()
-              .getExcludedRenters()
-              .contains(userController.getLoggedInUser().getId())
+            (userController.getLoggedInUser() == null ||
+            offerDTO.getCreator().getExcludedRenters() == null)
+                    ? true
+                    : !offerDTO
+                        .getCreator()
+                        .getExcludedRenters()
+                        .contains(userController.getLoggedInUser().getId())
           )
           .collect(Collectors.toList())
       );
-    }
   }
 
   private void loadData(List<OfferDTO> offersList) {
