@@ -96,7 +96,13 @@ public class RentingViewController {
   public DatePicker startDatePicker;
 
   @FXML
+  public Button resetStartDatePickerBtn;
+
+  @FXML
   public DatePicker endDatePicker;
+
+  @FXML
+  public Button resetEndDatePickerBtn;
 
   @FXML
   public HBox offerListBox;
@@ -155,6 +161,12 @@ public class RentingViewController {
     resetTransmissionTypeBtn
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
+    resetStartDatePickerBtn
+            .visibleProperty()
+            .bind(startDatePicker.valueProperty().isNotNull());
+    resetEndDatePickerBtn
+            .visibleProperty()
+            .bind(endDatePicker.valueProperty().isNotNull());
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -359,6 +371,8 @@ public class RentingViewController {
     toiletCheckBox.setSelected(false);
     kitchenCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
+    startDatePicker.getEditor().clear();
+    endDatePicker.getEditor().clear();
 
     reloadData();
   }
@@ -375,5 +389,13 @@ public class RentingViewController {
    */
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
+  }
+  public void resetStartDatePicker() {
+    startDatePicker.getEditor().clear();
+    startDatePicker.setValue(null);
+  }
+  public void resetEndDatePicker() {
+    endDatePicker.getEditor().clear();
+    endDatePicker.setValue(null);
   }
 }

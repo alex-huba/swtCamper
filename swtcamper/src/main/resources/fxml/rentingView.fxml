@@ -72,10 +72,9 @@
                                         <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachzelt" />
                                         <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachgepäckträger" />
                                         <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Fahrradträger" />
-                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
-                                        <DatePicker fx:id="endDatePicker" promptText="Ende:" />
                                     </children>
                                 </VBox>
+
                                 <VBox spacing="13.0">
                                     <children>
                                         <CheckBox fx:id="showerCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dusche" />
@@ -83,6 +82,34 @@
                                         <CheckBox fx:id="kitchenCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Küche" />
                                         <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kühlschrank" />
                                     </children>
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <HBox spacing="2.0">
+                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
+                                        <Button fx:id="resetStartDatePickerBtn" mnemonicParsing="false" onAction="#resetStartDatePicker" text="X">
+                                            <styleClass>
+                                                <String fx:value="bg-danger" />
+                                                <String fx:value="radius-30" />
+                                                <String fx:value="resetBtn_small" />
+                                            </styleClass>
+                                            <font>
+                                                <Font size="8.0" />
+                                            </font>
+                                        </Button>
+                                    </HBox>
+                                    <HBox spacing="2.0">
+                                        <DatePicker fx:id="endDatePicker" promptText="Ende:" />
+                                        <Button fx:id="resetEndDatePickerBtn" mnemonicParsing="false" onAction="#resetEndDatePicker" text="X">
+                                            <styleClass>
+                                                <String fx:value="bg-danger" />
+                                                <String fx:value="radius-30" />
+                                                <String fx:value="resetBtn_small" />
+                                            </styleClass>
+                                            <font>
+                                                <Font size="8.0" />
+                                            </font>
+                                        </Button>
+                                    </HBox>
                                 </VBox>
                             </children>
                         </HBox>
