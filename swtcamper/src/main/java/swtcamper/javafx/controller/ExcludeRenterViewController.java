@@ -193,12 +193,15 @@ public class ExcludeRenterViewController {
         }
       });
 
+      HBox buttonHBox = new HBox(excludeButton, reportButton);
+      buttonHBox.setSpacing(5);
+
       // card
       VBox excludeUserVBox = new VBox(
         usernameLabel,
         nameLabel,
         emailLabel,
-        new HBox(excludeButton, reportButton)
+        buttonHBox
       );
       excludeUserVBox.setFillWidth(true);
       excludeUserVBox.setSpacing(5);

@@ -31,7 +31,7 @@ public class UserReportService {
     public UserReport create(UserReport userReport) {
         loggingService.log(
                 modelMapper.LoggingMessageToLoggingMessageDTO(
-                        new LoggingMessage(LoggingLevel.INFO,String.format("User %s reported user %s. (UserReport-ID %s)",userReport.getReporter(),userReport.getReportee(),userReport.getId()))
+                        new LoggingMessage(LoggingLevel.INFO,String.format("User %s reported user %s. (UserReport-ID %s)",userReport.getReporter().getUsername(),userReport.getReportee().getUsername(),userReport.getId()))
                 )
         );
         return userReportRepository.save(userReport);
