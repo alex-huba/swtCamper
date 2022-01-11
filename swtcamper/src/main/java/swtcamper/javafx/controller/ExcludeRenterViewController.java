@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,12 @@ public class ExcludeRenterViewController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private ReportUserViewController reportUserViewController;
 
   @FXML
   public VBox excludedRentersVBox;
@@ -133,6 +140,7 @@ public class ExcludeRenterViewController {
         return;
       }
 
+      // short info about user
       Label usernameLabel = new Label(
         String.format("Benutzername: %s", user.getUsername())
       );
@@ -175,12 +183,22 @@ public class ExcludeRenterViewController {
       );
       Tooltip.install(excludeButton, t1);
 
+      // report button
+      Button reportButton = new Button("Diesen Nutzer melden");
+      reportButton.setOnAction(event -> {
+        try {
+          mainViewController.changeView("reportUser");
+          reportUserViewController.initialize(user);
+        } catch (GenericServiceException ignore) {
+        }
+      });
+
       // card
       VBox excludeUserVBox = new VBox(
         usernameLabel,
         nameLabel,
         emailLabel,
-        excludeButton
+        new HBox(excludeButton, reportButton)
       );
       excludeUserVBox.setFillWidth(true);
       excludeUserVBox.setSpacing(5);

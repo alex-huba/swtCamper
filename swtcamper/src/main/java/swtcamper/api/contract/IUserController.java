@@ -67,6 +67,14 @@ public interface IUserController {
 
   /**
    *
+   * @param username
+   * @return
+   * @throws GenericServiceException
+   */
+  User getUserByUsername(String username) throws GenericServiceException;
+
+  /**
+   *
    * @param id
    */
   void enableUserById(long id);

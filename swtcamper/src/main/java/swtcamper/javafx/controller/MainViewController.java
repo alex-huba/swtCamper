@@ -124,6 +124,9 @@ public class MainViewController {
   public Pane moreAboutOfferViewBox;
 
   @FXML
+  public Pane reportUserViewBox;
+
+  @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
   }
@@ -355,6 +358,9 @@ public class MainViewController {
         break;
       case "moreInfoOffer":
         mainStage.getChildren().add(moreAboutOfferViewBox);
+        break;
+      case "reportUser":
+        mainStage.getChildren().add(reportUserViewBox);
         break;
     }
   }

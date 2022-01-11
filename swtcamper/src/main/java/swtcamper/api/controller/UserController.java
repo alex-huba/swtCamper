@@ -119,6 +119,11 @@ public class UserController implements IUserController {
   }
 
   @Override
+  public User getUserByUsername(String username) throws GenericServiceException {
+    return userService.getUserByUsername(username);
+  }
+
+  @Override
   public void enableUserById(long id) {
     userService.enable(id, getLoggedInUser().getUsername());
   }

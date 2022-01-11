@@ -32,6 +32,7 @@
                         <fx:include fx:id="registerViewBox" source="registerView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <fx:include fx:id="moreAboutOfferViewBox" source="moreAboutOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <fx:include fx:id="reportUserViewBox" source="reportUserView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
             </content>
