@@ -1,66 +1,71 @@
 package swtcamper.api.contract;
 
-import swtcamper.backend.entities.LoggingLevel;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import swtcamper.backend.entities.LoggingLevel;
 
 public class LoggingMessageDTO {
-    private long loggingMessageID;
-    private LocalDateTime time;
-    private LoggingLevel logLevel;
-    private String loggingMessage;
 
-    public LoggingMessageDTO(long id, LocalDateTime time, LoggingLevel logLvl, String message) {
-        this.loggingMessageID = id;
-        this.time = time;
-        this.logLevel = logLvl;
-        this.loggingMessage = message;
-    }
+  private long loggingMessageID;
+  private LocalDateTime time;
+  private LoggingLevel logLevel;
+  private String loggingMessage;
 
-    public long getLoggingMessageID() {
-        return loggingMessageID;
-    }
+  public LoggingMessageDTO(
+    long id,
+    LocalDateTime time,
+    LoggingLevel logLvl,
+    String message
+  ) {
+    this.loggingMessageID = id;
+    this.time = time;
+    this.logLevel = logLvl;
+    this.loggingMessage = message;
+  }
 
-    public void setLoggingMessageID(long loggingMessageID) {
-        this.loggingMessageID = loggingMessageID;
-    }
+  public long getLoggingMessageID() {
+    return loggingMessageID;
+  }
 
-    public LocalDateTime getTime() {
-        return time;
-    }
+  public void setLoggingMessageID(long loggingMessageID) {
+    this.loggingMessageID = loggingMessageID;
+  }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
+  public LocalDateTime getTime() {
+    return time;
+  }
 
-    public LoggingLevel getLogLevel() {
-        return logLevel;
-    }
+  public void setTime(LocalDateTime time) {
+    this.time = time;
+  }
 
-    public void setLogLevel(LoggingLevel logLevel) {
-        this.logLevel = logLevel;
-    }
+  public LoggingLevel getLogLevel() {
+    return logLevel;
+  }
 
-    public String getLoggingMessage() {
-        return loggingMessage;
-    }
+  public void setLogLevel(LoggingLevel logLevel) {
+    this.logLevel = logLevel;
+  }
 
-    public void setLoggingMessage(String loggingMessage) {
-        this.loggingMessage = loggingMessage;
-    }
+  public String getLoggingMessage() {
+    return loggingMessage;
+  }
 
-    public String toString() {
-        return (
-                time.format(DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm")) +
-                        "\t[" +
-                        logLevel +
-                        "]" +
-                        (logLevel.equals(LoggingLevel.INFO) ? "\t\t" : "\t") +
-                        loggingMessage +
-                        " (Log.ID: " +
-                        loggingMessageID +
-                        ")"
-        );
-    }
+  public void setLoggingMessage(String loggingMessage) {
+    this.loggingMessage = loggingMessage;
+  }
+
+  public String toString() {
+    return (
+      time.format(DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm")) +
+      "\t[" +
+      logLevel +
+      "]" +
+      (logLevel.equals(LoggingLevel.INFO) ? "\t\t" : "\t") +
+      loggingMessage +
+      " (Log.ID: " +
+      loggingMessageID +
+      ")"
+    );
+  }
 }

@@ -19,14 +19,18 @@ public class LoggingService {
   @Autowired
   private LoggingRepository loggingRepository;
 
-  private static final Logger logger = LogManager.getLogger(LoggingService.class);
+  private static final Logger logger = LogManager.getLogger(
+    LoggingService.class
+  );
 
   /**
    * Logs a LoggingMessage to console and to the database
    * @param loggingMessage Message to be logged
    */
   public void log(LoggingMessageDTO loggingMessage) {
-    loggingRepository.save(modelMapper.LoggingMessageDTOToLoggingMessage(loggingMessage));
+    loggingRepository.save(
+      modelMapper.LoggingMessageDTOToLoggingMessage(loggingMessage)
+    );
 
     switch (loggingMessage.getLogLevel()) {
       case INFO:
@@ -48,6 +52,8 @@ public class LoggingService {
   }
 
   public List<LoggingMessageDTO> getAllLogMessages() {
-    return modelMapper.LoggingMessagesToLoggingMessageDTOs(loggingRepository.findAll());
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(
+      loggingRepository.findAll()
+    );
   }
 }

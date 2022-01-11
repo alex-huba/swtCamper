@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,8 +13,6 @@ import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.stream.Collectors;
 
 @Component
 public class ApproveNewProvidersViewController {
@@ -33,28 +32,35 @@ public class ApproveNewProvidersViewController {
     toApproveListView.getChildren().clear();
 
     if (userController.countUser() > 0) {
-      if (userController.getAllUsers().stream().anyMatch(user -> !user.isEnabled())) {
+      if (
+        userController
+          .getAllUsers()
+          .stream()
+          .anyMatch(user -> !user.isEnabled())
+      ) {
         for (User user : userController.getAllUsers()) {
-          if (user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()) {
+          if (
+            user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()
+          ) {
             Label headingLabel = new Label(
-                    String.format(
-                            "Neue Provider-Anfrage von Nutzer '%s'",
-                            user.getUsername()
-                    )
+              String.format(
+                "Neue Provider-Anfrage von Nutzer '%s'",
+                user.getUsername()
+              )
             );
             headingLabel.setStyle("-fx-font-size: 20;");
 
             Label usernameLabel = new Label(
-                    String.format("Benutzername: %s", user.getUsername())
+              String.format("Benutzername: %s", user.getUsername())
             );
             Label nameLabel = new Label(
-                    String.format("Name: %s %s", user.getName(), user.getSurname())
+              String.format("Name: %s %s", user.getName(), user.getSurname())
             );
             Label emailLabel = new Label(
-                    String.format("E-mail: %s", user.getEmail())
+              String.format("E-mail: %s", user.getEmail())
             );
             Label phoneLabel = new Label(
-                    String.format("Telefon: %s", user.getPhone())
+              String.format("Telefon: %s", user.getPhone())
             );
 
             // accept button
@@ -64,14 +70,13 @@ public class ApproveNewProvidersViewController {
               userController.enableUserById(user.getId());
               try {
                 reloadData();
-              } catch (GenericServiceException ignored) {
-              }
+              } catch (GenericServiceException ignored) {}
             });
             Tooltip t1 = new Tooltip(
-                    String.format(
-                            "Dadurch wird %s Anzeigen erstellen können",
-                            user.getUsername()
-                    )
+              String.format(
+                "Dadurch wird %s Anzeigen erstellen können",
+                user.getUsername()
+              )
             );
             Tooltip.install(acceptButton, t1);
 
@@ -81,19 +86,17 @@ public class ApproveNewProvidersViewController {
             rejectButton.setOnAction(event -> {
               try {
                 userController.degradeUserById(user.getId());
-              } catch (GenericServiceException ignored) {
-              }
+              } catch (GenericServiceException ignored) {}
               userController.enableUserById(user.getId());
               try {
                 reloadData();
-              } catch (GenericServiceException ignored) {
-              }
+              } catch (GenericServiceException ignored) {}
             });
             Tooltip t2 = new Tooltip(
-                    String.format(
-                            "Dadurch bekommt %s die Rolle 'Renter'",
-                            user.getUsername()
-                    )
+              String.format(
+                "Dadurch bekommt %s die Rolle 'Renter'",
+                user.getUsername()
+              )
             );
             Tooltip.install(rejectButton, t2);
 
@@ -102,17 +105,17 @@ public class ApproveNewProvidersViewController {
 
             // card
             VBox bookingVBox = new VBox(
-                    headingLabel,
-                    usernameLabel,
-                    nameLabel,
-                    emailLabel,
-                    phoneLabel,
-                    buttonHBox
+              headingLabel,
+              usernameLabel,
+              nameLabel,
+              emailLabel,
+              phoneLabel,
+              buttonHBox
             );
             bookingVBox.setFillWidth(true);
             bookingVBox.setSpacing(5);
             bookingVBox.setStyle(
-                    "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
+              "-fx-background-color: #c9dfce; -fx-background-radius: 20; -fx-padding: 10;"
             );
 
             // add card to view
@@ -121,7 +124,7 @@ public class ApproveNewProvidersViewController {
         }
       } else {
         Label noNewProvidersLabel = new Label(
-                "\tIm Moment gibt es keine neuen Provider die akzeptiert werden müssen."
+          "\tIm Moment gibt es keine neuen Provider die akzeptiert werden müssen."
         );
         noNewProvidersLabel.setDisable(true);
         toApproveListView.getChildren().add(noNewProvidersLabel);

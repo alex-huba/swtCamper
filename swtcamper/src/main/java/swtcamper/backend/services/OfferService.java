@@ -117,26 +117,30 @@ public class OfferService {
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "New vehicle with ID %s created by user %s.",
-                            newVehicleId,
-                            creator.getUsername()
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New vehicle with ID %s created by user %s.",
+            newVehicleId,
+            creator.getUsername()
+          )
+        )
+      )
     );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "New offer with ID %s created by user %s.",
-                            newOfferId,
-                            creator.getUsername()
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New offer with ID %s created by user %s.",
+            newOfferId,
+            creator.getUsername()
+          )
+        )
+      )
     );
 
     return offerRepository.findById(newOfferId).get();
@@ -239,14 +243,16 @@ public class OfferService {
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicleRepository.save(vehicle);
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "Vehicle with ID %s got updated by user %s.",
-                            vehicle.getVehicleID(),
-                            user.getUsername()
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Vehicle with ID %s got updated by user %s.",
+            vehicle.getVehicleID(),
+            user.getUsername()
+          )
+        )
+      )
     );
 
     offer.setCreator(creator);
@@ -260,14 +266,16 @@ public class OfferService {
     offer.setActive(active);
     offer.setRentalConditions(rentalConditions);
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "Offer with ID %s got updated by user %s.",
-                            offer.getOfferID(),
-                            user.getUsername()
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got updated by user %s.",
+            offer.getOfferID(),
+            user.getUsername()
+          )
+        )
+      )
     );
 
     return offerRepository.save(offer);
@@ -332,14 +340,16 @@ public class OfferService {
     try {
       offerRepository.deleteById(id);
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "Offer with ID %s got deleted by user %s.",
-                              id,
-                              user.getUsername()
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Offer with ID %s got deleted by user %s.",
+              id,
+              user.getUsername()
+            )
+          )
+        )
       );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);

@@ -102,20 +102,23 @@ public class AccountViewController {
               } catch (GenericServiceException ignore) {}
             });
 
-            // evaluate if selected user can be promoted/degraded any further
-            switch (newValue.getUserRole()) {
-              case RENTER:
-                degradeBtn.setDisable(true);
-                promoteBtn.setDisable(false);
-                break;
-              case PROVIDER:
-                degradeBtn.setDisable(false);
-                promoteBtn.setDisable(false);
-                break;
-              case OPERATOR:
-                degradeBtn.setDisable(false);
-                promoteBtn.setDisable(true);
-                break;
+            // prevent new providers from being promoted/degraded
+            if (newValue.isEnabled()) {
+              // evaluate if selected user can be promoted/degraded any further
+              switch (newValue.getUserRole()) {
+                case RENTER:
+                  degradeBtn.setDisable(true);
+                  promoteBtn.setDisable(false);
+                  break;
+                case PROVIDER:
+                  degradeBtn.setDisable(false);
+                  promoteBtn.setDisable(false);
+                  break;
+                case OPERATOR:
+                  degradeBtn.setDisable(false);
+                  promoteBtn.setDisable(true);
+                  break;
+              }
             }
           } else {
             blockBtn.setDisable(true);
@@ -155,7 +158,7 @@ public class AccountViewController {
     ObservableList<LoggingMessageDTO> logList = FXCollections.observableArrayList(
       loggingController.getAllLogMessages()
     );
-    if(!ascending) FXCollections.reverse(logList);
+    if (!ascending) FXCollections.reverse(logList);
     logListView.setItems(logList);
 
     // fill in all users

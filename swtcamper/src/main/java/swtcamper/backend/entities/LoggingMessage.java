@@ -17,8 +17,7 @@ public class LoggingMessage implements ILoggingMessage {
   private LoggingLevel logLevel;
   private String loggingMessage;
 
-  public LoggingMessage() {
-  }
+  public LoggingMessage() {}
 
   /**
    * LoggingMessage needed to send information to LoggingService

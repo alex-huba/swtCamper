@@ -113,11 +113,20 @@ public class ModelMapper {
     return pictureDTOs;
   }
 
-  public LoggingMessageDTO LoggingMessageToLoggingMessageDTO(LoggingMessage loggingMessage) {
-    return new LoggingMessageDTO(loggingMessage.getLoggingMessageID(),loggingMessage.getTime(),loggingMessage.getLogLevel(),loggingMessage.getLoggingMessage());
+  public LoggingMessageDTO LoggingMessageToLoggingMessageDTO(
+    LoggingMessage loggingMessage
+  ) {
+    return new LoggingMessageDTO(
+      loggingMessage.getLoggingMessageID(),
+      loggingMessage.getTime(),
+      loggingMessage.getLogLevel(),
+      loggingMessage.getLoggingMessage()
+    );
   }
 
-  public LoggingMessage LoggingMessageDTOToLoggingMessage(LoggingMessageDTO loggingMessageDTO) {
+  public LoggingMessage LoggingMessageDTOToLoggingMessage(
+    LoggingMessageDTO loggingMessageDTO
+  ) {
     LoggingMessage loggingMessage = new LoggingMessage();
     loggingMessage.setLoggingMessageID(loggingMessageDTO.getLoggingMessageID());
     loggingMessage.setTime(loggingMessageDTO.getTime());
@@ -127,12 +136,16 @@ public class ModelMapper {
     return loggingMessage;
   }
 
-  public List<LoggingMessageDTO> LoggingMessagesToLoggingMessageDTOs(List<LoggingMessage> loggingMessageList) {
+  public List<LoggingMessageDTO> LoggingMessagesToLoggingMessageDTOs(
+    List<LoggingMessage> loggingMessageList
+  ) {
     List<LoggingMessageDTO> loggingMessageDTOList = new ArrayList<>();
-    for(LoggingMessage loggingMessage : loggingMessageList) {
-      loggingMessageDTOList.add(LoggingMessageToLoggingMessageDTO(loggingMessage));
+    for (LoggingMessage loggingMessage : loggingMessageList) {
+      loggingMessageDTOList.add(
+        LoggingMessageToLoggingMessageDTO(loggingMessage)
+      );
     }
-    
+
     return loggingMessageDTOList;
   }
 }

@@ -68,14 +68,16 @@ public class UserService {
     // no is-present check because userRepository.save(user) will have definitely created this user
     long newId = userRepository.findByUsername(username).get().getId();
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "New user with ID %s and username '%s' registered.",
-                            newId,
-                            username
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New user with ID %s and username '%s' registered.",
+            newId,
+            username
+          )
+        )
+      )
     );
 
     return userRepository.findById(newId).get();
@@ -83,20 +85,24 @@ public class UserService {
 
   public void delete(User user) {
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format("User with ID %s deleted.", user.getId())
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format("User with ID %s deleted.", user.getId())
+        )
+      )
     );
     // TODO: implement user deletion
   }
 
   public void update(long userId, User user) {
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format("User with ID %s updated.", user.getId())
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format("User with ID %s updated.", user.getId())
+        )
+      )
     );
     // TODO: implement user update
   }
@@ -163,31 +169,37 @@ public class UserService {
       }
       // Username and password are matching
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format("User %s logged in.", username)
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format("User %s logged in.", username)
+          )
+        )
       );
       return user;
     }
     // Check if either username or password exists to see if user typed one of them wrong
     if (userRepository.existsByUsername(username)) {
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.WARNING,
-                      String.format("Wrong password entered for user %s.", username)
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.WARNING,
+            String.format("Wrong password entered for user %s.", username)
+          )
+        )
       );
       throw new WrongPasswordException("Wrong password. Please try again.");
     }
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                    LoggingLevel.WARNING,
-                    String.format(
-                            "Username %s tried to log in, but does not exist.",
-                            username
-                    )
-            ))
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.WARNING,
+          String.format(
+            "Username %s tried to log in, but does not exist.",
+            username
+          )
+        )
+      )
     );
     throw new UserDoesNotExistException("Username doesn't exist.");
   }
@@ -227,14 +239,16 @@ public class UserService {
       userToLock.setLocked(true);
 
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was locked by operator %s.",
-                              userToLock.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was locked by operator %s.",
+              userToLock.getUsername(),
+              operator
+            )
+          )
+        )
       );
       userRepository.save(userToLock);
     }
@@ -253,14 +267,16 @@ public class UserService {
       userToUnlock.setLocked(false);
 
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was unlocked by operator %s.",
-                              userToUnlock.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was unlocked by operator %s.",
+              userToUnlock.getUsername(),
+              operator
+            )
+          )
+        )
       );
       userRepository.save(userToUnlock);
     }
@@ -279,14 +295,16 @@ public class UserService {
       userToEnable.setEnabled(true);
 
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was enabled by operator %s.",
-                              userToEnable.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was enabled by operator %s.",
+              userToEnable.getUsername(),
+              operator
+            )
+          )
+        )
       );
       userRepository.save(userToEnable);
     }
@@ -318,26 +336,30 @@ public class UserService {
     if (user.getUserRole().equals(UserRole.RENTER)) {
       user.setUserRole(UserRole.PROVIDER);
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was promoted to UserRole 'Provider' by operator %s.",
-                              user.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was promoted to UserRole 'Provider' by operator %s.",
+              user.getUsername(),
+              operator
+            )
+          )
+        )
       );
     } else if (user.getUserRole().equals(UserRole.PROVIDER)) {
       user.setUserRole(UserRole.OPERATOR);
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was promoted to UserRole 'Operator' by operator %s.",
-                              user.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was promoted to UserRole 'Operator' by operator %s.",
+              user.getUsername(),
+              operator
+            )
+          )
+        )
       );
     }
     return userRepository.save(user);
@@ -355,26 +377,30 @@ public class UserService {
     if (user.getUserRole().equals(UserRole.PROVIDER)) {
       user.setUserRole(UserRole.RENTER);
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was degraded to UserRole 'Renter' by operator %s.",
-                              user.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was degraded to UserRole 'Renter' by operator %s.",
+              user.getUsername(),
+              operator
+            )
+          )
+        )
       );
     } else if (user.getUserRole().equals(UserRole.OPERATOR)) {
       user.setUserRole(UserRole.PROVIDER);
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format(
-                              "User %s was degraded to UserRole 'Provider' by operator %s.",
-                              user.getUsername(),
-                              operator
-                      )
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "User %s was degraded to UserRole 'Provider' by operator %s.",
+              user.getUsername(),
+              operator
+            )
+          )
+        )
       );
     }
     return userRepository.save(user);
@@ -397,10 +423,12 @@ public class UserService {
       userRepository.save(user);
 
       loggingController.log(
-              modelMapper.LoggingMessageToLoggingMessageDTO(new LoggingMessage(
-                      LoggingLevel.INFO,
-                      String.format("User %s's password got reset.", username)
-              ))
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format("User %s's password got reset.", username)
+          )
+        )
       );
     } else {
       throw new GenericServiceException(
