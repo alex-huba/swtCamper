@@ -162,11 +162,11 @@ public class RentingViewController {
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
     resetStartDatePickerBtn
-            .visibleProperty()
-            .bind(startDatePicker.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(startDatePicker.valueProperty().isNotNull());
     resetEndDatePickerBtn
-            .visibleProperty()
-            .bind(endDatePicker.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(endDatePicker.valueProperty().isNotNull());
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -390,10 +390,12 @@ public class RentingViewController {
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
   }
+
   public void resetStartDatePicker() {
     startDatePicker.getEditor().clear();
     startDatePicker.setValue(null);
   }
+
   public void resetEndDatePicker() {
     endDatePicker.getEditor().clear();
     endDatePicker.setValue(null);

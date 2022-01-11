@@ -229,9 +229,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
           .not()
       );
 
-
-
-    rentalConditionsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    rentalConditionsListView
+      .getSelectionModel()
+      .setSelectionMode(SelectionMode.MULTIPLE);
   }
 
   /**
@@ -304,7 +304,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     pictures.clear();
     for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
-            offer.getOfferedObject().getVehicleID()
+      offer.getOfferedObject().getVehicleID()
     )) {
       pictures.add(modelMapper.pictureDTOToPicture(pictureDTO));
     }
@@ -313,54 +313,126 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     //Speichern-Button erst sichtbar machen wenn sich etwas in einem Textfield oder einer Checkbox etc. verändert
     placeOfferButton.visibleProperty().set(false);
     placeOfferButton.setText("Änderungen speichern");
-    activeCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    titleTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    contactTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    priceTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    locationTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    particularitiesTextArea.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    vehicleTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    brandTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    modelTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    transmissionComboBox.valueProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    seatsTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    bedsTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    constructionYearTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    engineTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    lengthTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    widthTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    heightTextField.textProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    roofTentCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    roofRackCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    bikeRackCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    showerCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    toiletCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    kitchenUnitCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
-    fridgeCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-            placeOfferButton.visibleProperty().set(true));
+    activeCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    titleTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    contactTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    priceTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    locationTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    particularitiesTextArea
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    vehicleTypeComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    brandTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    modelTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    transmissionComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    seatsTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    bedsTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    constructionYearTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    engineTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    lengthTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    widthTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    heightTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    roofTentCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    roofRackCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    bikeRackCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    showerCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    toiletCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    kitchenUnitCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
+    fridgeCheckBox
+      .selectedProperty()
+      .addListener((observable, oldValue, newValue) ->
+        placeOfferButton.visibleProperty().set(true)
+      );
 
     validateMandatoryFields();
   }
@@ -386,7 +458,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
       deleteBtn.setOnAction(event -> {
         removePicture(picture.getPictureID());
-        if(isEditMode.get()) {
+        if (isEditMode.get()) {
           placeOfferButton.visibleProperty().set(true);
         }
       });
@@ -822,15 +894,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * action for adding new rental conditions
    */
   public void addButtonAction() {
-    if (rentalConditionsTextField.getText() != null && !rentalConditionsTextField.getText().isEmpty()) {
+    if (
+      rentalConditionsTextField.getText() != null &&
+      !rentalConditionsTextField.getText().isEmpty()
+    ) {
       String rentalCondition = rentalConditionsTextField.getText();
       rentalConditionsTextField.clear();
       rentalConditions.add(rentalCondition);
       ObservableList<String> myObservableList = FXCollections.observableList(
-              rentalConditions
+        rentalConditions
       );
       rentalConditionsListView.setItems(myObservableList);
-      if(isEditMode.get()) {
+      if (isEditMode.get()) {
         placeOfferButton.visibleProperty().set(true);
       }
     } else {
@@ -842,12 +917,15 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * action for removing rental conditions
    */
   public void removeButtonAction() {
-    if (rentalConditionsListView.getSelectionModel().getSelectedItems() != null && !rentalConditionsListView.getSelectionModel().getSelectedItems().isEmpty()) {
+    if (
+      rentalConditionsListView.getSelectionModel().getSelectedItems() != null &&
+      !rentalConditionsListView.getSelectionModel().getSelectedItems().isEmpty()
+    ) {
       rentalConditions.removeAll(
-              rentalConditionsListView.getSelectionModel().getSelectedItems()
+        rentalConditionsListView.getSelectionModel().getSelectedItems()
       );
       ObservableList<String> myObservableList = FXCollections.observableList(
-              rentalConditions
+        rentalConditions
       );
       rentalConditionsListView.setItems(myObservableList);
       if (isEditMode.get()) {
