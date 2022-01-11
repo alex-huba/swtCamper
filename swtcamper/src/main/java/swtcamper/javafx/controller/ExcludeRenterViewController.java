@@ -73,10 +73,10 @@ public class ExcludeRenterViewController {
       Button includeButton = new Button("Ausschließen beenden");
       includeButton.getStyleClass().add("bg-primary");
       includeButton.setOnAction(event -> {
-        userController.removeExcludedRenterForCurrentlyLoggedInUser(
-          user.getId()
-        );
         try {
+          userController.removeExcludedRenterForCurrentlyLoggedInUser(
+            user.getId()
+          );
           reloadExcludedRenters();
         } catch (GenericServiceException ignore) {}
       });
@@ -154,8 +154,8 @@ public class ExcludeRenterViewController {
       );
       excludeButton.getStyleClass().add("bg-warning");
       excludeButton.setOnAction(event -> {
-        userController.excludeRenterForCurrentlyLoggedInUser(user.getId());
         try {
+          userController.excludeRenterForCurrentlyLoggedInUser(user.getId());
           // reset search
           findUsersTextField.setText("");
           findUsers("");

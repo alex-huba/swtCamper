@@ -26,9 +26,9 @@
         </VBox>
    </top>
    <center>
-      <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="NEVER" styleClass="rootNodeBackground" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" styleClass="rootNodeBackground">
+          <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
                     <VBox>
                         <children>

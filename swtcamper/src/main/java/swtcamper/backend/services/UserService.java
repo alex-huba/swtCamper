@@ -148,7 +148,8 @@ public class UserService {
     this.loggedInUser = loggedInUser;
   }
 
-  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude) {
+  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+    throws GenericServiceException {
     User user = getLoggedInUser();
     ArrayList<Long> excludedRenters = getLoggedInUser().getExcludedRenters() ==
       null ||
@@ -158,17 +159,41 @@ public class UserService {
     excludedRenters.add(idOfRenterToExclude);
     user.setExcludedRenters(excludedRenters);
 
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s excluded by %s.",
+            getUserById(idOfRenterToExclude).getUsername(),
+            loggedInUser
+          )
+        )
+      )
+    );
     userRepository.save(user);
   }
 
   public void removeExcludedRenterForCurrentlyLoggedInUser(
     long idOfRenterToInclude
-  ) {
+  ) throws GenericServiceException {
     User user = getLoggedInUser();
     ArrayList<Long> excludedRenters = getLoggedInUser().getExcludedRenters();
     excludedRenters.remove(idOfRenterToInclude);
     user.setExcludedRenters(excludedRenters);
 
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s included by %s.",
+            getUserById(idOfRenterToInclude).getUsername(),
+            loggedInUser
+          )
+        )
+      )
+    );
     userRepository.save(user);
   }
 

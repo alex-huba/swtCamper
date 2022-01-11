@@ -54,13 +54,14 @@ public class UserController implements IUserController {
     return new ArrayList<>(userService.user());
   }
 
-  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude) {
+  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+    throws GenericServiceException {
     userService.excludeRenterForCurrentlyLoggedInUser(idOfRenterToExclude);
   }
 
   public void removeExcludedRenterForCurrentlyLoggedInUser(
     long idOfRenterToInclude
-  ) {
+  ) throws GenericServiceException {
     userService.removeExcludedRenterForCurrentlyLoggedInUser(
       idOfRenterToInclude
     );
