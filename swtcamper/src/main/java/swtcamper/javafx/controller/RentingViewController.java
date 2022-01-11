@@ -175,15 +175,15 @@ public class RentingViewController {
         .parallelStream()
         .filter(OfferDTO::isActive)
         .filter(offerDTO ->
-          (
-              userController.getLoggedInUser() == null ||
-              offerDTO.getCreator().getExcludedRenters() == null
-            )
-            ? true
-            : !offerDTO
-              .getCreator()
-              .getExcludedRenters()
-              .contains(userController.getLoggedInUser().getId())
+          // returns offerDTOs in which the loggedInUser is not excluded
+          // and in which the field excludedRenters is not null
+          // returns true (= every offerDTO) otherwise
+          userController.getLoggedInUser() == null ||
+          offerDTO.getCreator().getExcludedRenters() == null ||
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
         )
         .collect(Collectors.toList())
     );
