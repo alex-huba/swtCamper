@@ -34,7 +34,13 @@ public class OfferController implements IOfferController {
   private OfferRepository offerRepository;
 
   @Autowired
-  VehicleFeaturesRepository vehicleFeaturesRepository;
+  private VehicleRepository vehicleRepository;
+
+  @Autowired
+  private VehicleFeaturesRepository vehicleFeaturesRepository;
+
+  @Autowired
+  private UserController userController;
 
   /**
    * Get a List of OfferDTOs of all available offers in the database
@@ -63,7 +69,6 @@ public class OfferController implements IOfferController {
 
   /**
    * Creates a new offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param creator {@link User} that wants to create the new offer
    * @param title of the new offer
    * @param location where the {@link Vehicle} can be picked up from
    * @param contact How the provider can be reached
@@ -91,7 +96,6 @@ public class OfferController implements IOfferController {
    * @return {@link OfferDTO} of the new offer
    */
   public OfferDTO create(
-    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -119,10 +123,10 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.create(
-        creator,
+        userController.getLoggedInUser(),
         //Offer-Parameter
         title,
         location,
@@ -154,15 +158,13 @@ public class OfferController implements IOfferController {
   }
 
   /**
-   * Updated an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param creator {@link User} that wants to create the new offer
+   * Updates an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
    * @param title of the new offer
    * @param location where the {@link Vehicle} can be picked up from
    * @param contact How the provider can be reached
    * @param particularities Any points that should be said about the offer
    * @param price per day for the vehicle
    * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param pictureURLs (absolute) paths that specify pictures for the new offer
    * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
    * @param make brand of the offered {@link Vehicle}
    * @param model model of the offered {@link Vehicle}
@@ -249,7 +251,8 @@ public class OfferController implements IOfferController {
         shower,
         toilet,
         kitchenUnit,
-        fridge
+        fridge,
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
@@ -262,7 +265,10 @@ public class OfferController implements IOfferController {
    */
   public void delete(long id) throws GenericServiceException {
     try {
-      offerService.delete(id);
+      offerService.delete(
+        id,
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

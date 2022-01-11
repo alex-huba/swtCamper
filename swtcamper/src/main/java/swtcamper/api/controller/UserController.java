@@ -1,11 +1,11 @@
 package swtcamper.api.controller;
 
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
@@ -17,10 +17,10 @@ import swtcamper.backend.services.exceptions.WrongPasswordException;
 public class UserController implements IUserController {
 
   @Autowired
-  UserService userService;
+  private UserService userService;
 
   @Autowired
-  ModelMapper modelMapper;
+  private ModelMapper modelMapper;
 
   public UserDTO register(
     String username,
@@ -50,17 +50,19 @@ public class UserController implements IUserController {
     return userService.getLoggedInUser();
   }
 
+  public ArrayList<User> getAllUsers() throws GenericServiceException {
+    return new ArrayList<>(userService.user());
+  }
+
   @Override
-  public UserRoleDTO login(String username, String password)
+  public UserDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
     try {
-      return modelMapper.toUserRoleDTO(userService.login(username, password));
+      return modelMapper.userToUserDTO(userService.login(username, password));
     } catch (WrongPasswordException e) {
       throw new WrongPasswordException(e.getMessage());
     } catch (UserDoesNotExistException e) {
       throw new UserDoesNotExistException(e.getMessage());
-    } catch (GenericServiceException e) {
-      throw new GenericServiceException(e.getMessage());
     }
   }
 
@@ -96,5 +98,35 @@ public class UserController implements IUserController {
   @Override
   public boolean isEnabled(String username) throws UserDoesNotExistException {
     return userService.isEnabled(username);
+  }
+
+  @Override
+  public User getUserById(long id) throws GenericServiceException {
+    return userService.getUserById(id);
+  }
+
+  @Override
+  public void enableUserById(long id) {
+    userService.enable(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void blockUserById(long id) {
+    userService.lock(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void unblockUserById(long id) {
+    userService.unlock(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void degradeUserById(long id) throws GenericServiceException {
+    userService.degradeUser(id, getLoggedInUser().getUsername());
+  }
+
+  @Override
+  public void promoteUserById(long id) throws GenericServiceException {
+    userService.promoteUser(id, getLoggedInUser().getUsername());
   }
 }
