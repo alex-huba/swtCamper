@@ -34,7 +34,7 @@ public class UserReportService {
                         new LoggingMessage(LoggingLevel.INFO,String.format("User %s reported user %s. (UserReport-ID %s)",userReport.getReporter().getUsername(),userReport.getReportee().getUsername(),userReport.getId()))
                 )
         );
-        return userReportRepository.save(userReport);
+        return userReportRepository.save(new UserReport(userReport.getReporter(),userReport.getReportee(),userReport.getReportReason()));
     }
 
     public UserReport getUserReportById(long id) throws GenericServiceException {

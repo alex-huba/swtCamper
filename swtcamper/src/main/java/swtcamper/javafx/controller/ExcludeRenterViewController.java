@@ -185,6 +185,10 @@ public class ExcludeRenterViewController {
 
       // report button
       Button reportButton = new Button("Diesen Nutzer melden");
+      reportButton.setDisable(
+              userController.getLoggedInUser().getId().equals(user.getId())
+      );
+      reportButton.getStyleClass().add("bg-warning");
       reportButton.setOnAction(event -> {
         try {
           mainViewController.changeView("reportUser");

@@ -5,18 +5,15 @@ import javax.persistence.*;
 @Entity
 public class UserReport implements IUserReport {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_report_id", nullable = false)
+    @GeneratedValue
     private Long id;
 
     private boolean active;
 
     @ManyToOne
-    @JoinColumn(name = "reporter_id")
     private User reporter;
 
     @ManyToOne
-    @JoinColumn(name = "reportee_id")
     private User reportee;
 
     private String reportReason;
