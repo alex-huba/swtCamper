@@ -21,7 +21,7 @@
         <VBox prefHeight="200.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Nutzer finden"/>
-                <TextField promptText="Nutzername"/>
+                <TextField onAction="#findUsers" promptText="Nutzername"/>
                 <VBox fx:id="userResultsVBox" prefHeight="200.0" prefWidth="100.0"/>
             </children>
         </VBox>
