@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane styleClass="rootNodeBackground" stylesheets="@../styles/excludeRenter-view.css"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="swtcamper.javafx.controller.ExcludeRenterViewController">
+    <left>
+        <VBox prefHeight="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Von mir ausgeschlossene Nutzer"/>
+                <VBox fx:id="excludedRentersVBox" prefHeight="200.0" prefWidth="100.0"/>
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <VBox prefHeight="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Nutzer finden"/>
+                <TextField promptText="Nutzername"/>
+                <VBox fx:id="userResultsVBox" prefHeight="200.0" prefWidth="100.0"/>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>

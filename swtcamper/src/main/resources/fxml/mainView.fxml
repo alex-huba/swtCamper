@@ -25,11 +25,7 @@
                          <!--                            TODO after Merging: include-->
                          <!--                            <fx:include source="dealHistoryView.fxml" />-->
                      </Pane>
-                     <Pane fx:id="excludeRenterViewBox">
-                         <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
-                         <!--                            TODO after Merging: include-->
-                         <!--                            <fx:include source="excludeRenterView.fxml" />-->
-                     </Pane>
+                     <fx:include fx:id="excludeRenterViewBox" source="excludeRenterView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      <Pane fx:id="approveDealViewBox">
                          <Label style="-fx-text-fill: #FFF" text="Approve Deal" />
                          <!--                            TODO after Merging: include-->
