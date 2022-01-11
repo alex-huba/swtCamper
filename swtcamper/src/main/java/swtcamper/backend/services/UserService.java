@@ -89,7 +89,7 @@ public class UserService {
   }
 
   public void excludeRenterForCurrentlyLoggedInUser(User renterToExclude) {
-    ArrayList<User> excludedRenters = new ArrayList<>(getLoggedInUser().getExcludedRenters());
+    ArrayList<User> excludedRenters = getLoggedInUser().getExcludedRenters().size()==0?new ArrayList<>():getLoggedInUser().getExcludedRenters();
     excludedRenters.add(renterToExclude);
     getLoggedInUser().setExcludedRenters(excludedRenters);
   }
