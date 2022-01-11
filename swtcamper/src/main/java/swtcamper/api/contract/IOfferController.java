@@ -11,7 +11,6 @@ public interface IOfferController {
   Offer getOfferById(long id) throws GenericServiceException;
 
   OfferDTO create(
-    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -38,7 +37,7 @@ public interface IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  );
+  ) throws GenericServiceException;
 
   OfferDTO update(
     long offerId,

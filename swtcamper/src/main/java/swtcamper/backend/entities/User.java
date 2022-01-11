@@ -43,34 +43,16 @@ public class User {
   @Override
   public String toString() {
     return (
-      "User{" +
-      "id=" +
-      id +
-      ", username='" +
-      username +
-      '\'' +
-      ", name='" +
-      name +
-      '\'' +
-      ", surname='" +
-      surname +
-      '\'' +
-      ", email='" +
-      email +
-      '\'' +
-      ", phone='" +
-      phone +
-      '\'' +
-      ", password='" +
-      password +
-      '\'' +
-      ", userRole=" +
-      userRole +
-      ", locked=" +
-      locked +
-      ", enabled=" +
-      enabled +
-      '}'
+      String.format(
+        "%s (%s %s), %s, Befugnis: %s, %s, %s",
+        username,
+        name,
+        surname,
+        email,
+        userRole,
+        enabled ? "akzeptiert" : "ignoriert",
+        locked ? "geblockt" : "entblockt"
+      )
     );
   }
 
