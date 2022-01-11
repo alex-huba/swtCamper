@@ -168,13 +168,18 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-      // filter out inactive offers and offers by creators who excluded the current user
+    // filter out inactive offers and offers by creators who excluded the current user
     loadData(
       offerController
         .offers()
         .stream()
         .filter(OfferDTO::isActive)
-        .filter(offerDTO -> !offerDTO.getCreator().getExcludedRenters().contains(userController.getLoggedInUser().getId()))
+        .filter(offerDTO ->
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
+        )
         .collect(Collectors.toList())
     );
   }

@@ -58,8 +58,12 @@ public class UserController implements IUserController {
     userService.excludeRenterForCurrentlyLoggedInUser(idOfRenterToExclude);
   }
 
-  public void removeExcludedRenterForCurrentlyLoggedInUser(long idOfRenterToInclude) {
-    userService.removeExcludedRenterForCurrentlyLoggedInUser(idOfRenterToInclude);
+  public void removeExcludedRenterForCurrentlyLoggedInUser(
+    long idOfRenterToInclude
+  ) {
+    userService.removeExcludedRenterForCurrentlyLoggedInUser(
+      idOfRenterToInclude
+    );
   }
 
   @Override

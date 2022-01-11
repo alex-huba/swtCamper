@@ -1,7 +1,7 @@
 package swtcamper.backend.entities;
 
-import javax.persistence.*;
 import java.util.ArrayList;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -22,6 +22,7 @@ public class User {
 
   @Column(unique = true, nullable = false)
   private String phone;
+
   private String password;
 
   @Enumerated(EnumType.STRING)
@@ -30,8 +31,8 @@ public class User {
   private boolean locked;
   private boolean enabled;
 
-//  @OneToMany
-//	@CollectionTable(name = "excluded_renters", joinColumns = @JoinColumn(name = "id"))
+  //  @OneToMany
+  //	@CollectionTable(name = "excluded_renters", joinColumns = @JoinColumn(name = "id"))
   private ArrayList<Long> excludedRenters;
 
   public User() {
@@ -136,7 +137,11 @@ public class User {
     this.enabled = enabled;
   }
 
-  public ArrayList<Long> getExcludedRenters() { return this.excludedRenters; }
+  public ArrayList<Long> getExcludedRenters() {
+    return this.excludedRenters;
+  }
 
-  public void setExcludedRenters(ArrayList<Long> excludedRenters) { this.excludedRenters = excludedRenters; }
+  public void setExcludedRenters(ArrayList<Long> excludedRenters) {
+    this.excludedRenters = excludedRenters;
+  }
 }
