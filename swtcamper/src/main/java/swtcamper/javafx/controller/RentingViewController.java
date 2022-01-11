@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
@@ -38,6 +39,9 @@ public class RentingViewController {
 
   @Autowired
   private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public TextField locationTextField;
@@ -164,11 +168,13 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
+      // filter out inactive offers and offers by creators who excluded the current user
     loadData(
       offerController
         .offers()
         .stream()
         .filter(OfferDTO::isActive)
+        .filter(offerDTO -> !offerDTO.getCreator().getExcludedRenters().contains(userController.getLoggedInUser().getId()))
         .collect(Collectors.toList())
     );
   }
