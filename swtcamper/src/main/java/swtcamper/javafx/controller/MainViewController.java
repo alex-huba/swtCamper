@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,11 +13,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -40,6 +39,9 @@ public class MainViewController {
 
   @Autowired
   private BookingController bookingController;
+
+  @Autowired
+  private UserReportController userReportController;
 
   @Autowired
   private MyOffersViewController myOffersViewController;
@@ -146,12 +148,27 @@ public class MainViewController {
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
     if (userController.getLoggedInUser() != null) {
+      // check for new user reports
+      if (
+        userController
+          .getLoggedInUser()
+          .getUserRole()
+          .equals(UserRole.OPERATOR) &&
+        userReportController
+          .getAllUserReports()
+          .stream()
+          .anyMatch(UserReport::isActive)
+      ) {
+        navigationViewController.showAccountNotification();
+      } else {
+        navigationViewController.hideAccountNotification();
+      }
+
       // check for new booking requests
       if (
-        bookingController
+        !bookingController
           .getBookingsForUser(userController.getLoggedInUser())
-          .size() >
-        0 &&
+          .isEmpty() &&
         !bookingController
           .getBookingsForUser(userController.getLoggedInUser())
           .stream()
@@ -159,7 +176,7 @@ public class MainViewController {
       ) {
         navigationViewController.showBookingNotification();
       } else {
-        navigationViewController.resetBookingNotification();
+        navigationViewController.hideBookingNotification();
       }
 
       // check for new providers that need to be enabled
