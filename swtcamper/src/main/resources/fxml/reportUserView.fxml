@@ -8,22 +8,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            styleClass="rootNodeBackground" stylesheets="@../styles/reportUser-view.css"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="swtcamper.javafx.controller.ReportUserViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rootNodeBackground" stylesheets="@../styles/reportUser-view.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.ReportUserViewController">
     <children>
-        <Button fx:id="sendReportButton" layoutX="273.0" layoutY="240.0" mnemonicParsing="false" styleClass="bg-primary" text="Senden" onAction="#sendReport"/>
-        <Button layoutX="348.0" layoutY="240.0" mnemonicParsing="false" styleClass="bg-warning"
-                text="Abbrechen (Reset)" onAction="#abortReport"/>
-        <TextField fx:id="reportThisUserTextField" layoutX="326.0" layoutY="37.0" promptText="Nutzer"/>
-        <TextArea fx:id="reasonForReportTextArea" layoutX="14.0" layoutY="88.0" prefHeight="135.0" prefWidth="462.0"
-                  promptText="Grund der Beschwerde (bitte schilder den Sachverhalt möglichst genau, sodass der zuständige Operator ein möglichst gutes Bild der Situation bekommt)"/>
-        <Label layoutX="14.0" layoutY="41.0" text="Über wen möchtest du dich beschweren?"/>
-        <Label layoutX="14.0" layoutY="71.0" text="... und weshalb?"/>
-        <Hyperlink layoutX="14.0" layoutY="3.0" onAction="#goBackToExcludeView" text="zurück"/>
+        <Button fx:id="sendReportButton" layoutX="273.0" layoutY="240.0" mnemonicParsing="false" onAction="#sendReport" styleClass="bg-primary" text="Senden" />
+        <Button layoutX="348.0" layoutY="240.0" mnemonicParsing="false" onAction="#abortReport" styleClass="bg-warning" text="Abbrechen (Reset)" />
+        <TextField fx:id="reportThisUserTextField" layoutX="326.0" layoutY="37.0" promptText="Nutzer" />
+        <TextArea fx:id="reasonForReportTextArea" layoutX="14.0" layoutY="88.0" prefHeight="135.0" prefWidth="462.0" promptText="Grund der Beschwerde (bitte schilder den Sachverhalt möglichst genau, sodass der zuständige Operator ein möglichst gutes Bild der Situation bekommt)" wrapText="true" />
+        <Label layoutX="14.0" layoutY="41.0" text="Über wen möchtest du dich beschweren?" />
+        <Label layoutX="14.0" layoutY="71.0" text="... und weshalb?" />
+        <Hyperlink layoutX="14.0" layoutY="3.0" onAction="#goBackToExcludeView" text="zurück" />
     </children>
     <padding>
-        <Insets bottom="10.0" right="10.0"/>
+        <Insets bottom="10.0" right="10.0" />
     </padding>
 </AnchorPane>
