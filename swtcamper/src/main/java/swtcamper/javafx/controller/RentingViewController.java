@@ -1,5 +1,6 @@
 package swtcamper.javafx.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
@@ -168,6 +170,41 @@ public class RentingViewController {
     resetEndDatePickerBtn
       .visibleProperty()
       .bind(endDatePicker.valueProperty().isNotNull());
+
+    startDatePicker.setDayCellFactory(
+            new Callback<DatePicker, DateCell>() {
+              @Override
+              public DateCell call(DatePicker param) {
+                return new DateCell() {
+                  @Override
+                  public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if (!empty && date != null) {
+                      LocalDate today = LocalDate.now();
+                      setDisable(empty || date.compareTo(today) < 0);
+                    }
+                  }
+                };
+              }
+            }
+    );
+    endDatePicker.setDayCellFactory(
+            new Callback<DatePicker, DateCell>() {
+              @Override
+              public DateCell call(DatePicker param) {
+                return new DateCell() {
+                  @Override
+                  public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if (!empty && date != null) {
+                      LocalDate today = LocalDate.now();
+                      setDisable(empty || date.compareTo(today) < 0);
+                    }
+                  }
+                };
+              }
+            }
+    );
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
