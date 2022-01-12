@@ -409,6 +409,9 @@ public class MainViewController {
   }
 
   public void logout() throws GenericServiceException {
+    latestLoggedInStatus = null;
+    latestView = null;
+
     userController.logout();
     navigationViewController.logout();
   }
