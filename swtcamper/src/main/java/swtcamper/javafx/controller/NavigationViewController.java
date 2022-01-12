@@ -2,16 +2,21 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -51,6 +56,9 @@ public class NavigationViewController {
   public Button approveButton;
 
   @FXML
+  public Circle approveNotificationDot;
+
+  @FXML
   public Button myBookingsButton;
 
   @FXML
@@ -88,49 +96,80 @@ public class NavigationViewController {
 
   public void setButtonActive(Button btn) {
     // remove all active classes first
-    for (Object child : navBarItems.getChildren()) {
-      if (child instanceof Button) ((Button) child).getStyleClass()
-        .removeIf(c -> c.contains("active"));
-    }
+    navBarItems
+      .getChildren()
+      .stream()
+      .filter(node -> node instanceof Button)
+      .forEach(node -> node.getStyleClass().removeIf(s -> s.contains("active"))
+      );
 
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
+  public void login(UserDTO userDTO, String startPage)
     throws GenericServiceException {
-    navBarItems.getChildren().clear();
+    UserRole userRole = userDTO.getUserRole();
+    boolean isEnabled = userDTO.isEnabled();
+    boolean isLocked = userDTO.isLocked();
 
-    // Enable renter functionalities
-    if (userRoleDTO == UserRoleDTO.RENTER) {
-      navBarItems
-        .getChildren()
-        .addAll(homeButton, dealHistoryButton, myBookingsButton, accountButton);
-      // Enable provider functionalities
-    } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
-      navBarItems.getChildren().add(homeButton);
-      navBarItems.getChildren().add(newOfferButton);
-      if (isEnabled) navBarItems.getChildren().add(activeOffersButton);
-      navBarItems.getChildren().add(dealHistoryButton);
-      if (isEnabled) navBarItems.getChildren().add(excludeButton);
-      navBarItems.getChildren().add(myBookingsButton);
-      navBarItems.getChildren().add(accountButton);
-      // Enable operator functionalities
+    ObservableList<Node> navBarList = navBarItems.getChildren();
+    navBarList.clear();
+
+    if (isLocked) {
+      navBarList.add(dealHistoryButton);
+      navBarList.add(accountButton);
     } else {
-      navBarItems
-        .getChildren()
-        .addAll(
-          homeButton,
-          newOfferButton,
-          activeOffersButton,
-          dealHistoryButton,
-          excludeButton,
-          approveButton,
-          myBookingsButton,
-          accountButton
-        );
+      switch (userRole) {
+        // Enable renter functionalities
+        case RENTER:
+          navBarList.addAll(
+            homeButton,
+            dealHistoryButton,
+            myBookingsButton,
+            accountButton
+          );
+          break;
+        // Enable provider functionalities
+        case PROVIDER:
+          if (isEnabled) {
+            navBarList.addAll(
+              homeButton,
+              newOfferButton,
+              activeOffersButton,
+              dealHistoryButton,
+              excludeButton,
+              myBookingsButton,
+              accountButton
+            );
+          } else {
+            navBarList.addAll(
+              homeButton,
+              dealHistoryButton,
+              myBookingsButton,
+              accountButton
+            );
+          }
+          break;
+        // Enable operator functionalities
+        case OPERATOR:
+          navBarList.addAll(
+            homeButton,
+            newOfferButton,
+            activeOffersButton,
+            dealHistoryButton,
+            excludeButton,
+            approveButton,
+            myBookingsButton,
+            accountButton
+          );
+          break;
+        default:
+          navBarList.addAll(homeButton, accountButton);
+          break;
+      }
     }
 
-    mainViewController.changeView("home");
+    mainViewController.changeView(startPage);
     if (isShortText) {
       setShortTexts();
     } else {
@@ -190,7 +229,21 @@ public class NavigationViewController {
     }
   }
 
+  public void showApproveNotification() {
+    Tooltip t = new Tooltip("Es können neue Nutzer akzeptiert werden");
+    Tooltip.install(approveNotificationDot, t);
+
+    approveNotificationDot.setVisible(true);
+  }
+
+  public void hideApproveNotification() {
+    approveNotificationDot.setVisible(false);
+  }
+
   public void showBookingNotification() {
+    Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
+    Tooltip.install(approveNotificationDot, t);
+
     myBookingsNotificationDot.setVisible(true);
   }
 

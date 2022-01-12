@@ -8,9 +8,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.backend.entities.Booking;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.User;
+import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.UserDTO;
+import swtcamper.api.controller.LoggingController;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -24,6 +25,12 @@ public class BookingService {
   @Autowired
   private BookingRepository bookingRepository;
 
+  @Autowired
+  private LoggingController loggingController;
+
+  @Autowired
+  private ModelMapper modelMapper;
+
   public List<Booking> getAllBookings() {
     return bookingRepository.findAll();
   }
@@ -35,25 +42,39 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) {
-    // Create new booking and add its ID to the offer
-    Booking booking = new Booking(user, offer, startDate, endDate);
-    bookingRepository.save(booking);
-    Optional<Offer> offerResponse = offerRepository.findById(
-      offer.getOfferID()
+
+    long newBookingId = bookingRepository
+            .save(new Booking(user, offer, startDate, endDate))
+            .getId();
+    loggingController.log(
+            modelMapper.LoggingMessageToLoggingMessageDTO(
+                    new LoggingMessage(
+                            LoggingLevel.INFO,
+                            String.format(
+                                    "User %s booked offer with ID %s.",
+                                    user.getUsername(),
+                                    offer.getOfferID()
+                            )
+                    )
+            )
     );
+    // add the bookingID to the offer
+    Optional<Offer> offerResponse = offerRepository.findById(
+            offer.getOfferID());
     Offer tempOffer = offerResponse.get();
     ArrayList<Long> bookings = tempOffer.getBookings();
-    bookings.add(booking.getId());
+    bookings.add(newBookingId);
     tempOffer.setBookings(bookings);
     offerRepository.save(tempOffer);
-    return booking;
+    return bookingRepository.findById(newBookingId).get();
   }
 
   public Booking update(
     Long bookingID,
     LocalDate startDate,
     LocalDate endDate,
-    boolean active
+    boolean active,
+    UserDTO user
   ) throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
@@ -70,6 +91,19 @@ public class BookingService {
       booking.setStartDate(startDate);
       booking.setEndDate(endDate);
       booking.setActive(active);
+
+      loggingController.log(
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Booking with ID %s got updated by user %s.",
+              bookingID,
+              user.getUsername()
+            )
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -78,7 +112,8 @@ public class BookingService {
     );
   }
 
-  public Booking activate(Long bookingID) throws GenericServiceException {
+  public Booking activate(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
@@ -86,6 +121,19 @@ public class BookingService {
       Booking booking = bookingOptional.get();
       // Update by setting active = true
       booking.setActive(true);
+
+      loggingController.log(
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Booking with ID %s was deactivated by user %s.",
+              bookingID,
+              user.getUsername()
+            )
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -94,7 +142,8 @@ public class BookingService {
     );
   }
 
-  public Booking deactivate(Long bookingID) throws GenericServiceException {
+  public Booking deactivate(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     // Search for booking in database
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
@@ -102,6 +151,19 @@ public class BookingService {
       Booking booking = bookingOptional.get();
       // Update by setting active = false
       booking.setActive(false);
+
+      loggingController.log(
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Booking with ID %s was deactivated by user %s.",
+              bookingID,
+              user.getUsername()
+            )
+          )
+        )
+      );
       // Save update back to database
       return bookingRepository.save(booking);
     }
@@ -110,7 +172,8 @@ public class BookingService {
     );
   }
 
-  public void delete(Long bookingID) throws GenericServiceException {
+  public void delete(Long bookingID, UserDTO user)
+    throws GenericServiceException {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
     if (bookingOptional.isPresent()) {
       // Booking found
@@ -125,6 +188,18 @@ public class BookingService {
       }
       try {
         bookingRepository.deleteById(bookingID);
+        loggingController.log(
+          modelMapper.LoggingMessageToLoggingMessageDTO(
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "UBooking with ID %s was deleted by user %s",
+                bookingID,
+                user.getUsername()
+              )
+            )
+          )
+        );
       } catch (IllegalArgumentException e) {
         throw new GenericServiceException(
           "The passed ID is not available: " + e
@@ -203,7 +278,7 @@ public class BookingService {
         throw new GenericServiceException(e.getMessage());
       }
     }
-    return offers;
+    return offerIDs;
   }
 
   /**

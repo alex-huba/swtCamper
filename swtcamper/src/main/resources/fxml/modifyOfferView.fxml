@@ -180,7 +180,7 @@
                                         </HBox>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
-                                                <Label prefWidth="90.0" styleClass="descriptionLabel" text="Betten:"/>
+                                                <Label prefWidth="90.0" styleClass="descriptionLabel" text="Betten*:"/>
                                                 <TextField fx:id="bedsTextField"/>
                                             </children>
                                         </HBox>

@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
@@ -29,7 +32,13 @@ public class OfferService {
   private OfferRepository offerRepository;
 
   @Autowired
+  private LoggingController loggingController;
+
+  @Autowired
   private BookingController bookingController;
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   public Offer create(
     // TODO validation
@@ -60,7 +69,13 @@ public class OfferService {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
+    if (!creator.isEnabled() || creator.isLocked()) {
+      throw new GenericServiceException(
+        "User cannot create new offers as long as he/she is locked or not enabled."
+      );
+    }
+
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
 
@@ -100,8 +115,35 @@ public class OfferService {
       price,
       rentalConditions
     );
-    vehicleRepository.save(vehicle);
-    return offerRepository.save(offer);
+    long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New vehicle with ID %s created by user %s.",
+            newVehicleId,
+            creator.getUsername()
+          )
+        )
+      )
+    );
+
+    long newOfferId = offerRepository.save(offer).getOfferID();
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New offer with ID %s created by user %s.",
+            newOfferId,
+            creator.getUsername()
+          )
+        )
+      )
+    );
+
+    return offerRepository.findById(newOfferId).get();
   }
 
   public Offer update(
@@ -135,8 +177,15 @@ public class OfferService {
     boolean shower,
     boolean toilet,
     boolean kitchenUnit,
-    boolean fridge
+    boolean fridge,
+    UserDTO user
   ) throws GenericServiceException {
+    if (!user.isEnabled() || user.isLocked()) {
+      throw new GenericServiceException(
+        "User cannot update offers as long as he/she is locked or not enabled."
+      );
+    }
+
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
     Offer offer;
     if (offerResponse.isPresent()) {
@@ -193,6 +242,18 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicleRepository.save(vehicle);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Vehicle with ID %s got updated by user %s.",
+            vehicle.getVehicleID(),
+            user.getUsername()
+          )
+        )
+      )
+    );
 
     offer.setCreator(creator);
     offer.setOfferedObject(vehicle);
@@ -204,6 +265,18 @@ public class OfferService {
     offer.setPrice(price);
     offer.setActive(active);
     offer.setRentalConditions(rentalConditions);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got updated by user %s.",
+            offer.getOfferID(),
+            user.getUsername()
+          )
+        )
+      )
+    );
 
     return offerRepository.save(offer);
   }
@@ -253,7 +326,7 @@ public class OfferService {
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
-  public void delete(long id) throws GenericServiceException {
+  public void delete(long id, UserDTO user) throws GenericServiceException {
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
       if (booking.getOffer().getOfferID() == id) {
@@ -266,6 +339,18 @@ public class OfferService {
     }
     try {
       offerRepository.deleteById(id);
+      loggingController.log(
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Offer with ID %s got deleted by user %s.",
+              id,
+              user.getUsername()
+            )
+          )
+        )
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }

@@ -555,7 +555,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     if (!isEditMode.get()) {
       OfferDTO offerDTO = offerController.create(
-        userController.getLoggedInUser(),
         titleTextField.getText(),
         locationTextField.getText(),
         contactTextField.getText(),
