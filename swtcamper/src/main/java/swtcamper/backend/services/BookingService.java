@@ -42,25 +42,25 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) {
-
     long newBookingId = bookingRepository
-            .save(new Booking(user, offer, startDate, endDate))
-            .getId();
+      .save(new Booking(user, offer, startDate, endDate))
+      .getId();
     loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(
-                    new LoggingMessage(
-                            LoggingLevel.INFO,
-                            String.format(
-                                    "User %s booked offer with ID %s.",
-                                    user.getUsername(),
-                                    offer.getOfferID()
-                            )
-                    )
-            )
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s booked offer with ID %s.",
+            user.getUsername(),
+            offer.getOfferID()
+          )
+        )
+      )
     );
     // add the bookingID to the offer
     Optional<Offer> offerResponse = offerRepository.findById(
-            offer.getOfferID());
+      offer.getOfferID()
+    );
     Offer tempOffer = offerResponse.get();
     ArrayList<Long> bookings = tempOffer.getBookings();
     bookings.add(newBookingId);

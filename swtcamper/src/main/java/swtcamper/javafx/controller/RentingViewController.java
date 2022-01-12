@@ -172,38 +172,38 @@ public class RentingViewController {
       .bind(endDatePicker.valueProperty().isNotNull());
 
     startDatePicker.setDayCellFactory(
-            new Callback<DatePicker, DateCell>() {
-              @Override
-              public DateCell call(DatePicker param) {
-                return new DateCell() {
-                  @Override
-                  public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    if (!empty && date != null) {
-                      LocalDate today = LocalDate.now();
-                      setDisable(empty || date.compareTo(today) < 0);
-                    }
-                  }
-                };
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
               }
             }
+          };
+        }
+      }
     );
     endDatePicker.setDayCellFactory(
-            new Callback<DatePicker, DateCell>() {
-              @Override
-              public DateCell call(DatePicker param) {
-                return new DateCell() {
-                  @Override
-                  public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    if (!empty && date != null) {
-                      LocalDate today = LocalDate.now();
-                      setDisable(empty || date.compareTo(today) < 0);
-                    }
-                  }
-                };
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
               }
             }
+          };
+        }
+      }
     );
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
