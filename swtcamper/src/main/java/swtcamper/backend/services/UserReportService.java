@@ -50,12 +50,24 @@ public class UserReportService {
         return userReportRepository.findAll();
     }
 
-    public UserReport closeUserReport(long id) throws GenericServiceException {
-        UserReport userReport = getUserReportById(id);
+    public UserReport acceptUserReport(long userID) throws GenericServiceException {
+        UserReport userReport = getUserReportById(userID);
         userReport.setActive(false);
         loggingService.log(
                 modelMapper.LoggingMessageToLoggingMessageDTO(
-                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was closed by %s.",id,userController.getLoggedInUser().getUsername()))
+                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was accepted by %s.",userID,userController.getLoggedInUser().getUsername()))
+                )
+        );
+        userController.blockUserById(userReport.getReportee().getId());
+        return userReportRepository.save(userReport);
+    }
+
+    public UserReport rejectUserReport(long userID) throws GenericServiceException {
+        UserReport userReport = getUserReportById(userID);
+        userReport.setActive(false);
+        loggingService.log(
+                modelMapper.LoggingMessageToLoggingMessageDTO(
+                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was rejected by %s.",userID,userController.getLoggedInUser().getUsername()))
                 )
         );
         return userReportRepository.save(userReport);

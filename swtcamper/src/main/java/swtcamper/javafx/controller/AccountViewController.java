@@ -187,8 +187,8 @@ public class AccountViewController {
       Button acceptReportButton = new Button(String.format("%s blockieren", userReport.getReportee().getUsername()));
       acceptReportButton.getStyleClass().add("bg-warning");
       acceptReportButton.setOnAction(event -> {
-        userController.blockUserById(userReport.getReportee().getId());
         try {
+          userReportController.accept(userReport.getId());
           operatorInit(false);
         } catch (GenericServiceException ignore) {
         }
@@ -198,7 +198,7 @@ public class AccountViewController {
       rejectReportButton.getStyleClass().add("bg-primary");
       rejectReportButton.setOnAction(event -> {
         try {
-          userReportController.close(userReport.getId());
+          userReportController.reject(userReport.getId());
           operatorInit(false);
         } catch (GenericServiceException ignore) {
         }

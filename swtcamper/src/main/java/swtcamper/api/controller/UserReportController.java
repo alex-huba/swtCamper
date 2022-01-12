@@ -22,7 +22,11 @@ public class UserReportController implements IUserReportController {
         return userReportService.getAllUserReports();
     }
 
-    public UserReport close(long id) throws GenericServiceException {
-        return userReportService.closeUserReport(id);
+    public UserReport accept(long userID) throws GenericServiceException {
+        return userReportService.acceptUserReport(userID);
+    }
+
+    public UserReport reject(long userID) throws GenericServiceException {
+        return userReportService.rejectUserReport(userID);
     }
 }

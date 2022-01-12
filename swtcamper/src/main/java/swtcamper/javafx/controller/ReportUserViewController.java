@@ -33,8 +33,6 @@ public class ReportUserViewController {
     @FXML
     public Button sendReportButton;
 
-//    private User userToReport;
-
     public void initialize(User userToReport) {
         reportThisUserTextField.setText(userToReport.getUsername());
     }
@@ -47,8 +45,12 @@ public class ReportUserViewController {
         boolean userIsReal = false;
         for (User user : userController.getAllUsers()) {
             if (user.getUsername().equals(reportThisUserTextField.getText())) {
-                userReportController.create(new UserReport(userController.getLoggedInUser(),user,reasonForReportTextArea.getText()));
                 userIsReal = true;
+                userReportController.create(new UserReport(userController.getLoggedInUser(),user,reasonForReportTextArea.getText()));
+                mainViewController.handleInformationMessage("Beschwerde gesendet. Ein Operator wird sie in Kürze bearbeiten.");
+
+                resetInputFields();
+                mainViewController.changeView("home");
                 break;
             }
         }
@@ -56,15 +58,12 @@ public class ReportUserViewController {
     }
 
     public void abortReport() throws GenericServiceException {
+        resetInputFields();
         mainViewController.changeView("exclude");
     }
 
-    public void checkUserName() {
-//        try {
-//            userToReport = userController.getUserByUsername(reportThisUserTextField.getText());
-//            sendReportButton.setDisable(false);
-//        } catch (GenericServiceException ignore) {
-//            sendReportButton.setDisable(true);
-//        }
+    private void resetInputFields() {
+        reportThisUserTextField.clear();
+        reasonForReportTextArea.clear();
     }
 }

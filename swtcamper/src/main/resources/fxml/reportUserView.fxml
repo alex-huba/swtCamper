@@ -13,7 +13,7 @@
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="swtcamper.javafx.controller.ReportUserViewController">
     <children>
-        <Button fx:id="sendReportButton" onKeyTyped="#checkUserName" layoutX="273.0" layoutY="240.0" mnemonicParsing="false" styleClass="bg-primary" text="Senden" onAction="#sendReport"/>
+        <Button fx:id="sendReportButton" layoutX="273.0" layoutY="240.0" mnemonicParsing="false" styleClass="bg-primary" text="Senden" onAction="#sendReport"/>
         <Button layoutX="348.0" layoutY="240.0" mnemonicParsing="false" styleClass="bg-warning"
                 text="Abbrechen (Reset)" onAction="#abortReport"/>
         <TextField fx:id="reportThisUserTextField" layoutX="326.0" layoutY="37.0" promptText="Nutzer"/>

@@ -11,7 +11,9 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -19,6 +21,9 @@ public class ExcludeRenterViewController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private UserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;
@@ -114,11 +119,17 @@ public class ExcludeRenterViewController {
     findUsers(findUsersTextField.getText());
   }
 
+  /**
+   * Searches for users that fit to the given searchText and displays the result in userResultsVBox
+   * @param searchText String that shall be used to filter available usernames
+   * @throws GenericServiceException
+   */
   private void findUsers(String searchText) throws GenericServiceException {
     userResultsVBox.getChildren().clear();
     if (searchText.isEmpty()) return;
 
     // only show results if searchText fully equals the needed username (privacy reasons)
+    // note: it uses a for loop, even if the result can actually only consist of one User, but equals() could be replaced by startsWith() or similar...
     for (User user : userController
       .getAllUsers()
       .parallelStream()
@@ -185,12 +196,26 @@ public class ExcludeRenterViewController {
 
       // report button
       Button reportButton = new Button("Diesen Nutzer melden");
+      // determine whether there is another active report from this user about that user already
+      boolean isThisUserAlreadyReportedByLoggedInUser = false;
+      for (UserReport userReport : userReportController.getAllUserReports()) {
+        if(userReport.getReportee().getId().equals(user.getId()) && userReport.getReporter().getId().equals(userController.getLoggedInUser().getId()) && userReport.isActive()) {
+          isThisUserAlreadyReportedByLoggedInUser = true;
+          break;
+        }
+      }
+      // disable report button if a similar report is already active or if it concerns the user him-/herself
       reportButton.setDisable(
-              userController.getLoggedInUser().getId().equals(user.getId())
+              isThisUserAlreadyReportedByLoggedInUser || userController.getLoggedInUser().getId().equals(user.getId())
       );
       reportButton.getStyleClass().add("bg-warning");
       reportButton.setOnAction(event -> {
         try {
+          // reset textField and search
+          findUsersTextField.clear();
+          findUsers("");
+
+          // redirect to report form
           mainViewController.changeView("reportUser");
           reportUserViewController.initialize(user);
         } catch (GenericServiceException ignore) {

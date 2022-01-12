@@ -8,5 +8,6 @@ import java.util.List;
 public interface IUserReportController {
     UserReport create(UserReport userReport);
     List<UserReport> getAllUserReports();
-    UserReport close(long id) throws GenericServiceException;
+    UserReport accept(long id) throws GenericServiceException;
+    UserReport reject(long id) throws GenericServiceException;
 }
