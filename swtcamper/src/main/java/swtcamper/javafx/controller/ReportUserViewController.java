@@ -33,7 +33,7 @@ public class ReportUserViewController {
     @FXML
     public Button sendReportButton;
 
-    private User userToReport;
+//    private User userToReport;
 
     public void initialize(User userToReport) {
         reportThisUserTextField.setText(userToReport.getUsername());
@@ -43,8 +43,16 @@ public class ReportUserViewController {
         mainViewController.changeView("exclude");
     }
 
-    public void sendReport() {
-        userReportController.create(new UserReport(userController.getLoggedInUser(),userToReport,reasonForReportTextArea.getText()));
+    public void sendReport() throws GenericServiceException {
+        boolean userIsReal = false;
+        for (User user : userController.getAllUsers()) {
+            if (user.getUsername().equals(reportThisUserTextField.getText())) {
+                userReportController.create(new UserReport(userController.getLoggedInUser(),user,reasonForReportTextArea.getText()));
+                userIsReal = true;
+                break;
+            }
+        }
+        if(!userIsReal) mainViewController.handleInformationMessage("Diesen Nutzer gibt es nicht.");
     }
 
     public void abortReport() throws GenericServiceException {
@@ -52,11 +60,11 @@ public class ReportUserViewController {
     }
 
     public void checkUserName() {
-        try {
-            userToReport = userController.getUserByUsername(reportThisUserTextField.getText());
-            sendReportButton.setDisable(false);
-        } catch (GenericServiceException ignore) {
-            sendReportButton.setDisable(true);
-        }
+//        try {
+//            userToReport = userController.getUserByUsername(reportThisUserTextField.getText());
+//            sendReportButton.setDisable(false);
+//        } catch (GenericServiceException ignore) {
+//            sendReportButton.setDisable(true);
+//        }
     }
 }

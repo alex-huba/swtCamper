@@ -29,12 +29,13 @@ public class UserReportService {
     private ModelMapper modelMapper;
 
     public UserReport create(UserReport userReport) {
+        UserReport reported = userReportRepository.save(new UserReport(userReport.getReporter(),userReport.getReportee(),userReport.getReportReason()));
         loggingService.log(
                 modelMapper.LoggingMessageToLoggingMessageDTO(
-                        new LoggingMessage(LoggingLevel.INFO,String.format("User %s reported user %s. (UserReport-ID %s)",userReport.getReporter().getUsername(),userReport.getReportee().getUsername(),userReport.getId()))
+                        new LoggingMessage(LoggingLevel.INFO,String.format("User %s reported user %s. (UserReport-ID %s)",reported.getReporter().getUsername(),reported.getReportee().getUsername(),reported.getId()))
                 )
         );
-        return userReportRepository.save(new UserReport(userReport.getReporter(),userReport.getReportee(),userReport.getReportReason()));
+        return reported;
     }
 
     public UserReport getUserReportById(long id) throws GenericServiceException {
@@ -54,7 +55,7 @@ public class UserReportService {
         userReport.setActive(false);
         loggingService.log(
                 modelMapper.LoggingMessageToLoggingMessageDTO(
-                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was closed by %s.",id,userController.getLoggedInUser()))
+                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was closed by %s.",id,userController.getLoggedInUser().getUsername()))
                 )
         );
         return userReportRepository.save(userReport);
@@ -63,7 +64,7 @@ public class UserReportService {
     public void delete(long id) {
         loggingService.log(
                 modelMapper.LoggingMessageToLoggingMessageDTO(
-                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was deleted by %s.",id,userController.getLoggedInUser()))
+                        new LoggingMessage(LoggingLevel.INFO,String.format("UserReport with ID %s was deleted by %s.",id,userController.getLoggedInUser().getUsername()))
                 )
         );
         userReportRepository.deleteById(id);

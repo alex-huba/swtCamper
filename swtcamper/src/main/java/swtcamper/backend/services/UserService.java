@@ -174,7 +174,7 @@ public class UserService {
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
-            "User %s excluded by %s.",
+            "User %s was excluded by %s.",
             getUserById(idOfRenterToExclude).getUsername(),
             loggedInUser.getUsername()
           )
@@ -197,7 +197,7 @@ public class UserService {
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
-            "User %s included by %s.",
+            "User %s was included by %s.",
             getUserById(idOfRenterToInclude).getUsername(),
             loggedInUser.getUsername()
           )
