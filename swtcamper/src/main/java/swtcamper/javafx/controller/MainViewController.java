@@ -147,13 +147,12 @@ public class MainViewController {
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
-    if (userController.getLoggedInUser() != null) {
+    User loggedInUser = userController.getLoggedInUser();
+
+    if (loggedInUser != null) {
       // check for new user reports
       if (
-        userController
-          .getLoggedInUser()
-          .getUserRole()
-          .equals(UserRole.OPERATOR) &&
+        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
         userReportController
           .getAllUserReports()
           .stream()
@@ -166,11 +165,9 @@ public class MainViewController {
 
       // check for new booking requests
       if (
+        !bookingController.getBookingsForUser(loggedInUser).isEmpty() &&
         !bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .isEmpty() &&
-        !bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
+          .getBookingsForUser(loggedInUser)
           .stream()
           .allMatch(Booking::isActive)
       ) {
@@ -181,10 +178,7 @@ public class MainViewController {
 
       // check for new providers that need to be enabled
       if (
-        userController
-          .getLoggedInUser()
-          .getUserRole()
-          .equals(UserRole.OPERATOR) &&
+        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
         userController
           .getAllUsers()
           .stream()
@@ -197,9 +191,7 @@ public class MainViewController {
 
       if (latestLoggedInStatus != null && latestView != null) {
         // get the latest update for the logged-in user to check if there were made any changes
-        User checkUser = userController.getUserById(
-          userController.getLoggedInUser().getId()
-        );
+        User checkUser = userController.getUserById(loggedInUser.getId());
         if (!updateHappening) {
           // user-role has changed
           if (

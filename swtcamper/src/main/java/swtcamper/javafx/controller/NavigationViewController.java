@@ -255,7 +255,7 @@ public class NavigationViewController {
   }
 
   public void showAccountNotification() {
-    Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
+    Tooltip t = new Tooltip("Es gibt neue Nutzerbeschwerden");
     Tooltip.install(accountNotificationDot, t);
 
     accountNotificationDot.setVisible(true);
