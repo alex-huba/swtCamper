@@ -15,55 +15,66 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ReportUserViewController {
-    @Autowired
-    private UserReportController userReportController;
 
-    @Autowired
-    private UserController userController;
+  @Autowired
+  private UserReportController userReportController;
 
-    @Autowired
-    private MainViewController mainViewController;
+  @Autowired
+  private UserController userController;
 
-    @FXML
-    public TextField reportThisUserTextField;
+  @Autowired
+  private MainViewController mainViewController;
 
-    @FXML
-    public TextArea reasonForReportTextArea;
+  @FXML
+  public TextField reportThisUserTextField;
 
-    @FXML
-    public Button sendReportButton;
+  @FXML
+  public TextArea reasonForReportTextArea;
 
-    public void initialize(User userToReport) {
-        reportThisUserTextField.setText(userToReport.getUsername());
-    }
+  @FXML
+  public Button sendReportButton;
 
-    public void goBackToExcludeView() throws GenericServiceException {
-        mainViewController.changeView("exclude");
-    }
+  public void initialize(User userToReport) {
+    reportThisUserTextField.setText(userToReport.getUsername());
+  }
 
-    public void sendReport() throws GenericServiceException {
-        boolean userIsReal = false;
-        for (User user : userController.getAllUsers()) {
-            if (user.getUsername().equals(reportThisUserTextField.getText())) {
-                userIsReal = true;
-                userReportController.create(new UserReport(userController.getLoggedInUser(),user,reasonForReportTextArea.getText()));
-                mainViewController.handleInformationMessage("Beschwerde gesendet. Ein Operator wird sie in Kürze bearbeiten.");
+  public void goBackToExcludeView() throws GenericServiceException {
+    mainViewController.changeView("exclude");
+  }
 
-                resetInputFields();
-                mainViewController.changeView("home");
-                break;
-            }
-        }
-        if(!userIsReal) mainViewController.handleInformationMessage("Diesen Nutzer gibt es nicht.");
-    }
+  public void sendReport() throws GenericServiceException {
+    boolean userIsReal = false;
+    for (User user : userController.getAllUsers()) {
+      if (user.getUsername().equals(reportThisUserTextField.getText())) {
+        userIsReal = true;
+        userReportController.create(
+          new UserReport(
+            userController.getLoggedInUser(),
+            user,
+            reasonForReportTextArea.getText()
+          )
+        );
+        mainViewController.handleInformationMessage(
+          "Beschwerde gesendet. Ein Operator wird sie in Kürze bearbeiten."
+        );
 
-    public void abortReport() throws GenericServiceException {
         resetInputFields();
-        mainViewController.changeView("exclude");
+        mainViewController.changeView("home");
+        break;
+      }
     }
+    if (!userIsReal) mainViewController.handleInformationMessage(
+      "Diesen Nutzer gibt es nicht."
+    );
+  }
 
-    private void resetInputFields() {
-        reportThisUserTextField.clear();
-        reasonForReportTextArea.clear();
-    }
+  public void abortReport() throws GenericServiceException {
+    resetInputFields();
+    mainViewController.changeView("exclude");
+  }
+
+  private void resetInputFields() {
+    reportThisUserTextField.clear();
+    reasonForReportTextArea.clear();
+  }
 }

@@ -119,7 +119,8 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public User getUserByUsername(String username) throws GenericServiceException {
+  public User getUserByUsername(String username)
+    throws GenericServiceException {
     return userService.getUserByUsername(username);
   }
 

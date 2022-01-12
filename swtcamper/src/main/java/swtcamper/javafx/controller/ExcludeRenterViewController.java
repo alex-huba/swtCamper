@@ -129,7 +129,8 @@ public class ExcludeRenterViewController {
     if (searchText.isEmpty()) return;
 
     // only show results if searchText fully equals the needed username (privacy reasons)
-    // note: it uses a for loop, even if the result can actually only consist of one User, but equals() could be replaced by startsWith() or similar...
+    // note: it uses a for loop, even if the result can actually only consist of one User,
+    //       but equals() could be replaced by startsWith() or similar...
     for (User user : userController
       .getAllUsers()
       .parallelStream()
@@ -199,14 +200,22 @@ public class ExcludeRenterViewController {
       // determine whether there is another active report from this user about that user already
       boolean isThisUserAlreadyReportedByLoggedInUser = false;
       for (UserReport userReport : userReportController.getAllUserReports()) {
-        if(userReport.getReportee().getId().equals(user.getId()) && userReport.getReporter().getId().equals(userController.getLoggedInUser().getId()) && userReport.isActive()) {
+        if (
+          userReport.getReportee().getId().equals(user.getId()) &&
+          userReport
+            .getReporter()
+            .getId()
+            .equals(userController.getLoggedInUser().getId()) &&
+          userReport.isActive()
+        ) {
           isThisUserAlreadyReportedByLoggedInUser = true;
           break;
         }
       }
       // disable report button if a similar report is already active or if it concerns the user him-/herself
       reportButton.setDisable(
-              isThisUserAlreadyReportedByLoggedInUser || userController.getLoggedInUser().getId().equals(user.getId())
+        isThisUserAlreadyReportedByLoggedInUser ||
+        userController.getLoggedInUser().getId().equals(user.getId())
       );
       reportButton.getStyleClass().add("bg-warning");
       reportButton.setOnAction(event -> {
@@ -218,8 +227,7 @@ public class ExcludeRenterViewController {
           // redirect to report form
           mainViewController.changeView("reportUser");
           reportUserViewController.initialize(user);
-        } catch (GenericServiceException ignore) {
-        }
+        } catch (GenericServiceException ignore) {}
       });
 
       HBox buttonHBox = new HBox(excludeButton, reportButton);

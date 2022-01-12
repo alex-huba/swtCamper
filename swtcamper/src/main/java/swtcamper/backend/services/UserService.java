@@ -125,13 +125,14 @@ public class UserService {
     );
   }
 
-  public User getUserByUsername(String username) throws GenericServiceException {
+  public User getUserByUsername(String username)
+    throws GenericServiceException {
     Optional<User> userOptional = userRepository.findByUsername(username);
     if (userOptional.isPresent()) {
       return userOptional.get();
     }
     throw new GenericServiceException(
-            "There is no user with username '" + username + "'."
+      "There is no user with username '" + username + "'."
     );
   }
 

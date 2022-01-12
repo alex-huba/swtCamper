@@ -4,77 +4,86 @@ import javax.persistence.*;
 
 @Entity
 public class UserReport implements IUserReport {
-    @Id
-    @GeneratedValue
-    private Long id;
 
-    private boolean active;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @ManyToOne
-    private User reporter;
+  private boolean active;
 
-    @ManyToOne
-    private User reportee;
+  @ManyToOne
+  private User reporter;
 
-    private String reportReason;
+  @ManyToOne
+  private User reportee;
 
-    public UserReport() {}
+  private String reportReason;
 
-    public UserReport(User reporter, User reportee, String reportReason) {
-        this.active = true;
-        this.reporter = reporter;
-        this.reportee = reportee;
-        this.reportReason = reportReason;
-    }
+  public UserReport() {}
 
-    public Long getId() {
-        return id;
-    }
+  public UserReport(User reporter, User reportee, String reportReason) {
+    this.active = true;
+    this.reporter = reporter;
+    this.reportee = reportee;
+    this.reportReason = reportReason;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+  public boolean isActive() {
+    return active;
+  }
 
-    public User getReporter() {
-        return reporter;
-    }
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 
-    public void setReporter(User reporter) {
-        this.reporter = reporter;
-    }
+  public User getReporter() {
+    return reporter;
+  }
 
-    public User getReportee() {
-        return reportee;
-    }
+  public void setReporter(User reporter) {
+    this.reporter = reporter;
+  }
 
-    public void setReportee(User reportee) {
-        this.reportee = reportee;
-    }
+  public User getReportee() {
+    return reportee;
+  }
 
-    public String getReportReason() {
-        return reportReason;
-    }
+  public void setReportee(User reportee) {
+    this.reportee = reportee;
+  }
 
-    public void setReportReason(String reportReason) {
-        this.reportReason = reportReason;
-    }
+  public String getReportReason() {
+    return reportReason;
+  }
 
-    @Override
-    public String toString() {
-        return "UserReport{" +
-                "id=" + id +
-                ", active=" + active +
-                ", reporter=" + reporter +
-                ", reportee=" + reportee +
-                ", reportReason='" + reportReason + '\'' +
-                '}';
-    }
+  public void setReportReason(String reportReason) {
+    this.reportReason = reportReason;
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "UserReport{" +
+      "id=" +
+      id +
+      ", active=" +
+      active +
+      ", reporter=" +
+      reporter +
+      ", reportee=" +
+      reportee +
+      ", reportReason='" +
+      reportReason +
+      '\'' +
+      '}'
+    );
+  }
 }

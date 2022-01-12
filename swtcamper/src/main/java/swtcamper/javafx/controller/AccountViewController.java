@@ -22,7 +22,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class AccountViewController {
 
-    @Autowired
+  @Autowired
   private UserController userController;
 
   @Autowired
@@ -177,21 +177,28 @@ public class AccountViewController {
     );
 
     reportVBox.getChildren().clear();
-    for(UserReport userReport : userReportController.getAllUserReports()) {
+    for (UserReport userReport : userReportController.getAllUserReports()) {
       if (!userReport.isActive()) continue;
 
-      Label infoLabel = new Label(String.format("Beschwerde von %s über %s.", userReport.getReporter().getUsername(), userReport.getReportee().getUsername()));
+      Label infoLabel = new Label(
+        String.format(
+          "Beschwerde von %s über %s.",
+          userReport.getReporter().getUsername(),
+          userReport.getReportee().getUsername()
+        )
+      );
       infoLabel.setStyle("-fx-font-size: 20");
       Label reasonLabel = new Label(userReport.getReportReason());
 
-      Button acceptReportButton = new Button(String.format("%s blockieren", userReport.getReportee().getUsername()));
+      Button acceptReportButton = new Button(
+        String.format("%s blockieren", userReport.getReportee().getUsername())
+      );
       acceptReportButton.getStyleClass().add("bg-warning");
       acceptReportButton.setOnAction(event -> {
         try {
           userReportController.accept(userReport.getId());
           operatorInit(false);
-        } catch (GenericServiceException ignore) {
-        }
+        } catch (GenericServiceException ignore) {}
       });
 
       Button rejectReportButton = new Button("ablehnen");
@@ -200,14 +207,13 @@ public class AccountViewController {
         try {
           userReportController.reject(userReport.getId());
           operatorInit(false);
-        } catch (GenericServiceException ignore) {
-        }
+        } catch (GenericServiceException ignore) {}
       });
 
-      HBox buttonHBox = new HBox(acceptReportButton,rejectReportButton);
+      HBox buttonHBox = new HBox(acceptReportButton, rejectReportButton);
       buttonHBox.setSpacing(5);
 
-      VBox userReportVBox = new VBox(infoLabel,reasonLabel,buttonHBox);
+      VBox userReportVBox = new VBox(infoLabel, reasonLabel, buttonHBox);
       userReportVBox.getStyleClass().addAll("border-dark", "radius-10", "p4");
 
       reportVBox.getChildren().add(userReportVBox);
