@@ -278,7 +278,7 @@ public class BookingService {
         throw new GenericServiceException(e.getMessage());
       }
     }
-    return offerIDs;
+    return offers;
   }
 
   /**
