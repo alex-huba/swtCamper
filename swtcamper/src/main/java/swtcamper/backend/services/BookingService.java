@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -48,10 +47,10 @@ public class BookingService {
    * @return created Booking
    */
   public Booking create(
-          User user,
-          Offer offer,
-          LocalDate startDate,
-          LocalDate endDate
+    User user,
+    Offer offer,
+    LocalDate startDate,
+    LocalDate endDate
   ) {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))

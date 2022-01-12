@@ -73,22 +73,22 @@ public interface IUserController {
   void enableUserById(long id);
 
   /**
-   * see {@link UserService#lock(Long, String)} 
+   * see {@link UserService#lock(Long, String)}
    */
   void blockUserById(long id);
 
   /**
-   * see {@link UserService#unlock(Long, String)} 
+   * see {@link UserService#unlock(Long, String)}
    */
   void unblockUserById(long id);
 
   /**
-   * see {@link UserService#degradeUser(long, String)} 
+   * see {@link UserService#degradeUser(long, String)}
    */
   void degradeUserById(long id) throws GenericServiceException;
 
   /**
-   * see {@link UserService#promoteUser(long, String)} 
+   * see {@link UserService#promoteUser(long, String)}
    */
   void promoteUserById(long id) throws GenericServiceException;
 }
