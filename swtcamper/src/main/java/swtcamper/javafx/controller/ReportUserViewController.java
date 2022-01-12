@@ -44,9 +44,11 @@ public class ReportUserViewController {
 
   public void sendReport() throws GenericServiceException {
     boolean userIsReal = false;
+    // check if user is valid
     for (User user : userController.getAllUsers()) {
       if (user.getUsername().equals(reportThisUserTextField.getText())) {
         userIsReal = true;
+        // create new report
         userReportController.create(
           new UserReport(
             userController.getLoggedInUser(),
@@ -58,6 +60,7 @@ public class ReportUserViewController {
           "Beschwerde gesendet. Ein Operator wird sie in Kürze bearbeiten."
         );
 
+        // reset fields and go to home-view
         resetInputFields();
         mainViewController.changeView("home");
         break;

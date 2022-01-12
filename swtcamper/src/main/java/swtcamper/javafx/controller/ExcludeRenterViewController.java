@@ -43,6 +43,7 @@ public class ExcludeRenterViewController {
   @FXML
   public void initialize() throws GenericServiceException {
     reloadExcludedRenters();
+    findUsers(findUsersTextField.getText());
   }
 
   private void reloadExcludedRenters() throws GenericServiceException {

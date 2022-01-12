@@ -22,7 +22,7 @@ public class LoggingMessage implements ILoggingMessage {
   /**
    * LoggingMessage needed to send information to LoggingService
    *
-   * @param logLvl  LoggingLevel to specify the severity of the message
+   * @param logLvl  {@link LoggingLevel} to specify the severity of the message
    * @param message Message that shall be logged
    */
   public LoggingMessage(LoggingLevel logLvl, String message) {

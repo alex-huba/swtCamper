@@ -34,15 +34,15 @@ public class UserService {
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
    *
-   * @param username
-   * @param password
-   * @param email
-   * @param phone
-   * @param name
-   * @param surname
-   * @param userRole
-   * @param enabled
-   * @return
+   * @param username Unique username
+   * @param password password with at least length of 8
+   * @param email unique email address (gets validated in {@link swtcamper.javafx.controller.RegisterViewController})
+   * @param phone unique phone number
+   * @param name first name of user
+   * @param surname last name of user
+   * @param userRole {@link UserRole} the user wants to start with
+   * @param enabled if user wants to be a Provider, he/she is disabled by default until an Operator accepts him/her
+   * @return created User
    * @throws GenericServiceException
    */
   public User create(
@@ -84,19 +84,27 @@ public class UserService {
     return userRepository.findById(newId).get();
   }
 
-  public void delete(User user) {
+  /**
+   * Deletes a user by his/her ID
+   * @param id of the user to delete
+   */
+  public void delete(long id) {
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
-          String.format("User with ID %s deleted.", user.getId())
+          String.format("User with ID %s deleted.", id)
         )
       )
     );
-    // TODO: implement user deletion
+    userRepository.deleteById(id);
   }
 
-  public void update(long userId, User user) {
+  /**
+   * Overwrites an existing user
+   * @param user to get updates with new values
+   */
+  public User update(User user) {
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
@@ -105,7 +113,7 @@ public class UserService {
         )
       )
     );
-    // TODO: implement user update
+    return userRepository.save(user);
   }
 
   /**
@@ -125,6 +133,13 @@ public class UserService {
     );
   }
 
+  /**
+   * Finds a specific user by its username.
+   *
+   * @param username of user to find
+   * @return User with specified username
+   * @throws GenericServiceException
+   */
   public User getUserByUsername(String username)
     throws GenericServiceException {
     Optional<User> userOptional = userRepository.findByUsername(username);
@@ -137,9 +152,9 @@ public class UserService {
   }
 
   /**
-   * Finds all user.
+   * Finds all users.
    *
-   * @return
+   * @return List of all available users
    * @throws GenericServiceException if there are no user in the database
    */
   public List<User> user() throws GenericServiceException {
@@ -151,14 +166,28 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  /**
+   * Get the currently logged-in User
+   * @return User of the person who is currently using the application
+   */
   public User getLoggedInUser() {
     return loggedInUser;
   }
 
+  /**
+   * Sets the currently logged-in User
+   * @param loggedInUser User that is logged-in from now on
+   */
   public void setLoggedInUser(User loggedInUser) {
     this.loggedInUser = loggedInUser;
   }
 
+  /**
+   * Adds the User that has the given ID to the list of excluded renters of the currently logged-in User
+   * ==> Given User will no longer see offers from the currently logged-in User, if logged-in
+   * @param idOfRenterToExclude ID of the User to exclude
+   * @throws GenericServiceException
+   */
   public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
     throws GenericServiceException {
     User user = getLoggedInUser();
@@ -185,6 +214,12 @@ public class UserService {
     userRepository.save(user);
   }
 
+  /**
+   * Removes the User that has the given ID from the list of excluded renters of the currently logged-in User
+   * ==> Given User will see offers from the currently logged-in User again, if logged-in
+   * @param idOfRenterToInclude ID of the User to include
+   * @throws GenericServiceException
+   */
   public void removeExcludedRenterForCurrentlyLoggedInUser(
     long idOfRenterToInclude
   ) throws GenericServiceException {
@@ -474,9 +509,9 @@ public class UserService {
   /**
    * Changes a users' password.
    *
-   * @param username
-   * @param email
-   * @param password
+   * @param username Username of the user whose password shall be reset
+   * @param email Email of the user whose password shall be reset (for validation)
+   * @param password new password
    * @throws GenericServiceException if user account doesn't exist in database
    */
   public void resetPassword(String username, String email, String password)

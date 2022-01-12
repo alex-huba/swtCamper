@@ -13,8 +13,6 @@ import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import swtcamper.backend.services.exceptions.UserDoesNotExistException;
-import swtcamper.javafx.controller.OfferViewController;
 
 @Component
 public class BookingController implements IBookingController {
@@ -50,7 +48,7 @@ public class BookingController implements IBookingController {
     boolean active
   ) {
     return modelMapper.bookingToBookingDTO(
-      bookingService.create(user, offer, startDate, endDate, active)
+      bookingService.create(user, offer, startDate, endDate)
     );
   }
 

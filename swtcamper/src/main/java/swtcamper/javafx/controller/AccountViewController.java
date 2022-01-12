@@ -19,6 +19,9 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class AccountViewController {
 
@@ -152,71 +155,81 @@ public class AccountViewController {
     verticalSeparator.setOrientation(Orientation.VERTICAL);
 
     buttonToolbar
-      .getItems()
-      .addAll(
-        showLogBtn,
-        blockBtn,
-        degradeBtn,
-        promoteBtn,
-        verticalSeparator,
-        logoutBtn
-      );
+            .getItems()
+            .addAll(
+                    showLogBtn,
+                    blockBtn,
+                    degradeBtn,
+                    promoteBtn,
+                    verticalSeparator,
+                    logoutBtn
+            );
 
     operatorDashboard.setVisible(true);
 
     // fill in all log messages DESC
     ObservableList<LoggingMessageDTO> logList = FXCollections.observableArrayList(
-      loggingController.getAllLogMessages()
+            loggingController.getAllLogMessages()
     );
     if (!ascending) FXCollections.reverse(logList);
     logListView.setItems(logList);
 
     // fill in all users
     usersListView.setItems(
-      FXCollections.observableArrayList(userController.getAllUsers())
+            FXCollections.observableArrayList(userController.getAllUsers())
     );
 
+    // user reports
     reportVBox.getChildren().clear();
-    for (UserReport userReport : userReportController.getAllUserReports()) {
-      if (!userReport.isActive()) continue;
+    List<UserReport> activeUserReports = userReportController.getAllUserReports().stream().filter(UserReport::isActive).collect(Collectors.toList());
+    if (activeUserReports.isEmpty()) {
+      Label thereAreNoActiveReportsLabel = new Label("Im Moment liegen keine Beschwerden über Nutzer vor");
+      thereAreNoActiveReportsLabel.setDisable(true);
+      reportVBox.getChildren().add(thereAreNoActiveReportsLabel);
+    } else {
+      for (UserReport userReport : activeUserReports) {
+        Label infoLabel = new Label(
+                String.format(
+                        "Beschwerde von %s über %s.",
+                        userReport.getReporter().getUsername(),
+                        userReport.getReportee().getUsername()
+                )
+        );
+        infoLabel.setStyle("-fx-font-size: 20");
+        Label reasonLabel = new Label(userReport.getReportReason());
 
-      Label infoLabel = new Label(
-        String.format(
-          "Beschwerde von %s über %s.",
-          userReport.getReporter().getUsername(),
-          userReport.getReportee().getUsername()
-        )
-      );
-      infoLabel.setStyle("-fx-font-size: 20");
-      Label reasonLabel = new Label(userReport.getReportReason());
+        Button acceptReportButton = new Button(
+                String.format("%s blockieren", userReport.getReportee().getUsername())
+        );
+        acceptReportButton.getStyleClass().add("bg-warning");
+        acceptReportButton.setOnAction(event -> {
+          try {
+            userReportController.accept(userReport.getId());
+            operatorInit(false);
+          } catch (GenericServiceException ignore) {
+          }
+        });
 
-      Button acceptReportButton = new Button(
-        String.format("%s blockieren", userReport.getReportee().getUsername())
-      );
-      acceptReportButton.getStyleClass().add("bg-warning");
-      acceptReportButton.setOnAction(event -> {
-        try {
-          userReportController.accept(userReport.getId());
-          operatorInit(false);
-        } catch (GenericServiceException ignore) {}
-      });
+        Button rejectReportButton = new Button("ablehnen");
+        rejectReportButton.getStyleClass().add("bg-primary");
+        rejectReportButton.setOnAction(event -> {
+          try {
+            userReportController.reject(userReport.getId());
+            operatorInit(false);
+          } catch (GenericServiceException ignore) {
+          }
+        });
 
-      Button rejectReportButton = new Button("ablehnen");
-      rejectReportButton.getStyleClass().add("bg-primary");
-      rejectReportButton.setOnAction(event -> {
-        try {
-          userReportController.reject(userReport.getId());
-          operatorInit(false);
-        } catch (GenericServiceException ignore) {}
-      });
+        HBox buttonHBox = new HBox(acceptReportButton, rejectReportButton);
+        buttonHBox.setSpacing(5);
 
-      HBox buttonHBox = new HBox(acceptReportButton, rejectReportButton);
-      buttonHBox.setSpacing(5);
+        VBox userReportVBox = new VBox(infoLabel, reasonLabel, new Separator(), buttonHBox);
+        userReportVBox.setStyle("-fx-background-color: white");
+        userReportVBox.getStyleClass().addAll("border-dark", "radius-10", "p4");
 
-      VBox userReportVBox = new VBox(infoLabel, reasonLabel, buttonHBox);
-      userReportVBox.getStyleClass().addAll("border-dark", "radius-10", "p4");
-
-      reportVBox.getChildren().add(userReportVBox);
+        // add to view
+        reportVBox.getChildren().add(userReportVBox);
+      }
     }
   }
 

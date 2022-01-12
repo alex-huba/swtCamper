@@ -27,6 +27,11 @@ public class UserReportService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Creates a new {@link UserReport}
+   * @param userReport UserReport to save
+   * @return newly saved UserReport
+   */
   public UserReport create(UserReport userReport) {
     UserReport reported = userReportRepository.save(
       new UserReport(
@@ -51,6 +56,12 @@ public class UserReportService {
     return reported;
   }
 
+  /**
+   * Gets a specific UserReport by its ID
+   * @param id ID of the UserReport to get
+   * @return found UserReport
+   * @throws GenericServiceException if no UserReport could be found
+   */
   public UserReport getUserReportById(long id) throws GenericServiceException {
     Optional<UserReport> userReportOptional = userReportRepository.findById(id);
     if (userReportOptional.isPresent()) {
@@ -61,13 +72,23 @@ public class UserReportService {
     );
   }
 
+  /**
+   * Gets a list of all available UserReports
+   * @return list of all available UserReports
+   */
   public List<UserReport> getAllUserReports() {
     return userReportRepository.findAll();
   }
 
-  public UserReport acceptUserReport(long userID)
+  /**
+   * Sets the active state of a specific UserReport to false and blocks the reported User (reportee)
+   * @param userReportID ID of the UserReport to accept
+   * @return accepted UserReport
+   * @throws GenericServiceException if there is no UserReport with this ID
+   */
+  public UserReport acceptUserReport(long userReportID)
     throws GenericServiceException {
-    UserReport userReport = getUserReportById(userID);
+    UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
     loggingService.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
@@ -75,7 +96,7 @@ public class UserReportService {
           LoggingLevel.INFO,
           String.format(
             "UserReport with ID %s was accepted by %s.",
-            userID,
+            userReportID,
             userController.getLoggedInUser().getUsername()
           )
         )
@@ -85,9 +106,15 @@ public class UserReportService {
     return userReportRepository.save(userReport);
   }
 
-  public UserReport rejectUserReport(long userID)
+  /**
+   * Sets the active state of a specific UserReport to false
+   * @param userReportID ID of the UserReport to reject
+   * @return rejected UserReport
+   * @throws GenericServiceException if there is no UserReport with this ID
+   */
+  public UserReport rejectUserReport(long userReportID)
     throws GenericServiceException {
-    UserReport userReport = getUserReportById(userID);
+    UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
     loggingService.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
@@ -95,7 +122,7 @@ public class UserReportService {
           LoggingLevel.INFO,
           String.format(
             "UserReport with ID %s was rejected by %s.",
-            userID,
+            userReportID,
             userController.getLoggedInUser().getUsername()
           )
         )
@@ -104,6 +131,10 @@ public class UserReportService {
     return userReportRepository.save(userReport);
   }
 
+  /**
+   * Deletes a specific UserReport
+   * @param id ID of the UserReport to delete
+   */
   public void delete(long id) {
     loggingService.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
