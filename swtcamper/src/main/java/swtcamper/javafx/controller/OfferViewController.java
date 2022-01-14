@@ -133,6 +133,9 @@ public class OfferViewController {
   public Button bookingButton;
 
   @FXML
+  public Button promotingButton;
+
+  @FXML
   public Label dateLabel;
 
   @FXML
@@ -157,6 +160,8 @@ public class OfferViewController {
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
     checkMode(rentingMode);
+    checkOfferStatus();
+    //checkUserRole();
     Vehicle offeredObject = offer.getOfferedObject();
 
     pictureHorizontHBox.getChildren().clear();
@@ -339,6 +344,31 @@ public class OfferViewController {
       startDate.setVisible(false);
       endDate.setVisible(false);
       rentHBox.setVisible(false);
+    }
+  }
+
+  public void checkUserRole() {
+    if (!userController.getLoggedInUser().getUserRole().equals("Operator")) {
+      promotingButton.setVisible(false);
+    } else {
+      promotingButton.setVisible(true);
+    }
+  }
+
+  public void checkOfferStatus() {
+    if (this.viewedOffer.isPromoted()) {
+      promotingButton.setText("Nicht mehr hervorheben");
+    } else {
+      promotingButton.setText("Angebot hervorheben");
+    }
+  }
+
+  @FXML
+  public void promotingAction() throws GenericServiceException {
+    if (this.viewedOffer.isPromoted()) {
+      offerController.degradeOffer(this.viewedOffer.getID());
+    } else {
+      offerController.promoteOffer(this.viewedOffer.getID());
     }
   }
 

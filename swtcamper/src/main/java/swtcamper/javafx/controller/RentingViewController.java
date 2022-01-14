@@ -190,6 +190,16 @@ public class RentingViewController {
       root.setStyle(
         "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
       );
+      Label promoteLabel = new Label("");
+      promoteLabel.setStyle(
+              "-fx-font-size: 20; -fx-font-family: Arial Rounded MT Bold;"
+      );
+      if (offer.isPromoted()) {
+        root.setStyle(
+                "-fx-background-color: #add8e6; -fx-background-radius: 20px"
+        );
+        promoteLabel.setText("-- Von uns empfohlen! --");
+      }
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
@@ -274,6 +284,7 @@ public class RentingViewController {
       btnBox.setStyle("-fx-padding: 0 30 30 0");
 
       VBox detailsVBox = new VBox(
+        promoteLabel,
         titleLabel,
         locationPriceBrandModelBox,
         btnBox
