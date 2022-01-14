@@ -40,7 +40,7 @@ public class OfferService {
   @Autowired
   private ModelMapper modelMapper;
 
-  private List<Offer> promotedOffers = new ArrayList<>();
+  //  private List<Offer> promotedOffers = new ArrayList<>();
 
   public Offer create(
     // TODO validation
@@ -362,32 +362,25 @@ public class OfferService {
     return offerRepository.findAll();
   }
 
-  public List<Offer> promoteOffer(Long offerID) throws GenericServiceException {
-    // TODO: speichern in Datenbank
+  public Offer promoteOffer(long offerID) throws GenericServiceException {
     Offer offer = getOfferById(offerID);
-    this.promotedOffers.add(offer);
-    return this.promotedOffers;
+    offer.setPromoted(true);
+    return offerRepository.save(offer);
   }
 
-  public List<Offer> degradeOffer(Long offerID) throws GenericServiceException {
-    // TODO: speichern in Datenbank
+  public Offer degradeOffer(long offerID) throws GenericServiceException {
     Offer offer = getOfferById(offerID);
-    this.promotedOffers.remove(offer);
-    return this.promotedOffers;
+    offer.setPromoted(false);
+    return offerRepository.save(offer);
   }
 
-  public List<Offer> getPromotedOffers(){
-    // TODO: holen aus Datenbank
-    return this.promotedOffers;
-  }
-
-  public Offer getOfferById(Long offerID) throws GenericServiceException {
+  public Offer getOfferById(long offerID) throws GenericServiceException {
     Optional<Offer> offerOptional = offerRepository.findById(offerID);
     if (offerOptional.isPresent()) {
       return offerOptional.get();
     }
     throw new GenericServiceException(
-            "There is no user with ID " + offerID + "."
+      "There is no offer with ID " + offerID + "."
     );
   }
 }

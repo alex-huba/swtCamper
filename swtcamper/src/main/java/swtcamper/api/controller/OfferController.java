@@ -403,4 +403,12 @@ public class OfferController implements IOfferController {
     );
     return !booleanList.contains(false);
   }
+
+  public OfferDTO promoteOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.promoteOffer(offerID));
+  }
+
+  public OfferDTO degradeOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.degradeOffer(offerID));
+  }
 }
