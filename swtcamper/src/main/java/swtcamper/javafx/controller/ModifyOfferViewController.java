@@ -592,7 +592,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateLocation(String inputLocation) {
-    if (inputLocation.isEmpty() || inputLocation.length() < 3) {
+    if (!validationHelper.checkOfferLocation(inputLocation)) {
       errorLabel.setText("Ungültiger Abholort");
       validateFalse(locationTextField);
       isLocationOk.set(false);
@@ -604,7 +604,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateContact(String inputContact) {
-    if (inputContact.isEmpty() || inputContact.length() < 5) {
+    if (!validationHelper.checkOfferContact(inputContact)) {
       errorLabel.setText("Ungültiger Kontakt");
       validateFalse(contactTextField);
       isContactOk.set(false);

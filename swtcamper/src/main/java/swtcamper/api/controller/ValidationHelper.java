@@ -23,9 +23,7 @@ public class ValidationHelper {
   }
 
   public boolean checkOfferPrice(String toCheck) {
-    return (
-      !toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0
-    );
+    return (!toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0);
   }
 
   public boolean checkOfferLocation(String toCheck) {
@@ -33,7 +31,7 @@ public class ValidationHelper {
   }
 
   public boolean checkOfferContact(String toCheck) {
-    return !toCheck.isEmpty() && lengthOverThree(toCheck);
+    return !toCheck.isEmpty() && lengthOverFive(toCheck);
   }
 
   public boolean checkRentingDate(LocalDate startDate, LocalDate endDate) {
