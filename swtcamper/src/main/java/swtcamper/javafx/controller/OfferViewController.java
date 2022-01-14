@@ -161,7 +161,7 @@ public class OfferViewController {
     this.viewedOffer = offer;
     checkMode(rentingMode);
     checkOfferStatus();
-    //checkUserRole();
+    checkUserRole();
     Vehicle offeredObject = offer.getOfferedObject();
 
     pictureHorizontHBox.getChildren().clear();
@@ -348,7 +348,7 @@ public class OfferViewController {
   }
 
   public void checkUserRole() {
-    if (!userController.getLoggedInUser().getUserRole().equals("Operator")) {
+    if (userController.getLoggedInUser().getUserRole().equals("Operator")) {
       promotingButton.setVisible(false);
     } else {
       promotingButton.setVisible(true);
@@ -370,6 +370,7 @@ public class OfferViewController {
     } else {
       offerController.promoteOffer(this.viewedOffer.getID());
     }
+    backAction();
   }
 
   @FXML
