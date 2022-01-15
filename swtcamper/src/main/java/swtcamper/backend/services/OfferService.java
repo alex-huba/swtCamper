@@ -9,7 +9,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -21,6 +20,9 @@ public class OfferService {
 
   @Autowired
   OfferService offerService;
+
+  @Autowired
+  UserService userService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -39,8 +41,6 @@ public class OfferService {
 
   @Autowired
   private ModelMapper modelMapper;
-
-  //  private List<Offer> promotedOffers = new ArrayList<>();
 
   public Offer create(
     // TODO validation
@@ -365,12 +365,36 @@ public class OfferService {
   public Offer promoteOffer(long offerID) throws GenericServiceException {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(true);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got promoted by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
     return offerRepository.save(offer);
   }
 
   public Offer degradeOffer(long offerID) throws GenericServiceException {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(false);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got degraded by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
     return offerRepository.save(offer);
   }
 
