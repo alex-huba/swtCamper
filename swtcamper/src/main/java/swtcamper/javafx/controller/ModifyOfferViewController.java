@@ -35,10 +35,7 @@ import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
-import swtcamper.backend.entities.Picture;
-import swtcamper.backend.entities.TransmissionType;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -153,6 +150,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   ListView<String> rentalConditionsListView;
 
+  @FXML
+  public ChoiceBox<Integer> seatsChoiceBox;
+  @FXML
+  public ChoiceBox<Integer> bedsChoiceBox;
+  @FXML
+  public ChoiceBox<FuelType> fuelChoiceBox;
+
   List<String> rentalConditions = new ArrayList<>();
 
   SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
@@ -228,6 +232,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
           .and(isTransmissionTypeOk)
           .not()
       );
+
+      seatsChoiceBox.setItems(FXCollections.observableArrayList(0,1,2,3,5,6,7,8,9,10));
+      bedsChoiceBox.setItems(FXCollections.observableArrayList(0,1,2,3,5,6,7,8,9,10));
+      fuelChoiceBox.setItems(FXCollections.observableArrayList((FuelType.values())));
   }
 
   /**
@@ -665,18 +673,14 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateSeats(String inputSeats) {
-    if (
-      inputSeats.isEmpty() ||
-      !inputSeats.matches("[0-9]*") ||
-      Integer.parseInt(inputSeats) == 0
-    ) {
-      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
-      validateFalse(seatsTextField);
-      isSeatsOk.set(false);
-    } else {
+    if (seatsChoiceBox.isShowing() && vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER) ? seatsChoiceBox.getValue() > 0 : true) {
       errorLabel.setText("");
       validateTrue(seatsTextField);
       isSeatsOk.set(true);
+    } else {
+      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
+      validateFalse(seatsTextField);
+      isSeatsOk.set(false);
     }
   }
 
