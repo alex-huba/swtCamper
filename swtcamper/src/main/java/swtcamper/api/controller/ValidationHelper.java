@@ -52,10 +52,23 @@ public class ValidationHelper {
     return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
+  /**
+   * Checks if startDate is before endDate or on the same day
+   * @param startDate
+   * @param endDate
+   * @return true if startDate is before endDate and not on the same day
+   */
   public boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
     return startDate.isBefore(endDate) && !startDate.equals(endDate);
   }
 
+  /**
+   *  Checks if booked days of an offer lie between a startDate and an endDate
+   * @param startDate
+   * @param endDate
+   * @param offer
+   * @return true, if no booked days lie in between, false if booked days lie in between
+   */
   public boolean checkRentingDatesWithOffer(
     LocalDate startDate,
     LocalDate endDate,
@@ -69,7 +82,9 @@ public class ValidationHelper {
         List<LocalDate> bookedDays = bookingService.getBookedDays(
           offer.getID()
         );
-        List<LocalDate> blockedDays = offerService.getBlockedDates(offer.getID());
+        List<LocalDate> blockedDays = offerService.getBlockedDates(
+          offer.getID()
+        );
         for (LocalDate day : bookedDays) {
           if (day.isAfter(startDate) && day.isBefore(endDate)) {
             noBookedDaysInBetween = false;

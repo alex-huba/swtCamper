@@ -57,7 +57,7 @@ public class OfferViewController {
   private BookingService bookingService;
 
   @Autowired
-          private OfferService offerService;
+  private OfferService offerService;
 
   LongStringConverter longStringConverter = new LongStringConverter();
 
@@ -149,7 +149,6 @@ public class OfferViewController {
 
   @FXML
   public DatePicker startDatePicker;
-
 
   @FXML
   public DatePicker endDatePicker;
@@ -436,32 +435,43 @@ public class OfferViewController {
     }
   }
 
+  /**
+   * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable and
+   * all blockedDays and bookedDays pink and un-clickable
+   * @param datePicker
+   * @param offerDTO
+   */
   private void setCellFactory(DatePicker datePicker, OfferDTO offerDTO) {
     try {
       final List<LocalDate> bookedDays = bookingService.getBookedDays(
-              offerDTO.getID());
-      final List<LocalDate> blockedDates = offerService.getBlockedDates(offerDTO.getID());
+        offerDTO.getID()
+      );
+      final List<LocalDate> blockedDates = offerService.getBlockedDates(
+        offerDTO.getID()
+      );
       datePicker.setDayCellFactory(
-              new Callback<DatePicker, DateCell>() {
-                @Override
-                public DateCell call(DatePicker param) {
-                  return new DateCell() {
-                    @Override
-                    public void updateItem(LocalDate date, boolean empty) {
-                      super.updateItem(date, empty);
-                      if (!empty && date != null) {
-                        LocalDate today = LocalDate.now();
-                        setDisable(empty || date.compareTo(today) < 0);
-                        if (bookedDays.contains(date) || blockedDates.contains(date)) {
-                          // Aussehen und Verhalten der Zellen setzen
-                          this.setStyle("-fx-background-color: pink");
-                          setDisable(true);
-                        }
-                      }
-                    }
-                  };
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(DatePicker param) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (!empty && date != null) {
+                  LocalDate today = LocalDate.now();
+                  setDisable(empty || date.compareTo(today) < 0);
+                  if (
+                    bookedDays.contains(date) || blockedDates.contains(date)
+                  ) {
+                    // Aussehen und Verhalten der Zellen setzen
+                    this.setStyle("-fx-background-color: pink");
+                    setDisable(true);
+                  }
                 }
               }
+            };
+          }
+        }
       );
     } catch (GenericServiceException e) {
       mainViewController.handleExceptionMessage(e.getMessage());

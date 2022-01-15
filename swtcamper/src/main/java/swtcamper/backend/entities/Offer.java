@@ -1,9 +1,8 @@
 package swtcamper.backend.entities;
 
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.Objects;
+import javafx.util.Pair;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -269,6 +268,8 @@ public class Offer implements IOffer {
       price +
       ", active=" +
       active +
+      ", blockedDates=" +
+      blockedDates +
       '}'
     );
   }

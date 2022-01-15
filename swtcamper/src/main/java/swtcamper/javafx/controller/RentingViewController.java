@@ -439,11 +439,17 @@ public class RentingViewController {
     transmissionComboBox.valueProperty().set(null);
   }
 
+  /**
+   * resets the startDate DatePicker
+   */
   public void resetStartDatePicker() {
     startDatePicker.getEditor().clear();
     startDatePicker.setValue(null);
   }
 
+  /**
+   * resets the endDate DatePicker
+   */
   public void resetEndDatePicker() {
     endDatePicker.getEditor().clear();
     endDatePicker.setValue(null);

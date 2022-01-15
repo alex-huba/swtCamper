@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,7 +118,7 @@ public class OfferService {
       particularities,
       price,
       rentalConditions,
-            blockedDates
+      blockedDates
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
@@ -368,8 +367,14 @@ public class OfferService {
     return offerRepository.findAll();
   }
 
+  /**
+   * Gets all days from the blockedDays list of a given offer (startDate, endDate, all days in between)
+   * @param offerID
+   * @return
+   * @throws GenericServiceException
+   */
   public List<LocalDate> getBlockedDates(long offerID)
-          throws GenericServiceException {
+    throws GenericServiceException {
     List<LocalDate> blockedDates = new ArrayList<>();
 
     Optional<Offer> offerResponse = offerRepository.findById(offerID);
@@ -387,7 +392,7 @@ public class OfferService {
       return blockedDates;
     }
     throw new GenericServiceException(
-            "Offer with following ID not found: " + offerID
+      "Offer with following ID not found: " + offerID
     );
   }
 }
