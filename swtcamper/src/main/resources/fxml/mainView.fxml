@@ -16,9 +16,9 @@
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane style="-fx-background-color: lightblue;">
+            <AnchorPane style="-fx-background-color: #36334f;">
                <children>
-                  <Label fx:id="globalHeaderLabel" style="-fx-font-size: 40;" text="SWTCamper - &lt;Heading&gt;">
+                  <Label fx:id="globalHeaderLabel" style="-fx-font-size: 30; -fx-text-fill: #FFFFFF;" text="SWTCamper - &lt;Heading&gt;">
                      <font>
                         <Font size="30.0" />
                      </font>
