@@ -55,6 +55,7 @@ public interface IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

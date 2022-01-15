@@ -215,6 +215,7 @@ public class OfferController implements IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -249,6 +250,7 @@ public class OfferController implements IOfferController {
         price,
         active,
         rentalConditions,
+              blockedDates,
         //VehicleFeatures-Parameter
         vehicleType,
         make,

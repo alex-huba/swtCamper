@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -255,67 +256,10 @@ public class OfferViewController {
     fridgeLabel.setOpacity(
       labelOpacity(offeredObject.getVehicleFeatures().isFridge())
     );
-    startDatePicker.getEditor().clear();
-    endDatePicker.getEditor().clear();
-    try {
-      final List<LocalDate> bookedDays = bookingService.getBookedDays(
-        offer.getID());
-              final List<LocalDate> blockedDates = offerService.getBlockedDates(offer.getID());
-      endDatePicker.setDayCellFactory(
-        new Callback<DatePicker, DateCell>() {
-          @Override
-          public DateCell call(DatePicker param) {
-            return new DateCell() {
-              @Override
-              public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (!empty && date != null) {
-                  LocalDate today = LocalDate.now();
-                  setDisable(empty || date.compareTo(today) < 0);
-                  if (bookedDays.contains(date) || blockedDates.contains(date)) {
-                    // Aussehen und Verhalten der Zellen setzen
-                    this.setStyle("-fx-background-color: pink");
-                    setDisable(true);
-                  }
-                }
-              }
-            };
-          }
-        }
-      );
-    } catch (GenericServiceException e) {
-      mainViewController.handleExceptionMessage(e.getMessage());
-    }
-    try {
-      final List<LocalDate> bookedDays = bookingService.getBookedDays(
-        offer.getID()
-      );
-      final List<LocalDate> blockedDates = offerService.getBlockedDates(offer.getID());
-      startDatePicker.setDayCellFactory(
-        new Callback<DatePicker, DateCell>() {
-          @Override
-          public DateCell call(DatePicker param) {
-            return new DateCell() {
-              @Override
-              public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (!empty && date != null) {
-                  LocalDate today = LocalDate.now();
-                  setDisable(empty || date.compareTo(today) < 0);
-                  if (bookedDays.contains(date) || blockedDates.contains(date)) {
-                    // Aussehen und Verhalten der Zellen setzen
-                    this.setStyle("-fx-background-color: pink");
-                    setDisable(true);
-                  }
-                }
-              }
-            };
-          }
-        }
-      );
-    } catch (GenericServiceException e) {
-      mainViewController.handleExceptionMessage(e.getMessage());
-    }
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
+    setCellFactory(startDatePicker, viewedOffer);
+    setCellFactory(endDatePicker, viewedOffer);
   }
 
   private double labelOpacity(boolean checkBox) {
@@ -484,6 +428,38 @@ public class OfferViewController {
       mainViewController.handleExceptionMessage(
         "Bitte wähle ein korrektes Datum aus!"
       );
+    }
+  }
+
+  private void setCellFactory(DatePicker datePicker, OfferDTO offerDTO) {
+    try {
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(
+              offerDTO.getID());
+      final List<LocalDate> blockedDates = offerService.getBlockedDates(offerDTO.getID());
+      datePicker.setDayCellFactory(
+              new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(DatePicker param) {
+                  return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                      super.updateItem(date, empty);
+                      if (!empty && date != null) {
+                        LocalDate today = LocalDate.now();
+                        setDisable(empty || date.compareTo(today) < 0);
+                        if (bookedDays.contains(date) || blockedDates.contains(date)) {
+                          // Aussehen und Verhalten der Zellen setzen
+                          this.setStyle("-fx-background-color: pink");
+                          setDisable(true);
+                        }
+                      }
+                    }
+                  };
+                }
+              }
+      );
+    } catch (GenericServiceException e) {
+      mainViewController.handleExceptionMessage(e.getMessage());
     }
   }
 }

@@ -110,9 +110,9 @@
                                                 <TextField fx:id="rentalConditionsTextField"/>
                                                 <HBox prefHeight="0.0" prefWidth="200.0" spacing="5">
                                                     <children>
-                                                        <Button mnemonicParsing="false" onAction="#addButtonAction"
+                                                        <Button mnemonicParsing="false" onAction="#addRentalConditionButtonAction"
                                                                 styleClass="bg-primary" text="Hinzufügen"/>
-                                                        <Button mnemonicParsing="false" onAction="#removeButtonAction"
+                                                        <Button mnemonicParsing="false" onAction="#removeRentalConditionButtonAction"
                                                                 styleClass="bg-primary" text="Entfernen">
                                                             <styleClass>
                                                                 <String fx:value="bg-danger"/>

@@ -165,6 +165,7 @@ public class OfferService {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -271,6 +272,7 @@ public class OfferService {
     offer.setPrice(price);
     offer.setActive(active);
     offer.setRentalConditions(rentalConditions);
+    offer.setBlockedDates(blockedDates);
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(

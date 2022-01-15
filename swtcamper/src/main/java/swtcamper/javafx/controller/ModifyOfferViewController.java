@@ -180,6 +180,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private long offerID;
   private Vehicle offeredObject;
+  private OfferDTO offerDTO;
 
   private List<Picture> pictures;
 
@@ -194,6 +195,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private BookingRepository bookingRepository;
+
+  @Autowired
+  private OfferService offerService;
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
@@ -304,7 +308,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public void initialize(OfferDTO offer) {
     isEditMode.set(true);
-
+    this.offerDTO = offer;
     this.offerID = offer.getID();
     this.offeredObject = offer.getOfferedObject();
     Vehicle vehicle = vehicleRepository
@@ -322,6 +326,15 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     rentalConditionsListView.setItems(
             FXCollections.observableArrayList(rentalConditions)
     );
+
+    setCellFactory(startDatePicker, offer);
+    setCellFactory(endDatePicker, offer);
+    blockedDates = offer.getBlockedDates();
+    blockedDatesListView.setItems(
+            FXCollections.observableArrayList(blockedDates)
+    );
+    styleBlockedDatesListView(blockedDatesListView);
+
 
     activeCheckBox.setSelected(offer.isActive());
 
@@ -675,6 +688,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
               longStringConverter.fromString(priceTextField.getText()),
               activeCheckBox.isSelected(),
               (ArrayList<String>) rentalConditions,
+              blockedDates,
               vehicleTypeComboBox.getValue(),
               brandTextField.getText(),
               modelTextField.getText(),
@@ -965,7 +979,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   /**
    * action for adding new rental conditions
    */
-  public void addButtonAction() {
+  public void addRentalConditionButtonAction() {
     if (
             rentalConditionsTextField.getText() != null &&
                     !rentalConditionsTextField.getText().isEmpty()
@@ -988,7 +1002,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   /**
    * action for removing rental conditions
    */
-  public void removeButtonAction() {
+  public void removeRentalConditionButtonAction() {
     if (
             rentalConditionsListView.getSelectionModel().getSelectedItems() != null &&
                     !rentalConditionsListView.getSelectionModel().getSelectedItems().isEmpty()
@@ -1010,10 +1024,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   public void addDatesButtonAction() {
     if (
-            startDatePicker.getValue() != null && endDatePicker.getValue() != null && validationHelper.checkRentingDates(
+            startDatePicker.getValue() == null || endDatePicker.getValue() == null || !validationHelper.checkRentingDates(
                     startDatePicker.getValue(),
                     endDatePicker.getValue())
     ) {
+      mainViewController.handleExceptionMessage(
+              "Das Startdatum darf nicht nach oder am selben Tag wie das Enddatum liegen!"
+      );
+    }  else if (
+            isEditMode.get() && !validationHelper.checkRentingDatesWithOffer(
+                    startDatePicker.getValue(),
+                    endDatePicker.getValue(),
+                    offerDTO
+            )
+    ) {
+      mainViewController.handleExceptionMessage(
+              "Zwischen Start- und Enddatum darf keine andere Buchung liegen!"
+      );
+    } else {
       Pair<LocalDate, LocalDate> startAndEndDate = new Pair<>(startDatePicker.getValue(),endDatePicker.getValue());
       startDatePicker.getEditor().clear();
       endDatePicker.getEditor().clear();
@@ -1022,38 +1050,101 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
               blockedDates
       );
       blockedDatesListView.setItems(myObservableList);
-      blockedDatesListView.setCellFactory(new Callback<ListView<Pair>, ListCell<Pair>>() {
-
-        @Override
-        public ListCell<Pair> call(ListView<Pair> param) {
-          return new ListCell<>(){
-            @Override
-            public void updateItem(Pair pair, boolean empty) {
-              super.updateItem(pair, empty);
-              if (empty || pair == null) {
-                setText(null);
-              } else {
-                setText(pair.getKey() + " bis " + pair.getValue());
-              }
-            }
-          };
-        }
-      });
-    } else {
-      mainViewController.handleExceptionMessage(
-              "Das Startdatum darf nicht nach oder am selben Tag wie das Enddatum liegen!"
-      );
+      styleBlockedDatesListView(blockedDatesListView);
+      if (isEditMode.get()) {
+        placeOfferButton.visibleProperty().set(true);
+      }
     }
 
   }
 
   public void removeDatesButtonAction() {
-    blockedDates.removeAll(
-            blockedDatesListView.getSelectionModel().getSelectedItems()
-    );
-    ObservableList<Pair> myObservableList = FXCollections.observableList(
-            blockedDates
-    );
-    blockedDatesListView.setItems(myObservableList);
+    if (
+            blockedDatesListView.getSelectionModel().getSelectedItems() != null &&
+                    !blockedDatesListView.getSelectionModel().getSelectedItems().isEmpty()
+    ) {
+      blockedDates.removeAll(
+              blockedDatesListView.getSelectionModel().getSelectedItems()
+      );
+      ObservableList<Pair> myObservableList = FXCollections.observableList(
+              blockedDates
+      );
+      blockedDatesListView.setItems(myObservableList);
+      styleBlockedDatesListView(blockedDatesListView);
+      if (isEditMode.get()) {
+        placeOfferButton.visibleProperty().set(true);
+      }
+    } else {
+      mainViewController.handleExceptionMessage("Nichts zum Entfernen!");
+    }
   }
-}
+
+  public void styleBlockedDatesListView(ListView listView) {
+    listView.setCellFactory(new Callback<ListView<Pair>, ListCell<Pair>>() {
+
+      @Override
+      public ListCell<Pair> call(ListView<Pair> param) {
+        return new ListCell<>(){
+          @Override
+          public void updateItem(Pair pair, boolean empty) {
+            super.updateItem(pair, empty);
+            if (empty || pair == null) {
+              setText(null);
+            } else {
+              setText(pair.getKey() + " bis " + pair.getValue());
+            }
+          }
+        };
+      }
+    });
+  }
+
+  public void setCellFactory(DatePicker datePicker, OfferDTO offerDTO) {
+    if(!isEditMode.get()) {
+    datePicker.setDayCellFactory(
+            new Callback<DatePicker, DateCell>() {
+              @Override
+              public DateCell call(DatePicker param) {
+                return new DateCell() {
+                  @Override
+                  public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if (!empty && date != null) {
+                      LocalDate today = LocalDate.now();
+                      setDisable(empty || date.compareTo(today) < 0);
+                    }
+                  }
+                };
+              }
+            }
+    );
+  } else {
+      try {
+        final List<LocalDate> blockedDates = offerService.getBlockedDates(offerDTO.getID());
+        datePicker.setDayCellFactory(
+                new Callback<DatePicker, DateCell>() {
+                  @Override
+                  public DateCell call(DatePicker param) {
+                    return new DateCell() {
+                      @Override
+                      public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        if (!empty && date != null) {
+                          LocalDate today = LocalDate.now();
+                          setDisable(empty || date.compareTo(today) < 0);
+                          if (blockedDates.contains(date)) {
+                            // Aussehen und Verhalten der Zellen setzen
+                            this.setStyle("-fx-background-color: pink");
+                            setDisable(true);
+                          }
+                        }
+                      }
+                    };
+                  }
+                }
+        );
+      } catch (GenericServiceException e) {
+        mainViewController.handleExceptionMessage(e.getMessage());
+      }
+    }
+}}
