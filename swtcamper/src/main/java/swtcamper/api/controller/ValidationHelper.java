@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.services.BookingService;
+import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.javafx.controller.MainViewController;
 
@@ -17,6 +18,9 @@ public class ValidationHelper {
 
   @Autowired
   private MainViewController mainViewController;
+
+  @Autowired
+  private OfferService offerService;
 
   public boolean lengthOverFive(String toCheck) {
     return toCheck.length() >= 5;
@@ -65,7 +69,13 @@ public class ValidationHelper {
         List<LocalDate> bookedDays = bookingService.getBookedDays(
           offer.getID()
         );
+        List<LocalDate> blockedDays = offerService.getBlockedDates(offer.getID());
         for (LocalDate day : bookedDays) {
+          if (day.isAfter(startDate) && day.isBefore(endDate)) {
+            noBookedDaysInBetween = false;
+          }
+        }
+        for (LocalDate day : blockedDays) {
           if (day.isAfter(startDate) && day.isBefore(endDate)) {
             noBookedDaysInBetween = false;
           }
