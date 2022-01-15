@@ -194,6 +194,8 @@ public class RentingViewController {
       promoteLabel.setStyle(
               "-fx-font-size: 20; -fx-font-family: Arial Rounded MT Bold;"
       );
+
+      // visually highlight promoted offer
       if (offer.isPromoted()) {
         root.setStyle(
                 "-fx-background-color: #add8e6; -fx-background-radius: 20px"

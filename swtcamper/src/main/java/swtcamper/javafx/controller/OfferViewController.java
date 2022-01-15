@@ -366,8 +366,10 @@ public class OfferViewController {
   @FXML
   public void promotingAction() throws GenericServiceException {
     if (this.viewedOffer.isPromoted()) {
+      // TODO: implement log message
       offerController.degradeOffer(this.viewedOffer.getID());
     } else {
+      // TODO: implement log message
       offerController.promoteOffer(this.viewedOffer.getID());
     }
     backAction();
