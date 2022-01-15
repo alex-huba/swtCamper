@@ -264,40 +264,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
             .getSelectionModel()
             .setSelectionMode(SelectionMode.MULTIPLE);
 
-    startDatePicker.setDayCellFactory(
-            new Callback<DatePicker, DateCell>() {
-              @Override
-              public DateCell call(DatePicker param) {
-                return new DateCell() {
-                  @Override
-                  public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    if (!empty && date != null) {
-                      LocalDate today = LocalDate.now();
-                      setDisable(empty || date.compareTo(today) < 0);
-                    }
-                  }
-                };
-              }
-            }
-    );
-    endDatePicker.setDayCellFactory(
-            new Callback<DatePicker, DateCell>() {
-              @Override
-              public DateCell call(DatePicker param) {
-                return new DateCell() {
-                  @Override
-                  public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    if (!empty && date != null) {
-                      LocalDate today = LocalDate.now();
-                      setDisable(empty || date.compareTo(today) < 0);
-                    }
-                  }
-                };
-              }
-            }
-    );
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
+    setCellFactory(startDatePicker, null);
+    setCellFactory(endDatePicker, null);
   }
 
   /**
@@ -327,6 +299,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
             FXCollections.observableArrayList(rentalConditions)
     );
 
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
     setCellFactory(startDatePicker, offer);
     setCellFactory(endDatePicker, offer);
     blockedDates = offer.getBlockedDates();

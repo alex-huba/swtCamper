@@ -150,6 +150,7 @@ public class OfferViewController {
   @FXML
   public DatePicker startDatePicker;
 
+
   @FXML
   public DatePicker endDatePicker;
 
@@ -256,6 +257,10 @@ public class OfferViewController {
     fridgeLabel.setOpacity(
       labelOpacity(offeredObject.getVehicleFeatures().isFridge())
     );
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
     startDatePicker.setValue(null);
     endDatePicker.setValue(null);
     setCellFactory(startDatePicker, viewedOffer);

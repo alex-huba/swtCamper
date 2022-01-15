@@ -171,6 +171,10 @@ public class RentingViewController {
       .visibleProperty()
       .bind(endDatePicker.valueProperty().isNotNull());
 
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
     startDatePicker.setDayCellFactory(
       new Callback<DatePicker, DateCell>() {
         @Override
