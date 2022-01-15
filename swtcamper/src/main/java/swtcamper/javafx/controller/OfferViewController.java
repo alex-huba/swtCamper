@@ -25,6 +25,7 @@ import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.BookingService;
+import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -53,6 +54,9 @@ public class OfferViewController {
 
   @Autowired
   private BookingService bookingService;
+
+  @Autowired
+          private OfferService offerService;
 
   LongStringConverter longStringConverter = new LongStringConverter();
 
@@ -255,8 +259,8 @@ public class OfferViewController {
     endDatePicker.getEditor().clear();
     try {
       final List<LocalDate> bookedDays = bookingService.getBookedDays(
-        offer.getID()
-      );
+        offer.getID());
+              final List<LocalDate> blockedDates = offerService.getBlockedDates(offer.getID());
       endDatePicker.setDayCellFactory(
         new Callback<DatePicker, DateCell>() {
           @Override
@@ -268,7 +272,7 @@ public class OfferViewController {
                 if (!empty && date != null) {
                   LocalDate today = LocalDate.now();
                   setDisable(empty || date.compareTo(today) < 0);
-                  if (bookedDays.contains(date)) {
+                  if (bookedDays.contains(date) || blockedDates.contains(date)) {
                     // Aussehen und Verhalten der Zellen setzen
                     this.setStyle("-fx-background-color: pink");
                     setDisable(true);
@@ -286,6 +290,7 @@ public class OfferViewController {
       final List<LocalDate> bookedDays = bookingService.getBookedDays(
         offer.getID()
       );
+      final List<LocalDate> blockedDates = offerService.getBlockedDates(offer.getID());
       startDatePicker.setDayCellFactory(
         new Callback<DatePicker, DateCell>() {
           @Override
@@ -297,7 +302,7 @@ public class OfferViewController {
                 if (!empty && date != null) {
                   LocalDate today = LocalDate.now();
                   setDisable(empty || date.compareTo(today) < 0);
-                  if (bookedDays.contains(date)) {
+                  if (bookedDays.contains(date) || blockedDates.contains(date)) {
                     // Aussehen und Verhalten der Zellen setzen
                     this.setStyle("-fx-background-color: pink");
                     setDisable(true);
