@@ -2,6 +2,8 @@ package swtcamper.api.contract;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.util.Pair;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -18,6 +20,7 @@ public interface IOfferController {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,

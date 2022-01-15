@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -117,6 +119,7 @@ public class OfferController implements IOfferController {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -147,6 +150,7 @@ public class OfferController implements IOfferController {
         particularities,
         price,
         rentalConditions,
+        blockedDates,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
