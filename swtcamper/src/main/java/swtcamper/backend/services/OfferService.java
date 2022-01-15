@@ -1,8 +1,12 @@
 package swtcamper.backend.services;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -50,6 +54,7 @@ public class OfferService {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -113,7 +118,8 @@ public class OfferService {
       contact,
       particularities,
       price,
-      rentalConditions
+      rentalConditions,
+            blockedDates
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
@@ -358,5 +364,28 @@ public class OfferService {
 
   public List<Offer> offers() {
     return offerRepository.findAll();
+  }
+
+  public List<LocalDate> getBlockedDates(long offerID)
+          throws GenericServiceException {
+    List<LocalDate> blockedDates = new ArrayList<>();
+
+    Optional<Offer> offerResponse = offerRepository.findById(offerID);
+    if (offerResponse.isPresent()) {
+      Offer offer = offerResponse.get();
+
+      for (Pair pair : offer.getBlockedDates()) {
+        LocalDate startDate = (LocalDate) pair.getKey();
+        LocalDate endDate = (LocalDate) pair.getValue();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          blockedDates.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
+      }
+      return blockedDates;
+    }
+    throw new GenericServiceException(
+            "Offer with following ID not found: " + offerID
+    );
   }
 }
