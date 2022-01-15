@@ -161,7 +161,6 @@ public class UserService {
    */
   public User login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException {
-
     // Check if username and password are matching
     String hashedPassword = hashHelper.hashIt(password);
     if (userRepository.existsByUsernameAndPassword(username, hashedPassword)) {
