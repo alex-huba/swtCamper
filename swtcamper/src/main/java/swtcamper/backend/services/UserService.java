@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
+import swtcamper.api.controller.HashHelper;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
@@ -26,6 +27,9 @@ public class UserService {
 
   @Autowired
   private ModelMapper modelMapper;
+
+  @Autowired
+  private HashHelper hashHelper;
 
   private User loggedInUser;
 
@@ -60,7 +64,7 @@ public class UserService {
     user.setSurname(surname);
     user.setEmail(email);
     user.setPhone(phone);
-    user.setPassword(password);
+    user.setPassword(hashHelper.hashIt(password));
     user.setUserRole(userRole);
     user.setEnabled(enabled);
     userRepository.save(user);
@@ -157,8 +161,10 @@ public class UserService {
    */
   public User login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException {
+
     // Check if username and password are matching
-    if (userRepository.existsByUsernameAndPassword(username, password)) {
+    String hashedPassword = hashHelper.hashIt(password);
+    if (userRepository.existsByUsernameAndPassword(username, hashedPassword)) {
       User user;
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
@@ -419,7 +425,8 @@ public class UserService {
     if (userRepository.existsByUsernameAndEmail(username, email)) {
       // Get user if it exists in database, change password and save it back on database
       User user = userRepository.findByUsername(username).get();
-      user.setPassword(password);
+      String hashedPassword = hashHelper.hashIt(password);
+      user.setPassword(hashedPassword);
       userRepository.save(user);
 
       loggingController.log(
