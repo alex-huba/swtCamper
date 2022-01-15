@@ -187,19 +187,32 @@ public class BookingService {
         );
       }
       try {
-        bookingRepository.deleteById(bookingID);
-        loggingController.log(
-          modelMapper.LoggingMessageToLoggingMessageDTO(
-            new LoggingMessage(
-              LoggingLevel.INFO,
-              String.format(
-                "UBooking with ID %s was deleted by user %s",
-                bookingID,
-                user.getUsername()
-              )
+        // remove booking to be deleted from bookings list of its offer
+       Optional<Offer> offerOptional = offerRepository.findById(booking.getOffer().getOfferID());
+       if (offerOptional.isPresent()) {
+         Offer offer = offerOptional.get();
+         ArrayList<Long> bookings = offer.getBookings();
+         bookings.remove(bookingID);
+         offer.setBookings(bookings);
+         offerRepository.save(offer);
+         // then delete the booking
+          bookingRepository.deleteById(bookingID);
+          loggingController.log(
+            modelMapper.LoggingMessageToLoggingMessageDTO(
+              new LoggingMessage(
+                LoggingLevel.INFO,
+                String.format(
+                 "UBooking with ID %s was deleted by user %s",
+                  bookingID,
+                  user.getUsername()
+                )
             )
-          )
-        );
+            )
+          );
+       } else { throw new GenericServiceException(
+               "The offer for this booking could not be found."
+             );
+        }
       } catch (IllegalArgumentException e) {
         throw new GenericServiceException(
           "The passed ID is not available: " + e
