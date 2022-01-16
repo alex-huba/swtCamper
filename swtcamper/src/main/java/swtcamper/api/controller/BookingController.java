@@ -54,9 +54,10 @@ public class BookingController implements IBookingController {
     boolean active
   ) {
     try {
-    return modelMapper.bookingToBookingDTO(
-      bookingService.create(user, offer, startDate, endDate, active)
-    );} catch (GenericServiceException e) {
+      return modelMapper.bookingToBookingDTO(
+        bookingService.create(user, offer, startDate, endDate, active)
+      );
+    } catch (GenericServiceException e) {
       mainViewController.handleException(e);
       return null;
     }
