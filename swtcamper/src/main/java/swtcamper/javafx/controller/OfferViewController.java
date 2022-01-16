@@ -347,11 +347,16 @@ public class OfferViewController {
     }
   }
 
+  /**
+   * Sets the button to promote / degrade offer visible, only if operator is logged in.
+   */
   public void checkUserRole() {
-    if (userController.getLoggedInUser().getUserRole().equals("Operator")) {
-      promotingButton.setVisible(false);
-    } else {
-      promotingButton.setVisible(true);
+    if (userController.getLoggedInUser() != null) {
+      if (userController.getLoggedInUser().getUserRole().equals("Operator")) {
+        promotingButton.setVisible(false);
+      } else {
+        promotingButton.setVisible(true);
+      }
     }
   }
 
