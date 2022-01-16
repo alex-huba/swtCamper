@@ -14,6 +14,7 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
+import swtcamper.javafx.controller.MainViewController;
 import swtcamper.javafx.controller.OfferViewController;
 
 @Component
@@ -27,6 +28,9 @@ public class BookingController implements IBookingController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private MainViewController mainViewController;
 
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
@@ -49,9 +53,13 @@ public class BookingController implements IBookingController {
     LocalDate endDate,
     boolean active
   ) {
+    try {
     return modelMapper.bookingToBookingDTO(
       bookingService.create(user, offer, startDate, endDate, active)
-    );
+    );} catch (GenericServiceException e) {
+      mainViewController.handleException(e);
+      return null;
+    }
   }
 
   @Override
