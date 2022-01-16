@@ -41,7 +41,7 @@ public class BookingService {
     LocalDate startDate,
     LocalDate endDate,
     boolean active
-  ) {
+  ) throws GenericServiceException {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
@@ -61,11 +61,18 @@ public class BookingService {
     Optional<Offer> offerResponse = offerRepository.findById(
       offer.getOfferID()
     );
-    Offer tempOffer = offerResponse.get();
-    ArrayList<Long> bookings = tempOffer.getBookings();
-    bookings.add(newBookingId);
-    tempOffer.setBookings(bookings);
-    offerRepository.save(tempOffer);
+    if (offerResponse.isPresent()) {
+      Offer tempOffer = offerResponse.get();
+      ArrayList<Long> bookings = tempOffer.getBookings();
+      bookings.add(newBookingId);
+      tempOffer.setBookings(bookings);
+      offerRepository.save(tempOffer);
+    } else {
+      throw new GenericServiceException(
+        "Offer for this booking not found. Booking creation not possible."
+      );
+    }
+
     return bookingRepository.findById(newBookingId).get();
   }
 
@@ -221,6 +228,10 @@ public class BookingService {
           "The passed ID is not available: " + e
         );
       }
+    } else {
+      throw new GenericServiceException(
+        "Booking not found, deletion not possible"
+      );
     }
   }
 

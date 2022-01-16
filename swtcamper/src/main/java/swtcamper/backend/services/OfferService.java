@@ -147,8 +147,14 @@ public class OfferService {
         )
       )
     );
-
-    return offerRepository.findById(newOfferId).get();
+    Optional<Offer> offerOptional = offerRepository.findById(newOfferId);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    } else {
+      throw new GenericServiceException(
+        "Newly created offer with ID: " + newOfferId + " not found."
+      );
+    }
   }
 
   public Offer update(
@@ -216,76 +222,81 @@ public class OfferService {
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
       offeredObject.getVehicleID()
     );
-    Vehicle vehicle = vehicleResponse.get();
+    if (vehicleResponse.isPresent()) {
+      Vehicle vehicle = vehicleResponse.get();
+      Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(
+        vehicle.getVehicleFeatures().getVehicleFeaturesID()
+      );
+      if (vehicleFeaturesResponse.isPresent()) {
+        VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
+        setVehicleFeatures(
+          vehicleFeatures,
+          vehicleType,
+          make,
+          model,
+          year,
+          length,
+          width,
+          height,
+          engine,
+          transmission,
+          seats,
+          beds,
+          roofTent,
+          roofRack,
+          bikeRack,
+          shower,
+          toilet,
+          kitchenUnit,
+          fridge
+        );
+        vehicleFeaturesRepository.save(vehicleFeatures);
 
-    Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(
-      vehicle.getVehicleFeatures().getVehicleFeaturesID()
-    );
-    VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
-
-    setVehicleFeatures(
-      vehicleFeatures,
-      vehicleType,
-      make,
-      model,
-      year,
-      length,
-      width,
-      height,
-      engine,
-      transmission,
-      seats,
-      beds,
-      roofTent,
-      roofRack,
-      bikeRack,
-      shower,
-      toilet,
-      kitchenUnit,
-      fridge
-    );
-    vehicleFeaturesRepository.save(vehicleFeatures);
-
-    vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicleRepository.save(vehicle);
-    loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Vehicle with ID %s got updated by user %s.",
-            vehicle.getVehicleID(),
-            user.getUsername()
+        vehicle.setVehicleFeatures(vehicleFeatures);
+        vehicleRepository.save(vehicle);
+        loggingController.log(
+          modelMapper.LoggingMessageToLoggingMessageDTO(
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "Vehicle with ID %s got updated by user %s.",
+                vehicle.getVehicleID(),
+                user.getUsername()
+              )
+            )
           )
-        )
-      )
-    );
+        );
 
-    offer.setCreator(creator);
-    offer.setOfferedObject(vehicle);
-    offer.setBookings(bookings);
-    offer.setTitle(title);
-    offer.setLocation(location);
-    offer.setContact(contact);
-    offer.setParticularities(particularities);
-    offer.setPrice(price);
-    offer.setActive(active);
-    offer.setRentalConditions(rentalConditions);
-    offer.setBlockedDates(blockedDates);
-    loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Offer with ID %s got updated by user %s.",
-            offer.getOfferID(),
-            user.getUsername()
+        offer.setCreator(creator);
+        offer.setOfferedObject(vehicle);
+        offer.setBookings(bookings);
+        offer.setTitle(title);
+        offer.setLocation(location);
+        offer.setContact(contact);
+        offer.setParticularities(particularities);
+        offer.setPrice(price);
+        offer.setActive(active);
+        offer.setRentalConditions(rentalConditions);
+        offer.setBlockedDates(blockedDates);
+        loggingController.log(
+          modelMapper.LoggingMessageToLoggingMessageDTO(
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "Offer with ID %s got updated by user %s.",
+                offer.getOfferID(),
+                user.getUsername()
+              )
+            )
           )
-        )
-      )
-    );
-
-    return offerRepository.save(offer);
+        );
+        return offerRepository.save(offer);
+      } else {
+        throw new GenericServiceException("VehicleFeatures not found.");
+      }
+    } else {
+      throw new GenericServiceException("Vehicle not found.");
+    }
   }
 
   private void setVehicleFeatures(
