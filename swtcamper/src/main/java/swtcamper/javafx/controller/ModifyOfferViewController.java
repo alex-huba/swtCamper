@@ -13,15 +13,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.converter.DoubleStringConverter;
@@ -281,7 +278,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     heightTextField.setText(
       String.valueOf(vehicle.getVehicleFeatures().getHeight())
     );
-    engineTextField.setText(vehicle.getVehicleFeatures().getEngine());
+//    engineTextField.setText(vehicle.getVehicleFeatures().getFuelType());
     transmissionComboBox.setValue(
       vehicle
           .getVehicleFeatures()
@@ -313,6 +310,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       pictures.add(modelMapper.pictureDTOToPicture(pictureDTO));
     }
     loadPictures(pictures);
+
+    seatsChoiceBox.setValue(vehicle.getVehicleFeatures().getSeats());
+    bedsChoiceBox.setValue(vehicle.getVehicleFeatures().getBeds());
+    fuelChoiceBox.setValue(vehicle.getVehicleFeatures().getFuelType());
 
     validateMandatoryFields();
   }
@@ -443,7 +444,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         length,
         width,
         height,
-        engineTextField.getText(),
+//        engineTextField.getText(),
+        fuelChoiceBox.getValue(),
         transmissionComboBox.getValue().toString(),
         Integer.parseInt(seatsTextField.getText()),
         Integer.parseInt(bedsTextField.getText()),
@@ -484,7 +486,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         length,
         width,
         height,
-        engineTextField.getText(),
+//        engineTextField.getText(),
+              fuelChoiceBox.getValue(),
         transmissionComboBox.getValue().toString(),
         Integer.parseInt(seatsTextField.getText()),
         Integer.parseInt(bedsTextField.getText()),

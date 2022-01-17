@@ -7,7 +7,7 @@ public class Filter {
   private String vehicleBrand;
   private int constructionYear;
   private int maxPricePerDay;
-  private String engine;
+  private FuelType fuelType;
   private TransmissionType transmissionType;
   private int seatAmount;
   private int bedAmount;
@@ -59,12 +59,12 @@ public class Filter {
     this.maxPricePerDay = maxPricePerDay;
   }
 
-  public String getEngine() {
-    return engine;
+  public FuelType getFuelType() {
+    return fuelType;
   }
 
-  public void setEngine(String engine) {
-    this.engine = engine;
+  public void setFuelType(FuelType fuelType) {
+    this.fuelType = fuelType;
   }
 
   public TransmissionType getTransmissionType() {
@@ -154,7 +154,7 @@ public class Filter {
       vehicleBrand == null &&
       constructionYear == 0 &&
       maxPricePerDay == 0 &&
-      engine == null &&
+      fuelType == null &&
       transmissionType == null &&
       seatAmount == 0 &&
       bedAmount == 0 &&
@@ -185,7 +185,7 @@ public class Filter {
       ", maxPricePerDay=" +
       maxPricePerDay +
       ", engine='" +
-      engine +
+              fuelType +
       '\'' +
       ", transmissionType=" +
       transmissionType +

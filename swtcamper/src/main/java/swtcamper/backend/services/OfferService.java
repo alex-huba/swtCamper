@@ -9,7 +9,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -58,7 +57,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -89,7 +88,7 @@ public class OfferService {
       length,
       width,
       height,
-      engine,
+      fuelType,
       transmission,
       seats,
       beds,
@@ -167,7 +166,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -226,7 +225,7 @@ public class OfferService {
       length,
       width,
       height,
-      engine,
+      fuelType,
       transmission,
       seats,
       beds,
@@ -290,7 +289,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -309,7 +308,7 @@ public class OfferService {
     vehicleFeatures.setLength(length);
     vehicleFeatures.setWidth(width);
     vehicleFeatures.setHeight(height);
-    vehicleFeatures.setEngine(engine);
+    vehicleFeatures.setFuelType(fuelType);
     vehicleFeatures.setTransmission(transmission);
     vehicleFeatures.setSeats(seats);
     vehicleFeatures.setBeds(beds);
