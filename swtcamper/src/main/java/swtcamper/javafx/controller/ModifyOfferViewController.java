@@ -1001,7 +1001,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     if (
       startDatePicker.getValue() == null ||
       endDatePicker.getValue() == null ||
-      !validationHelper.checkRentingDates(
+      !ValidationHelper.checkRentingDates(
         startDatePicker.getValue(),
         endDatePicker.getValue()
       )

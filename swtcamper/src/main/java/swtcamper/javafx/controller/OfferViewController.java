@@ -385,7 +385,7 @@ public class OfferViewController {
       // Liegt Startdatum nach Enddatum?
       // Startdatum == Enddatum?
       if (
-        !validationHelper.checkRentingDates(
+        !ValidationHelper.checkRentingDates(
           startDatePicker.getValue(),
           endDatePicker.getValue()
         )

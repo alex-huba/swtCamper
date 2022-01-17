@@ -22,33 +22,33 @@ public class ValidationHelper {
   @Autowired
   private OfferService offerService;
 
-  public boolean lengthOverFive(String toCheck) {
+  public static boolean lengthOverFive(String toCheck) {
     return toCheck.length() >= 5;
   }
 
-  public boolean lengthOverThree(String toCheck) {
+  public static boolean lengthOverThree(String toCheck) {
     return toCheck.length() >= 3;
   }
 
-  public boolean isNumber(String toCheck) {
+  public static boolean isNumber(String toCheck) {
     return toCheck.matches("[0-9]*");
   }
 
-  public boolean checkOfferTitle(String toCheck) {
+  public static boolean checkOfferTitle(String toCheck) {
     return !toCheck.isEmpty() && lengthOverFive(toCheck);
   }
 
-  public boolean checkOfferPrice(String toCheck) {
+  public static boolean checkOfferPrice(String toCheck) {
     return (
       !toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0
     );
   }
 
-  public boolean checkOfferLocation(String toCheck) {
+  public static boolean checkOfferLocation(String toCheck) {
     return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
-  public boolean checkOfferContact(String toCheck) {
+  public static boolean checkOfferContact(String toCheck) {
     return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
@@ -58,7 +58,7 @@ public class ValidationHelper {
    * @param endDate
    * @return true if startDate is before endDate and not on the same day
    */
-  public boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
+  public static boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
     return startDate.isBefore(endDate) && !startDate.equals(endDate);
   }
 
