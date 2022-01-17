@@ -124,15 +124,18 @@ public class RentingViewController {
 
   @FXML
   private void initialize() throws GenericServiceException {
-    offersPerPageChoiceBox.setItems(FXCollections.observableArrayList(1, 5,10,20));
+    offersPerPageChoiceBox.setItems(
+      FXCollections.observableArrayList(1, 5, 10, 20)
+    );
     offersPerPageChoiceBox.setValue(5);
-    offersPerPageChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-      try {
-        lastPageVisited = 0;
-        reloadData();
-      } catch (GenericServiceException ignore) {
-      }
-    });
+    offersPerPageChoiceBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        try {
+          lastPageVisited = 0;
+          reloadData();
+        } catch (GenericServiceException ignore) {}
+      });
 
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -186,13 +189,15 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    offerDTOList = offerController
-            .offers()
-            .stream()
-            .filter(OfferDTO::isActive)
-            .collect(Collectors.toList());
+    offerDTOList =
+      offerController
+        .offers()
+        .stream()
+        .filter(OfferDTO::isActive)
+        .collect(Collectors.toList());
 
-    subListsList = createOfferSublists(offerDTOList,offersPerPageChoiceBox.getValue());
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     loadData(subListsList.get(0));
   }
 
@@ -200,12 +205,16 @@ public class RentingViewController {
    * Adds a pagination to the list of offers
    */
   private void addPagination() {
-    int pageAmount = (int) Math.ceil(offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue()));
+    int pageAmount = (int) Math.ceil(
+      offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
+    );
 
     paginationHBox.getChildren().clear();
     for (int i = 0; i < pageAmount; i++) {
-      Button pageButton = new Button(String.valueOf(i+1));
-      pageButton.getStyleClass().add(i==lastPageVisited?"bg-primary":"bg-secondary");
+      Button pageButton = new Button(String.valueOf(i + 1));
+      pageButton
+        .getStyleClass()
+        .add(i == lastPageVisited ? "bg-primary" : "bg-secondary");
 
       int finalI = i;
       pageButton.setOnAction(event -> {
@@ -225,11 +234,17 @@ public class RentingViewController {
    * @param size max length of each sublist
    * @return list of lists, each with a max length
    */
-  private List<List<OfferDTO>> createOfferSublists(List<OfferDTO> inputList, int size){
-      final AtomicInteger counter = new AtomicInteger(0);
-      return FXCollections.observableArrayList(inputList.stream()
-              .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
-              .values());
+  private List<List<OfferDTO>> createOfferSublists(
+    List<OfferDTO> inputList,
+    int size
+  ) {
+    final AtomicInteger counter = new AtomicInteger(0);
+    return FXCollections.observableArrayList(
+      inputList
+        .stream()
+        .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
+        .values()
+    );
   }
 
   /**
