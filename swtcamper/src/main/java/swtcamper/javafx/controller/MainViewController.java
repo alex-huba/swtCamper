@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -30,6 +31,9 @@ public class MainViewController {
    */
   public final boolean startNavigationHidden = true;
   public final String startPageAfterLogin = "home";
+
+  @FXML
+  public Label globalHeaderLabel;
 
   @Autowired
   private ModelMapper modelMapper;
@@ -279,6 +283,7 @@ public class MainViewController {
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
+        globalHeaderLabel.setText("SWTCamper - Finde Deinen perfekten Camper");
         if (reloadData) rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
@@ -286,6 +291,7 @@ public class MainViewController {
         break;
       case "placeOffer":
         mainStage.getChildren().add(placeOfferViewBox);
+        globalHeaderLabel.setText("SWTCamper - Neue Anzeige erstellen");
         modifyOfferViewController.initialize();
         navigationViewController.setButtonActive(
           navigationViewController.newOfferButton
@@ -293,9 +299,11 @@ public class MainViewController {
         break;
       case "viewOffer":
         mainStage.getChildren().add(offerViewBox);
+        globalHeaderLabel.setText("SWTCamper - Anzeigenansicht");
         break;
       case "activeOffers":
         mainStage.getChildren().add(activeOffersViewBox);
+        globalHeaderLabel.setText("SWTCamper - Meine Anzeigen");
         navigationViewController.setButtonActive(
           navigationViewController.activeOffersButton
         );
@@ -303,12 +311,14 @@ public class MainViewController {
         break;
       case "history":
         mainStage.getChildren().add(dealHistoryViewBox);
+        globalHeaderLabel.setText("SWTCamper - Meine bisherigen Buchungen");
         navigationViewController.setButtonActive(
           navigationViewController.dealHistoryButton
         );
         break;
       case "exclude":
         mainStage.getChildren().add(excludeRenterViewBox);
+        globalHeaderLabel.setText("SWTCamper - Nutzer ausschließen");
         navigationViewController.setButtonActive(
           navigationViewController.excludeButton
         );
@@ -316,6 +326,7 @@ public class MainViewController {
         break;
       case "approve":
         mainStage.getChildren().add(approveDealViewBox);
+        globalHeaderLabel.setText("SWTCamper - Neue Nutzer annehmen");
         navigationViewController.setButtonActive(
           navigationViewController.approveButton
         );
@@ -323,6 +334,7 @@ public class MainViewController {
         break;
       case "myBookings":
         mainStage.getChildren().add(myBookingsViewBox);
+        globalHeaderLabel.setText("SWTCamper - Meine Buchungen");
         navigationViewController.setButtonActive(
           navigationViewController.myBookingsButton
         );
@@ -330,6 +342,7 @@ public class MainViewController {
         break;
       case "login":
         mainStage.getChildren().add(loginViewBox);
+        globalHeaderLabel.setText("SWTCamper - Einloggen");
         navigationViewController.setButtonActive(
           navigationViewController.loginButton
         );
@@ -337,6 +350,7 @@ public class MainViewController {
         break;
       case "account":
         mainStage.getChildren().add(accountViewBox);
+        globalHeaderLabel.setText("SWTCamper - Dashboard");
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
@@ -353,6 +367,7 @@ public class MainViewController {
         break;
       case "register":
         mainStage.getChildren().add(registerViewBox);
+        globalHeaderLabel.setText("SWTCamper - Registrieren");
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
@@ -360,6 +375,7 @@ public class MainViewController {
         break;
       case "forgotPassword":
         mainStage.getChildren().add(forgotPasswordViewBox);
+        globalHeaderLabel.setText("SWTCamper - Passwort zurücksetzen");
         navigationViewController.setButtonActive(
           navigationViewController.accountButton
         );
@@ -367,6 +383,7 @@ public class MainViewController {
         break;
       case "moreInfoOffer":
         mainStage.getChildren().add(moreAboutOfferViewBox);
+        globalHeaderLabel.setText("SWTCamper - Anzeigenansicht");
         break;
       case "reportUser":
         mainStage.getChildren().add(reportUserViewBox);
