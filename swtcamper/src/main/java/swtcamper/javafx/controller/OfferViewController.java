@@ -205,7 +205,9 @@ public class OfferViewController {
       Integer.toString(offeredObject.getVehicleFeatures().getBeds())
     );
     constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(String.valueOf(offeredObject.getVehicleFeatures().getFuelType()));
+    engineLabel.setText(
+      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
+    );
     widthLabel.setText(
       doubleStringConverter.toString(
         offeredObject.getVehicleFeatures().getWidth()

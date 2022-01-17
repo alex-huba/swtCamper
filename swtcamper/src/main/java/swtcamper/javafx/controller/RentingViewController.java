@@ -158,23 +158,25 @@ public class RentingViewController {
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
 
-    fuelTypeComboBox.setItems(FXCollections.observableArrayList((FuelType.values())));
+    fuelTypeComboBox.setItems(
+      FXCollections.observableArrayList((FuelType.values()))
+    );
     fuelTypeComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(FuelType item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(fuelTypeComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(FuelType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(fuelTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
     resetFuelTypeBtn
-            .visibleProperty()
-            .bind(fuelTypeComboBox.valueProperty().isNotNull());
+      .visibleProperty()
+      .bind(fuelTypeComboBox.valueProperty().isNotNull());
 
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -340,7 +342,7 @@ public class RentingViewController {
       Integer.parseInt(maxPricePerDayTextField.getText())
     );
     if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
-            fuelTypeComboBox.getValue()
+      fuelTypeComboBox.getValue()
     );
     if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
       transmissionComboBox.getValue()

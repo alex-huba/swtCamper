@@ -185,7 +185,7 @@ public class Filter {
       ", maxPricePerDay=" +
       maxPricePerDay +
       ", engine='" +
-              fuelType +
+      fuelType +
       '\'' +
       ", transmissionType=" +
       transmissionType +
