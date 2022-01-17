@@ -72,7 +72,6 @@ public class BookingService {
         "Offer for this booking not found. Booking creation not possible."
       );
     }
-
     return bookingRepository.findById(newBookingId).get();
   }
 
