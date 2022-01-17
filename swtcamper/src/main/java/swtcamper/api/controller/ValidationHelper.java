@@ -58,7 +58,10 @@ public class ValidationHelper {
    * @param endDate
    * @return true if startDate is before endDate and not on the same day
    */
-  public static boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
+  public static boolean checkRentingDates(
+    LocalDate startDate,
+    LocalDate endDate
+  ) {
     return startDate.isBefore(endDate) && !startDate.equals(endDate);
   }
 
