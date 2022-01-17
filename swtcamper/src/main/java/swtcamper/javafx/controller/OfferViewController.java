@@ -160,8 +160,11 @@ public class OfferViewController {
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
     checkMode(rentingMode);
-    checkOfferStatus();
+    // enable button to promote / degrade offer
+    // ...only if user role is OPERATOR
     checkUserRole();
+    checkOfferStatus();
+
     Vehicle offeredObject = offer.getOfferedObject();
 
     pictureHorizontHBox.getChildren().clear();
@@ -348,7 +351,7 @@ public class OfferViewController {
   }
 
   /**
-   * Sets the button to promote / degrade offer visible, only if operator is logged in.
+   * Makes promote / degrade offer button visible, only if operator is logged in.
    */
   public void checkUserRole() {
     if (userController.getLoggedInUser() != null) {
@@ -360,6 +363,9 @@ public class OfferViewController {
     }
   }
 
+  /**
+   * Checks if offer is promoted and sets button text accordingly.
+   */
   public void checkOfferStatus() {
     if (this.viewedOffer.isPromoted()) {
       promotingButton.setText("Nicht mehr hervorheben");
@@ -371,10 +377,8 @@ public class OfferViewController {
   @FXML
   public void promotingAction() throws GenericServiceException {
     if (this.viewedOffer.isPromoted()) {
-      // TODO: implement log message
       offerController.degradeOffer(this.viewedOffer.getID());
     } else {
-      // TODO: implement log message
       offerController.promoteOffer(this.viewedOffer.getID());
     }
     backAction();
