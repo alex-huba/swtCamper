@@ -48,11 +48,11 @@ public class ValidationHelper {
     return !toCheck.isEmpty() && lengthOverThree(toCheck);
   }
 
-  public boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
+  public static boolean checkRentingDates(LocalDate startDate, LocalDate endDate) {
     return startDate.isBefore(endDate) && !startDate.equals(endDate);
   }
 
-  public boolean checkRentingDatesWithOffer(
+  public static boolean checkRentingDatesWithOffer(
     LocalDate startDate,
     LocalDate endDate,
     OfferDTO offer
