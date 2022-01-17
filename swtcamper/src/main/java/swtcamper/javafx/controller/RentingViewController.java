@@ -189,6 +189,7 @@ public class RentingViewController {
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
+    // get available offers
     offerDTOList =
       offerController
         .offers()
@@ -196,8 +197,10 @@ public class RentingViewController {
         .filter(OfferDTO::isActive)
         .collect(Collectors.toList());
 
+    // partition them according to offersPerPageChoiceBox's value
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
     loadData(subListsList.get(0));
   }
 
@@ -205,6 +208,7 @@ public class RentingViewController {
    * Adds a pagination to the list of offers
    */
   private void addPagination() {
+    // get amount of pages by rounding up the result of offerDTOList's size divided by offersPerPageChoiceBox's value
     int pageAmount = (int) Math.ceil(
       offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
     );
