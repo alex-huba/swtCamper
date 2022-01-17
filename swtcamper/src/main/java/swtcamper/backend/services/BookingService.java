@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -236,31 +238,40 @@ public class BookingService {
   }
 
   /**
-   * For a specific offer, this method gathers all days on which the offer is booked. <br> That means each startDate and endDate and all days in between.
-   *
+   * For a specific offer, this method gathers all days on which the offer is booked (by renters) or blocked (by the offer creator). <br> That means each startDate and endDate and all days in between.
+   *    *
    * @param offerID
    * @return a list of the booked days
    * @throws GenericServiceException
    */
   public List<LocalDate> getBookedDays(long offerID)
     throws GenericServiceException {
-    List<LocalDate> bookedDays = new ArrayList<>();
+    List<LocalDate> bookedOrBlockedDays = new ArrayList<>();
 
     Optional<Offer> offerResponse = offerRepository.findById(offerID);
     if (offerResponse.isPresent()) {
       Offer offer = offerResponse.get();
       ArrayList<Long> bookingIDs = offer.getBookings();
       Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
+      ArrayList<Pair> blockedDates = offer.getBlockedDates();
 
       for (Booking booking : bookings) {
         LocalDate startDate = booking.getStartDate();
         LocalDate endDate = booking.getEndDate();
         long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
         for (int i = 0; i <= amountOfDays; i++) {
-          bookedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
         }
       }
-      return bookedDays;
+      for (Pair pair : blockedDates) {
+        LocalDate startDate = (LocalDate) pair.getKey();
+        LocalDate endDate = (LocalDate) pair.getValue();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
+      }
+      return bookedOrBlockedDays;
     }
     throw new GenericServiceException(
       "Offer with following ID not found: " + offerID

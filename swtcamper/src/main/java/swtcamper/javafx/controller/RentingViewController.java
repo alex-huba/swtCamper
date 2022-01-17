@@ -419,8 +419,8 @@ public class RentingViewController {
     toiletCheckBox.setSelected(false);
     kitchenCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
-    startDatePicker.getEditor().clear();
-    endDatePicker.getEditor().clear();
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
 
     reloadData();
   }

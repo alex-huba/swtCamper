@@ -185,7 +185,9 @@ public class Filter {
       !shower &&
       !toilet &&
       !kitchen &&
-      !fridge
+      !fridge &&
+      startDate == null &&
+      endDate == null
     );
   }
 
