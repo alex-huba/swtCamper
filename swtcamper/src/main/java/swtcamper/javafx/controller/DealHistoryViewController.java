@@ -15,4 +15,13 @@ public class DealHistoryViewController {
     @FXML
     public VBox bookingsListVBox;
 
+    @FXML
+    private void initialize(){
+
+    }
+
+    public void showDetails(){
+
+    }
+
 }

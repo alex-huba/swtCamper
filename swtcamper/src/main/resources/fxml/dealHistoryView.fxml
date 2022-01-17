@@ -13,9 +13,9 @@
             <VBox prefHeight="77.0" prefWidth="100.0">
                <children>
                   <Label text="Historie meiner abgeschlossenen Deals" />
-                  <HBox prefHeight="61.0" prefWidth="303.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="303.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Details" />
+                        <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#showDetails" text="Details" />
                      </children>
                   </HBox>
                </children>

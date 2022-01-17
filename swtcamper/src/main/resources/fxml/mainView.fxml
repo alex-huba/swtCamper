@@ -36,11 +36,12 @@
                               <fx:include fx:id="placeOfferViewBox" source="modifyOfferView.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                               <fx:include fx:id="activeOffersViewBox" source="myOffersView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="offerViewBox" source="offerView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <Pane fx:id="dealHistoryViewBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <Label style="-fx-text-fill: #FFF" text="Deal History" />
-                                  <!--                            TODO after Merging: include-->
-                                  <!--                            <fx:include source="dealHistoryView.fxml" />-->
-                              </Pane>
+                              <fx:include fx:id="dealHistoryViewBox" source="dealHistoryView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+<!--                              <Pane fx:id="dealHistoryViewBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
+<!--                                  <Label style="-fx-text-fill: #FFF" text="Deal History" />-->
+<!--                                  &lt;!&ndash;                            TODO after Merging: include&ndash;&gt;-->
+<!--                                  &lt;!&ndash;                            <fx:include source="dealHistoryView.fxml" />&ndash;&gt;-->
+<!--                              </Pane>-->
                               <Pane fx:id="excludeRenterViewBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                   <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
                                   <!--                            TODO after Merging: include-->
