@@ -90,7 +90,7 @@ public class OfferServiceTest {
         final Offer result = offerServiceUnderTest.update(0L, offeredObject, "title", "location", "contact", "description", new ArrayList<>(List.of(0L)), 0L, false, false, false, false, new String[]{"value"}, VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
         // Verify the results
-        //assertThat(result).isEqualTo(expectedResult);
+        assertThat(result).isEqualTo(expectedResult);
         verify(mockVehicleFeaturesRepository).save(any(VehicleFeatures.class));
         verify(mockVehicleRepository).save(any(Vehicle.class));
     }
