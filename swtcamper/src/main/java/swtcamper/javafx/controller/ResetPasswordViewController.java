@@ -3,6 +3,7 @@ package swtcamper.javafx.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -10,7 +11,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -46,18 +46,6 @@ public class ResetPasswordViewController {
   SimpleBooleanProperty isPasswordOk;
   SimpleBooleanProperty isRepeatPasswordOk;
 
-  private Background errorBackground = new Background(
-    new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background neutralBackground = new Background(
-    new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
-  private Background successBackground = new Background(
-    new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)
-  );
-
   @FXML
   public void initialize() {
     errorMessageLabel.setText("");
@@ -80,16 +68,16 @@ public class ResetPasswordViewController {
   }
 
   public void resetPassword() {
+    String username = usernameTf.getText();
+    String email = emailTf.getText();
+    String password = passwordPf.getText();
+
     try {
-      UserDTO userDTO = new UserDTO();
-      userDTO.setUsername(usernameTf.getText());
-      userDTO.setEmail(emailTf.getText());
-      userDTO.setPassword(passwordPf.getText());
-      userController.resetPassword(userDTO);
+      userController.resetPassword(username, email, password);
 
       Alert successAlert = new Alert(
         Alert.AlertType.INFORMATION,
-        "Changed password successfully"
+        "Passwort wurde erfolgreich geändert"
       );
       mainViewController.changeView("login");
     } catch (GenericServiceException e) {
@@ -101,30 +89,38 @@ public class ResetPasswordViewController {
     mainViewController.changeView("login");
   }
 
+  private void validateTrue(Node element) {
+    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+  }
+
   @FXML
   public void validateUsernameTf() {
     String input = usernameTf.getText();
     if (input.length() == 0) {
-      errorMessageLabel.setText("Invalid username");
-      usernameTf.setBackground(errorBackground);
+      errorMessageLabel.setText("Ungültiger Nutzername");
+      validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      usernameTf.setBackground(neutralBackground);
+      validateTrue(usernameTf);
       isUsernameOk.setValue(true);
     }
   }
 
   @FXML
   private void validateEmailTf() {
-    String input = usernameTf.getText();
+    String input = emailTf.getText();
     if (input.length() == 0) {
-      errorMessageLabel.setText("Invalid email");
-      usernameTf.setBackground(errorBackground);
+      errorMessageLabel.setText("Ungültige Email");
+      validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      usernameTf.setBackground(neutralBackground);
+      validateTrue(emailTf);
       isEmailOk.setValue(true);
     }
   }
@@ -133,12 +129,14 @@ public class ResetPasswordViewController {
   public void validatePasswordPf() {
     String input = passwordPf.getText();
     if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
-      errorMessageLabel.setText("Invalid password: 5 characters minimum");
-      passwordPf.setBackground(errorBackground);
+      errorMessageLabel.setText(
+        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+      );
+      validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      passwordPf.setBackground(successBackground);
+      validateTrue(passwordPf);
       isPasswordOk.setValue(true);
     }
   }
@@ -147,13 +145,20 @@ public class ResetPasswordViewController {
   private void validateRepeatPasswordPf() {
     String input = repeatPasswordPf.getText();
     if (!input.equals(passwordPf.getText())) {
-      errorMessageLabel.setText("Passwords don't match");
-      repeatPasswordPf.setBackground(errorBackground);
+      errorMessageLabel.setText("Passwörter stimmen nicht überein");
+      validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
       errorMessageLabel.setText("");
-      repeatPasswordPf.setBackground(successBackground);
+      validateTrue(repeatPasswordPf);
       isRepeatPasswordOk.setValue(true);
     }
+  }
+
+  public void resetInputFields() {
+    usernameTf.clear();
+    emailTf.clear();
+    passwordPf.clear();
+    repeatPasswordPf.clear();
   }
 }

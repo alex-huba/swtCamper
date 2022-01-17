@@ -3,55 +3,51 @@ package swtcamper.backend.entities;
 import java.util.ArrayList;
 
 public interface IOffer {
-  public long getOfferID();
+  long getOfferID();
 
-  public void setOfferID(long offerID);
+  void setOfferID(long offerID);
 
-  public OfferedObjectType getOfferedObjectType();
+  User getCreator();
 
-  public void setOfferedObjectType(OfferedObjectType offeredObjectType);
+  void setCreator(User creator);
 
-  public Vehicle getOfferedObject();
+  OfferedObjectType getOfferedObjectType();
 
-  public void setOfferedObject(Vehicle offeredObject);
+  void setOfferedObjectType(OfferedObjectType offeredObjectType);
 
-  public ArrayList<Long> getBookings();
+  Vehicle getOfferedObject();
 
-  public void setBookings(ArrayList<Long> bookings);
+  void setOfferedObject(Vehicle offeredObject);
 
-  public String getTitle();
+  ArrayList<Long> getBookings();
 
-  public void setTitle(String title);
+  void setBookings(ArrayList<Long> bookings);
 
-  public String getLocation();
+  String getTitle();
 
-  public void setLocation(String location);
+  void setTitle(String title);
 
-  public String getContact();
+  String getLocation();
 
-  public void setContact(String contact);
+  void setLocation(String location);
 
-  public String getParticularities();
+  String getContact();
 
-  public void setParticularities(String particularities);
+  void setContact(String contact);
 
-  public long getPrice();
+  String getParticularities();
 
-  public void setPrice(long price);
+  void setParticularities(String particularities);
 
-  public boolean isMinAge25();
+  long getPrice();
 
-  public void setMinAge25(boolean minAge25);
+  void setPrice(long price);
 
-  public boolean isBorderCrossingAllowed();
+  ArrayList<String> getRentalConditions();
 
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed);
+  void setRentalConditions(ArrayList<String> rentalConditions);
 
-  public boolean isDepositInCash();
+  boolean isActive();
 
-  public void setDepositInCash(boolean depositInCash);
-
-  public boolean isActive();
-
-  public void setActive(boolean active);
+  void setActive(boolean active);
 }

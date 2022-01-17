@@ -11,7 +11,6 @@ public class Filter {
   private TransmissionType transmissionType;
   private int seatAmount;
   private int bedAmount;
-  private boolean excludeInactive;
   private boolean roofTent;
   private boolean roofRack;
   private boolean bikeRack;
@@ -19,9 +18,6 @@ public class Filter {
   private boolean toilet;
   private boolean kitchen;
   private boolean fridge;
-  private boolean minAge21;
-  private boolean crossingBordersAllowed;
-  private boolean depositInCash;
 
   public String getLocation() {
     return location;
@@ -95,14 +91,6 @@ public class Filter {
     this.bedAmount = bedAmount;
   }
 
-  public boolean isExcludeInactive() {
-    return excludeInactive;
-  }
-
-  public void setExcludeInactive(boolean excludeInactive) {
-    this.excludeInactive = excludeInactive;
-  }
-
   public boolean isRoofTent() {
     return roofTent;
   }
@@ -159,30 +147,6 @@ public class Filter {
     this.fridge = fridge;
   }
 
-  public boolean isMinAge21() {
-    return minAge21;
-  }
-
-  public void setMinAge21(boolean minAge21) {
-    this.minAge21 = minAge21;
-  }
-
-  public boolean isCrossingBordersAllowed() {
-    return crossingBordersAllowed;
-  }
-
-  public void setCrossingBordersAllowed(boolean crossingBordersAllowed) {
-    this.crossingBordersAllowed = crossingBordersAllowed;
-  }
-
-  public boolean isDepositInCash() {
-    return depositInCash;
-  }
-
-  public void setDepositInCash(boolean depositInCash) {
-    this.depositInCash = depositInCash;
-  }
-
   public boolean isEmpty() {
     return (
       location == null &&
@@ -200,10 +164,7 @@ public class Filter {
       !shower &&
       !toilet &&
       !kitchen &&
-      !fridge &&
-      !minAge21 &&
-      !crossingBordersAllowed &&
-      !depositInCash
+      !fridge
     );
   }
 
@@ -232,8 +193,6 @@ public class Filter {
       seatAmount +
       ", bedAmount=" +
       bedAmount +
-      ", excludeInactive=" +
-      excludeInactive +
       ", roofTent=" +
       roofTent +
       ", roofRack=" +
@@ -248,12 +207,6 @@ public class Filter {
       kitchen +
       ", fridge=" +
       fridge +
-      ", minAge21=" +
-      minAge21 +
-      ", crossingBordersAllowed=" +
-      crossingBordersAllowed +
-      ", depositInCash=" +
-      depositInCash +
       '}'
     );
   }

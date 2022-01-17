@@ -1,5 +1,5 @@
 
-# xTASKS Documentation
+# SWTcamper Documentation
 
 ## Repository structure
 
@@ -15,25 +15,20 @@ The below overview contains the most relevant files and folders, each accompanie
 ├── LICENSE %% GNU GPL v3 software license
 ├── README.md %% a brief summary of this repository
 ├── .gitignore %% a list of patterns indicating files to be ignored by git
-└── xtasks %% 
-    └── ... %% source code of the xTASKS software
+└── swtcamper %% 
+    └── ... %% source code of the SWTcamper software
 ```
 
 ## Required software
 
 **Operating system**  
-The software should be runnable on all standard operating systems that provide installation candidates for the below mentioned development tools. The software has in particular been tested on Ubuntu 18.04 LTS and Windows 10.
+
+The software should be runnable on all standard operating systems that provide installation candidates for the below mentioned development tools. The software has in particular been tested on Windows 10.
 
 **Required deployment tools**  
 * git, see https://git-scm.com/
 * Java 11 OpenJDK, see https://jdk.java.net/java-se-ri/11
 * Docker, see https://www.docker.com/
-
-**Further recommended tools for development**  
-* IntelliJ IDEA, see https://www.jetbrains.com/de-de/idea/
-* Scene Builder, see https://gluonhq.com/products/scene-builder/#download
-* node.js, see https://nodejs.org/en/download/
-* DBeaver, see https://dbeaver.io/
 
 ## Deployment
 
@@ -41,24 +36,30 @@ The software should be runnable on all standard operating systems that provide i
 2. Create a new ssh key and add it to your gitlab account (see https://gitlab.rz.uni-bamberg.de/profile/keys)
 3. Clone this repository
 4. Start the database via `docker-compose up database`
-5. Navigate to the `xtasks` directory and start the xTASKS application via `./gradlew bootRun`
+5. Navigate to the `swtcamper` directory and start the SWTcamper application via `./gradlew bootRun`
 
 Afterwards, stop the database using `docker-compose down`. In order to remove any data currently stored in the database use `docker-compose down -v`.
 
 ## Project structure
 
-The below overview contains the most relevant files and folders, each accompanied by a brief description of its use.
+The below overview contains all files and folders, each accompanied by a brief description of its use.
 
 ```plain
-xTASKS
+SWTcamper
 ├── build.gradle %% the gradle build file
 ├── gradlew %% the gradle wrapper script
 ├── src
     ├── main
     │   ├── java
-    │   │   └── xtasks
+    │   │   └── swtcamper
     │   │       ├── Main.java %% starts the application
     │   │       ├── App.java %% defines the SpringBootApplication
+    │   │       ├── api
+                    ├── contract
+                        ├── BookingDTO.java %% Data Transfer Object of a Booking object, used to transfer booking data from View to Service
+                        ├── IBookingController %% Interface of BookingController, specifies CRUD methods for booking objects
+                        ├── IOfferController %% Interface of OfferController, specifies CRUD methods for offer objects
+                        ├── IUserController %% Interface of UserController, specifies CRUD methods for user objects
     │   │       ├── backend %% all resources associated with the backend component
     │   │       │   ├── entity %% represent concepts persisted in the database
     │   │       │   ├── repository %% provides basic CRUD operations on entities, e.g., find, save, delete, etc.

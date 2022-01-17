@@ -1,52 +1,49 @@
 package swtcamper.api.contract;
 
 import java.util.ArrayList;
-import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 
 public class OfferDTO {
 
+  ArrayList<String> rentalConditions;
   private long offerID;
+  private User creator;
   private OfferedObjectTypeDTO offeredObjectType;
   private Vehicle offeredObject;
   private String title;
   private String location;
   private String contact;
-  private String description;
+  private String particularities;
   private ArrayList<Long> bookings;
   private long price;
-  boolean minAge25;
-  boolean borderCrossingAllowed;
-  boolean depositInCash;
   private boolean active;
 
   public OfferDTO(
     long offerID,
+    User creator,
     OfferedObjectTypeDTO offeredObjectType,
     Vehicle offeredObject,
     ArrayList<Long> bookings,
     String title,
     String location,
     String contact,
-    String description,
+    String particularities,
     long price,
-    boolean minAge25,
-    boolean borderCrossingAllowed,
-    boolean depositInCash,
+    ArrayList<String> rentalConditions,
     boolean active
   ) {
     this.offerID = offerID;
+    this.creator = creator;
     this.offeredObjectType = offeredObjectType;
     this.offeredObject = offeredObject;
     this.bookings = bookings;
     this.title = title;
     this.location = location;
     this.contact = contact;
-    this.description = description;
+    this.particularities = particularities;
     this.price = price;
-    this.minAge25 = minAge25;
-    this.borderCrossingAllowed = borderCrossingAllowed;
-    this.depositInCash = depositInCash;
+    this.rentalConditions = rentalConditions;
     this.active = active;
   }
 
@@ -56,6 +53,14 @@ public class OfferDTO {
 
   public void setID(long offerID) {
     this.offerID = offerID;
+  }
+
+  public User getCreator() {
+    return this.creator;
+  }
+
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
   public OfferedObjectTypeDTO getOfferedObjectType() {
@@ -106,12 +111,12 @@ public class OfferDTO {
     this.contact = contact;
   }
 
-  public String getDescription() {
-    return description;
+  public String getParticularities() {
+    return particularities;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setParticularities(String particularities) {
+    this.particularities = particularities;
   }
 
   public long getPrice() {
@@ -122,28 +127,12 @@ public class OfferDTO {
     this.price = price;
   }
 
-  public boolean isMinAge25() {
-    return minAge25;
+  public ArrayList<String> getRentalConditions() {
+    return rentalConditions;
   }
 
-  public void setMinAge25(boolean minAge25) {
-    this.minAge25 = minAge25;
-  }
-
-  public boolean isBorderCrossingAllowed() {
-    return borderCrossingAllowed;
-  }
-
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed) {
-    this.borderCrossingAllowed = borderCrossingAllowed;
-  }
-
-  public boolean isDepositInCash() {
-    return depositInCash;
-  }
-
-  public void setDepositInCash(boolean depositInCash) {
-    this.depositInCash = depositInCash;
+  public void setRentalConditions(ArrayList<String> rentalConditions) {
+    this.rentalConditions = rentalConditions;
   }
 
   public boolean isActive() {
@@ -157,23 +146,34 @@ public class OfferDTO {
   @Override
   public String toString() {
     return (
-      "offerID: " +
+      "OfferDTO{" +
+      "offerID=" +
       offerID +
-      ", Fahrzeug: " +
-      offeredObject.getVehicleFeatures().getMake() +
-      " " +
-      offeredObject.getVehicleFeatures().getModel() +
-      " (" +
-      offeredObject.getVehicleFeatures().getVehicleType() +
-      ") (Bj. " +
-      offeredObject.getVehicleFeatures().getYear() +
-      ")" +
-      ", Sitzplätze: " +
-      offeredObject.getVehicleFeatures().getSeats() +
-      ", Preis pro Tag: " +
+      ", creator=" +
+      creator.getUsername() +
+      ", offeredObjectType=" +
+      offeredObjectType +
+      ", offeredObject=" +
+      offeredObject +
+      ", title='" +
+      title +
+      '\'' +
+      ", location='" +
+      location +
+      '\'' +
+      ", contact='" +
+      contact +
+      '\'' +
+      ", particularities='" +
+      particularities +
+      '\'' +
+      ", bookings=" +
+      bookings +
+      ", price=" +
       price +
-      ", aktiv: " +
-      active
+      ", active=" +
+      active +
+      '}'
     );
   }
 }

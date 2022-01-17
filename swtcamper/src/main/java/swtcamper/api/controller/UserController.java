@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.api.contract.UserRoleDTO;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -20,41 +22,67 @@ public class UserController implements IUserController {
   @Autowired
   ModelMapper modelMapper;
 
-  public UserDTO register(UserDTO userDTO) throws GenericServiceException {
-    try {
-      return modelMapper.userToUserDTO(userService.create(userDTO));
-    } catch (GenericServiceException e) {
-      throw new GenericServiceException("Could not register user.");
-    }
+  public UserDTO register(
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
+  ) {
+    return modelMapper.userToUserDTO(
+      userService.create(
+        username,
+        password,
+        email,
+        phone,
+        name,
+        surname,
+        userRole,
+        enabled
+      )
+    );
+  }
+
+  public User getLoggedInUser() {
+    return userService.getLoggedInUser();
   }
 
   @Override
-  public UserRole login(UserDTO userDTO)
-    throws WrongPasswordException, UserDoesNotExistException {
+  public UserRoleDTO login(String username, String password)
+    throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
     try {
-      return userService.login(userDTO);
+      return modelMapper.toUserRoleDTO(userService.login(username, password));
     } catch (WrongPasswordException e) {
       throw new WrongPasswordException(e.getMessage());
     } catch (UserDoesNotExistException e) {
       throw new UserDoesNotExistException(e.getMessage());
+    } catch (GenericServiceException e) {
+      throw new GenericServiceException(e.getMessage());
     }
   }
 
+  public void logout() {
+    userService.setLoggedInUser(null);
+  }
+
   @Override
-  public boolean isUsernameFree(UserDTO userDTO)
+  public boolean isUsernameFree(String username) {
+    return userService.isUsernameFree(username);
+  }
+
+  @Override
+  public boolean isEmailFree(String email) {
+    return userService.isEmailFree(email);
+  }
+
+  @Override
+  public void resetPassword(String username, String email, String password)
     throws GenericServiceException {
-    return userService.isUsernameFree(userDTO);
-  }
-
-  @Override
-  public boolean isEmailFree(UserDTO userDTO) throws GenericServiceException {
-    return userService.isEmailFree(userDTO);
-  }
-
-  @Override
-  public void resetPassword(UserDTO userDTO) throws GenericServiceException {
     try {
-      userService.resetPassword(userDTO);
+      userService.resetPassword(username, email, password);
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
@@ -66,7 +94,7 @@ public class UserController implements IUserController {
   }
 
   @Override
-  public boolean isEnabled(UserDTO userDTO) throws UserDoesNotExistException {
-    return userService.isEnabled(userDTO);
+  public boolean isEnabled(String username) throws UserDoesNotExistException {
+    return userService.isEnabled(username);
   }
 }

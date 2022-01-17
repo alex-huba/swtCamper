@@ -30,6 +30,7 @@ public class ModelMapper {
   public OfferDTO offerToOfferDTO(Offer offer) {
     return new OfferDTO(
       offer.getOfferID(),
+      offer.getCreator(),
       toOfferedObjectTypeDTO(offer.getOfferedObjectType()),
       offer.getOfferedObject(),
       offer.getBookings(),
@@ -38,9 +39,7 @@ public class ModelMapper {
       offer.getContact(),
       offer.getParticularities(),
       offer.getPrice(),
-      offer.isMinAge25(),
-      offer.isBorderCrossingAllowed(),
-      offer.isDepositInCash(),
+      offer.getRentalConditions(),
       offer.isActive()
     );
   }
@@ -92,5 +91,25 @@ public class ModelMapper {
       booking.getEndDate(),
       booking.isActive()
     );
+  }
+
+  public PictureDTO pictureToPictureDTO(Picture picture) {
+    return new PictureDTO(
+      picture.getPictureID(),
+      picture.getVehicleID(),
+      picture.getPath()
+    );
+  }
+
+  public Picture pictureDTOToPicture(PictureDTO pictureDTO) {
+    return new Picture(pictureDTO);
+  }
+
+  public List<PictureDTO> picturesToPictureDTOs(List<Picture> pictures) {
+    List<PictureDTO> pictureDTOs = new ArrayList<>();
+    for (Picture picture : pictures) {
+      pictureDTOs.add(pictureToPictureDTO(picture));
+    }
+    return pictureDTOs;
   }
 }
