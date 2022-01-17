@@ -1,696 +1,258 @@
 package swtcamper.backend.services;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import swtcamper.backend.entities.*;
+import swtcamper.backend.repositories.OfferRepository;
+import swtcamper.backend.repositories.VehicleFeaturesRepository;
+import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleFeatures;
-import swtcamper.backend.entities.VehicleType;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.VehicleFeaturesRepository;
-import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.exceptions.GenericServiceException;
-
 @RunWith(MockitoJUnitRunner.class)
 public class OfferServiceTest {
 
-  @Mock
-  private VehicleRepository mockVehicleRepository;
+    @Mock
+    private OfferService mockOfferService;
+    @Mock
+    private VehicleRepository mockVehicleRepository;
+    @Mock
+    private VehicleFeaturesRepository mockVehicleFeaturesRepository;
+    @Mock
+    private OfferRepository mockOfferRepository;
 
-  @Mock
-  private VehicleFeaturesRepository mockVehicleFeaturesRepository;
+    @InjectMocks
+    private OfferService offerServiceUnderTest;
 
-  @Mock
-  private OfferRepository mockOfferRepository;
+    @Test
+    public void createOffer() {
+        // given
+        final User creator = new User();
 
-  @InjectMocks
-  private OfferService offerServiceUnderTest;
+        final User user = new User();
+        final Offer expectedResult = new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockVehicleRepository.save(any(Vehicle.class))).thenReturn(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))).thenReturn(new VehicleFeatures(new Vehicle(null)));
 
-  @Test
-  public void createOffer() {
-    // Setup
-    final Offer expectedResult = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(mockVehicleRepository.save(any(Vehicle.class)))
-      .thenReturn(new Vehicle(new VehicleFeatures(null)));
-    when(
-      mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))
-    )
-      .thenReturn(new VehicleFeatures(new Vehicle(null)));
+        // Configure OfferRepository.save(...).
+        final User user1 = new User();
+        final Offer offer = new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.save(new Offer(new User(), new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))))).thenReturn(offer);
 
-    // Configure OfferRepository.save(...).
-    final Offer offer = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(
-      mockOfferRepository.save(
-        new Offer(
-          new Vehicle(new VehicleFeatures(null)),
-          new ArrayList<>(List.of(0L)),
-          "title",
-          "location",
-          "contact",
-          "particularities",
-          0L,
-          false,
-          false,
-          false,
-          false
-        )
-      )
-    )
-      .thenReturn(offer);
+        // when
+        final Offer result = offerServiceUnderTest.create(creator, "title", "location", "contact", "particularities", 0L, new ArrayList<>(List.of("value")), VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
-    // Run the test
-    final Offer result = offerServiceUnderTest.create(
-      "title",
-      "location",
-      "contact",
-      "description",
-      0L,
-      false,
-      false,
-      false,
-      new String[] { "value" },
-      VehicleType.CAMPER,
-      "make",
-      "model",
-      "year",
-      0.0,
-      0.0,
-      0.0,
-      "engine",
-      "transmission",
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    );
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mockVehicleRepository, ).save(any(Vehicle.class));
+        verify(mockVehicleFeaturesRepository).save(new VehicleFeatures(new Vehicle(null)));
+    }
 
-    // Verify the results
-    System.out.println("Excpected: " + expectedResult.toString());
-    //System.out.println("Result:" + result.toString());
-    //assertThat(result).isEqualTo(expectedResult);
-    verify(mockVehicleRepository).save(any(Vehicle.class));
-    verify(mockVehicleFeaturesRepository).save(any(VehicleFeatures.class));
-  }
+    @Test
+    public void updateOffer() {
+        // given
+        final User creator = new User();
 
-  @Test
-  public void updateOffer() {
-    // Setup
-    final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
-    final Offer expectedResult = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
+        final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
+        final User user = new User();
+        final Offer expectedResult = new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
 
-    // Configure OfferRepository.findById(...).
-    final Optional<Offer> offer = Optional.of(
-      new Offer(
-        new Vehicle(new VehicleFeatures(null)),
-        new ArrayList<>(List.of(0L)),
-        "title",
-        "location",
-        "contact",
-        "particularities",
-        0L,
-        false,
-        false,
-        false,
-        false
-      )
-    );
-    when(mockOfferRepository.findById(0L)).thenReturn(offer);
+        // Configure OfferRepository.findById(...).
+        final User user1 = new User();
+        final Optional<Offer> offer = Optional.of(new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))));
+        when(mockOfferRepository.findById(0L)).thenReturn(offer);
 
-    // Configure VehicleRepository.findById(...).
-    final Optional<Vehicle> vehicle = Optional.of(
-      new Vehicle(new VehicleFeatures(null))
-    );
-    when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
+        // Configure VehicleRepository.findById(...).
+        final Optional<Vehicle> vehicle = Optional.of(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
 
-    // Configure VehicleFeaturesRepository.findById(...).
-    final Optional<VehicleFeatures> vehicleFeatures = Optional.of(
-      new VehicleFeatures(new Vehicle(null))
-    );
-    when(mockVehicleFeaturesRepository.findById(0L))
-      .thenReturn(vehicleFeatures);
+        // Configure VehicleFeaturesRepository.findById(...).
+        final Optional<VehicleFeatures> vehicleFeatures = Optional.of(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleFeaturesRepository.findById(0L)).thenReturn(vehicleFeatures);
 
-    when(
-      mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))
-    )
-      .thenReturn(new VehicleFeatures(new Vehicle(null)));
-    when(mockVehicleRepository.save(any(Vehicle.class)))
-      .thenReturn(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))).thenReturn(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleRepository.save(any(Vehicle.class))).thenReturn(new Vehicle(new VehicleFeatures(null)));
 
-    // Configure OfferRepository.save(...).
-    final Offer offer1 = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(
-      mockOfferRepository.save(
-        new Offer(
-          new Vehicle(new VehicleFeatures(null)),
-          new ArrayList<>(List.of(0L)),
-          "title",
-          "location",
-          "contact",
-          "particularities",
-          0L,
-          false,
-          false,
-          false,
-          false
-        )
-      )
-    )
-      .thenReturn(offer1);
+        // Configure OfferRepository.save(...).
+        final User user2 = new User();
+        final Offer offer1 = new Offer(user2, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.save(new Offer(new User(), new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))))).thenReturn(offer1);
 
-    // Run the test
-    final Offer result = offerServiceUnderTest.update(
-      0L,
-      offeredObject,
-      "title",
-      "location",
-      "contact",
-      "description",
-      new ArrayList<>(List.of(0L)),
-      0L,
-      false,
-      false,
-      false,
-      false,
-      new String[] { "value" },
-      VehicleType.CAMPER,
-      "make",
-      "model",
-      "year",
-      0.0,
-      0.0,
-      0.0,
-      "engine",
-      "transmission",
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    );
+        // when
+        final Offer result = offerServiceUnderTest.update(0L, creator, offeredObject, "title", "location", "contact", "particularities", new ArrayList<>(List.of(0L)), 0L, false, new ArrayList<>(List.of("value")), VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
-    // Verify the results
-    assertThat(result).isEqualTo(expectedResult);
-    verify(mockVehicleFeaturesRepository).save(any(VehicleFeatures.class));
-    verify(mockVehicleRepository).save(any(Vehicle.class));
-  }
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mockVehicleFeaturesRepository).save(new VehicleFeatures(new Vehicle(null)));
+        verify(mockVehicleRepository).save(any(Vehicle.class));
+    }
 
-  @Test
-  public void updateOfferReturnsAbsentWhileFromOfferRepositoryFindById() {
-    // Setup
-    final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
-    final Offer expectedResult = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(mockOfferRepository.findById(0L)).thenReturn(Optional.empty());
+    @Test
+    public void updateOfferReturnsAbsentWhileFromOfferRepositoryFindById() {
+        // given
+        final User creator = new User();
 
-    // Configure VehicleRepository.findById(...).
-    final Optional<Vehicle> vehicle = Optional.of(
-      new Vehicle(new VehicleFeatures(null))
-    );
-    when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
+        final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
+        final User user = new User();
+        final Offer expectedResult = new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.findById(0L)).thenReturn(Optional.empty());
 
-    // Configure VehicleFeaturesRepository.findById(...).
-    final Optional<VehicleFeatures> vehicleFeatures = Optional.of(
-      new VehicleFeatures(new Vehicle(null))
-    );
-    when(mockVehicleFeaturesRepository.findById(0L))
-      .thenReturn(vehicleFeatures);
+        // Configure VehicleRepository.findById(...).
+        final Optional<Vehicle> vehicle = Optional.of(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
 
-    when(
-      mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))
-    )
-      .thenReturn(new VehicleFeatures(new Vehicle(null)));
-    when(mockVehicleRepository.save(any(Vehicle.class)))
-      .thenReturn(new Vehicle(new VehicleFeatures(null)));
+        // Configure VehicleFeaturesRepository.findById(...).
+        final Optional<VehicleFeatures> vehicleFeatures = Optional.of(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleFeaturesRepository.findById(0L)).thenReturn(vehicleFeatures);
 
-    // Configure OfferRepository.save(...).
-    final Offer offer = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(
-      mockOfferRepository.save(
-        new Offer(
-          new Vehicle(new VehicleFeatures(null)),
-          new ArrayList<>(List.of(0L)),
-          "title",
-          "location",
-          "contact",
-          "particularities",
-          0L,
-          false,
-          false,
-          false,
-          false
-        )
-      )
-    )
-      .thenReturn(offer);
+        when(mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))).thenReturn(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleRepository.save(any(Vehicle.class))).thenReturn(new Vehicle(new VehicleFeatures(null)));
 
-    // Run the test
-    final Offer result = offerServiceUnderTest.update(
-      0L,
-      offeredObject,
-      "title",
-      "location",
-      "contact",
-      "description",
-      new ArrayList<>(List.of(0L)),
-      0L,
-      false,
-      false,
-      false,
-      false,
-      new String[] { "value" },
-      VehicleType.CAMPER,
-      "make",
-      "model",
-      "year",
-      0.0,
-      0.0,
-      0.0,
-      "engine",
-      "transmission",
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    );
+        // Configure OfferRepository.save(...).
+        final User user1 = new User();
+        final Offer offer = new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.save(new Offer(new User(), new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))))).thenReturn(offer);
 
-    // Verify the results
-    assertThat(result).isEqualTo(expectedResult);
-    verify(mockVehicleFeaturesRepository)
-      .save(new VehicleFeatures(new Vehicle(null)));
-    verify(mockVehicleRepository).save(any(Vehicle.class));
-  }
+        // when
+        final Offer result = offerServiceUnderTest.update(0L, creator, offeredObject, "title", "location", "contact", "particularities", new ArrayList<>(List.of(0L)), 0L, false, new ArrayList<>(List.of("value")), VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
-  @Test
-  public void updateOfferReturnsAbsentWhileFromVehicleRepositoryFindById() {
-    // Setup
-    final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
-    final Offer expectedResult = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mockVehicleFeaturesRepository).save(new VehicleFeatures(new Vehicle(null)));
+        verify(mockVehicleRepository).save(any(Vehicle.class));
+    }
 
-    // Configure OfferRepository.findById(...).
-    final Optional<Offer> offer = Optional.of(
-      new Offer(
-        new Vehicle(new VehicleFeatures(null)),
-        new ArrayList<>(List.of(0L)),
-        "title",
-        "location",
-        "contact",
-        "particularities",
-        0L,
-        false,
-        false,
-        false,
-        false
-      )
-    );
-    when(mockOfferRepository.findById(0L)).thenReturn(offer);
+    @Test
+    public void updateOfferReturnsAbsentWhileFromVehicleRepositoryFindById() {
+        // given
+        final User creator = new User();
 
-    when(mockVehicleRepository.findById(0L)).thenReturn(Optional.empty());
+        final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
+        final User user = new User();
+        final Offer expectedResult = new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
 
-    // Configure VehicleFeaturesRepository.findById(...).
-    final Optional<VehicleFeatures> vehicleFeatures = Optional.of(
-      new VehicleFeatures(new Vehicle(null))
-    );
-    when(mockVehicleFeaturesRepository.findById(0L))
-      .thenReturn(vehicleFeatures);
+        // Configure OfferRepository.findById(...).
+        final User user1 = new User();
+        final Optional<Offer> offer = Optional.of(new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))));
+        when(mockOfferRepository.findById(0L)).thenReturn(offer);
 
-    when(
-      mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))
-    )
-      .thenReturn(new VehicleFeatures(new Vehicle(null)));
-    when(mockVehicleRepository.save(any(Vehicle.class)))
-      .thenReturn(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleRepository.findById(0L)).thenReturn(Optional.empty());
 
-    // Configure OfferRepository.save(...).
-    final Offer offer1 = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(
-      mockOfferRepository.save(
-        new Offer(
-          new Vehicle(new VehicleFeatures(null)),
-          new ArrayList<>(List.of(0L)),
-          "title",
-          "location",
-          "contact",
-          "particularities",
-          0L,
-          false,
-          false,
-          false,
-          false
-        )
-      )
-    )
-      .thenReturn(offer1);
+        // Configure VehicleFeaturesRepository.findById(...).
+        final Optional<VehicleFeatures> vehicleFeatures = Optional.of(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleFeaturesRepository.findById(0L)).thenReturn(vehicleFeatures);
 
-    // Run the test
-    final Offer result = offerServiceUnderTest.update(
-      0L,
-      offeredObject,
-      "title",
-      "location",
-      "contact",
-      "description",
-      new ArrayList<>(List.of(0L)),
-      0L,
-      false,
-      false,
-      false,
-      false,
-      new String[] { "value" },
-      VehicleType.CAMPER,
-      "make",
-      "model",
-      "year",
-      0.0,
-      0.0,
-      0.0,
-      "engine",
-      "transmission",
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    );
+        when(mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))).thenReturn(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleRepository.save(any(Vehicle.class))).thenReturn(new Vehicle(new VehicleFeatures(null)));
 
-    // Verify the results
-    assertThat(result).isEqualTo(expectedResult);
-    verify(mockVehicleFeaturesRepository)
-      .save(new VehicleFeatures(new Vehicle(null)));
-    verify(mockVehicleRepository).save(any(Vehicle.class));
-  }
+        // Configure OfferRepository.save(...).
+        final User user2 = new User();
+        final Offer offer1 = new Offer(user2, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.save(new Offer(new User(), new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))))).thenReturn(offer1);
 
-  @Test
-  public void updateOfferReturnsAbsentWhileFromVehicleFeaturesRepositoryFindById() {
-    // Setup
-    final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
-    final Offer expectedResult = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
+        // when
+        final Offer result = offerServiceUnderTest.update(0L, creator, offeredObject, "title", "location", "contact", "particularities", new ArrayList<>(List.of(0L)), 0L, false, new ArrayList<>(List.of("value")), VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
-    // Configure OfferRepository.findById(...).
-    final Optional<Offer> offer = Optional.of(
-      new Offer(
-        new Vehicle(new VehicleFeatures(null)),
-        new ArrayList<>(List.of(0L)),
-        "title",
-        "location",
-        "contact",
-        "particularities",
-        0L,
-        false,
-        false,
-        false,
-        false
-      )
-    );
-    when(mockOfferRepository.findById(0L)).thenReturn(offer);
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mockVehicleFeaturesRepository).save(new VehicleFeatures(new Vehicle(null)));
+        verify(mockVehicleRepository).save(any(Vehicle.class));
+    }
 
-    // Configure VehicleRepository.findById(...).
-    final Optional<Vehicle> vehicle = Optional.of(
-      new Vehicle(new VehicleFeatures(null))
-    );
-    when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
+    @Test
+    public void updateOfferReturnsAbsentWhileFromVehicleFeaturesRepositoryFindById() {
+        // given
+        final User creator = new User();
 
-    when(mockVehicleFeaturesRepository.findById(0L))
-      .thenReturn(Optional.empty());
-    when(
-      mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))
-    )
-      .thenReturn(new VehicleFeatures(new Vehicle(null)));
-    when(mockVehicleRepository.save(any(Vehicle.class)))
-      .thenReturn(new Vehicle(new VehicleFeatures(null)));
+        final Vehicle offeredObject = new Vehicle(new VehicleFeatures(null));
+        final User user = new User();
+        final Offer expectedResult = new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
 
-    // Configure OfferRepository.save(...).
-    final Offer offer1 = new Offer(
-      new Vehicle(new VehicleFeatures(null)),
-      new ArrayList<>(List.of(0L)),
-      "title",
-      "location",
-      "contact",
-      "particularities",
-      0L,
-      false,
-      false,
-      false,
-      false
-    );
-    when(
-      mockOfferRepository.save(
-        new Offer(
-          new Vehicle(new VehicleFeatures(null)),
-          new ArrayList<>(List.of(0L)),
-          "title",
-          "location",
-          "contact",
-          "particularities",
-          0L,
-          false,
-          false,
-          false,
-          false
-        )
-      )
-    )
-      .thenReturn(offer1);
+        // Configure OfferRepository.findById(...).
+        final User user1 = new User();
+        final Optional<Offer> offer = Optional.of(new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))));
+        when(mockOfferRepository.findById(0L)).thenReturn(offer);
 
-    // Run the test
-    final Offer result = offerServiceUnderTest.update(
-      0L,
-      offeredObject,
-      "title",
-      "location",
-      "contact",
-      "description",
-      new ArrayList<>(List.of(0L)),
-      0L,
-      false,
-      false,
-      false,
-      false,
-      new String[] { "value" },
-      VehicleType.CAMPER,
-      "make",
-      "model",
-      "year",
-      0.0,
-      0.0,
-      0.0,
-      "engine",
-      "transmission",
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    );
+        // Configure VehicleRepository.findById(...).
+        final Optional<Vehicle> vehicle = Optional.of(new Vehicle(new VehicleFeatures(null)));
+        when(mockVehicleRepository.findById(0L)).thenReturn(vehicle);
 
-    // Verify the results
-    assertThat(result).isEqualTo(expectedResult);
-    verify(mockVehicleFeaturesRepository)
-      .save(new VehicleFeatures(new Vehicle(null)));
-    verify(mockVehicleRepository).save(any(Vehicle.class));
-  }
+        when(mockVehicleFeaturesRepository.findById(0L)).thenReturn(Optional.empty());
+        when(mockVehicleFeaturesRepository.save(new VehicleFeatures(new Vehicle(null)))).thenReturn(new VehicleFeatures(new Vehicle(null)));
+        when(mockVehicleRepository.save(any(Vehicle.class))).thenReturn(new Vehicle(new VehicleFeatures(null)));
 
-  @Test
-  public void deleteOffer() throws Exception {
-    // Setup
-    // Run the test
-    offerServiceUnderTest.delete(0L);
+        // Configure OfferRepository.save(...).
+        final User user2 = new User();
+        final Offer offer1 = new Offer(user2, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value")));
+        when(mockOfferRepository.save(new Offer(new User(), new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))))).thenReturn(offer1);
 
-    // Verify the results
-    verify(mockOfferRepository).deleteById(0L);
-  }
+        // when
+        final Offer result = offerServiceUnderTest.update(0L, creator, offeredObject, "title", "location", "contact", "particularities", new ArrayList<>(List.of(0L)), 0L, false, new ArrayList<>(List.of("value")), VehicleType.CAMPER, "make", "model", "year", 0.0, 0.0, 0.0, "engine", "transmission", 0, 0, false, false, false, false, false, false, false);
 
-  @Test
-  // something here is wrong
-  public void deleteOfferShouldThrowGenericServiceException() {
-    // Setup
-    // Run the test
-    assertThatThrownBy(() -> offerServiceUnderTest.delete(-1L))
-      .isInstanceOf(GenericServiceException.class);
-    verify(mockOfferRepository).deleteById((0L));
-  }
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mockVehicleFeaturesRepository).save(new VehicleFeatures(new Vehicle(null)));
+        verify(mockVehicleRepository).save(any(Vehicle.class));
+    }
 
-  @Test
-  public void readOffers() {
-    // Setup
-    final List<Offer> expectedResult = List.of(
-      new Offer(
-        new Vehicle(new VehicleFeatures(null)),
-        new ArrayList<>(List.of(0L)),
-        "title",
-        "location",
-        "contact",
-        "particularities",
-        0L,
-        false,
-        false,
-        false,
-        false
-      )
-    );
+    @Test
+    public void deleteOffer() throws Exception {
+        // given
+        // when
+        offerServiceUnderTest.delete(0L);
 
-    // Configure OfferRepository.findAll(...).
-    final List<Offer> offers = expectedResult;
-    //List.of(new Offer(new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, false, false, false));
-    when(mockOfferRepository.findAll()).thenReturn(offers);
+        // then
+        verify(mockOfferRepository).deleteById(0L);
+    }
 
-    // Run the test
-    final List<Offer> result = offerServiceUnderTest.offers();
+    @Test
+    public void deleteOfferShouldThrowGenericServiceException() {
+        // given
+        // when
+        assertThatThrownBy(() -> offerServiceUnderTest.delete(0L)).isInstanceOf(IllegalArgumentException.class);
+        verify(mockOfferRepository).deleteById(0L);
+    }
 
-    // Verify the results
-    assertThat(result.toString()).isEqualTo(expectedResult.toString());
-  }
+    @Test
+    public void readOffers() {
+        // given
+        final User user = new User();
+        final List<Offer> expectedResult = List.of(new Offer(user, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))));
 
-  @Test
-  public void readOffersfromOfferRepositoryReturnsNoItems() {
-    // Setup
-    when(mockOfferRepository.findAll()).thenReturn(Collections.emptyList());
+        // Configure OfferRepository.findAll(...).
+        final User user1 = new User();
+        final List<Offer> offers = List.of(new Offer(user1, new Vehicle(new VehicleFeatures(null)), new ArrayList<>(List.of(0L)), "title", "location", "contact", "particularities", 0L, false, new ArrayList<>(List.of("value"))));
+        when(mockOfferRepository.findAll()).thenReturn(offers);
 
-    // Run the test
-    final List<Offer> result = offerServiceUnderTest.offers();
+        // when
+        final List<Offer> result = offerServiceUnderTest.offers();
 
-    // Verify the results
-    assertThat(result).isEqualTo(Collections.emptyList());
-  }
+        // then
+        assertThat(result).isEqualTo(expectedResult);
+    }
+
+    @Test
+    public void readOffersFromOfferRepositoryReturnsNoItems() {
+        // given
+        when(mockOfferRepository.findAll()).thenReturn(Collections.emptyList());
+
+        // when
+        final List<Offer> result = offerServiceUnderTest.offers();
+
+        // then
+        assertThat(result).isEqualTo(Collections.emptyList());
+    }
 }
