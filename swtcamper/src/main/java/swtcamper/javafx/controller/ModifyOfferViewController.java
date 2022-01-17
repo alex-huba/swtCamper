@@ -681,6 +681,17 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(vehicleTypeComboBox);
       isVehicleTypeOk.set(false);
     } else {
+      if(inputVehicleType.equals(VehicleType.TRAILER)) {
+        transmissionComboBox.setDisable(true);
+        transmissionComboBox.setValue(null);
+        isTransmissionTypeOk.set(true);
+        fuelComboBox.setDisable(true);
+        fuelComboBox.setValue(null);
+      } else {
+        transmissionComboBox.setDisable(false);
+        isTransmissionTypeOk.set(false);
+        fuelComboBox.setDisable(false);
+      }
       errorLabel.setText("");
       validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
