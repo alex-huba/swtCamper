@@ -350,8 +350,8 @@ public class OfferViewController {
 
             if (booking.isActive()) {
               rentLabel.setText(
-                      "Du mietest diese Anzeige gerade. Buchungsnummer: " +
-                              booking.getId()
+                "Du mietest diese Anzeige gerade. Buchungsnummer: " +
+                booking.getId()
               );
 
               // abort renting
@@ -362,7 +362,7 @@ public class OfferViewController {
               });
             } else {
               rentLabel.setText(
-                      "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+                "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
               );
 
               // abort open booking request
