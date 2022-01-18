@@ -1019,9 +1019,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         startDatePicker.getValue(),
         endDatePicker.getValue(),
         offerDTO,
-              bookingService,
-              offerService,
-              mainViewController
+        bookingService,
+        offerService,
+        mainViewController
       )
     ) {
       mainViewController.handleExceptionMessage(

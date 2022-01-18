@@ -399,9 +399,9 @@ public class OfferViewController {
           startDatePicker.getValue(),
           endDatePicker.getValue(),
           this.viewedOffer,
-                bookingService,
-                offerService,
-                mainViewController
+          bookingService,
+          offerService,
+          mainViewController
         )
       ) {
         mainViewController.handleExceptionMessage(
