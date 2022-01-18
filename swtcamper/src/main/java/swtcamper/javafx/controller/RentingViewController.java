@@ -24,6 +24,7 @@ import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
@@ -47,6 +48,9 @@ public class RentingViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   @FXML
   public TextField locationTextField;
@@ -132,12 +136,15 @@ public class RentingViewController implements EventHandler<KeyEvent> {
   @FXML
   public AnchorPane rootAnchorPane;
 
+  @FXML
+  public Label errorLabel;
+
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;
   int lastPageVisited;
 
   @FXML
-  private void initialize() throws GenericServiceException {
+  private void initialize() {
     offersPerPageChoiceBox.setItems(
       FXCollections.observableArrayList(1, 5, 10, 20)
     );
@@ -233,7 +240,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     Object source = event.getSource();
 
     if (constructionYearTextField.equals(source)) {
-      String inputYear = constructionYearTextField.getText();
+      int inputYear = Integer.parseInt(constructionYearTextField.getText());
       validateYear(inputYear);
     } else if (maxPricePerDayTextField.equals(source)) {
       String inputPrice = maxPricePerDayTextField.getText();
@@ -247,7 +254,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateYear(String inputYear) {
+  private void validateYear(int inputYear) {
     if (!validationHelper.checkYear(inputYear)) {
       errorLabel.setText("Wählen Sie bitte ein gültiges Baujahr");
       validateFalse(constructionYearTextField);

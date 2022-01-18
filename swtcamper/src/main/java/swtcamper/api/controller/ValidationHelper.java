@@ -27,7 +27,7 @@ public class ValidationHelper {
       !toCheck.isEmpty() &&
       isNumber(toCheck) &&
       Integer.parseInt(toCheck) > 10 &&
-      Integer.parseInt(toCheck) < 100000
+      Integer.parseInt(toCheck) < 100001
     );
   }
 
@@ -43,29 +43,19 @@ public class ValidationHelper {
     return !startDate.isBefore(endDate);
   }
 
-  public boolean checkSizeParameter(String toCheck) {
-    return (
-      !toCheck.isEmpty() &&
-      isNumber(toCheck) &&
-      Integer.parseInt(toCheck) > 100 &&
-      Integer.parseInt(toCheck) < 100000
-    );
+  public boolean checkSizeParameter(int toCheck) {
+    return (toCheck > 99 && toCheck < 100001);
   }
 
-  public boolean checkYear(String toCheck) {
-    return (
-      !toCheck.isEmpty() &&
-      isNumber(toCheck) &&
-      Integer.parseInt(toCheck) > 1907 &&
-      Integer.parseInt(toCheck) < 2023
-    );
+  public boolean checkYear(int toCheck) {
+    return (toCheck > 1907 && toCheck < 2023);
   }
 
   public boolean checkSeats(String toCheck) {
     return (
       !toCheck.isEmpty() &&
       isNumber(toCheck) &&
-      Integer.parseInt(toCheck) > 0 &&
+      Integer.parseInt(toCheck) > -1 &&
       Integer.parseInt(toCheck) < 13
     );
   }

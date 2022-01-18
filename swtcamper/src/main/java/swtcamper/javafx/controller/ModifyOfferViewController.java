@@ -545,6 +545,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     } else if (bedsComboBox.equals(source)) {
       int inputBeds = Integer.parseInt(bedsComboBox.getValue());
       validateBeds(inputBeds);
+    } else if (lengthTextField.equals(source)) {
+      int inputLength = Integer.parseInt(lengthTextField.getText());
+      validateLength(inputLength);
+    } else if (widthTextField.equals(source)) {
+      int inputWidth = Integer.parseInt(widthTextField.getText());
+      validateWidth(inputWidth);
+    } else if (heightTextField.equals(source)) {
+      int inputHeight = Integer.parseInt(heightTextField.getText());
+      validateHeight(inputHeight);
+    } else if (constructionYearTextField.equals(source)) {
+      int inputYear = Integer.parseInt(constructionYearTextField.getText());
+      validateYear(inputYear);
     }
   }
 
@@ -821,7 +833,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateWidth(String inputWidth) {
+  private void validateWidth(int inputWidth) {
     if (!validationHelper.checkSizeParameter(inputWidth)) {
       errorLabel.setText("Ungültige Breite");
       validateFalse(widthTextField);
@@ -833,7 +845,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateLength(String inputLength) {
+  private void validateLength(int inputLength) {
     if (!validationHelper.checkSizeParameter(inputLength)) {
       errorLabel.setText("Ungültige Länge");
       validateFalse(lengthTextField);
@@ -845,7 +857,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateHeight(String inputHeight) {
+  private void validateHeight(int inputHeight) {
     if (!validationHelper.checkSizeParameter(inputHeight)) {
       errorLabel.setText("Ungültige Höhe");
       validateFalse(heightTextField);
@@ -857,7 +869,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateYear(String inputYear) {
+  private void validateYear(int inputYear) {
     if (!validationHelper.checkYear(inputYear)) {
       errorLabel.setText("Ungültiges Baujahr");
       validateFalse(constructionYearTextField);
