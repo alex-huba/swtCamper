@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.util.Pair;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
@@ -44,12 +46,6 @@ public class BookingServiceUnitTest {
   @Mock
   private BookingRepository bookingRepository;
 
-  @Mock
-  private LoggingController loggingController;
-
-  @Mock
-  private ModelMapper modelMapper;
-
   private User testUser = new User();
   private UserDTO testUserDTO = new UserDTO();
   private LocalDate testStartDate = LocalDate.now();
@@ -62,30 +58,52 @@ public class BookingServiceUnitTest {
     "location",
     "contact",
     "particularities",
-    1,
-    new ArrayList<String>(),
-    new ArrayList<Pair>()
+          1,
+          new ArrayList<String>(),
+          new ArrayList<Pair>()
   );
+
+  // Booking stuff
 
   public void mockFindAll(List<Booking> bookings) {
     doReturn(bookings).when(bookingRepository).findAll();
   }
 
-  //    public void mockSave(Booking booking) {
-  //        doReturn(booking)
-  //                .when(bookingRepository)
-  //                .save(booking);
-  //    }
+  public void mockSaveBooking(Booking booking) {
+    doReturn(booking)
+            .when(bookingRepository)
+            .save(any());
+  }
 
-  // TODO Booking is not mock
-  public void mockBookingGetId(Booking booking) {
-    doReturn(-1).when(booking).getId();
+  public void mockFindBookingById(Booking booking) {
+    doReturn(Optional.of(booking))
+            .when(bookingRepository)
+            .findById(any());
   }
 
   public void mockFindById() {
-    doReturn(null).when(bookingRepository).save(any());
+    doReturn(Optional.empty()).when(bookingRepository).findById((any()));
   }
 
+  public void mockBookingGetId(Booking booking) {
+    doReturn(1L).when(booking).getId();
+  }
+
+  // Offer Stuff
+
+  public void mockFindOfferById() {
+    doReturn(Optional.of(testOffer))
+            .when(offerRepository)
+            .findById(any());
+  }
+
+  public void mockSaveOffer(Offer offer) {
+    doReturn(offer)
+            .when(offerRepository)
+            .save(any());
+  }
+
+  //TODO wann beforeeach?
   public List<Booking> twoValidBookings() {
     List<Booking> twoValidBookings = new ArrayList<>();
     LocalDate startDate = LocalDate.now();
@@ -99,12 +117,17 @@ public class BookingServiceUnitTest {
     return twoValidBookings;
   }
 
-  private Booking testBooking = new Booking(
-    testUser,
-    testOffer,
-    testStartDate,
-    testEndDate
-  );
+  private Booking createBooking() {
+    Booking booking = new Booking(
+            testUser,
+            testOffer,
+            testStartDate,
+            testEndDate
+    );
+    booking.setId(1L);
+    return booking;
+  }
+
 
   // ------------- Tests -------------
 
@@ -119,26 +142,41 @@ public class BookingServiceUnitTest {
     assertEquals(expected, actual);
   }
 
+  /**
+   * Checks if the create method calls bookingRepository.save() with the given arguments
+   * @throws GenericServiceException
+   */
   @Test
   public void createShouldGiveBookingToRepository()
     throws GenericServiceException {
     // arrange
-    Booking expected = testBooking;
-    mockBookingGetId(testBooking);
+    mockSaveBooking(createBooking());
+    mockFindBookingById(createBooking());
+    mockFindOfferById();
+    mockSaveOffer(testOffer);
     ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(
-      Booking.class
+            Booking.class
+    );
+    Booking expected = new Booking(
+            testUser,
+            testOffer,
+            LocalDate.now(),
+            LocalDate.now().plus(1, ChronoUnit.DAYS)
     );
     // act
     Booking actual = bookingServiceUnderTest.create(
-      testUser,
-      testOffer,
-      LocalDate.now(),
-      LocalDate.now().plus(1, ChronoUnit.DAYS),
-      false
+            testUser,
+            testOffer,
+            LocalDate.now(),
+            LocalDate.now().plus(1, ChronoUnit.DAYS),
+            false
     );
     // assert
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    assertEquals(bookingArgumentCaptor.getValue().getRenter(), expected.getRenter());
+    assertEquals(bookingArgumentCaptor.getValue().getOffer(), expected.getOffer());
+    assertEquals(bookingArgumentCaptor.getValue().getStartDate(), expected.getStartDate());
+    assertEquals(bookingArgumentCaptor.getValue().getEndDate(), expected.getEndDate());
   }
 
   @Test(expected = GenericServiceException.class)
