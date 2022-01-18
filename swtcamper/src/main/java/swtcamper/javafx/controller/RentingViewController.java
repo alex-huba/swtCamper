@@ -3,12 +3,15 @@ package swtcamper.javafx.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -19,13 +22,14 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
-public class RentingViewController {
+public class RentingViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private MainViewController mainViewController;
@@ -38,6 +42,9 @@ public class RentingViewController {
 
   @Autowired
   private PictureController pictureController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   @FXML
   public TextField locationTextField;
@@ -109,6 +116,9 @@ public class RentingViewController {
   public AnchorPane rootAnchorPane;
 
   @FXML
+  public Label errorLabel;
+
+  @FXML
   private void initialize() throws GenericServiceException {
     reloadData();
 
@@ -157,6 +167,85 @@ public class RentingViewController {
     offerListScroll.setPrefHeight(
       rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
+    errorLabel.setText("");
+
+    constructionYearTextField.setOnKeyTyped(this);
+    maxPricePerDayTextField.setOnKeyTyped(this);
+    seatAmountTextField.setOnKeyTyped(this);
+    bedAmountTextField.setOnKeyTyped(this);
+  }
+
+  @Override
+  public void handle(KeyEvent event) {
+    validateInput(event);
+  }
+
+  private void validateInput(KeyEvent event) {
+    Object source = event.getSource();
+
+    if (constructionYearTextField.equals(source)) {
+      String inputYear = constructionYearTextField.getText();
+      validateYear(inputYear);
+    } else if (maxPricePerDayTextField.equals(source)) {
+      String inputPrice = maxPricePerDayTextField.getText();
+      validatePrice(inputPrice);
+    } else if (seatAmountTextField.equals(source)) {
+      String inputSeats = seatAmountTextField.getText();
+      validateSeats(inputSeats);
+    } else if (bedAmountTextField.equals(source)) {
+      String inputBeds = bedAmountTextField.getText();
+      validateBeds(inputBeds);
+    }
+  }
+
+  private void validateYear(String inputYear) {
+    if (!validationHelper.checkYear(inputYear)) {
+      errorLabel.setText("Wählen Sie bitte ein gültiges Baujahr");
+      validateFalse(constructionYearTextField);
+    } else {
+      errorLabel.setText("");
+      validateTrue(constructionYearTextField);
+    }
+  }
+
+  private void validatePrice(String inputPrice) {
+    if (!validationHelper.checkOfferPrice(inputPrice)) {
+      errorLabel.setText("Wählen Sie bitte ein gültigen Preis");
+      validateFalse(maxPricePerDayTextField);
+    } else {
+      errorLabel.setText("");
+      validateTrue(maxPricePerDayTextField);
+    }
+  }
+
+  private void validateSeats(String inputSeats) {
+    if (!validationHelper.checkSeats(inputSeats)) {
+      errorLabel.setText("Wählen Sie bitte eine gültige Anzahl von Sitzplätze");
+      validateFalse(seatAmountTextField);
+    } else {
+      errorLabel.setText("");
+      validateTrue(seatAmountTextField);
+    }
+  }
+
+  private void validateBeds(String inputBeds) {
+    if (!validationHelper.checkBeds(inputBeds)) {
+      errorLabel.setText("Wählen Sie bitte eine gültige Anzahl von Betten");
+      validateFalse(bedAmountTextField);
+    } else {
+      errorLabel.setText("");
+      validateTrue(bedAmountTextField);
+    }
+  }
+
+  private void validateTrue(Node element) {
+    element.setStyle(
+      "-fx-background-color: #transparent; -fx-text-fill: #000000"
+    );
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   /**

@@ -165,6 +165,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
   SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
   SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   private long offerID;
   private Vehicle offeredObject;
@@ -199,6 +203,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
     contactTextField.setOnKeyTyped(this);
+    widthTextField.setOnKeyTyped(this);
+    lengthTextField.setOnKeyTyped(this);
+    heightTextField.setOnKeyTyped(this);
+    constructionYearTextField.setOnKeyTyped(this);
 
     vehicleTypeComboBox
       .getSelectionModel()
@@ -226,6 +234,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
           .and(isContactOk)
           .and(isVehicleTypeOk)
           .and(isTransmissionTypeOk)
+          .and(isWidthOk)
+          .and(isLengthOk)
+          .and(isHeightOk)
+          .and(isYearOk)
           .not()
       );
   }
@@ -395,6 +407,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     isSeatsOk.set(false);
     isBedsOk.set(false);
 
+    //because offer can be saved without these parameters
+    isWidthOk.set(true);
+    isLengthOk.set(true);
+    isHeightOk.set(true);
+    isYearOk.set(true);
+
     errorLabel.setText("");
   }
 
@@ -542,6 +560,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     } else if (bedsTextField.equals(source)) {
       String inputBeds = bedsTextField.getText();
       validateBeds(inputBeds);
+    } else if (widthTextField.equals(source)) {
+      String inputWidth = widthTextField.getText();
+      validateWidth(inputWidth);
+    } else if (lengthTextField.equals(source)) {
+      String inputLength = lengthTextField.getText();
+      validateLength(inputLength);
+    } else if (heightTextField.equals(source)) {
+      String inputHeight = heightTextField.getText();
+      validateHeight(inputHeight);
+    } else if (constructionYearTextField.equals(source)) {
+      String inputYear = constructionYearTextField.getText();
+      validateYear(inputYear);
     }
   }
 
@@ -665,11 +695,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateSeats(String inputSeats) {
-    if (
-      inputSeats.isEmpty() ||
-      !inputSeats.matches("[0-9]*") ||
-      Integer.parseInt(inputSeats) == 0
-    ) {
+    if (!validationHelper.checkSeats(inputSeats)) {
       errorLabel.setText("Ungültige Anzahl von Sitzplätze");
       validateFalse(seatsTextField);
       isSeatsOk.set(false);
@@ -681,7 +707,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBeds(String inputBeds) {
-    if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
+    if (!validationHelper.checkBeds(inputBeds)) {
       errorLabel.setText("Ungültige Anzahl von Betten");
       validateFalse(bedsTextField);
       isBedsOk.set(false);
@@ -689,6 +715,54 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("");
       validateTrue(bedsTextField);
       isBedsOk.set(true);
+    }
+  }
+
+  private void validateWidth(String inputWidth) {
+    if (!validationHelper.checkSizeParameter(inputWidth)) {
+      errorLabel.setText("Ungültige Breite");
+      validateFalse(widthTextField);
+      isWidthOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(widthTextField);
+      isWidthOk.set(true);
+    }
+  }
+
+  private void validateLength(String inputLength) {
+    if (!validationHelper.checkSizeParameter(inputLength)) {
+      errorLabel.setText("Ungültige Länge");
+      validateFalse(lengthTextField);
+      isLengthOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(lengthTextField);
+      isLengthOk.set(true);
+    }
+  }
+
+  private void validateHeight(String inputHeight) {
+    if (!validationHelper.checkSizeParameter(inputHeight)) {
+      errorLabel.setText("Ungültige Höhe");
+      validateFalse(heightTextField);
+      isHeightOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(heightTextField);
+      isHeightOk.set(true);
+    }
+  }
+
+  private void validateYear(String inputYear) {
+    if (!validationHelper.checkYear(inputYear)) {
+      errorLabel.setText("Ungültiges Baujahr");
+      validateFalse(constructionYearTextField);
+      isYearOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(constructionYearTextField);
+      isYearOk.set(true);
     }
   }
 

@@ -24,7 +24,10 @@ public class ValidationHelper {
 
   public boolean checkOfferPrice(String toCheck) {
     return (
-      !toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 10 &&
+      Integer.parseInt(toCheck) < 100000
     );
   }
 
@@ -38,5 +41,41 @@ public class ValidationHelper {
 
   public boolean checkRentingDate(LocalDate startDate, LocalDate endDate) {
     return !startDate.isBefore(endDate);
+  }
+
+  public boolean checkSizeParameter(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 100 &&
+      Integer.parseInt(toCheck) < 100000
+    );
+  }
+
+  public boolean checkYear(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 1907 &&
+      Integer.parseInt(toCheck) < 2023
+    );
+  }
+
+  public boolean checkSeats(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 0 &&
+      Integer.parseInt(toCheck) < 13
+    );
+  }
+
+  public boolean checkBeds(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > -1 &&
+      Integer.parseInt(toCheck) < 13
+    );
   }
 }
