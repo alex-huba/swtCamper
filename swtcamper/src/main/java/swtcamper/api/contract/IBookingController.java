@@ -11,8 +11,7 @@ public interface IBookingController {
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) throws UserDoesNotExistException, GenericServiceException;
 
   BookingDTO update(

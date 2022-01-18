@@ -40,7 +40,9 @@ public class ModelMapper {
       offer.getParticularities(),
       offer.getPrice(),
       offer.getRentalConditions(),
-      offer.isActive()
+      offer.getBlockedDates(),
+      offer.isActive(),
+      offer.isPromoted()
     );
   }
 

@@ -1,5 +1,8 @@
 package swtcamper.backend.entities;
 
+import java.time.LocalDate;
+import net.bytebuddy.asm.Advice;
+
 public class Filter {
 
   private String location;
@@ -7,7 +10,7 @@ public class Filter {
   private String vehicleBrand;
   private int constructionYear;
   private int maxPricePerDay;
-  private String engine;
+  private FuelType fuelType;
   private TransmissionType transmissionType;
   private int seatAmount;
   private int bedAmount;
@@ -18,6 +21,8 @@ public class Filter {
   private boolean toilet;
   private boolean kitchen;
   private boolean fridge;
+  private LocalDate startDate;
+  private LocalDate endDate;
 
   public String getLocation() {
     return location;
@@ -59,12 +64,12 @@ public class Filter {
     this.maxPricePerDay = maxPricePerDay;
   }
 
-  public String getEngine() {
-    return engine;
+  public FuelType getFuelType() {
+    return fuelType;
   }
 
-  public void setEngine(String engine) {
-    this.engine = engine;
+  public void setFuelType(FuelType fuelType) {
+    this.fuelType = fuelType;
   }
 
   public TransmissionType getTransmissionType() {
@@ -147,6 +152,22 @@ public class Filter {
     this.fridge = fridge;
   }
 
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
   public boolean isEmpty() {
     return (
       location == null &&
@@ -154,7 +175,7 @@ public class Filter {
       vehicleBrand == null &&
       constructionYear == 0 &&
       maxPricePerDay == 0 &&
-      engine == null &&
+      fuelType == null &&
       transmissionType == null &&
       seatAmount == 0 &&
       bedAmount == 0 &&
@@ -164,7 +185,9 @@ public class Filter {
       !shower &&
       !toilet &&
       !kitchen &&
-      !fridge
+      !fridge &&
+      startDate == null &&
+      endDate == null
     );
   }
 
@@ -185,7 +208,7 @@ public class Filter {
       ", maxPricePerDay=" +
       maxPricePerDay +
       ", engine='" +
-      engine +
+      fuelType +
       '\'' +
       ", transmissionType=" +
       transmissionType +

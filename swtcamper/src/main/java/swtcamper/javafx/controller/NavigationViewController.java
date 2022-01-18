@@ -70,6 +70,9 @@ public class NavigationViewController {
   @FXML
   public Button accountButton;
 
+  @FXML
+  public Circle accountNotificationDot;
+
   private boolean isShortText = true;
 
   @FXML
@@ -242,12 +245,23 @@ public class NavigationViewController {
 
   public void showBookingNotification() {
     Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
-    Tooltip.install(approveNotificationDot, t);
+    Tooltip.install(myBookingsNotificationDot, t);
 
     myBookingsNotificationDot.setVisible(true);
   }
 
-  public void resetBookingNotification() {
+  public void hideBookingNotification() {
     myBookingsNotificationDot.setVisible(false);
+  }
+
+  public void showAccountNotification() {
+    Tooltip t = new Tooltip("Es gibt neue Nutzerbeschwerden");
+    Tooltip.install(accountNotificationDot, t);
+
+    accountNotificationDot.setVisible(true);
+  }
+
+  public void hideAccountNotification() {
+    accountNotificationDot.setVisible(false);
   }
 }

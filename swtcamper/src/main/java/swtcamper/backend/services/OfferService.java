@@ -1,15 +1,17 @@
 package swtcamper.backend.services;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -21,6 +23,9 @@ public class OfferService {
 
   @Autowired
   OfferService offerService;
+
+  @Autowired
+  UserService userService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -40,6 +45,37 @@ public class OfferService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Creates a new offer
+   * @param creator
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param price
+   * @param rentalConditions
+   * @param blockedDates
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @return created offer
+   * @throws GenericServiceException
+   */
   public Offer create(
     // TODO validation
     User creator,
@@ -50,6 +86,7 @@ public class OfferService {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -58,7 +95,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -89,7 +126,7 @@ public class OfferService {
       length,
       width,
       height,
-      engine,
+      fuelType,
       transmission,
       seats,
       beds,
@@ -113,7 +150,8 @@ public class OfferService {
       contact,
       particularities,
       price,
-      rentalConditions
+      rentalConditions,
+      blockedDates
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
@@ -142,10 +180,52 @@ public class OfferService {
         )
       )
     );
-
-    return offerRepository.findById(newOfferId).get();
+    Optional<Offer> offerOptional = offerRepository.findById(newOfferId);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    } else {
+      throw new GenericServiceException(
+        "Newly created offer with ID: " + newOfferId + " not found."
+      );
+    }
   }
 
+  /**
+   * Updates an offer with new values
+   * @param offerId
+   * @param creator
+   * @param offeredObject
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param bookings
+   * @param price
+   * @param active
+   * @param rentalConditions
+   * @param blockedDates
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @param user
+   * @return updated offer
+   * @throws GenericServiceException
+   */
   public Offer update(
     long offerId,
     User creator,
@@ -159,6 +239,7 @@ public class OfferService {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -167,7 +248,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -210,77 +291,105 @@ public class OfferService {
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
       offeredObject.getVehicleID()
     );
-    Vehicle vehicle = vehicleResponse.get();
+    if (vehicleResponse.isPresent()) {
+      Vehicle vehicle = vehicleResponse.get();
+      Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(
+        vehicle.getVehicleFeatures().getVehicleFeaturesID()
+      );
+      if (vehicleFeaturesResponse.isPresent()) {
+        VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
+        setVehicleFeatures(
+          vehicleFeatures,
+          vehicleType,
+          make,
+          model,
+          year,
+          length,
+          width,
+          height,
+          fuelType,
+          transmission,
+          seats,
+          beds,
+          roofTent,
+          roofRack,
+          bikeRack,
+          shower,
+          toilet,
+          kitchenUnit,
+          fridge
+        );
+        vehicleFeaturesRepository.save(vehicleFeatures);
 
-    Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(
-      vehicle.getVehicleFeatures().getVehicleFeaturesID()
-    );
-    VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
-
-    setVehicleFeatures(
-      vehicleFeatures,
-      vehicleType,
-      make,
-      model,
-      year,
-      length,
-      width,
-      height,
-      engine,
-      transmission,
-      seats,
-      beds,
-      roofTent,
-      roofRack,
-      bikeRack,
-      shower,
-      toilet,
-      kitchenUnit,
-      fridge
-    );
-    vehicleFeaturesRepository.save(vehicleFeatures);
-
-    vehicle.setVehicleFeatures(vehicleFeatures);
-    vehicleRepository.save(vehicle);
-    loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Vehicle with ID %s got updated by user %s.",
-            vehicle.getVehicleID(),
-            user.getUsername()
+        vehicle.setVehicleFeatures(vehicleFeatures);
+        vehicleRepository.save(vehicle);
+        loggingController.log(
+          modelMapper.LoggingMessageToLoggingMessageDTO(
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "Vehicle with ID %s got updated by user %s.",
+                vehicle.getVehicleID(),
+                user.getUsername()
+              )
+            )
           )
-        )
-      )
-    );
+        );
 
-    offer.setCreator(creator);
-    offer.setOfferedObject(vehicle);
-    offer.setBookings(bookings);
-    offer.setTitle(title);
-    offer.setLocation(location);
-    offer.setContact(contact);
-    offer.setParticularities(particularities);
-    offer.setPrice(price);
-    offer.setActive(active);
-    offer.setRentalConditions(rentalConditions);
-    loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Offer with ID %s got updated by user %s.",
-            offer.getOfferID(),
-            user.getUsername()
+        offer.setCreator(creator);
+        offer.setOfferedObject(vehicle);
+        offer.setBookings(bookings);
+        offer.setTitle(title);
+        offer.setLocation(location);
+        offer.setContact(contact);
+        offer.setParticularities(particularities);
+        offer.setPrice(price);
+        offer.setActive(active);
+        offer.setRentalConditions(rentalConditions);
+        offer.setBlockedDates(blockedDates);
+        loggingController.log(
+          modelMapper.LoggingMessageToLoggingMessageDTO(
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "Offer with ID %s got updated by user %s.",
+                offer.getOfferID(),
+                user.getUsername()
+              )
+            )
           )
-        )
-      )
-    );
-
-    return offerRepository.save(offer);
+        );
+        return offerRepository.save(offer);
+      } else {
+        throw new GenericServiceException("VehicleFeatures not found.");
+      }
+    } else {
+      throw new GenericServiceException("Vehicle not found.");
+    }
   }
 
+  /**
+   * Sets features for given {@link VehicleFeatures}
+   * @param vehicleFeatures
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   */
   private void setVehicleFeatures(
     VehicleFeatures vehicleFeatures,
     VehicleType vehicleType,
@@ -290,7 +399,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -309,7 +418,7 @@ public class OfferService {
     vehicleFeatures.setLength(length);
     vehicleFeatures.setWidth(width);
     vehicleFeatures.setHeight(height);
-    vehicleFeatures.setEngine(engine);
+    vehicleFeatures.setFuelType(fuelType);
     vehicleFeatures.setTransmission(transmission);
     vehicleFeatures.setSeats(seats);
     vehicleFeatures.setBeds(beds);
@@ -323,6 +432,7 @@ public class OfferService {
   }
 
   /**
+   * Deletes a specific offer from the database (Warning: This is not constructive for Offer-History)
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
@@ -356,7 +466,86 @@ public class OfferService {
     }
   }
 
+  /**
+   * Gets a list of all available offers
+   * @return list of all available offers
+   */
   public List<Offer> offers() {
     return offerRepository.findAll();
+  }
+
+  /**
+   * Gets all days from the blockedDays list of a given offer (startDate, endDate, all days in between)
+   * @param offerID
+   * @return
+   * @throws GenericServiceException
+   */
+  public List<LocalDate> getBlockedDates(long offerID)
+    throws GenericServiceException {
+    List<LocalDate> blockedDates = new ArrayList<>();
+
+    Optional<Offer> offerResponse = offerRepository.findById(offerID);
+    if (offerResponse.isPresent()) {
+      Offer offer = offerResponse.get();
+
+      for (Pair pair : offer.getBlockedDates()) {
+        LocalDate startDate = (LocalDate) pair.getKey();
+        LocalDate endDate = (LocalDate) pair.getValue();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          blockedDates.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
+      }
+      return blockedDates;
+    }
+    throw new GenericServiceException(
+      "Offer with following ID not found: " + offerID
+    );
+  }
+
+  public Offer promoteOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(true);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got promoted by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer degradeOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(false);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got degraded by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer getOfferById(long offerID) throws GenericServiceException {
+    Optional<Offer> offerOptional = offerRepository.findById(offerID);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    }
+    throw new GenericServiceException(
+      "There is no offer with ID " + offerID + "."
+    );
   }
 }

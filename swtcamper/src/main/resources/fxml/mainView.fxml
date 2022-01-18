@@ -9,9 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" styleClass="rootNodeBackground" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0"
+            styleClass="rootNodeBackground" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
     <left>
-        <fx:include source="navigationView.fxml" />
+        <fx:include source="navigationView.fxml"/>
     </left>
    <center>
       <VBox BorderPane.alignment="CENTER">

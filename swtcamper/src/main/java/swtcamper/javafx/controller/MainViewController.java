@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,11 +14,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -46,6 +45,9 @@ public class MainViewController {
   private BookingController bookingController;
 
   @Autowired
+  private UserReportController userReportController;
+
+  @Autowired
   private MyOffersViewController myOffersViewController;
 
   @Autowired
@@ -56,6 +58,9 @@ public class MainViewController {
 
   @Autowired
   private RentingViewController rentingViewController;
+
+  @Autowired
+  private ExcludeRenterViewController excludeRenterViewController;
 
   @Autowired
   private MyBookingsViewController myBookingsViewController;
@@ -128,6 +133,9 @@ public class MainViewController {
   public Pane moreAboutOfferViewBox;
 
   @FXML
+  public Pane reportUserViewBox;
+
+  @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
   }
@@ -146,29 +154,38 @@ public class MainViewController {
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
-    if (userController.getLoggedInUser() != null) {
+    User loggedInUser = userController.getLoggedInUser();
+
+    if (loggedInUser != null) {
+      // check for new user reports
+      if (
+        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
+        userReportController
+          .getAllUserReports()
+          .stream()
+          .anyMatch(UserReport::isActive)
+      ) {
+        navigationViewController.showAccountNotification();
+      } else {
+        navigationViewController.hideAccountNotification();
+      }
+
       // check for new booking requests
       if (
-        bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
-          .size() >
-        0 &&
+        !bookingController.getBookingsForUser(loggedInUser).isEmpty() &&
         !bookingController
-          .getBookingsForUser(userController.getLoggedInUser())
+          .getBookingsForUser(loggedInUser)
           .stream()
           .allMatch(Booking::isActive)
       ) {
         navigationViewController.showBookingNotification();
       } else {
-        navigationViewController.resetBookingNotification();
+        navigationViewController.hideBookingNotification();
       }
 
       // check for new providers that need to be enabled
       if (
-        userController
-          .getLoggedInUser()
-          .getUserRole()
-          .equals(UserRole.OPERATOR) &&
+        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
         userController
           .getAllUsers()
           .stream()
@@ -181,9 +198,7 @@ public class MainViewController {
 
       if (latestLoggedInStatus != null && latestView != null) {
         // get the latest update for the logged-in user to check if there were made any changes
-        User checkUser = userController.getUserById(
-          userController.getLoggedInUser().getId()
-        );
+        User checkUser = userController.getUserById(loggedInUser.getId());
         if (!updateHappening) {
           // user-role has changed
           if (
@@ -229,7 +244,7 @@ public class MainViewController {
                 updateHappening = false;
               } catch (GenericServiceException ignore) {}
             });
-            // user got locked
+            // user got locked globally
           } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
             updateHappening = true;
             Platform.runLater(() -> {
@@ -241,7 +256,7 @@ public class MainViewController {
                 updateHappening = false;
               } catch (GenericServiceException ignore) {}
             });
-            // user got unlocked
+            // user got unlocked from global lock
           } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
             updateHappening = true;
             Platform.runLater(() -> {
@@ -311,6 +326,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.excludeButton
         );
+        excludeRenterViewController.initialize();
         break;
       case "approve":
         mainStage.getChildren().add(approveDealViewBox);
@@ -373,6 +389,9 @@ public class MainViewController {
         mainStage.getChildren().add(moreAboutOfferViewBox);
         globalHeaderLabel.setText("SWTCamper - Anzeigenansicht");
         break;
+      case "reportUser":
+        mainStage.getChildren().add(reportUserViewBox);
+        break;
     }
   }
 
@@ -411,6 +430,9 @@ public class MainViewController {
   }
 
   public void logout() throws GenericServiceException {
+    latestLoggedInStatus = null;
+    latestView = null;
+
     userController.logout();
     navigationViewController.logout();
   }
