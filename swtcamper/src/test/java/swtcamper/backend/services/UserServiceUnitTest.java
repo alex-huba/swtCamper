@@ -5,10 +5,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import swtcamper.backend.entities.User;
@@ -24,8 +26,7 @@ public class UserServiceUnitTest {
   @Spy
   UserRepository userRepository;
 
-  @Spy
-  @InjectMocks
+  @Mock
   UserService userServiceUnderTest;
 
   private User testUser = new User(
@@ -39,16 +40,13 @@ public class UserServiceUnitTest {
     false
   );
 
-//  @BeforeEach
-//  public void saveTestUser() {
-//    when(userRepository.save(testUser)).thenReturn(testUser);
-//  }
+  @BeforeEach
+  public void saveTestUser() {
+    verify(userServiceUnderTest).create(testUser);
+  }
 
   @Test
   public void whenSaveValidUserItShouldReturnUser() {
-    // when
-    userServiceUnderTest.create(testUser);
-
     // then
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(
       User.class
@@ -59,8 +57,9 @@ public class UserServiceUnitTest {
   }
 
   @Test
-  public void userCountShouldBeOne() {
-    assertThat(userServiceUnderTest.countUser()).isEqualTo(1);
+  public void userCountShouldBeOne() throws GenericServiceException {
+//    assertThat(userServiceUnderTest.countUser()).isEqualTo(1);
+    assertThat(userServiceUnderTest.user().size()).isEqualTo(1);
   }
 
   @Test
@@ -122,7 +121,7 @@ public class UserServiceUnitTest {
     verify(userRepository).save(userArgumentCaptor.capture());
     User capturedUser = userArgumentCaptor.getValue();
 
-    userServiceUnderTest.enable(capturedUser.getId());
+    verify(userServiceUnderTest).enable(capturedUser.getId());
 
     assertThat(userServiceUnderTest.isEnabled("ThomasK96")).isTrue();
   }
@@ -130,7 +129,7 @@ public class UserServiceUnitTest {
   @Test
   public void resetPasswordShouldApply()
     throws GenericServiceException, UserDoesNotExistException, WrongPasswordException {
-    userServiceUnderTest.resetPassword(
+    verify(userServiceUnderTest).resetPassword(
       "ThomasK96",
       "t.kretschmann@t-online.de",
       "passworT"
