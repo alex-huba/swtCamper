@@ -1,18 +1,24 @@
 package swtcamper.javafx.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -23,6 +29,9 @@ public class AccountViewController {
 
   @Autowired
   private LoggingController loggingController;
+
+  @Autowired
+  private UserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;
@@ -56,6 +65,9 @@ public class AccountViewController {
 
   @FXML
   public ListView<User> usersListView;
+
+  @FXML
+  public VBox reportVBox;
 
   private User selectedUser = null;
 
@@ -165,6 +177,68 @@ public class AccountViewController {
     usersListView.setItems(
       FXCollections.observableArrayList(userController.getAllUsers())
     );
+
+    // user reports
+    reportVBox.getChildren().clear();
+    List<UserReport> activeUserReports = userReportController
+      .getAllUserReports()
+      .stream()
+      .filter(UserReport::isActive)
+      .collect(Collectors.toList());
+    if (activeUserReports.isEmpty()) {
+      Label thereAreNoActiveReportsLabel = new Label(
+        "Im Moment liegen keine Beschwerden über Nutzer vor"
+      );
+      thereAreNoActiveReportsLabel.setDisable(true);
+      reportVBox.getChildren().add(thereAreNoActiveReportsLabel);
+    } else {
+      for (UserReport userReport : activeUserReports) {
+        Label infoLabel = new Label(
+          String.format(
+            "Beschwerde von %s über %s.",
+            userReport.getReporter().getUsername(),
+            userReport.getReportee().getUsername()
+          )
+        );
+        infoLabel.setStyle("-fx-font-size: 20");
+        Label reasonLabel = new Label(userReport.getReportReason());
+
+        Button acceptReportButton = new Button(
+          String.format("%s blockieren", userReport.getReportee().getUsername())
+        );
+        acceptReportButton.getStyleClass().add("bg-warning");
+        acceptReportButton.setOnAction(event -> {
+          try {
+            userReportController.accept(userReport.getId());
+            operatorInit(false);
+          } catch (GenericServiceException ignore) {}
+        });
+
+        Button rejectReportButton = new Button("Beschwerde ignorieren");
+        rejectReportButton.getStyleClass().add("bg-primary");
+        rejectReportButton.setOnAction(event -> {
+          try {
+            userReportController.reject(userReport.getId());
+            operatorInit(false);
+          } catch (GenericServiceException ignore) {}
+        });
+
+        HBox buttonHBox = new HBox(acceptReportButton, rejectReportButton);
+        buttonHBox.setSpacing(5);
+
+        VBox userReportVBox = new VBox(
+          infoLabel,
+          reasonLabel,
+          new Separator(),
+          buttonHBox
+        );
+        userReportVBox.setStyle("-fx-background-color: white");
+        userReportVBox.getStyleClass().addAll("border-dark", "radius-10", "p4");
+
+        // add to view
+        reportVBox.getChildren().add(userReportVBox);
+      }
+    }
   }
 
   /**
