@@ -3,7 +3,6 @@ package swtcamper.javafx.controller;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -286,7 +285,7 @@ public class OfferViewController {
           )) {
             if (
               booking.getOffer().getOfferID() == viewedOffer.getID() &&
-              booking.isActive() && !booking.isRejected()
+              booking.isActive() && !booking.isOver()
             ) {
               offerIsInRent = true;
               break;
@@ -304,7 +303,7 @@ public class OfferViewController {
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
-                .filter(booking -> !booking.isRejected())
+                .filter(booking -> !booking.isOver())
           .filter(booking ->
             booking
               .getRenter()
@@ -328,7 +327,7 @@ public class OfferViewController {
               // abort renting
               abortBookingRequestBtn.setText("Buchung abbrechen");
               abortBookingRequestBtn.setOnAction(event -> {
-                  bookingController.reject(booking.getId());
+                  bookingController.finish(booking.getId());
                   checkMode(true);
               });
             } else {

@@ -5,10 +5,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -53,7 +50,7 @@ public class DealHistoryViewController {
         if(userController.getLoggedInUser() == null){
             return;
         }
-        List<Booking> renterBookingList = bookingController.getAllBookings().stream().filter(booking -> booking.isActive() || booking.isRejected()).
+        List<Booking> renterBookingList = bookingController.getAllBookings().stream().filter(booking -> booking.isActive() || booking.isOver()).
                 filter(booking -> Objects.equals(booking.getRenter().getId(), userController.getLoggedInUser().getId())
        || Objects.equals(booking.getOffer().getCreator().getId(), userController.getLoggedInUser().getId())).collect(Collectors.toList());
 
@@ -88,13 +85,13 @@ public class DealHistoryViewController {
                         "-fx-background-radius: 20; -fx-padding: 10;"
                 );
                 bookingVBox.getStyleClass().add("bg-purple");
-                descriptionLabel.setText("Ich miete" + (booking.isRejected() ? "te" : ""));
+                descriptionLabel.setText("Ich miete" + (booking.isOver() ? "te" : ""));
             } else {
                 bookingVBox.setStyle(
                         "-fx-background-radius: 20; -fx-padding: 10;"
                 );
                 bookingVBox.getStyleClass().add("bg-lightGreen");
-                descriptionLabel.setText("Ich vermiete" + (booking.isRejected() ? "te" : ""));
+                descriptionLabel.setText("Ich vermiete" + (booking.isOver() ? "te" : ""));
             }
 
 
