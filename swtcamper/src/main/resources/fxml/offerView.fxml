@@ -242,7 +242,7 @@
                                         <Insets top="10.0"/>
                                     </VBox.margin>
                                 </HBox>
-                                <VBox>
+                                <VBox spacing="5">
                                     <Label fx:id="dateLabel" text="Wählen sie ihr gewünschtes Mietdatum aus"/>
                                     <HBox spacing="5.0">
                                         <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
@@ -250,7 +250,7 @@
                                     </HBox>
                            <HBox fx:id="rentHBox" spacing="5.0">
                               <children>
-                                 <Label fx:id="rentLabel" text="(Anfrage versendet. Warte auf Antwort vom Vermieter...)">
+                                 <Label fx:id="rentLabel" styleClass="rentLabel">
                                     <font>
                                        <Font size="10.0" />
                                     </font>

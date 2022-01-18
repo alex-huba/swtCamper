@@ -17,3 +17,9 @@ Label, CheckBox {
 .handleBtn {
     -fx-font-size: 15;
 }
+
+.rentLabel {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-padding: 8px;
+}
