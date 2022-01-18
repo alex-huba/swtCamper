@@ -170,18 +170,18 @@
                                         <ComboBox fx:id="transmissionComboBox" prefHeight="25.0" prefWidth="149.0" />
                                     </children>
                                 </HBox>
-                                <HBox layoutX="10.0" layoutY="125.0" spacing="55.0">
+                                <HBox layoutX="10.0" layoutY="125.0" spacing="155.0">
                                     <children>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
                                                 <Label prefWidth="180.0" styleClass="descriptionLabel" text="Plätze*: " />
-                                                <TextField fx:id="seatsTextField" />
+                                    <ComboBox fx:id="seatsComboBox" />
                                             </children>
                                         </HBox>
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
                                                 <Label prefWidth="90.0" styleClass="descriptionLabel" text="Betten*:" />
-                                                <TextField fx:id="bedsTextField" />
+                                    <ComboBox fx:id="bedsComboBox" />
                                             </children>
                                         </HBox>
                                     </children>
@@ -197,7 +197,7 @@
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
                                                 <Label prefWidth="90.0" styleClass="descriptionLabel" text="Kraftstoff:" />
-                                                <TextField fx:id="engineTextField" />
+                                    <ComboBox fx:id="fuelComboBox" />
                                             </children>
                                         </HBox>
                                     </children>

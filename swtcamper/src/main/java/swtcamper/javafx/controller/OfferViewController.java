@@ -3,7 +3,6 @@ package swtcamper.javafx.controller;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -214,7 +213,9 @@ public class OfferViewController {
       Integer.toString(offeredObject.getVehicleFeatures().getBeds())
     );
     constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(offeredObject.getVehicleFeatures().getEngine());
+    engineLabel.setText(
+      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
+    );
     widthLabel.setText(
       doubleStringConverter.toString(
         offeredObject.getVehicleFeatures().getWidth()
