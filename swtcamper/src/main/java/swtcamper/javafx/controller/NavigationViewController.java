@@ -70,6 +70,9 @@ public class NavigationViewController {
   @FXML
   public Button accountButton;
 
+  @FXML
+  public Button logoutBtn;
+
   private boolean isShortText = true;
 
   @FXML
@@ -118,6 +121,7 @@ public class NavigationViewController {
     if (isLocked) {
       navBarList.add(dealHistoryButton);
       navBarList.add(accountButton);
+      navBarList.add(logoutBtn);
     } else {
       switch (userRole) {
         // Enable renter functionalities
@@ -126,7 +130,8 @@ public class NavigationViewController {
             homeButton,
             dealHistoryButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+                  logoutBtn
           );
           break;
         // Enable provider functionalities
@@ -139,14 +144,16 @@ public class NavigationViewController {
               dealHistoryButton,
               excludeButton,
               myBookingsButton,
-              accountButton
+              accountButton,
+                    logoutBtn
             );
           } else {
             navBarList.addAll(
               homeButton,
               dealHistoryButton,
               myBookingsButton,
-              accountButton
+              accountButton,
+                    logoutBtn
             );
           }
           break;
@@ -160,11 +167,12 @@ public class NavigationViewController {
             excludeButton,
             approveButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+                  logoutBtn
           );
           break;
         default:
-          navBarList.addAll(homeButton, accountButton);
+          navBarList.addAll(homeButton, accountButton, logoutBtn);
           break;
       }
     }

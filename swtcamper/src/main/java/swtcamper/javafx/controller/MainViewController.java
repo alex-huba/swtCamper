@@ -369,6 +369,9 @@ public class MainViewController {
         mainStage.getChildren().add(moreAboutOfferViewBox);
         globalHeaderLabel.setText("SWTCamper - Anzeigenansicht");
         break;
+      case "logout":
+        logout();
+        break;
     }
   }
 
