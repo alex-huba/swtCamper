@@ -19,6 +19,13 @@
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="5.0">
             <children>
+                <Button fx:id="promotingButton" onAction="#promotingAction" text="Angebot hervorheben">
+                    <styleClass>
+                        <String fx:value="radius-20"/>
+                        <String fx:value="border-dark"/>
+                        <String fx:value="bg-lightGreen"/>
+                    </styleClass>
+                </Button>
                 <Button fx:id="bookingButton" onAction="#bookingAction" text="Angebot buchen">
                     <styleClass>
                         <String fx:value="radius-20"/>

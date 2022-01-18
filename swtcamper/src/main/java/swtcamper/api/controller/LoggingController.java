@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.ILoggingController;
 import swtcamper.api.contract.LoggingMessageDTO;
-import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
 

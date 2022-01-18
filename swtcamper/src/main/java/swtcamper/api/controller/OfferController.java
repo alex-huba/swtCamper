@@ -418,4 +418,22 @@ public class OfferController implements IOfferController {
     );
     return !booleanList.contains(false);
   }
+
+  /**
+   * Promotes an offer, s.t. it is highlighted next to the normal offers
+   * @param offerID ID of the offer to promote
+   * @throws GenericServiceException
+   */
+  public OfferDTO promoteOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.promoteOffer(offerID));
+  }
+
+  /**
+   * Degrades an offer, s.t. it is just seen like any other offer
+   * @param offerID ID of the offer to degrade
+   * @throws GenericServiceException
+   */
+  public OfferDTO degradeOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.degradeOffer(offerID));
+  }
 }

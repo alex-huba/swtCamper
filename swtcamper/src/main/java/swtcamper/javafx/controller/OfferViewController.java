@@ -145,6 +145,9 @@ public class OfferViewController {
   public Button bookingButton;
 
   @FXML
+  public Button promotingButton;
+
+  @FXML
   public Label dateLabel;
 
   @FXML
@@ -169,6 +172,11 @@ public class OfferViewController {
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
     checkMode(rentingMode);
+    // enable button to promote / degrade offer
+    // ...only if user role is OPERATOR
+    checkUserRole();
+    checkOfferStatus();
+
     Vehicle offeredObject = offer.getOfferedObject();
 
     pictureHorizontHBox.getChildren().clear();
@@ -360,6 +368,41 @@ public class OfferViewController {
       endDatePicker.setVisible(false);
       rentHBox.setVisible(false);
     }
+  }
+
+  /**
+   * Makes promote / degrade offer button visible, only if operator is logged in.
+   */
+  public void checkUserRole() {
+    if (
+      userController.getLoggedInUser() != null &&
+      userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)
+    ) {
+      promotingButton.setVisible(true);
+    } else {
+      promotingButton.setVisible(false);
+    }
+  }
+
+  /**
+   * Checks if offer is promoted and sets button text accordingly.
+   */
+  public void checkOfferStatus() {
+    if (this.viewedOffer.isPromoted()) {
+      promotingButton.setText("Nicht mehr hervorheben");
+    } else {
+      promotingButton.setText("Angebot hervorheben");
+    }
+  }
+
+  @FXML
+  public void promotingAction() throws GenericServiceException {
+    if (this.viewedOffer.isPromoted()) {
+      offerController.degradeOffer(this.viewedOffer.getID());
+    } else {
+      offerController.promoteOffer(this.viewedOffer.getID());
+    }
+    backAction();
   }
 
   @FXML
