@@ -54,6 +54,19 @@ public class UserController implements IUserController {
     return new ArrayList<>(userService.user());
   }
 
+  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+    throws GenericServiceException {
+    userService.excludeRenterForCurrentlyLoggedInUser(idOfRenterToExclude);
+  }
+
+  public void removeExcludedRenterForCurrentlyLoggedInUser(
+    long idOfRenterToInclude
+  ) throws GenericServiceException {
+    userService.removeExcludedRenterForCurrentlyLoggedInUser(
+      idOfRenterToInclude
+    );
+  }
+
   @Override
   public UserDTO login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException, GenericServiceException {
@@ -103,6 +116,12 @@ public class UserController implements IUserController {
   @Override
   public User getUserById(long id) throws GenericServiceException {
     return userService.getUserById(id);
+  }
+
+  @Override
+  public User getUserByUsername(String username)
+    throws GenericServiceException {
+    return userService.getUserByUsername(username);
   }
 
   @Override

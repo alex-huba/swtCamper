@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -31,16 +30,27 @@ public class BookingService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Get a List of all available bookings
+   * @return List of all available bookings
+   */
   public List<Booking> getAllBookings() {
     return bookingRepository.findAll();
   }
 
+  /**
+   * Creates a new booking (active state will be false by default ({@link Booking}))
+   * @param user User that wants to book the given offer
+   * @param offer {@link Offer} that the given User wants to book
+   * @param startDate date to begin the booking
+   * @param endDate date until the booking shall go
+   * @return created Booking
+   */
   public Booking create(
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))
@@ -60,6 +70,16 @@ public class BookingService {
     return bookingRepository.findById(newBookingId).get();
   }
 
+  /**
+   * Updates a booking with new values
+   * @param bookingID
+   * @param startDate
+   * @param endDate
+   * @param active
+   * @param user
+   * @return the updated booking
+   * @throws GenericServiceException
+   */
   public Booking update(
     Long bookingID,
     LocalDate startDate,
@@ -103,6 +123,13 @@ public class BookingService {
     );
   }
 
+  /**
+   * Activates a booking (will be active)
+   * @param bookingID ID of the booking to activate
+   * @param user User that gave the order to activate this booking (for logging)
+   * @return activated booking
+   * @throws GenericServiceException
+   */
   public Booking activate(Long bookingID, UserDTO user)
     throws GenericServiceException {
     // Search for booking in database
@@ -133,6 +160,13 @@ public class BookingService {
     );
   }
 
+  /**
+   * Deactivates a booking (will not be active anymore)
+   * @param bookingID ID of the booking to deactivate
+   * @param user User that gave the order to deactivate this booking (for logging)
+   * @return deactivated booking
+   * @throws GenericServiceException
+   */
   public Booking deactivate(Long bookingID, UserDTO user)
     throws GenericServiceException {
     // Search for booking in database
@@ -163,6 +197,12 @@ public class BookingService {
     );
   }
 
+  /**
+   * Deletes a booking from the database
+   * @param bookingID ID of the booking that shall be deleted
+   * @param user user that gave the order to delete this booking (for logging)
+   * @throws GenericServiceException
+   */
   public void delete(Long bookingID, UserDTO user)
     throws GenericServiceException {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);

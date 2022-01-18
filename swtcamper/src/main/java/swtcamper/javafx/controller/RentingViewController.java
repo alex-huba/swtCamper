@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
@@ -39,6 +41,9 @@ public class RentingViewController {
 
   @Autowired
   private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public TextField locationTextField;
@@ -101,6 +106,15 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public HBox paginationHBox;
+
+  @FXML
+  public ChoiceBox<Integer> offersPerPageChoiceBox;
+
+  @FXML
+  public HBox offersPerPageHBox;
+
+  @FXML
   public HBox offerListBox;
 
   @FXML
@@ -115,9 +129,24 @@ public class RentingViewController {
   @FXML
   public AnchorPane rootAnchorPane;
 
+  private List<OfferDTO> offerDTOList;
+  private List<List<OfferDTO>> subListsList;
+  int lastPageVisited;
+
   @FXML
   private void initialize() throws GenericServiceException {
-    reloadData();
+    offersPerPageChoiceBox.setItems(
+      FXCollections.observableArrayList(1, 5, 10, 20)
+    );
+    offersPerPageChoiceBox.setValue(5);
+    offersPerPageChoiceBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        try {
+          lastPageVisited = 0;
+          reloadData();
+        } catch (GenericServiceException ignore) {}
+      });
 
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -187,19 +216,87 @@ public class RentingViewController {
   }
 
   /**
-   * Gets all available offers from the database .
+   * Gets all available offers from the database and creates subLists.
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    loadData(
+    // get available offers
+    offerDTOList =
       offerController
         .offers()
-        .stream()
+        .parallelStream()
         .filter(OfferDTO::isActive)
-        .collect(Collectors.toList())
+        .filter(offerDTO ->
+          // returns offerDTOs in which the loggedInUser is not excluded
+          // and in which the field excludedRenters is not null
+          // returns true (= every offerDTO) otherwise
+          userController.getLoggedInUser() == null ||
+          offerDTO.getCreator().getExcludedRenters() == null ||
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
+        )
+        .collect(Collectors.toList());
+
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(subListsList.get(0));
+  }
+
+  /**
+   * Adds a pagination to the list of offers
+   */
+  private void addPagination() {
+    // get amount of pages by rounding up the result of offerDTOList's size divided by offersPerPageChoiceBox's value
+    int pageAmount = (int) Math.ceil(
+      offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
+    );
+
+    paginationHBox.getChildren().clear();
+    for (int i = 0; i < pageAmount; i++) {
+      Button pageButton = new Button(String.valueOf(i + 1));
+      pageButton
+        .getStyleClass()
+        .add(i == lastPageVisited ? "bg-primary" : "bg-secondary");
+
+      int finalI = i;
+      pageButton.setOnAction(event -> {
+        lastPageVisited = finalI;
+        loadData(subListsList.get(finalI));
+      });
+      paginationHBox.getChildren().add(pageButton);
+    }
+    paginationHBox.getChildren().add(offersPerPageHBox);
+
+    offerListRoot.getChildren().add(paginationHBox);
+  }
+
+  /**
+   * Partitions an offer-list into sublists of a specific max length
+   * @param inputList offer-list to partition
+   * @param size max length of each sublist
+   * @return list of lists, each with a max length
+   */
+  private List<List<OfferDTO>> createOfferSublists(
+    List<OfferDTO> inputList,
+    int size
+  ) {
+    final AtomicInteger counter = new AtomicInteger(0);
+    return FXCollections.observableArrayList(
+      inputList
+        .stream()
+        .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
+        .values()
     );
   }
 
+  /**
+   * Loads a specific list to the visible view
+   * @param offersList list to load
+   */
   private void loadData(List<OfferDTO> offersList) {
     offerListRoot.getChildren().clear();
 
@@ -214,9 +311,23 @@ public class RentingViewController {
 
     for (OfferDTO offer : offersList) {
       VBox root = new VBox();
-      root.setStyle(
-        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
-      );
+      Label promoteLabel = new Label("");
+
+      // visually highlight promoted offer
+      if (offer.isPromoted()) {
+        root.setStyle(
+          "-fx-background-color: #add8e6; -fx-background-radius: 20px"
+        );
+        promoteLabel.setText("-- Von uns empfohlen! --");
+        promoteLabel.setStyle(
+          "-fx-font-size: 20; -fx-font-family: Arial Rounded MT Bold;"
+        );
+      } else {
+        root.setStyle(
+          "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+        );
+      }
+
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
@@ -301,6 +412,7 @@ public class RentingViewController {
       btnBox.setStyle("-fx-padding: 0 30 30 0");
 
       VBox detailsVBox = new VBox(
+        promoteLabel,
         titleLabel,
         locationPriceBrandModelBox,
         btnBox
@@ -313,6 +425,8 @@ public class RentingViewController {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
+
+    if (offersList.size() > 0) addPagination();
   }
 
   /**
