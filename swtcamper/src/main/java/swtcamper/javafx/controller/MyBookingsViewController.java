@@ -145,7 +145,7 @@ public class MyBookingsViewController {
         Button acceptButton = new Button("Annehmen");
         acceptButton.getStyleClass().add("bg-primary");
         acceptButton.setDisable(
-          anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking)
+          booking.isActive() && anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking)
         );
         acceptButton.setOnAction(event -> {
           try {
@@ -159,11 +159,11 @@ public class MyBookingsViewController {
         rejectButton.getStyleClass().add("bg-warning");
         rejectButton.setDisable(booking.isActive());
         rejectButton.setOnAction(event -> {
-//          try {
-            bookingController.reject(booking.getId());
-//            bookingController.delete(booking.getId());
+          try {
+//            bookingController.reject(booking.getId());
+            bookingController.delete(booking.getId());
             reloadData();
-//          } catch (GenericServiceException ignore) {}
+          } catch (GenericServiceException ignore) {}
         });
 
         // Button for aborting the booking
@@ -178,10 +178,10 @@ public class MyBookingsViewController {
           Optional<ButtonType> result = confirmDelete.showAndWait();
 
           if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-              bookingController.deactivate(booking.getId());
-              //            bookingController.delete(booking.getId());
-            } catch (GenericServiceException ignore) {}
+              bookingController.reject(booking.getId());
+//            try {
+//                          bookingController.delete(booking.getId());
+//            } catch (GenericServiceException ignore) {}
           }
           reloadData();
         });

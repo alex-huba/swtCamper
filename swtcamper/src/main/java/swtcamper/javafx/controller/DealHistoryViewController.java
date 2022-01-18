@@ -20,6 +20,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,9 +53,9 @@ public class DealHistoryViewController {
         if(userController.getLoggedInUser() == null){
             return;
         }
-        List<Booking> renterBookingList = bookingController.getAllBookings().stream().filter(Booking::isActive).
-                filter(booking -> booking.getRenter().getId() == userController.getLoggedInUser().getId()
-       || booking.getOffer().getCreator().getId() == userController.getLoggedInUser().getId()).collect(Collectors.toList());
+        List<Booking> renterBookingList = bookingController.getAllBookings().stream().filter(booking -> booking.isActive() || booking.isRejected()).
+                filter(booking -> Objects.equals(booking.getRenter().getId(), userController.getLoggedInUser().getId())
+       || Objects.equals(booking.getOffer().getCreator().getId(), userController.getLoggedInUser().getId())).collect(Collectors.toList());
 
 
         bookingsListVBox.getChildren().clear();
@@ -87,13 +88,13 @@ public class DealHistoryViewController {
                         "-fx-background-radius: 20; -fx-padding: 10;"
                 );
                 bookingVBox.getStyleClass().add("bg-purple");
-                descriptionLabel.setText("Ich miete");
+                descriptionLabel.setText("Ich miete" + (booking.isRejected() ? "te" : ""));
             } else {
                 bookingVBox.setStyle(
                         "-fx-background-radius: 20; -fx-padding: 10;"
                 );
                 bookingVBox.getStyleClass().add("bg-lightGreen");
-                descriptionLabel.setText("Ich vermiete");
+                descriptionLabel.setText("Ich vermiete" + (booking.isRejected() ? "te" : ""));
             }
 
 

@@ -118,7 +118,7 @@ public class BookingService {
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
-              "Booking with ID %s was deactivated by user %s.",
+              "Booking with ID %s was activated by user %s.",
               bookingID,
               user.getUsername()
             )
@@ -184,7 +184,7 @@ public class BookingService {
             new LoggingMessage(
               LoggingLevel.INFO,
               String.format(
-                "UBooking with ID %s was deleted by user %s",
+                "Booking with ID %s was deleted by user %s",
                 bookingID,
                 user.getUsername()
               )

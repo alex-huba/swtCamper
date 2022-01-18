@@ -286,7 +286,7 @@ public class OfferViewController {
           )) {
             if (
               booking.getOffer().getOfferID() == viewedOffer.getID() &&
-              booking.isActive()
+              booking.isActive() && !booking.isRejected()
             ) {
               offerIsInRent = true;
               break;
@@ -304,6 +304,7 @@ public class OfferViewController {
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
+                .filter(booking -> !booking.isRejected())
           .filter(booking ->
             booking
               .getRenter()
@@ -316,20 +317,36 @@ public class OfferViewController {
             dateLabel.setDisable(true);
             startDate.setDisable(true);
             endDate.setDisable(true);
-            rentLabel.setText(
-              "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
-            );
+
             rentHBox.setVisible(true);
 
-            // abort open booking request
-            abortBookingRequestBtn.setOnAction(event -> {
-              try {
-                bookingController.delete(booking.getId());
-                checkMode(true);
-              } catch (GenericServiceException e) {
-                mainViewController.handleExceptionMessage(e.getMessage());
-              }
-            });
+            if(booking.isActive()) {
+              rentLabel.setText(
+                      "Du mietest diese Anzeige gerade. Buchungsnummer: " + booking.getId()
+              );
+
+              // abort renting
+              abortBookingRequestBtn.setText("Buchung abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                  bookingController.reject(booking.getId());
+                  checkMode(true);
+              });
+            } else {
+              rentLabel.setText(
+                      "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+              );
+
+              // abort open booking request
+              abortBookingRequestBtn.setText("Anfrage abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                try {
+                  bookingController.delete(booking.getId());
+                  checkMode(true);
+                } catch (GenericServiceException e) {
+                  mainViewController.handleExceptionMessage(e.getMessage());
+                }
+              });
+            }
           }
         }
       }
