@@ -19,7 +19,7 @@ Label, CheckBox {
 }
 
 .rentLabel {
-    -fx-background-color: #dc3545;
+    -fx-background-color: #198754;
     -fx-text-fill: white;
     -fx-padding: 8px;
 }

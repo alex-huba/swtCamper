@@ -42,9 +42,9 @@ public class BookingService {
     LocalDate endDate,
     boolean active
   ) throws GenericServiceException {
-     Booking booking = bookingRepository
-      .save(new Booking(user, offer, startDate, endDate));
-
+    Booking booking = bookingRepository.save(
+      new Booking(user, offer, startDate, endDate)
+    );
     long newBookingId = booking.getId();
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
