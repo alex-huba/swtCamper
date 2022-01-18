@@ -214,7 +214,7 @@ public class AccountViewController {
           } catch (GenericServiceException ignore) {}
         });
 
-        Button rejectReportButton = new Button("ablehnen");
+        Button rejectReportButton = new Button("Beschwerde ignorieren");
         rejectReportButton.getStyleClass().add("bg-primary");
         rejectReportButton.setOnAction(event -> {
           try {
