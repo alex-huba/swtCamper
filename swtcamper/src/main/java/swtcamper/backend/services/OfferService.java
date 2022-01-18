@@ -42,6 +42,36 @@ public class OfferService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Creates a new offer
+   * @param creator
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param price
+   * @param rentalConditions
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param engine
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @return created offer
+   * @throws GenericServiceException
+   */
   public Offer create(
     // TODO validation
     User creator,
@@ -148,6 +178,41 @@ public class OfferService {
     return offerRepository.findById(newOfferId).get();
   }
 
+  /**
+   * Updates an offer with new values
+   * @param offerId
+   * @param creator
+   * @param offeredObject
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param bookings
+   * @param price
+   * @param active
+   * @param rentalConditions
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param engine
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @param user
+   * @return updated offer
+   * @throws GenericServiceException
+   */
   public Offer update(
     long offerId,
     User creator,
@@ -283,6 +348,28 @@ public class OfferService {
     return offerRepository.save(offer);
   }
 
+  /**
+   * Sets features for given {@link VehicleFeatures}
+   * @param vehicleFeatures
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param engine
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   */
   private void setVehicleFeatures(
     VehicleFeatures vehicleFeatures,
     VehicleType vehicleType,
@@ -325,6 +412,7 @@ public class OfferService {
   }
 
   /**
+   * Deletes a specific offer from the database (Warning: This is not constructive for Offer-History)
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
@@ -358,6 +446,10 @@ public class OfferService {
     }
   }
 
+  /**
+   * Gets a list of all available offers
+   * @return list of all available offers
+   */
   public List<Offer> offers() {
     return offerRepository.findAll();
   }

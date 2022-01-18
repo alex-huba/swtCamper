@@ -58,42 +58,37 @@ public interface IUserController {
   boolean isEnabled(String username) throws UserDoesNotExistException;
 
   /**
-   *
-   * @param id
-   * @return
-   * @throws GenericServiceException
+   * see {@link UserService#getUserById(long)}
    */
   User getUserById(long id) throws GenericServiceException;
 
   /**
-   *
-   * @param id
+   * see {@link UserService#getUserByUsername(String)}
+   */
+  User getUserByUsername(String username) throws GenericServiceException;
+
+  /**
+   * see {@link UserService#enable(Long, String)}
    */
   void enableUserById(long id);
 
   /**
-   *
-   * @param id
+   * see {@link UserService#lock(Long, String)}
    */
   void blockUserById(long id);
 
   /**
-   *
-   * @param id
+   * see {@link UserService#unlock(Long, String)}
    */
   void unblockUserById(long id);
 
   /**
-   *
-   * @param id
-   * @throws GenericServiceException
+   * see {@link UserService#degradeUser(long, String)}
    */
   void degradeUserById(long id) throws GenericServiceException;
 
   /**
-   *
-   * @param id
-   * @throws GenericServiceException
+   * see {@link UserService#promoteUser(long, String)}
    */
   void promoteUserById(long id) throws GenericServiceException;
 }

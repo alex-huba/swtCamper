@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
@@ -39,6 +40,9 @@ public class RentingViewController {
 
   @Autowired
   private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public TextField locationTextField;
@@ -193,8 +197,19 @@ public class RentingViewController {
     offerDTOList =
       offerController
         .offers()
-        .stream()
+        .parallelStream()
         .filter(OfferDTO::isActive)
+        .filter(offerDTO ->
+          // returns offerDTOs in which the loggedInUser is not excluded
+          // and in which the field excludedRenters is not null
+          // returns true (= every offerDTO) otherwise
+          userController.getLoggedInUser() == null ||
+          offerDTO.getCreator().getExcludedRenters() == null ||
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
+        )
         .collect(Collectors.toList());
 
     // partition them according to offersPerPageChoiceBox's value

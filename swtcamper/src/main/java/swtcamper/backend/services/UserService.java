@@ -1,5 +1,6 @@
 package swtcamper.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +38,15 @@ public class UserService {
    * Creates and stores a new user in the database with the provided username, name, surname, email, phone number and
    * password.
    *
-   * @param username
-   * @param password
-   * @param email
-   * @param phone
-   * @param name
-   * @param surname
-   * @param userRole
-   * @param enabled
-   * @return
+   * @param username Unique username
+   * @param password password with at least length of 8
+   * @param email unique email address (gets validated in {@link swtcamper.javafx.controller.RegisterViewController})
+   * @param phone unique phone number
+   * @param name first name of user
+   * @param surname last name of user
+   * @param userRole {@link UserRole} the user wants to start with
+   * @param enabled if user wants to be a Provider, he/she is disabled by default until an Operator accepts him/her
+   * @return created User
    * @throws GenericServiceException
    */
   public User create(
@@ -87,19 +88,27 @@ public class UserService {
     return userRepository.findById(newId).get();
   }
 
-  public void delete(User user) {
+  /**
+   * Deletes a user by his/her ID
+   * @param id of the user to delete
+   */
+  public void delete(long id) {
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
-          String.format("User with ID %s deleted.", user.getId())
+          String.format("User with ID %s deleted.", id)
         )
       )
     );
-    // TODO: implement user deletion
+    userRepository.deleteById(id);
   }
 
-  public void update(long userId, User user) {
+  /**
+   * Overwrites an existing user
+   * @param user to get updates with new values
+   */
+  public User update(User user) {
     loggingController.log(
       modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
@@ -108,11 +117,12 @@ public class UserService {
         )
       )
     );
-    // TODO: implement user update
+    return userRepository.save(user);
   }
 
   /**
    * Finds a specific user by its id.
+   *
    * @param userId ID of user to find
    * @return User with specified ID
    * @throws GenericServiceException
@@ -128,9 +138,27 @@ public class UserService {
   }
 
   /**
-   * Finds all user.
+   * Finds a specific user by its username.
    *
-   * @return
+   * @param username of user to find
+   * @return User with specified username
+   * @throws GenericServiceException
+   */
+  public User getUserByUsername(String username)
+    throws GenericServiceException {
+    Optional<User> userOptional = userRepository.findByUsername(username);
+    if (userOptional.isPresent()) {
+      return userOptional.get();
+    }
+    throw new GenericServiceException(
+      "There is no user with username '" + username + "'."
+    );
+  }
+
+  /**
+   * Finds all users.
+   *
+   * @return List of all available users
    * @throws GenericServiceException if there are no user in the database
    */
   public List<User> user() throws GenericServiceException {
@@ -142,12 +170,81 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  /**
+   * Get the currently logged-in User
+   * @return User of the person who is currently using the application
+   */
   public User getLoggedInUser() {
     return loggedInUser;
   }
 
+  /**
+   * Sets the currently logged-in User
+   * @param loggedInUser User that is logged-in from now on
+   */
   public void setLoggedInUser(User loggedInUser) {
     this.loggedInUser = loggedInUser;
+  }
+
+  /**
+   * Adds the User that has the given ID to the list of excluded renters of the currently logged-in User
+   * ==> Given User will no longer see offers from the currently logged-in User, if logged-in
+   * @param idOfRenterToExclude ID of the User to exclude
+   * @throws GenericServiceException
+   */
+  public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+    throws GenericServiceException {
+    User user = getLoggedInUser();
+    ArrayList<Long> excludedRenters = getLoggedInUser().getExcludedRenters() ==
+      null ||
+      getLoggedInUser().getExcludedRenters().size() == 0
+      ? new ArrayList<>()
+      : getLoggedInUser().getExcludedRenters();
+    excludedRenters.add(idOfRenterToExclude);
+    user.setExcludedRenters(excludedRenters);
+
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was excluded by %s.",
+            getUserById(idOfRenterToExclude).getUsername(),
+            loggedInUser.getUsername()
+          )
+        )
+      )
+    );
+    userRepository.save(user);
+  }
+
+  /**
+   * Removes the User that has the given ID from the list of excluded renters of the currently logged-in User
+   * ==> Given User will see offers from the currently logged-in User again, if logged-in
+   * @param idOfRenterToInclude ID of the User to include
+   * @throws GenericServiceException
+   */
+  public void removeExcludedRenterForCurrentlyLoggedInUser(
+    long idOfRenterToInclude
+  ) throws GenericServiceException {
+    User user = getLoggedInUser();
+    ArrayList<Long> excludedRenters = getLoggedInUser().getExcludedRenters();
+    excludedRenters.remove(idOfRenterToInclude);
+    user.setExcludedRenters(excludedRenters);
+
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "User %s was included by %s.",
+            getUserById(idOfRenterToInclude).getUsername(),
+            loggedInUser.getUsername()
+          )
+        )
+      )
+    );
+    userRepository.save(user);
   }
 
   /**
@@ -156,7 +253,7 @@ public class UserService {
    * @param username
    * @param password
    * @return the user role of the user if user already exists in database
-   * @throws WrongPasswordException if the password doesn't match with the username
+   * @throws WrongPasswordException    if the password doesn't match with the username
    * @throws UserDoesNotExistException if username wasn't found in the database
    */
   public User login(String username, String password)
@@ -317,6 +414,7 @@ public class UserService {
 
   /**
    * Checks if a user account is enabled.
+   *
    * @param username
    * @return
    * @throws UserDoesNotExistException if there is no user account found in database
@@ -331,6 +429,7 @@ public class UserService {
 
   /**
    * Promotes a specified user to the next best user role.
+   *
    * @param id of the user to promote
    * @return promoted user
    * @throws GenericServiceException if there is no user with such ID
@@ -372,6 +471,7 @@ public class UserService {
 
   /**
    * Degrades a specified user to the next worse user role.
+   *
    * @param id of the user to degrade
    * @return degraded user
    * @throws GenericServiceException if there is no user with such ID
@@ -413,9 +513,10 @@ public class UserService {
 
   /**
    * Changes a users' password.
-   * @param username
-   * @param email
-   * @param password
+   *
+   * @param username Username of the user whose password shall be reset
+   * @param email Email of the user whose password shall be reset (for validation)
+   * @param password new password
    * @throws GenericServiceException if user account doesn't exist in database
    */
   public void resetPassword(String username, String email, String password)
