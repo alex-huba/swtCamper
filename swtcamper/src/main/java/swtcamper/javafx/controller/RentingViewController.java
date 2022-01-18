@@ -187,9 +187,23 @@ public class RentingViewController {
 
     for (OfferDTO offer : offersList) {
       VBox root = new VBox();
-      root.setStyle(
-        "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
-      );
+      Label promoteLabel = new Label("");
+
+      // visually highlight promoted offer
+      if (offer.isPromoted()) {
+        root.setStyle(
+          "-fx-background-color: #add8e6; -fx-background-radius: 20px"
+        );
+        promoteLabel.setText("-- Von uns empfohlen! --");
+        promoteLabel.setStyle(
+          "-fx-font-size: 20; -fx-font-family: Arial Rounded MT Bold;"
+        );
+      } else {
+        root.setStyle(
+          "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+        );
+      }
+
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
       Image image;
@@ -274,6 +288,7 @@ public class RentingViewController {
       btnBox.setStyle("-fx-padding: 0 30 30 0");
 
       VBox detailsVBox = new VBox(
+        promoteLabel,
         titleLabel,
         locationPriceBrandModelBox,
         btnBox

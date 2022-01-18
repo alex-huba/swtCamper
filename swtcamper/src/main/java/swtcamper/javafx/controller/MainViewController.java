@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Booking;

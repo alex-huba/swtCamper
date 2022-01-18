@@ -9,7 +9,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -21,6 +20,9 @@ public class OfferService {
 
   @Autowired
   OfferService offerService;
+
+  @Autowired
+  UserService userService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -358,5 +360,51 @@ public class OfferService {
 
   public List<Offer> offers() {
     return offerRepository.findAll();
+  }
+
+  public Offer promoteOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(true);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got promoted by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer degradeOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(false);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got degraded by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer getOfferById(long offerID) throws GenericServiceException {
+    Optional<Offer> offerOptional = offerRepository.findById(offerID);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    }
+    throw new GenericServiceException(
+      "There is no offer with ID " + offerID + "."
+    );
   }
 }
