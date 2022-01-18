@@ -19,7 +19,7 @@ public class Booking {
   LocalDate startDate;
   LocalDate endDate;
   boolean active;
-  boolean over;
+  boolean rejected;
 
   public Booking() {}
 
@@ -34,7 +34,7 @@ public class Booking {
     this.startDate = startDate;
     this.endDate = endDate;
     this.active = false;
-    this.over = false;
+    this.rejected = false;
   }
 
   public Long getId() {
@@ -85,12 +85,12 @@ public class Booking {
     this.active = active;
   }
 
-  public boolean isOver() {
-    return over;
+  public boolean isRejected() {
+    return rejected;
   }
 
-  public void setOver(boolean rejected) {
-    this.over = rejected;
+  public void setRejected(boolean rejected) {
+    this.rejected = rejected;
   }
 
   @Override

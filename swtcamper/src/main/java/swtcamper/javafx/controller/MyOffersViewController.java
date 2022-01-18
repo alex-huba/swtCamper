@@ -146,7 +146,7 @@ public class MyOffersViewController {
         userController.getLoggedInUser()
       )) {
         if (
-          booking.getOffer().getOfferID() == offer.getID() && booking.isActive() && !booking.isOver()
+          booking.getOffer().getOfferID() == offer.getID() && booking.isActive() && !booking.isRejected()
         ) {
           isOfferRentedRightNow = true;
           break;

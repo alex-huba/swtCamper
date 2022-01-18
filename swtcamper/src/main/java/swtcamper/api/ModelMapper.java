@@ -89,8 +89,7 @@ public class ModelMapper {
       booking.getOffer(),
       booking.getStartDate(),
       booking.getEndDate(),
-      booking.isActive(),
-            booking.isOver()
+      booking.isActive()
     );
   }
 

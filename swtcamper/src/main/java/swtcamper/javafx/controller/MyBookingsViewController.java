@@ -65,7 +65,7 @@ public class MyBookingsViewController {
 
     List<Booking> bookingList = bookingController.getBookingsForUser(
       userController.getLoggedInUser()
-    ).stream().filter(booking -> !booking.isOver()).collect(Collectors.toList());
+    ).stream().filter(booking -> !booking.isRejected()).collect(Collectors.toList());
 
     if (bookingList.size() > 0) {
       // create a card for each booking request
@@ -178,7 +178,7 @@ public class MyBookingsViewController {
           Optional<ButtonType> result = confirmDelete.showAndWait();
 
           if (result.isPresent() && result.get() == ButtonType.OK) {
-              bookingController.finish(booking.getId());
+              bookingController.reject(booking.getId());
 //            try {
 //                          bookingController.delete(booking.getId());
 //            } catch (GenericServiceException ignore) {}
@@ -223,7 +223,7 @@ public class MyBookingsViewController {
           .getRenter()
           .getId()
           .equals(userController.getLoggedInUser().getId())
-              && !booking.isOver()
+              && !booking.isRejected()
       ) {
         rentingList.add(booking);
       }
@@ -312,7 +312,7 @@ public class MyBookingsViewController {
               if (booking.isActive()) {
                 bookingController.deactivate(booking.getId());
               } else {
-                bookingController.finish(booking.getId());
+                bookingController.reject(booking.getId());
 //                bookingController.delete(booking.getId());
               }
             } catch (GenericServiceException ignore) {}

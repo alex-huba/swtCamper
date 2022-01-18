@@ -112,8 +112,7 @@ public class BookingController implements IBookingController {
     );
   }
 
-  @Override
-  public void finish(long bookingID){
-    bookingService.finish(bookingID);
+  public void reject(long bookingID){
+    bookingService.reject(bookingID);
   }
 }

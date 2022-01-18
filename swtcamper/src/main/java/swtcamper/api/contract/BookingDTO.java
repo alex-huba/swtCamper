@@ -15,7 +15,6 @@ public class BookingDTO {
   LocalDate startDate;
   LocalDate endDate;
   boolean active;
-  boolean over;
 
   public BookingDTO(
     Long id,
@@ -23,8 +22,7 @@ public class BookingDTO {
     Offer offer,
     LocalDate startDate,
     LocalDate endDate,
-    boolean active,
-    boolean over
+    boolean active
   ) {
     this.id = id;
     this.user = user;
@@ -32,7 +30,6 @@ public class BookingDTO {
     this.startDate = startDate;
     this.endDate = endDate;
     this.active = active;
-    this.over = over;
   }
 
   public BookingDTO() {}
@@ -83,13 +80,5 @@ public class BookingDTO {
 
   public void setActive(boolean active) {
     this.active = active;
-  }
-
-  public boolean isOver() {
-    return over;
-  }
-
-  public void setOver(boolean rejected) {
-    this.over = rejected;
   }
 }
