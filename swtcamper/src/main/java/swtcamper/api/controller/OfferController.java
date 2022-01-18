@@ -2,6 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,19 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.backend.entities.*;
+import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.Offer;
+import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.Vehicle;
+import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
+import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class OfferController implements IOfferController {
-
-  @Autowired
-  VehicleFeaturesRepository vehicleFeaturesRepository;
 
   @Autowired
   private OfferService offerService;
@@ -30,9 +33,17 @@ public class OfferController implements IOfferController {
   @Autowired
   private OfferRepository offerRepository;
 
+  @Autowired
+  private VehicleRepository vehicleRepository;
+
+  @Autowired
+  private VehicleFeaturesRepository vehicleFeaturesRepository;
+
+  @Autowired
+  private UserController userController;
+
   /**
    * Get a List of OfferDTOs of all available offers in the database
-   *
    * @return List of OfferDTOs
    * @throws GenericServiceException
    */
@@ -42,7 +53,6 @@ public class OfferController implements IOfferController {
 
   /**
    * Get a specific offer by its ID
-   *
    * @param id ID of the wanted offer
    * @return wanted Offer
    * @throws GenericServiceException
@@ -59,36 +69,33 @@ public class OfferController implements IOfferController {
 
   /**
    * Creates a new offer and forwards it to the {@link OfferService} where it gets saved to the database
-   *
-   * @param creator          {@link User} that wants to create the new offer
-   * @param title            of the new offer
-   * @param location         where the {@link Vehicle} can be picked up from
-   * @param contact          How the provider can be reached
-   * @param particularities  Any points that should be said about the offer
-   * @param price            per day for the vehicle
+   * @param title of the new offer
+   * @param location where the {@link Vehicle} can be picked up from
+   * @param contact How the provider can be reached
+   * @param particularities Any points that should be said about the offer
+   * @param price per day for the vehicle
    * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param vehicleType      {@link VehicleType} of the offered {@link Vehicle}
-   * @param make             brand of the offered {@link Vehicle}
-   * @param model            model of the offered {@link Vehicle}
-   * @param year             in which the offered {@link Vehicle} was produced
-   * @param length           of the vehicle in cm
-   * @param width            of the vehicle in cm
-   * @param height           of the vehicle in cm
-   * @param engine           Rather specifies the vehicle's fuel type
-   * @param transmission     {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
-   * @param seats            Amount of seats that the offered vehicle has
-   * @param beds             Amount of beds that the offered vehicle has
-   * @param roofTent         Does the vehicle have a roof tent?
-   * @param roofRack         Does the vehicle have a roof rack?
-   * @param bikeRack         Does the vehicle have a bike rack?
-   * @param shower           Does the vehicle have a shower?
-   * @param toilet           Does the vehicle have a toilet?
-   * @param kitchenUnit      Does the vehicle have a kitchen unit?
-   * @param fridge           Does the vehicle have a fridge?
+   * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
+   * @param make brand of the offered {@link Vehicle}
+   * @param model model of the offered {@link Vehicle}
+   * @param year in which the offered {@link Vehicle} was produced
+   * @param length of the vehicle in cm
+   * @param width of the vehicle in cm
+   * @param height of the vehicle in cm
+   * @param engine Rather specifies the vehicle's fuel type
+   * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
+   * @param seats Amount of seats that the offered vehicle has
+   * @param beds Amount of beds that the offered vehicle has
+   * @param roofTent Does the vehicle have a roof tent?
+   * @param roofRack Does the vehicle have a roof rack?
+   * @param bikeRack Does the vehicle have a bike rack?
+   * @param shower Does the vehicle have a shower?
+   * @param toilet Does the vehicle have a toilet?
+   * @param kitchenUnit Does the vehicle have a kitchen unit?
+   * @param fridge Does the vehicle have a fridge?
    * @return {@link OfferDTO} of the new offer
    */
   public OfferDTO create(
-    User creator,
     // Offer-Parameter
     String title,
     String location,
@@ -116,10 +123,10 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.create(
-        creator,
+        userController.getLoggedInUser(),
         //Offer-Parameter
         title,
         location,
@@ -151,33 +158,31 @@ public class OfferController implements IOfferController {
   }
 
   /**
-   * Updated an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
-   *
-   * @param creator          {@link User} that wants to create the new offer
-   * @param title            of the new offer
-   * @param location         where the {@link Vehicle} can be picked up from
-   * @param contact          How the provider can be reached
-   * @param particularities  Any points that should be said about the offer
-   * @param price            per day for the vehicle
+   * Updates an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
+   * @param title of the new offer
+   * @param location where the {@link Vehicle} can be picked up from
+   * @param contact How the provider can be reached
+   * @param particularities Any points that should be said about the offer
+   * @param price per day for the vehicle
    * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param vehicleType      {@link VehicleType} of the offered {@link Vehicle}
-   * @param make             brand of the offered {@link Vehicle}
-   * @param model            model of the offered {@link Vehicle}
-   * @param year             in which the offered {@link Vehicle} was produced
-   * @param length           of the vehicle in cm
-   * @param width            of the vehicle in cm
-   * @param height           of the vehicle in cm
-   * @param engine           Rather specifies the vehicle's fuel type
-   * @param transmission     {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
-   * @param seats            Amount of seats that the offered vehicle has
-   * @param beds             Amount of beds that the offered vehicle has
-   * @param roofTent         Does the vehicle have a roof tent?
-   * @param roofRack         Does the vehicle have a roof rack?
-   * @param bikeRack         Does the vehicle have a bike rack?
-   * @param shower           Does the vehicle have a shower?
-   * @param toilet           Does the vehicle have a toilet?
-   * @param kitchenUnit      Does the vehicle have a kitchen unit?
-   * @param fridge           Does the vehicle have a fridge?
+   * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
+   * @param make brand of the offered {@link Vehicle}
+   * @param model model of the offered {@link Vehicle}
+   * @param year in which the offered {@link Vehicle} was produced
+   * @param length of the vehicle in cm
+   * @param width of the vehicle in cm
+   * @param height of the vehicle in cm
+   * @param engine Rather specifies the vehicle's fuel type
+   * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
+   * @param seats Amount of seats that the offered vehicle has
+   * @param beds Amount of beds that the offered vehicle has
+   * @param roofTent Does the vehicle have a roof tent?
+   * @param roofRack Does the vehicle have a roof rack?
+   * @param bikeRack Does the vehicle have a bike rack?
+   * @param shower Does the vehicle have a shower?
+   * @param toilet Does the vehicle have a toilet?
+   * @param kitchenUnit Does the vehicle have a kitchen unit?
+   * @param fridge Does the vehicle have a fridge?
    * @return {@link OfferDTO} of the new offer
    */
   public OfferDTO update(
@@ -212,7 +217,7 @@ public class OfferController implements IOfferController {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(
       offerService.update(
         offerId,
@@ -246,7 +251,8 @@ public class OfferController implements IOfferController {
         shower,
         toilet,
         kitchenUnit,
-        fridge
+        fridge,
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
       )
     );
   }
@@ -259,7 +265,10 @@ public class OfferController implements IOfferController {
    */
   public void delete(long id) throws GenericServiceException {
     try {
-      offerService.delete(id);
+      offerService.delete(
+        id,
+        modelMapper.userToUserDTO(userController.getLoggedInUser())
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }
@@ -296,7 +305,10 @@ public class OfferController implements IOfferController {
         .filter(offerDTO ->
           (
             filter.getLocation() == null ||
-            offerDTO.getLocation().equals(filter.getLocation())
+            offerDTO
+              .getLocation()
+              .toLowerCase()
+              .contains(filter.getLocation().toLowerCase())
           ) &&
           (
             filter.getVehicleType() == null ||
@@ -312,7 +324,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getMake()
-              .equals(filter.getVehicleBrand())
+              .toLowerCase()
+              .contains(filter.getVehicleBrand().toLowerCase())
           ) &&
           (
             filter.getConstructionYear() == 0 ||
@@ -331,7 +344,8 @@ public class OfferController implements IOfferController {
               .getOfferedObject()
               .getVehicleFeatures()
               .getEngine()
-              .equals(filter.getEngine())
+              .toLowerCase()
+              .contains(filter.getEngine().toLowerCase())
           ) &&
           (
             filter.getTransmissionType() == null ||
@@ -359,9 +373,8 @@ public class OfferController implements IOfferController {
 
   /**
    * Evaluates whether one of the checkboxes in the offer does not equal to its value in the filter
-   *
    * @param offerDTO Offer that shall be looked in
-   * @param filter   {@link Filter} that holds the settings of the checkboxes
+   * @param filter {@link Filter} that holds the settings of the checkboxes
    * @return true if all checkboxes in the offer equal to their values in the filter, false if there is at least one that does not
    */
   private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
@@ -389,5 +402,23 @@ public class OfferController implements IOfferController {
       offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
     return !booleanList.contains(false);
+  }
+
+  /**
+   * Promotes an offer, s.t. it is highlighted next to the normal offers
+   * @param offerID ID of the offer to promote
+   * @throws GenericServiceException
+   */
+  public OfferDTO promoteOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.promoteOffer(offerID));
+  }
+
+  /**
+   * Degrades an offer, s.t. it is just seen like any other offer
+   * @param offerID ID of the offer to degrade
+   * @throws GenericServiceException
+   */
+  public OfferDTO degradeOffer(long offerID) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.degradeOffer(offerID));
   }
 }

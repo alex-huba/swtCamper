@@ -40,7 +40,8 @@ public class ModelMapper {
       offer.getParticularities(),
       offer.getPrice(),
       offer.getRentalConditions(),
-      offer.isActive()
+      offer.isActive(),
+      offer.isPromoted()
     );
   }
 
@@ -85,7 +86,7 @@ public class ModelMapper {
   public BookingDTO bookingToBookingDTO(Booking booking) {
     return new BookingDTO(
       booking.getId(),
-      booking.getUser(),
+      booking.getRenter(),
       booking.getOffer(),
       booking.getStartDate(),
       booking.getEndDate(),
@@ -111,5 +112,41 @@ public class ModelMapper {
       pictureDTOs.add(pictureToPictureDTO(picture));
     }
     return pictureDTOs;
+  }
+
+  public LoggingMessageDTO LoggingMessageToLoggingMessageDTO(
+    LoggingMessage loggingMessage
+  ) {
+    return new LoggingMessageDTO(
+      loggingMessage.getLoggingMessageID(),
+      loggingMessage.getTime(),
+      loggingMessage.getLogLevel(),
+      loggingMessage.getLoggingMessage()
+    );
+  }
+
+  public LoggingMessage LoggingMessageDTOToLoggingMessage(
+    LoggingMessageDTO loggingMessageDTO
+  ) {
+    LoggingMessage loggingMessage = new LoggingMessage();
+    loggingMessage.setLoggingMessageID(loggingMessageDTO.getLoggingMessageID());
+    loggingMessage.setTime(loggingMessageDTO.getTime());
+    loggingMessage.setLogLevel(loggingMessageDTO.getLogLevel());
+    loggingMessage.setLoggingMessage(loggingMessageDTO.getLoggingMessage());
+
+    return loggingMessage;
+  }
+
+  public List<LoggingMessageDTO> LoggingMessagesToLoggingMessageDTOs(
+    List<LoggingMessage> loggingMessageList
+  ) {
+    List<LoggingMessageDTO> loggingMessageDTOList = new ArrayList<>();
+    for (LoggingMessage loggingMessage : loggingMessageList) {
+      loggingMessageDTOList.add(
+        LoggingMessageToLoggingMessageDTO(loggingMessage)
+      );
+    }
+
+    return loggingMessageDTOList;
   }
 }

@@ -1,10 +1,7 @@
 package swtcamper.backend.entities;
 
 import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Booking {
@@ -14,7 +11,7 @@ public class Booking {
   Long id;
 
   @ManyToOne
-  User user;
+  User renter;
 
   @ManyToOne
   Offer offer;
@@ -23,35 +20,19 @@ public class Booking {
   LocalDate endDate;
   boolean active;
 
-  public Booking(
-    Long id,
-    User user,
-    Offer offer,
-    LocalDate startDate,
-    LocalDate endDate,
-    boolean active
-  ) {
-    this.id = id;
-    this.user = user;
-    this.offer = offer;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.active = active;
-  }
-
   public Booking() {}
 
   public Booking(
-    User user,
+    User renter,
     Offer offer,
     LocalDate startDate,
     LocalDate endDate
   ) {
-    this.user = user;
+    this.renter = renter;
     this.offer = offer;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.active = true;
+    this.active = false;
   }
 
   public Long getId() {
@@ -62,12 +43,12 @@ public class Booking {
     this.id = id;
   }
 
-  public User getUser() {
-    return user;
+  public User getRenter() {
+    return renter;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setRenter(User renter) {
+    this.renter = renter;
   }
 
   public Offer getOffer() {
@@ -100,5 +81,25 @@ public class Booking {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "Booking{" +
+      "id=" +
+      id +
+      ", renter=" +
+      renter +
+      ", offer=" +
+      offer +
+      ", startDate=" +
+      startDate +
+      ", endDate=" +
+      endDate +
+      ", active=" +
+      active +
+      '}'
+    );
   }
 }

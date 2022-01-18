@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.UserDTO;
+import swtcamper.api.controller.BookingController;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -18,6 +22,9 @@ public class OfferService {
   OfferService offerService;
 
   @Autowired
+  UserService userService;
+
+  @Autowired
   private VehicleRepository vehicleRepository;
 
   @Autowired
@@ -25,6 +32,15 @@ public class OfferService {
 
   @Autowired
   private OfferRepository offerRepository;
+
+  @Autowired
+  private LoggingController loggingController;
+
+  @Autowired
+  private BookingController bookingController;
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   public Offer create(
     // TODO validation
@@ -55,7 +71,13 @@ public class OfferService {
     boolean toilet,
     boolean kitchenUnit,
     boolean fridge
-  ) {
+  ) throws GenericServiceException {
+    if (!creator.isEnabled() || creator.isLocked()) {
+      throw new GenericServiceException(
+        "User cannot create new offers as long as he/she is locked or not enabled."
+      );
+    }
+
     Vehicle vehicle = new Vehicle();
     vehicleRepository.save(vehicle);
 
@@ -95,8 +117,35 @@ public class OfferService {
       price,
       rentalConditions
     );
-    vehicleRepository.save(vehicle);
-    return offerRepository.save(offer);
+    long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New vehicle with ID %s created by user %s.",
+            newVehicleId,
+            creator.getUsername()
+          )
+        )
+      )
+    );
+
+    long newOfferId = offerRepository.save(offer).getOfferID();
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "New offer with ID %s created by user %s.",
+            newOfferId,
+            creator.getUsername()
+          )
+        )
+      )
+    );
+
+    return offerRepository.findById(newOfferId).get();
   }
 
   public Offer update(
@@ -130,10 +179,35 @@ public class OfferService {
     boolean shower,
     boolean toilet,
     boolean kitchenUnit,
-    boolean fridge
-  ) {
+    boolean fridge,
+    UserDTO user
+  ) throws GenericServiceException {
+    if (!user.isEnabled() || user.isLocked()) {
+      throw new GenericServiceException(
+        "User cannot update offers as long as he/she is locked or not enabled."
+      );
+    }
+
     Optional<Offer> offerResponse = offerRepository.findById(offerId);
-    Offer offer = offerResponse.get();
+    Offer offer;
+    if (offerResponse.isPresent()) {
+      offer = offerResponse.get();
+    } else {
+      throw new GenericServiceException(
+        "There is no offer with specified ID " + offerId
+      );
+    }
+
+    // check if offer is in rent right now
+    for (Booking booking : bookingController.getAllBookings()) {
+      if (booking.getOffer().getOfferID() == offerId && booking.isActive()) {
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          offerId +
+          " while it is part of an active booking."
+        );
+      }
+    }
 
     Optional<Vehicle> vehicleResponse = vehicleRepository.findById(
       offeredObject.getVehicleID()
@@ -170,6 +244,18 @@ public class OfferService {
 
     vehicle.setVehicleFeatures(vehicleFeatures);
     vehicleRepository.save(vehicle);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Vehicle with ID %s got updated by user %s.",
+            vehicle.getVehicleID(),
+            user.getUsername()
+          )
+        )
+      )
+    );
 
     offer.setCreator(creator);
     offer.setOfferedObject(vehicle);
@@ -181,6 +267,18 @@ public class OfferService {
     offer.setPrice(price);
     offer.setActive(active);
     offer.setRentalConditions(rentalConditions);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got updated by user %s.",
+            offer.getOfferID(),
+            user.getUsername()
+          )
+        )
+      )
+    );
 
     return offerRepository.save(offer);
   }
@@ -230,9 +328,31 @@ public class OfferService {
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
-  public void delete(long id) throws GenericServiceException {
+  public void delete(long id, UserDTO user) throws GenericServiceException {
+    // check if offer is in rent right now
+    for (Booking booking : bookingController.getAllBookings()) {
+      if (booking.getOffer().getOfferID() == id) {
+        throw new GenericServiceException(
+          "Cannot modify offer with ID " +
+          id +
+          " while it is part of an active booking."
+        );
+      }
+    }
     try {
       offerRepository.deleteById(id);
+      loggingController.log(
+        modelMapper.LoggingMessageToLoggingMessageDTO(
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Offer with ID %s got deleted by user %s.",
+              id,
+              user.getUsername()
+            )
+          )
+        )
+      );
     } catch (IllegalArgumentException e) {
       throw new GenericServiceException("The passed ID is not available: " + e);
     }
@@ -240,5 +360,51 @@ public class OfferService {
 
   public List<Offer> offers() {
     return offerRepository.findAll();
+  }
+
+  public Offer promoteOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(true);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got promoted by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer degradeOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(false);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got degraded by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer getOfferById(long offerID) throws GenericServiceException {
+    Optional<Offer> offerOptional = offerRepository.findById(offerID);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    }
+    throw new GenericServiceException(
+      "There is no offer with ID " + offerID + "."
+    );
   }
 }

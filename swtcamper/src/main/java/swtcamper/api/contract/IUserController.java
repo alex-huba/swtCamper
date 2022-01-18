@@ -26,8 +26,9 @@ public interface IUserController {
 
   /**
    * see {@link UserService#login}
+   * @return
    */
-  UserRoleDTO login(String username, String password)
+  UserDTO login(String username, String password)
     throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
 
   /**
@@ -55,4 +56,44 @@ public interface IUserController {
    * see {@link UserService#isEnabled}
    */
   boolean isEnabled(String username) throws UserDoesNotExistException;
+
+  /**
+   *
+   * @param id
+   * @return
+   * @throws GenericServiceException
+   */
+  User getUserById(long id) throws GenericServiceException;
+
+  /**
+   *
+   * @param id
+   */
+  void enableUserById(long id);
+
+  /**
+   *
+   * @param id
+   */
+  void blockUserById(long id);
+
+  /**
+   *
+   * @param id
+   */
+  void unblockUserById(long id);
+
+  /**
+   *
+   * @param id
+   * @throws GenericServiceException
+   */
+  void degradeUserById(long id) throws GenericServiceException;
+
+  /**
+   *
+   * @param id
+   * @throws GenericServiceException
+   */
+  void promoteUserById(long id) throws GenericServiceException;
 }

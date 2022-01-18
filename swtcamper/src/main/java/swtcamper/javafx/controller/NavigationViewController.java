@@ -2,15 +2,21 @@ package swtcamper.javafx.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -18,6 +24,9 @@ public class NavigationViewController {
 
   @Autowired
   private MainViewController mainViewController;
+
+  @Autowired
+  private NavigationViewController navigationViewController;
 
   @Autowired
   private UserController userController;
@@ -47,7 +56,13 @@ public class NavigationViewController {
   public Button approveButton;
 
   @FXML
+  public Circle approveNotificationDot;
+
+  @FXML
   public Button myBookingsButton;
+
+  @FXML
+  public Circle myBookingsNotificationDot;
 
   @FXML
   public Button loginButton;
@@ -69,9 +84,8 @@ public class NavigationViewController {
   }
 
   private void setStartButtons() {
-    navBarItems.getChildren().removeIf(b -> true);
-    navBarItems.getChildren().add(homeButton);
-    navBarItems.getChildren().add(loginButton);
+    navBarItems.getChildren().clear();
+    navBarItems.getChildren().addAll(homeButton, loginButton);
   }
 
   @FXML
@@ -82,49 +96,80 @@ public class NavigationViewController {
 
   public void setButtonActive(Button btn) {
     // remove all active classes first
-    for (Object child : navBarItems.getChildren()) {
-      if (child instanceof Button) ((Button) child).getStyleClass()
-        .removeIf(c -> c.contains("active"));
-    }
+    navBarItems
+      .getChildren()
+      .stream()
+      .filter(node -> node instanceof Button)
+      .forEach(node -> node.getStyleClass().removeIf(s -> s.contains("active"))
+      );
 
     btn.getStyleClass().add("active");
   }
 
-  public void login(UserRoleDTO userRoleDTO, boolean isEnabled)
+  public void login(UserDTO userDTO, String startPage)
     throws GenericServiceException {
-    navBarItems.getChildren().removeIf(b -> true);
+    UserRole userRole = userDTO.getUserRole();
+    boolean isEnabled = userDTO.isEnabled();
+    boolean isLocked = userDTO.isLocked();
 
-    List<Button> toAdd = new ArrayList<>();
+    ObservableList<Node> navBarList = navBarItems.getChildren();
+    navBarList.clear();
 
-    // Enable renter functionalities
-    if (userRoleDTO == UserRoleDTO.RENTER) {
-      toAdd.add(homeButton);
-      toAdd.add(dealHistoryButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
-      // Enable provider functionalities
-    } else if (userRoleDTO == UserRoleDTO.PROVIDER) {
-      toAdd.add(homeButton);
-      toAdd.add(newOfferButton);
-      if (isEnabled) toAdd.add(activeOffersButton);
-      toAdd.add(dealHistoryButton);
-      if (isEnabled) toAdd.add(excludeButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
-      // Enable operator functionalities
+    if (isLocked) {
+      navBarList.add(dealHistoryButton);
+      navBarList.add(accountButton);
     } else {
-      toAdd.add(homeButton);
-      toAdd.add(newOfferButton);
-      toAdd.add(activeOffersButton);
-      toAdd.add(dealHistoryButton);
-      toAdd.add(excludeButton);
-      toAdd.add(approveButton);
-      toAdd.add(myBookingsButton);
-      toAdd.add(accountButton);
+      switch (userRole) {
+        // Enable renter functionalities
+        case RENTER:
+          navBarList.addAll(
+            homeButton,
+            dealHistoryButton,
+            myBookingsButton,
+            accountButton
+          );
+          break;
+        // Enable provider functionalities
+        case PROVIDER:
+          if (isEnabled) {
+            navBarList.addAll(
+              homeButton,
+              newOfferButton,
+              activeOffersButton,
+              dealHistoryButton,
+              excludeButton,
+              myBookingsButton,
+              accountButton
+            );
+          } else {
+            navBarList.addAll(
+              homeButton,
+              dealHistoryButton,
+              myBookingsButton,
+              accountButton
+            );
+          }
+          break;
+        // Enable operator functionalities
+        case OPERATOR:
+          navBarList.addAll(
+            homeButton,
+            newOfferButton,
+            activeOffersButton,
+            dealHistoryButton,
+            excludeButton,
+            approveButton,
+            myBookingsButton,
+            accountButton
+          );
+          break;
+        default:
+          navBarList.addAll(homeButton, accountButton);
+          break;
+      }
     }
 
-    navBarItems.getChildren().addAll(toAdd);
-    mainViewController.changeView("home");
+    mainViewController.changeView(startPage);
     if (isShortText) {
       setShortTexts();
     } else {
@@ -182,5 +227,27 @@ public class NavigationViewController {
         ((Button) child).setPrefWidth(172);
       }
     }
+  }
+
+  public void showApproveNotification() {
+    Tooltip t = new Tooltip("Es können neue Nutzer akzeptiert werden");
+    Tooltip.install(approveNotificationDot, t);
+
+    approveNotificationDot.setVisible(true);
+  }
+
+  public void hideApproveNotification() {
+    approveNotificationDot.setVisible(false);
+  }
+
+  public void showBookingNotification() {
+    Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
+    Tooltip.install(approveNotificationDot, t);
+
+    myBookingsNotificationDot.setVisible(true);
+  }
+
+  public void resetBookingNotification() {
+    myBookingsNotificationDot.setVisible(false);
   }
 }
