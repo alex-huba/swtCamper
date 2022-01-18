@@ -261,7 +261,7 @@ public class RentingViewController {
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     // and load the first chunk
-    loadData(subListsList.size()> 0 ? subListsList.get(0): new ArrayList<>());
+    loadData(subListsList.size() > 0 ? subListsList.get(0) : new ArrayList<>());
   }
 
   /**
