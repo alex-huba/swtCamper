@@ -111,4 +111,8 @@ public class BookingController implements IBookingController {
       modelMapper.userToUserDTO(userController.getLoggedInUser())
     );
   }
+
+  public void reject(long bookingID){
+    bookingService.reject(bookingID);
+  }
 }

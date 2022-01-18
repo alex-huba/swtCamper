@@ -4,6 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -63,7 +65,7 @@ public class MyBookingsViewController {
 
     List<Booking> bookingList = bookingController.getBookingsForUser(
       userController.getLoggedInUser()
-    );
+    ).stream().filter(booking -> !booking.isRejected()).collect(Collectors.toList());
 
     if (bookingList.size() > 0) {
       // create a card for each booking request
@@ -157,10 +159,11 @@ public class MyBookingsViewController {
         rejectButton.getStyleClass().add("bg-warning");
         rejectButton.setDisable(booking.isActive());
         rejectButton.setOnAction(event -> {
-          try {
-            bookingController.delete(booking.getId());
+//          try {
+            bookingController.reject(booking.getId());
+//            bookingController.delete(booking.getId());
             reloadData();
-          } catch (GenericServiceException ignore) {}
+//          } catch (GenericServiceException ignore) {}
         });
 
         // Button for aborting the booking
@@ -220,6 +223,7 @@ public class MyBookingsViewController {
           .getRenter()
           .getId()
           .equals(userController.getLoggedInUser().getId())
+              && !booking.isRejected()
       ) {
         rentingList.add(booking);
       }
@@ -308,7 +312,8 @@ public class MyBookingsViewController {
               if (booking.isActive()) {
                 bookingController.deactivate(booking.getId());
               } else {
-                bookingController.delete(booking.getId());
+                bookingController.reject(booking.getId());
+//                bookingController.delete(booking.getId());
               }
             } catch (GenericServiceException ignore) {}
           }

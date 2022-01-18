@@ -78,6 +78,9 @@ public class MainViewController {
   @Autowired
   private OfferViewController offerViewController;
 
+  @Autowired
+  private DealHistoryViewController dealHistoryViewController;
+
   @FXML
   public AnchorPane mainStage;
 
@@ -300,6 +303,7 @@ public class MainViewController {
         navigationViewController.setButtonActive(
           navigationViewController.dealHistoryButton
         );
+        dealHistoryViewController.reloadData();
         break;
       case "exclude":
         mainStage.getChildren().add(excludeRenterViewBox);

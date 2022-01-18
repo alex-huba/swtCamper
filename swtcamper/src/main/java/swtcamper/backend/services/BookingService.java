@@ -310,4 +310,13 @@ public class BookingService {
       "Booking with following ID not found: " + bookingID
     );
   }
+
+  public void reject(long bookingID){
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if(bookingOptional.isPresent()){
+      Booking booking = bookingOptional.get();
+      booking.setRejected(true);
+      bookingRepository.save(booking);
+    }
+  }
 }

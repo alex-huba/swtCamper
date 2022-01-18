@@ -1,1 +1,22 @@
 @import "global.css";
+
+.bg-purple {
+    -fx-background-color: #665fa0;
+}
+
+.bg-purple Label {
+    -fx-text-fill: #ffffff;
+}
+
+.bg-lightGreen {
+    -fx-background-color: #AADDA9;
+}
+
+.bg-lightGreen Label {
+    -fx-text-fill: #000000;
+}
+
+.descriptionHeading {
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
