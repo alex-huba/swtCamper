@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -94,6 +95,15 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public HBox paginationHBox;
+
+  @FXML
+  public ChoiceBox<Integer> offersPerPageChoiceBox;
+
+  @FXML
+  public HBox offersPerPageHBox;
+
+  @FXML
   public HBox offerListBox;
 
   @FXML
@@ -108,9 +118,24 @@ public class RentingViewController {
   @FXML
   public AnchorPane rootAnchorPane;
 
+  private List<OfferDTO> offerDTOList;
+  private List<List<OfferDTO>> subListsList;
+  int lastPageVisited;
+
   @FXML
   private void initialize() throws GenericServiceException {
-    reloadData();
+    offersPerPageChoiceBox.setItems(
+      FXCollections.observableArrayList(1, 5, 10, 20)
+    );
+    offersPerPageChoiceBox.setValue(5);
+    offersPerPageChoiceBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        try {
+          lastPageVisited = 0;
+          reloadData();
+        } catch (GenericServiceException ignore) {}
+      });
 
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
@@ -160,19 +185,76 @@ public class RentingViewController {
   }
 
   /**
-   * Gets all available offers from the database .
+   * Gets all available offers from the database and creates subLists.
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    loadData(
+    // get available offers
+    offerDTOList =
       offerController
         .offers()
         .stream()
         .filter(OfferDTO::isActive)
-        .collect(Collectors.toList())
+        .collect(Collectors.toList());
+
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(subListsList.get(0));
+  }
+
+  /**
+   * Adds a pagination to the list of offers
+   */
+  private void addPagination() {
+    // get amount of pages by rounding up the result of offerDTOList's size divided by offersPerPageChoiceBox's value
+    int pageAmount = (int) Math.ceil(
+      offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
+    );
+
+    paginationHBox.getChildren().clear();
+    for (int i = 0; i < pageAmount; i++) {
+      Button pageButton = new Button(String.valueOf(i + 1));
+      pageButton
+        .getStyleClass()
+        .add(i == lastPageVisited ? "bg-primary" : "bg-secondary");
+
+      int finalI = i;
+      pageButton.setOnAction(event -> {
+        lastPageVisited = finalI;
+        loadData(subListsList.get(finalI));
+      });
+      paginationHBox.getChildren().add(pageButton);
+    }
+    paginationHBox.getChildren().add(offersPerPageHBox);
+
+    offerListRoot.getChildren().add(paginationHBox);
+  }
+
+  /**
+   * Partitions an offer-list into sublists of a specific max length
+   * @param inputList offer-list to partition
+   * @param size max length of each sublist
+   * @return list of lists, each with a max length
+   */
+  private List<List<OfferDTO>> createOfferSublists(
+    List<OfferDTO> inputList,
+    int size
+  ) {
+    final AtomicInteger counter = new AtomicInteger(0);
+    return FXCollections.observableArrayList(
+      inputList
+        .stream()
+        .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
+        .values()
     );
   }
 
+  /**
+   * Loads a specific list to the visible view
+   * @param offersList list to load
+   */
   private void loadData(List<OfferDTO> offersList) {
     offerListRoot.getChildren().clear();
 
@@ -301,6 +383,8 @@ public class RentingViewController {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
+
+    if (offersList.size() > 0) addPagination();
   }
 
   /**
