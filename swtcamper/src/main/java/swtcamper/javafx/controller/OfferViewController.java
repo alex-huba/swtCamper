@@ -286,7 +286,8 @@ public class OfferViewController {
           )) {
             if (
               booking.getOffer().getOfferID() == viewedOffer.getID() &&
-              booking.isActive() && !booking.isRejected()
+              booking.isActive() &&
+              !booking.isRejected()
             ) {
               offerIsInRent = true;
               break;
@@ -304,7 +305,7 @@ public class OfferViewController {
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
-                .filter(booking -> !booking.isRejected())
+          .filter(booking -> !booking.isRejected())
           .filter(booking ->
             booking
               .getRenter()
@@ -320,20 +321,21 @@ public class OfferViewController {
 
             rentHBox.setVisible(true);
 
-            if(booking.isActive()) {
+            if (booking.isActive()) {
               rentLabel.setText(
-                      "Du mietest diese Anzeige gerade. Buchungsnummer: " + booking.getId()
+                "Du mietest diese Anzeige gerade. Buchungsnummer: " +
+                booking.getId()
               );
 
               // abort renting
               abortBookingRequestBtn.setText("Buchung abbrechen");
               abortBookingRequestBtn.setOnAction(event -> {
-                  bookingController.reject(booking.getId());
-                  checkMode(true);
+                bookingController.reject(booking.getId());
+                checkMode(true);
               });
             } else {
               rentLabel.setText(
-                      "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+                "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
               );
 
               // abort open booking request

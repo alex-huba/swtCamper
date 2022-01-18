@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -63,9 +62,11 @@ public class MyBookingsViewController {
     renterLabel.setStyle("-fx-font-weight: bold");
     bookingsListVBox.getChildren().add(renterLabel);
 
-    List<Booking> bookingList = bookingController.getBookingsForUser(
-      userController.getLoggedInUser()
-    ).stream().filter(booking -> !booking.isRejected()).collect(Collectors.toList());
+    List<Booking> bookingList = bookingController
+      .getBookingsForUser(userController.getLoggedInUser())
+      .stream()
+      .filter(booking -> !booking.isRejected())
+      .collect(Collectors.toList());
 
     if (bookingList.size() > 0) {
       // create a card for each booking request
@@ -145,7 +146,8 @@ public class MyBookingsViewController {
         Button acceptButton = new Button("Annehmen");
         acceptButton.getStyleClass().add("bg-primary");
         acceptButton.setDisable(
-          booking.isActive() && anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking)
+          booking.isActive() &&
+          anotherBookingWithSameOfferIsActiveAndRentedAtTheSameTime(booking)
         );
         acceptButton.setOnAction(event -> {
           try {
@@ -160,7 +162,7 @@ public class MyBookingsViewController {
         rejectButton.setDisable(booking.isActive());
         rejectButton.setOnAction(event -> {
           try {
-//            bookingController.reject(booking.getId());
+            //            bookingController.reject(booking.getId());
             bookingController.delete(booking.getId());
             reloadData();
           } catch (GenericServiceException ignore) {}
@@ -178,10 +180,10 @@ public class MyBookingsViewController {
           Optional<ButtonType> result = confirmDelete.showAndWait();
 
           if (result.isPresent() && result.get() == ButtonType.OK) {
-              bookingController.reject(booking.getId());
-//            try {
-//                          bookingController.delete(booking.getId());
-//            } catch (GenericServiceException ignore) {}
+            bookingController.reject(booking.getId());
+            //            try {
+            //                          bookingController.delete(booking.getId());
+            //            } catch (GenericServiceException ignore) {}
           }
           reloadData();
         });
@@ -222,8 +224,8 @@ public class MyBookingsViewController {
         booking
           .getRenter()
           .getId()
-          .equals(userController.getLoggedInUser().getId())
-              && !booking.isRejected()
+          .equals(userController.getLoggedInUser().getId()) &&
+        !booking.isRejected()
       ) {
         rentingList.add(booking);
       }
@@ -310,10 +312,13 @@ public class MyBookingsViewController {
           if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
               if (booking.isActive()) {
-                bookingController.deactivate(booking.getId());
-              } else {
+                // finish booking after it has already been accepted
                 bookingController.reject(booking.getId());
-//                bookingController.delete(booking.getId());
+                //                bookingController.deactivate(booking.getId());
+              } else {
+                //                bookingController.reject(booking.getId());
+                // completely delete booking because it has never been accepted
+                bookingController.delete(booking.getId());
               }
             } catch (GenericServiceException ignore) {}
           }

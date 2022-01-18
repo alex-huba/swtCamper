@@ -311,9 +311,9 @@ public class BookingService {
     );
   }
 
-  public void reject(long bookingID){
+  public void reject(long bookingID) {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
-    if(bookingOptional.isPresent()){
+    if (bookingOptional.isPresent()) {
       Booking booking = bookingOptional.get();
       booking.setRejected(true);
       bookingRepository.save(booking);
