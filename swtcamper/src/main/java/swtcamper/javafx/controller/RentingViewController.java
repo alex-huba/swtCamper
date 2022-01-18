@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -260,7 +261,7 @@ public class RentingViewController {
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     // and load the first chunk
-    loadData(subListsList.get(0));
+    loadData(subListsList.size()> 0 ? subListsList.get(0): new ArrayList<>());
   }
 
   /**
