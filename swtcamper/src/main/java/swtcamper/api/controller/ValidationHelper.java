@@ -72,10 +72,14 @@ public class ValidationHelper {
    * @param offer
    * @return true, if no booked days lie in between, false if booked days lie in between
    */
-  public boolean checkRentingDatesWithOffer(
+  public static boolean checkRentingDatesWithOffer(
     LocalDate startDate,
     LocalDate endDate,
-    OfferDTO offer
+    OfferDTO offer,
+    // TODO checken
+    BookingService bookingService,
+    OfferService offerService,
+    MainViewController mainViewController
   ) {
     boolean noBookedDaysInBetween = true;
     if (!checkRentingDates(startDate, endDate)) {

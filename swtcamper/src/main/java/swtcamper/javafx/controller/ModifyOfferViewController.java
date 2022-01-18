@@ -40,6 +40,7 @@ import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -198,6 +199,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private OfferService offerService;
+
+  @Autowired
+  BookingService bookingService;
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
@@ -1011,10 +1015,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       );
     } else if (
       isEditMode.get() &&
-      !validationHelper.checkRentingDatesWithOffer(
+      !ValidationHelper.checkRentingDatesWithOffer(
         startDatePicker.getValue(),
         endDatePicker.getValue(),
-        offerDTO
+        offerDTO,
+              bookingService,
+              offerService,
+              mainViewController
       )
     ) {
       mainViewController.handleExceptionMessage(

@@ -395,10 +395,13 @@ public class OfferViewController {
         );
         // Gibt es gebuchte Tage zwischen Start- und Enddatum?
       } else if (
-        !validationHelper.checkRentingDatesWithOffer(
+        !ValidationHelper.checkRentingDatesWithOffer(
           startDatePicker.getValue(),
           endDatePicker.getValue(),
-          this.viewedOffer
+          this.viewedOffer,
+                bookingService,
+                offerService,
+                mainViewController
         )
       ) {
         mainViewController.handleExceptionMessage(
