@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Vehicle;
@@ -35,7 +36,7 @@ public class BookingServiceUnitTest {
     // ------------- Mocking -------------
 
     @InjectMocks
-    private BookingService bookingService;
+    private BookingService bookingServiceUnderTest;
 
     @Mock
     private OfferRepository offerRepository;
@@ -50,6 +51,7 @@ public class BookingServiceUnitTest {
     private ModelMapper modelMapper;
 
     private User testUser = new User();
+    private UserDTO testUserDTO = new UserDTO();
     private LocalDate testStartDate = LocalDate.now();
     private LocalDate testEndDate =  LocalDate.now().plus(1, ChronoUnit.DAYS);
 
@@ -77,6 +79,12 @@ public class BookingServiceUnitTest {
                 .save(booking);
     }
 
+    public void mockFindById() {
+        doReturn(null)
+                .when(bookingRepository)
+                .save(any());
+    }
+
     public List<Booking> twoValidBookings() {
         List<Booking> twoValidBookings = new ArrayList<>();
         LocalDate startDate = LocalDate.now();
@@ -92,8 +100,8 @@ public class BookingServiceUnitTest {
         Booking booking2 = new Booking(
                 new User(),
                 testOffer,
-                startDate,
-                endDate
+                startDate1,
+                endDate1
         );
         twoValidBookings.add(booking1);
         twoValidBookings.add(booking2);
@@ -117,7 +125,7 @@ public class BookingServiceUnitTest {
         List<Booking> expected = twoValidBookings();
         mockFindAll(expected);
         // act
-        List<Booking> actual = bookingService.getAllBookings();
+        List<Booking> actual = bookingServiceUnderTest.getAllBookings();
         // assert
         assertEquals(expected, actual);
     }
@@ -128,8 +136,8 @@ public class BookingServiceUnitTest {
         Booking expected = testBooking;
         ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(Booking.class);
         // act
-        Booking actual = bookingService.create(
-                new User(),
+        Booking actual = bookingServiceUnderTest.create(
+                testUser,
                 testOffer,
                 LocalDate.now(),
                 LocalDate.now().plus(1, ChronoUnit.DAYS),
@@ -137,6 +145,17 @@ public class BookingServiceUnitTest {
         // assert
         verify(bookingRepository).save(bookingArgumentCaptor.capture());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @Test(expected = GenericServiceException.class)
+        public void activateShouldThrowGSEIfBookingNotFound()  throws GenericServiceException{
+        // arrange
+        mockFindById();
+        // act
+        bookingServiceUnderTest.activate(1L, testUserDTO);
+    }
+    {
+
     }
 
 }
