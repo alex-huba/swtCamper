@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -226,7 +225,9 @@ public class OfferViewController {
       Integer.toString(offeredObject.getVehicleFeatures().getBeds())
     );
     constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(offeredObject.getVehicleFeatures().getEngine());
+    engineLabel.setText(
+      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
+    );
     widthLabel.setText(
       doubleStringConverter.toString(
         offeredObject.getVehicleFeatures().getWidth()
@@ -464,13 +465,16 @@ public class OfferViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
           Offer offer = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
-          BookingDTO bookingDTO = bookingController.create(
-            user,
-            offer,
-            startDatePicker.getValue(),
-            endDatePicker.getValue(),
-            false
-          );
+          try {
+            BookingDTO bookingDTO = bookingController.create(
+              user,
+              offer,
+              startDatePicker.getValue(),
+              endDatePicker.getValue()
+            );
+          } catch (GenericServiceException e) {
+            mainViewController.handleExceptionMessage(e.getMessage());
+          }
           checkMode(true);
         }
       }

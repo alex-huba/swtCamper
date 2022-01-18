@@ -23,7 +23,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -42,6 +44,9 @@ public class RentingViewController {
 
   @Autowired
   private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public TextField locationTextField;
@@ -63,6 +68,12 @@ public class RentingViewController {
 
   @FXML
   public TextField engineTextField;
+
+  @FXML
+  public ComboBox<FuelType> fuelTypeComboBox;
+
+  @FXML
+  public Button resetFuelTypeBtn;
 
   @FXML
   public ComboBox<TransmissionType> transmissionComboBox;
@@ -236,6 +247,26 @@ public class RentingViewController {
       }
     );
 
+    fuelTypeComboBox.setItems(
+      FXCollections.observableArrayList((FuelType.values()))
+    );
+    fuelTypeComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(FuelType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(fuelTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+    resetFuelTypeBtn
+      .visibleProperty()
+      .bind(fuelTypeComboBox.valueProperty().isNotNull());
+
     offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
     offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
@@ -253,8 +284,19 @@ public class RentingViewController {
     offerDTOList =
       offerController
         .offers()
-        .stream()
+        .parallelStream()
         .filter(OfferDTO::isActive)
+        .filter(offerDTO ->
+          // returns offerDTOs in which the loggedInUser is not excluded
+          // and in which the field excludedRenters is not null
+          // returns true (= every offerDTO) otherwise
+          userController.getLoggedInUser() == null ||
+          offerDTO.getCreator().getExcludedRenters() == null ||
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
+        )
         .collect(Collectors.toList());
 
     // partition them according to offersPerPageChoiceBox's value
@@ -472,8 +514,8 @@ public class RentingViewController {
     ) newFilter.setMaxPricePerDay(
       Integer.parseInt(maxPricePerDayTextField.getText())
     );
-    if (!engineTextField.getText().isEmpty()) newFilter.setEngine(
-      engineTextField.getText()
+    if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
+      fuelTypeComboBox.getValue()
     );
     if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
       transmissionComboBox.getValue()
@@ -529,6 +571,13 @@ public class RentingViewController {
    */
   public void resetVehicleTypeComboBox() {
     vehicleTypeComboBox.valueProperty().set(null);
+  }
+
+  /**
+   * Resets VehicleTypeComboBox to its initial state.
+   */
+  public void resetFuelTypeComboBox() {
+    fuelTypeComboBox.valueProperty().set(null);
   }
 
   /**

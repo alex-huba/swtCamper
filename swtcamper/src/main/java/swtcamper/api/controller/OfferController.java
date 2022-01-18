@@ -3,7 +3,6 @@ package swtcamper.api.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.util.Pair;
@@ -12,11 +11,7 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.IOfferController;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.backend.entities.Filter;
-import swtcamper.backend.entities.Offer;
-import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.Vehicle;
-import swtcamper.backend.entities.VehicleType;
+import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -97,7 +92,7 @@ public class OfferController implements IOfferController {
    * @param length of the vehicle in cm
    * @param width of the vehicle in cm
    * @param height of the vehicle in cm
-   * @param engine Rather specifies the vehicle's fuel type
+   * @param fuelType Rather specifies the vehicle's fuel type
    * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
    * @param seats Amount of seats that the offered vehicle has
    * @param beds Amount of beds that the offered vehicle has
@@ -127,7 +122,7 @@ public class OfferController implements IOfferController {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -158,7 +153,7 @@ public class OfferController implements IOfferController {
         length,
         width,
         height,
-        engine,
+        fuelType,
         transmission,
         seats,
         beds,
@@ -188,7 +183,7 @@ public class OfferController implements IOfferController {
    * @param length of the vehicle in cm
    * @param width of the vehicle in cm
    * @param height of the vehicle in cm
-   * @param engine Rather specifies the vehicle's fuel type
+   * @param fuelType Rather specifies the vehicle's fuel type
    * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
    * @param seats Amount of seats that the offered vehicle has
    * @param beds Amount of beds that the offered vehicle has
@@ -223,7 +218,7 @@ public class OfferController implements IOfferController {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -258,7 +253,7 @@ public class OfferController implements IOfferController {
         length,
         width,
         height,
-        engine,
+        fuelType,
         transmission,
         seats,
         beds,
@@ -354,13 +349,12 @@ public class OfferController implements IOfferController {
             offerDTO.getPrice() <= filter.getMaxPricePerDay()
           ) &&
           (
-            filter.getEngine() == null ||
+            filter.getFuelType() == null ||
             offerDTO
               .getOfferedObject()
               .getVehicleFeatures()
-              .getEngine()
-              .toLowerCase()
-              .contains(filter.getEngine().toLowerCase())
+              .getFuelType()
+              .equals(filter.getFuelType())
           ) &&
           (
             filter.getTransmissionType() == null ||

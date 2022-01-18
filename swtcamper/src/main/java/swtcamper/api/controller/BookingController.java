@@ -13,9 +13,7 @@ import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.javafx.controller.MainViewController;
-import swtcamper.javafx.controller.OfferViewController;
 
 @Component
 public class BookingController implements IBookingController {
@@ -50,17 +48,11 @@ public class BookingController implements IBookingController {
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
-  ) {
-    try {
-      return modelMapper.bookingToBookingDTO(
-        bookingService.create(user, offer, startDate, endDate, active)
-      );
-    } catch (GenericServiceException e) {
-      mainViewController.handleException(e);
-      return null;
-    }
+    LocalDate endDate
+  ) throws GenericServiceException {
+    return modelMapper.bookingToBookingDTO(
+      bookingService.create(user, offer, startDate, endDate)
+    );
   }
 
   @Override
