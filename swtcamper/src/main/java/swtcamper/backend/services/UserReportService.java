@@ -95,9 +95,10 @@ public class UserReportService {
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
-            "UserReport with ID %s was accepted by %s.",
+            "UserReport with ID %s was accepted by %s. User %s gets blocked.",
             userReportID,
-            userController.getLoggedInUser().getUsername()
+            userController.getLoggedInUser().getUsername(),
+            userReport.getReportee()
           )
         )
       )

@@ -31,8 +31,6 @@ public class User {
   private boolean locked;
   private boolean enabled;
 
-  //  @OneToMany
-  //	@CollectionTable(name = "excluded_renters", joinColumns = @JoinColumn(name = "id"))
   private ArrayList<Long> excludedRenters;
 
   public User() {
