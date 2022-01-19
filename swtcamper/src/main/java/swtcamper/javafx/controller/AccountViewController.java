@@ -181,7 +181,9 @@ public class AccountViewController {
     if (!ascending) FXCollections.reverse(logList);
     logListView.setItems(logList);
 
-    resetUserFilterBtn.visibleProperty().bind(userFilterTextField.textProperty().isEmpty().not());
+    resetUserFilterBtn
+      .visibleProperty()
+      .bind(userFilterTextField.textProperty().isEmpty().not());
 
     // fill in all users
     usersListView.setItems(
@@ -297,16 +299,26 @@ public class AccountViewController {
   @FXML
   public void filterUsers() throws GenericServiceException {
     String searchText = userFilterTextField.getText().toLowerCase();
-    if(searchText.isEmpty()) {
-        usersListView.setItems(
-                FXCollections.observableArrayList(userController.getAllUsers()));
-        return;
+    if (searchText.isEmpty()) {
+      usersListView.setItems(
+        FXCollections.observableArrayList(userController.getAllUsers())
+      );
+      return;
     }
 
     usersListView.setItems(
-            FXCollections.observableArrayList(userController.getAllUsers().stream().filter(user ->
-              user.getUsername().toLowerCase().contains(searchText) || user.getSurname().toLowerCase().contains(searchText) || user.getName().toLowerCase().contains(searchText) || user.getEmail().toLowerCase().contains(searchText)
-            ).collect(Collectors.toList()))
+      FXCollections.observableArrayList(
+        userController
+          .getAllUsers()
+          .stream()
+          .filter(user ->
+            user.getUsername().toLowerCase().contains(searchText) ||
+            user.getSurname().toLowerCase().contains(searchText) ||
+            user.getName().toLowerCase().contains(searchText) ||
+            user.getEmail().toLowerCase().contains(searchText)
+          )
+          .collect(Collectors.toList())
+      )
     );
   }
 
