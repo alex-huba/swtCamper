@@ -343,7 +343,7 @@ public class RentingViewController {
         )
         .collect(Collectors.toList());
 
-    // mage pagination invisible if there are no offers to show
+    // made pagination invisible if there are no offers to show
     paginationHBox.setVisible(!offerDTOList.isEmpty());
 
     // partition them according to offersPerPageChoiceBox's value
