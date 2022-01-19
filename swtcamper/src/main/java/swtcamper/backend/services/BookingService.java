@@ -326,6 +326,10 @@ public class BookingService {
    */
   public List<Offer> getAvailableOffers(LocalDate startDate, LocalDate endDate)
     throws GenericServiceException {
+    if (startDate == null || endDate == null) {
+      return offerRepository.findAll();
+    }
+
     // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
