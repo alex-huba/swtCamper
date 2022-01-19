@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import static javafx.scene.control.SelectionMode.MULTIPLE;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,8 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
@@ -30,15 +27,9 @@ import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.ValidationHelper;
-import swtcamper.backend.entities.*;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
@@ -795,6 +786,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateBeds(Integer.parseInt(bedsComboBox.getValue()));
   }
 
+  private void validateTrue(Node element) {
+    element.setStyle("-fx-background-color: #1987547f;");
+  }
+
   private void validateFalse(Node element) {
     element.setStyle("-fx-background-color: #dc35457f;");
   }
@@ -806,6 +801,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isTitleOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(titleTextField);
       isTitleOk.set(true);
     }
   }
@@ -817,6 +813,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isPriceOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(priceTextField);
       isPriceOk.set(true);
     }
   }
@@ -828,6 +825,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isLocationOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(locationTextField);
       isLocationOk.set(true);
     }
   }
@@ -839,6 +837,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isContactOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(contactTextField);
       isContactOk.set(true);
     }
   }
@@ -861,6 +860,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         fuelComboBox.setDisable(false);
       }
       errorLabel.setText("");
+      validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
     if (seatsComboBox.getValue() != null) validateSeats();
@@ -873,6 +873,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isBrandOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(brandTextField);
       isBrandOk.set(true);
     }
   }
@@ -884,6 +885,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isModelOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(modelTextField);
       isModelOk.set(true);
     }
   }
@@ -897,6 +899,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isTransmissionTypeOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(transmissionComboBox);
       isTransmissionTypeOk.set(true);
     }
   }
@@ -910,6 +913,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       Integer.parseInt(seatsComboBox.getValue()) > 0
     ) {
       errorLabel.setText("");
+      validateTrue(seatsComboBox);
       isSeatsOk.set(true);
     } else {
       errorLabel.setText("Ungültige Anzahl von Sitzplätze");
@@ -925,6 +929,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isBedsOk.set(false);
     } else {
       errorLabel.setText("");
+      validateTrue(bedsComboBox);
       isBedsOk.set(true);
     }
   }
@@ -1113,6 +1118,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Method for styling blockedDates ListView entries
+   *
    * @param listView
    */
   public void styleBlockedDatesListView(ListView listView) {
@@ -1139,6 +1145,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   /**
    * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable,
    * and in addition, if an existing offer is being updated, also makes all blockedDays pink and un-clickable
+   *
    * @param datePicker
    * @param offerDTO
    */
