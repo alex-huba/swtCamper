@@ -128,6 +128,15 @@
                   </HBox>
                </graphic>
             </Button>
+            <Button fx:id="logoutBtn" accessibleHelp="logout" accessibleText="Logout" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" text="Logout" textFill="WHITE">
+               <graphic>
+                  <ImageView fx:id="logoutButtonIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </VBox>
    </children>

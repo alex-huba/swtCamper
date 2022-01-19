@@ -392,8 +392,9 @@ public class MainViewController {
       case "reportUser":
         mainStage.getChildren().add(reportUserViewBox);
         break;
-      case: "logout":
-
+      case "logout":
+        logout();
+        break;
     }
   }
 
