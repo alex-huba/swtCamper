@@ -18,6 +18,12 @@ Label, CheckBox {
     -fx-font-size: 15;
 }
 
+.combo-box {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+}
+
 .rentLabel {
     -fx-background-color: #198754;
     -fx-text-fill: white;
