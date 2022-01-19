@@ -1,24 +1,34 @@
 package swtcamper.javafx.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
-import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -150,6 +160,22 @@ public class AccountViewController {
   }
 
   /**
+   * Loads a given list of loggingMessages into their ListView
+   * @param logList list of LogMessages to load
+   * @param ascending if true, order all log messages from oldest to newest, if false from newest to oldest
+   */
+  private void loadLogsIntoListView(
+    List<LoggingMessageDTO> logList,
+    boolean ascending
+  ) {
+    ObservableList<LoggingMessageDTO> modifiedLogList = FXCollections.observableArrayList(
+      logList
+    );
+    if (!ascending) FXCollections.reverse(modifiedLogList);
+    logListView.setItems(modifiedLogList);
+  }
+
+  /**
    * Initialization method for operators
    *
    * @param ascending if true, order all log messages from oldest to newest, if false from newest to oldest
@@ -175,11 +201,8 @@ public class AccountViewController {
     operatorDashboard.setVisible(true);
 
     // fill in all log messages DESC
-    ObservableList<LoggingMessageDTO> logList = FXCollections.observableArrayList(
-      loggingController.getAllLogMessages()
-    );
-    if (!ascending) FXCollections.reverse(logList);
-    logListView.setItems(logList);
+    loadLogsIntoListView(loggingController.getAllLogMessages(), ascending);
+    logListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     resetUserFilterBtn
       .visibleProperty()
@@ -272,15 +295,12 @@ public class AccountViewController {
   public void showLogForUser() {
     if (showLogBtn.getText().equals("Zeige alle Logs")) {
       usersListView.getSelectionModel().select(null);
-      logListView.setItems(
-        FXCollections.observableArrayList(loggingController.getAllLogMessages())
-      );
+      loadLogsIntoListView(loggingController.getAllLogMessages(), false);
       showLogBtn.setText("Zeige Logs zu diesem Nutzer");
     } else {
-      logListView.setItems(
-        FXCollections.observableArrayList(
-          loggingController.getLogForUser(selectedUser)
-        )
+      loadLogsIntoListView(
+        loggingController.getLogForUser(selectedUser),
+        false
       );
       showLogBtn.setText("Zeige alle Logs");
     }
@@ -326,5 +346,46 @@ public class AccountViewController {
   public void resetUserFilter() throws GenericServiceException {
     userFilterTextField.clear();
     filterUsers();
+  }
+
+  @FXML
+  public void downloadLog(ActionEvent event) {
+    Node source = (Node) event.getSource();
+    Window window = source.getScene().getWindow();
+
+    List<LoggingMessageDTO> logToDownload = logListView.getItems();
+
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+      "TXT files (*.txt)",
+      "*.txt"
+    );
+    FileChooser fileChooser = new FileChooser();
+
+    fileChooser.setTitle("Verzeichnis wählen");
+    fileChooser.getExtensionFilters().add(extFilter);
+    fileChooser.setInitialFileName(
+      String.format(
+        "log_swtcamper_%s.txt",
+        LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+      )
+    );
+
+    File file = fileChooser.showSaveDialog(window);
+    if (file.exists()) file.delete();
+
+    try (
+      BufferedWriter writer = Files.newBufferedWriter(
+        Path.of(file.getPath()),
+        StandardCharsets.UTF_8,
+        StandardOpenOption.CREATE
+      )
+    ) {
+      for (LoggingMessageDTO logMsg : logToDownload) {
+        writer.write(logMsg.toString());
+        writer.newLine();
+      }
+    } catch (IOException e) {
+      mainViewController.handleExceptionMessage(e.getMessage());
+    }
   }
 }
