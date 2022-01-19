@@ -144,8 +144,7 @@ public class NavigationViewController {
               activeOffersButton,
               dealHistoryButton,
               excludeButton,
-              myBookingsButton,
-              logoutBtn
+              myBookingsButton
             );
           } else {
             navBarList.addAll(
