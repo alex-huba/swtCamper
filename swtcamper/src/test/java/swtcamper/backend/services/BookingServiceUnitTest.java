@@ -21,6 +21,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.ui.Model;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
@@ -45,6 +46,12 @@ public class BookingServiceUnitTest {
 
   @Mock
   private BookingRepository bookingRepository;
+
+  @Mock
+  private ModelMapper modelMapper;
+
+  @Mock
+  private LoggingController loggingController;
 
   private User testUser = new User();
   private UserDTO testUserDTO = new UserDTO();
@@ -81,8 +88,14 @@ public class BookingServiceUnitTest {
             .findById(any());
   }
 
-  public void mockFindById() {
+  public void mockFindByIdReturnsEmptyOptional() {
     doReturn(Optional.empty()).when(bookingRepository).findById((any()));
+  }
+
+  public void mockFindByIdReturnsFilledOptional() {
+    doReturn(Optional.of(createBooking()))
+            .when(bookingRepository)
+            .findById(any());
   }
 
   public void mockBookingGetId(Booking booking) {
@@ -183,10 +196,21 @@ public class BookingServiceUnitTest {
   public void activateShouldThrowGSEIfBookingNotFound()
     throws GenericServiceException {
     // arrange
-    mockFindById();
+    mockFindByIdReturnsEmptyOptional();
     // act
     bookingServiceUnderTest.activate(1L, testUserDTO);
   }
 
-  {}
-}
+  @Test
+  public void activateShouldSetActiveToTrue() throws GenericServiceException {
+    // arrange
+    mockFindByIdReturnsFilledOptional();
+    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(Booking.class);
+    mockSaveBooking(createBooking());
+    // act
+    bookingServiceUnderTest.activate(2L, testUserDTO);
+    // assert
+    verify(bookingRepository).save(bookingArgumentCaptor.capture());
+    assertEquals(true, bookingArgumentCaptor.getValue().isActive());
+    }
+  }
