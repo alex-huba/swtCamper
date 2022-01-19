@@ -44,8 +44,15 @@ public class ReportUserViewController {
 
   public void sendReport() throws GenericServiceException {
     // user cannot report him/herself
-    if (userController.getLoggedInUser().getUsername().equals(reportThisUserTextField.getText())) {
-      mainViewController.handleInformationMessage("Du kannst dich nicht selber melden ;)");
+    if (
+      userController
+        .getLoggedInUser()
+        .getUsername()
+        .equals(reportThisUserTextField.getText())
+    ) {
+      mainViewController.handleInformationMessage(
+        "Du kannst dich nicht selber melden ;)"
+      );
       return;
     }
 
