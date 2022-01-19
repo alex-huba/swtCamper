@@ -67,9 +67,6 @@ public class RentingViewController {
   public TextField maxPricePerDayTextField;
 
   @FXML
-  public TextField engineTextField;
-
-  @FXML
   public ComboBox<FuelType> fuelTypeComboBox;
 
   @FXML
@@ -82,10 +79,16 @@ public class RentingViewController {
   public Button resetTransmissionTypeBtn;
 
   @FXML
-  public TextField seatAmountTextField;
+  public ComboBox<Integer> seatAmountComboBox;
 
   @FXML
-  public TextField bedAmountTextField;
+  public Button resetSeatAmountBtn;
+
+  @FXML
+  public ComboBox<Integer> bedAmountComboBox;
+
+  @FXML
+  public Button resetBedAmountBtn;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -207,6 +210,12 @@ public class RentingViewController {
     resetEndDatePickerBtn
       .visibleProperty()
       .bind(endDatePicker.valueProperty().isNotNull());
+    resetSeatAmountBtn
+      .visibleProperty()
+      .bind(seatAmountComboBox.valueProperty().isNotNull());
+    resetBedAmountBtn
+      .visibleProperty()
+      .bind(bedAmountComboBox.valueProperty().isNotNull());
 
     startDatePicker.getEditor().setDisable(true);
     startDatePicker.getEditor().setOpacity(1);
@@ -245,6 +254,41 @@ public class RentingViewController {
           };
         }
       }
+    );
+
+    seatAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(seatAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    bedAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(bedAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    seatAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
+    bedAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     );
 
     fuelTypeComboBox.setItems(
@@ -520,11 +564,11 @@ public class RentingViewController {
     if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
       transmissionComboBox.getValue()
     );
-    if (!seatAmountTextField.getText().isEmpty()) newFilter.setSeatAmount(
-      Integer.parseInt(seatAmountTextField.getText())
+    if (seatAmountComboBox.getValue() != null) newFilter.setSeatAmount(
+      seatAmountComboBox.getValue()
     );
-    if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
-      Integer.parseInt(bedAmountTextField.getText())
+    if (bedAmountComboBox.getValue() != null) newFilter.setBedAmount(
+      bedAmountComboBox.getValue()
     );
     if (startDatePicker.getValue() != null) newFilter.setStartDate(
       startDatePicker.getValue()
@@ -540,6 +584,7 @@ public class RentingViewController {
     newFilter.setToilet(toiletCheckBox.isSelected());
     newFilter.setKitchen(kitchenCheckBox.isSelected());
     newFilter.setFridge(fridgeCheckBox.isSelected());
+
     loadData(offerController.getFilteredOffers(newFilter));
   }
 
@@ -549,10 +594,9 @@ public class RentingViewController {
     vehicleBrandTextField.clear();
     constructionYearTextField.clear();
     maxPricePerDayTextField.clear();
-    engineTextField.clear();
     transmissionComboBox.setValue(null);
-    seatAmountTextField.clear();
-    bedAmountTextField.clear();
+    seatAmountComboBox.setValue(null);
+    bedAmountComboBox.setValue(null);
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -601,5 +645,19 @@ public class RentingViewController {
   public void resetEndDatePicker() {
     endDatePicker.getEditor().clear();
     endDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the seat amount in the filter
+   */
+  public void resetSeatAmountComboBox() {
+    seatAmountComboBox.setValue(null);
+  }
+
+  /**
+   * resets the bed amount in the filter
+   */
+  public void resetBedAmountComboBox() {
+    bedAmountComboBox.setValue(null);
   }
 }
