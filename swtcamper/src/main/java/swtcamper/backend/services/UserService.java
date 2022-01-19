@@ -84,7 +84,6 @@ public class UserService {
         )
       )
     );
-
     return userRepository.findById(newId).get();
   }
 

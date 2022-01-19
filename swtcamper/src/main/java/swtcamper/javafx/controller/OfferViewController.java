@@ -1,5 +1,8 @@
 package swtcamper.javafx.controller;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
 import swtcamper.backend.entities.*;
+import swtcamper.backend.services.BookingService;
+import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -45,6 +51,12 @@ public class OfferViewController {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private BookingService bookingService;
+
+  @Autowired
+  private OfferService offerService;
 
   LongStringConverter longStringConverter = new LongStringConverter();
 
@@ -138,10 +150,10 @@ public class OfferViewController {
   public Label dateLabel;
 
   @FXML
-  public DatePicker startDate;
+  public DatePicker startDatePicker;
 
   @FXML
-  public DatePicker endDate;
+  public DatePicker endDatePicker;
 
   @FXML
   public HBox rentHBox;
@@ -253,6 +265,14 @@ public class OfferViewController {
     fridgeLabel.setOpacity(
       labelOpacity(offeredObject.getVehicleFeatures().isFridge())
     );
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
+    setCellFactory(startDatePicker, viewedOffer);
+    setCellFactory(endDatePicker, viewedOffer);
   }
 
   private double labelOpacity(boolean checkBox) {
@@ -268,13 +288,13 @@ public class OfferViewController {
     bookingButton.setVisible(false);
     modifyButton.setVisible(false);
     dateLabel.setVisible(false);
-    startDate.setVisible(false);
-    endDate.setVisible(false);
+    startDatePicker.setVisible(false);
+    endDatePicker.setVisible(false);
     rentHBox.setVisible(false);
     // disable
     dateLabel.setDisable(false);
-    startDate.setDisable(false);
-    endDate.setDisable(false);
+    startDatePicker.setDisable(false);
+    endDatePicker.setDisable(false);
 
     isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
@@ -305,8 +325,8 @@ public class OfferViewController {
         } else {
           bookingButton.setVisible(true);
           dateLabel.setVisible(true);
-          startDate.setVisible(true);
-          endDate.setVisible(true);
+          startDatePicker.setVisible(true);
+          endDatePicker.setVisible(true);
         }
 
         // remove possibility to send a request twice at once
@@ -323,8 +343,8 @@ public class OfferViewController {
           if (booking.getOffer().getOfferID() == viewedOffer.getID()) {
             bookingButton.setVisible(false);
             dateLabel.setDisable(true);
-            startDate.setDisable(true);
-            endDate.setDisable(true);
+            startDatePicker.setDisable(true);
+            endDatePicker.setDisable(true);
             rentLabel.setText(
               "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
             );
@@ -345,8 +365,8 @@ public class OfferViewController {
     } else {
       modifyButton.setVisible(true);
       dateLabel.setVisible(false);
-      startDate.setVisible(false);
-      endDate.setVisible(false);
+      startDatePicker.setVisible(false);
+      endDatePicker.setVisible(false);
       rentHBox.setVisible(false);
     }
   }
@@ -403,43 +423,108 @@ public class OfferViewController {
 
   @FXML
   public void bookingAction() throws GenericServiceException {
-    if (startDate.getValue() != null && endDate.getValue() != null) {
+    if (
+      startDatePicker.getValue() != null && endDatePicker.getValue() != null
+    ) {
+      // Liegt Startdatum nach Enddatum?
+      // Startdatum == Enddatum?
       if (
-        !validationHelper.checkRentingDate(
-          startDate.getValue(),
-          endDate.getValue()
+        !ValidationHelper.checkRentingDates(
+          startDatePicker.getValue(),
+          endDatePicker.getValue()
         )
       ) {
+        mainViewController.handleExceptionMessage(
+          "Das Startdatum darf nicht nach oder am selben Tag wie das Enddatum liegen!"
+        );
+        // Gibt es gebuchte Tage zwischen Start- und Enddatum?
+      } else if (
+        !ValidationHelper.checkRentingDatesWithOffer(
+          startDatePicker.getValue(),
+          endDatePicker.getValue(),
+          this.viewedOffer,
+          bookingService,
+          offerService,
+          mainViewController
+        )
+      ) {
+        mainViewController.handleExceptionMessage(
+          "Zwischen Start- und Enddatum darf keine andere Buchung liegen!"
+        );
+        // Alles ok!
+      } else {
         Alert confirmBooking = new Alert(
           Alert.AlertType.CONFIRMATION,
           "Willst du das Angebot wirklich von " +
-          startDate.getValue() +
+          startDatePicker.getValue() +
           " bis " +
-          endDate.getValue() +
+          endDatePicker.getValue() +
           " buchen?"
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
           Offer offer = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
-          BookingDTO bookingDTO = bookingController.create(
-            user,
-            offer,
-            startDate.getValue(),
-            endDate.getValue(),
-            false
-          );
+          try {
+            BookingDTO bookingDTO = bookingController.create(
+              user,
+              offer,
+              startDatePicker.getValue(),
+              endDatePicker.getValue()
+            );
+          } catch (GenericServiceException e) {
+            mainViewController.handleExceptionMessage(e.getMessage());
+          }
           checkMode(true);
         }
-      } else {
-        mainViewController.handleExceptionMessage(
-          "Bitte wähle ein korrektes Datum aus!"
-        );
       }
     } else {
       mainViewController.handleExceptionMessage(
         "Bitte wähle ein korrektes Datum aus!"
       );
+    }
+  }
+
+  /**
+   * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable and
+   * all blockedDays and bookedDays pink and un-clickable
+   * @param datePicker
+   * @param offerDTO
+   */
+  private void setCellFactory(DatePicker datePicker, OfferDTO offerDTO) {
+    try {
+      final List<LocalDate> bookedDays = bookingService.getBookedDays(
+        offerDTO.getID()
+      );
+      final List<LocalDate> blockedDates = offerService.getBlockedDates(
+        offerDTO.getID()
+      );
+      datePicker.setDayCellFactory(
+        new Callback<DatePicker, DateCell>() {
+          @Override
+          public DateCell call(DatePicker param) {
+            return new DateCell() {
+              @Override
+              public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (!empty && date != null) {
+                  LocalDate today = LocalDate.now();
+                  setDisable(empty || date.compareTo(today) < 0);
+                  if (
+                    bookedDays.contains(date) || blockedDates.contains(date)
+                  ) {
+                    // Aussehen und Verhalten der Zellen setzen
+                    this.setStyle("-fx-background-color: pink");
+                    setDisable(true);
+                  }
+                }
+              }
+            };
+          }
+        }
+      );
+    } catch (GenericServiceException e) {
+      mainViewController.handleExceptionMessage(e.getMessage());
     }
   }
 }

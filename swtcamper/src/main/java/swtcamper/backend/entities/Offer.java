@@ -2,6 +2,7 @@ package swtcamper.backend.entities;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import javafx.util.Pair;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +30,7 @@ public class Offer implements IOffer {
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
+  ArrayList<Pair> blockedDates;
   private boolean promoted;
 
   // Rental Conditions
@@ -42,7 +44,8 @@ public class Offer implements IOffer {
     String contact,
     String particularities,
     long price,
-    ArrayList<String> rentalConditions
+    ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates
   ) {
     this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
@@ -55,6 +58,7 @@ public class Offer implements IOffer {
     this.price = price;
     this.rentalConditions = rentalConditions;
     this.active = true;
+    this.blockedDates = blockedDates;
   }
 
   public Offer(
@@ -211,6 +215,14 @@ public class Offer implements IOffer {
     this.active = active;
   }
 
+  public ArrayList<Pair> getBlockedDates() {
+    return blockedDates;
+  }
+
+  public void setBlockedDates(ArrayList<Pair> blockedDates) {
+    this.blockedDates = blockedDates;
+  }
+
   public boolean isPromoted() {
     return promoted;
   }
@@ -265,6 +277,8 @@ public class Offer implements IOffer {
       price +
       ", active=" +
       active +
+      ", blockedDates=" +
+      blockedDates +
       '}'
     );
   }

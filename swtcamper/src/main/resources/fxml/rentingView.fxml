@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.DatePicker?>
 
 <VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
     <children>
@@ -101,6 +102,34 @@
                                                         <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kühlschrank" />
                                                     </children>
                                                 </VBox>
+                                      <VBox spacing="5.0">
+                                          <HBox spacing="2.0">
+                                              <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
+                                              <Button fx:id="resetStartDatePickerBtn" mnemonicParsing="false" onAction="#resetStartDatePicker" text="X">
+                                                  <styleClass>
+                                                      <String fx:value="bg-danger" />
+                                                      <String fx:value="radius-30" />
+                                                      <String fx:value="resetBtn_small" />
+                                                  </styleClass>
+                                                  <font>
+                                                      <Font size="8.0" />
+                                                  </font>
+                                              </Button>
+                                          </HBox>
+                                          <HBox spacing="2.0">
+                                              <DatePicker fx:id="endDatePicker" promptText="Ende:" />
+                                              <Button fx:id="resetEndDatePickerBtn" mnemonicParsing="false" onAction="#resetEndDatePicker" text="X">
+                                                  <styleClass>
+                                                      <String fx:value="bg-danger" />
+                                                      <String fx:value="radius-30" />
+                                                      <String fx:value="resetBtn_small" />
+                                                  </styleClass>
+                                                  <font>
+                                                      <Font size="8.0" />
+                                                  </font>
+                                              </Button>
+                                          </HBox>
+                                      </VBox>
                                             </children>
                                         </HBox>
                                     </children>

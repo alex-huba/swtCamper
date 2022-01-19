@@ -1,9 +1,11 @@
 package swtcamper.api.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -13,6 +15,7 @@ import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -37,6 +40,9 @@ public class OfferController implements IOfferController {
   @Autowired
   private UserController userController;
 
+  @Autowired
+  private BookingService bookingService;
+
   /**
    * Get a List of OfferDTOs of all available offers in the database
    * @return List of OfferDTOs
@@ -44,6 +50,15 @@ public class OfferController implements IOfferController {
    */
   public List<OfferDTO> offers() throws GenericServiceException {
     return modelMapper.offersToOfferDTOs(offerService.offers());
+  }
+
+  public List<OfferDTO> offersFilteredByDate(
+    LocalDate startDate,
+    LocalDate endDate
+  ) throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(
+      bookingService.getAvailableOffers(startDate, endDate)
+    );
   }
 
   /**
@@ -98,7 +113,7 @@ public class OfferController implements IOfferController {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
-    //Vehicle-Parameter
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -129,6 +144,7 @@ public class OfferController implements IOfferController {
         particularities,
         price,
         rentalConditions,
+        blockedDates,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -193,6 +209,7 @@ public class OfferController implements IOfferController {
     long price,
     boolean active,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     //VehicleFeatures-Parameter
     VehicleType vehicleType,
     String make,
@@ -227,7 +244,7 @@ public class OfferController implements IOfferController {
         price,
         active,
         rentalConditions,
-        //Vehicle-Parameter
+        blockedDates,
         //VehicleFeatures-Parameter
         vehicleType,
         make,
@@ -254,7 +271,6 @@ public class OfferController implements IOfferController {
 
   /**
    * Deletes an existing offer from the database
-   *
    * @param id ID of the offer to delete
    * @throws GenericServiceException if there is no offer with the given ID
    */
@@ -271,7 +287,6 @@ public class OfferController implements IOfferController {
 
   /**
    * Gets all offers from the database that were created by a user
-   *
    * @param user {@link User} whose offers shall be searched
    * @return List of OfferDTOs of offers that were created by the user
    * @throws GenericServiceException
@@ -295,7 +310,7 @@ public class OfferController implements IOfferController {
     throws GenericServiceException {
     return filter.isEmpty()
       ? offers()
-      : offers()
+      : offersFilteredByDate(filter.getStartDate(), filter.getEndDate())
         .stream()
         .filter(offerDTO ->
           (
