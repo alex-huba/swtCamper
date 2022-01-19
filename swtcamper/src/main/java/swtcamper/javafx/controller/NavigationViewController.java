@@ -134,7 +134,7 @@ public class NavigationViewController {
             dealHistoryButton,
             myBookingsButton,
             accountButton,
-                  logoutBtn
+            logoutBtn
           );
           break;
         // Enable provider functionalities
@@ -148,7 +148,7 @@ public class NavigationViewController {
               excludeButton,
               myBookingsButton,
               accountButton,
-                    logoutBtn
+              logoutBtn
             );
           } else {
             navBarList.addAll(
@@ -156,7 +156,7 @@ public class NavigationViewController {
               dealHistoryButton,
               myBookingsButton,
               accountButton,
-                    logoutBtn
+              logoutBtn
             );
           }
           break;
@@ -171,12 +171,11 @@ public class NavigationViewController {
             approveButton,
             myBookingsButton,
             accountButton,
-                  logoutBtn
+            logoutBtn
           );
           break;
         default:
-          navBarList.addAll(homeButton, accountButton,
-                  logoutBtn);
+          navBarList.addAll(homeButton, accountButton, logoutBtn);
           break;
       }
     }
