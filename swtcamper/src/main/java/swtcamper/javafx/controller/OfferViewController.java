@@ -298,6 +298,9 @@ public class OfferViewController {
     isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
+        // blocked user cannot book an offer
+        bookingButton.setDisable(userController.getLoggedInUser().isLocked());
+
         // remove ability to book own offer
         if (
           viewedOffer

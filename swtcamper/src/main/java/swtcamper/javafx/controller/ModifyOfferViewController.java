@@ -438,12 +438,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fuelComboBox.setValue(vehicle.getVehicleFeatures().getFuelType());
     transmissionComboBox.setValue(
-      vehicle
+      vehicle.getVehicleFeatures().getTransmission() != null ?
+      (vehicle
           .getVehicleFeatures()
           .getTransmission()
           .equals(TransmissionType.AUTOMATIC.toString())
         ? TransmissionType.AUTOMATIC
-        : TransmissionType.MANUAL
+        : TransmissionType.MANUAL) : null
     );
     roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
     roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
@@ -767,7 +768,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         width,
         height,
         fuelComboBox.getValue(),
-        transmissionComboBox.getValue().toString(),
+        transmissionComboBox.getValue() != null ? transmissionComboBox.getValue().toString() : null,
         Integer.parseInt(seatsComboBox.getValue()),
         Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),
@@ -806,7 +807,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         width,
         height,
         fuelComboBox.getValue(),
-        transmissionComboBox.getValue().toString(),
+        transmissionComboBox.getValue() != null ? transmissionComboBox.getValue().toString() : null,
         Integer.parseInt(seatsComboBox.getValue()),
         Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),

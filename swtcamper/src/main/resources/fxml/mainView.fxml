@@ -39,11 +39,7 @@
                               <fx:include fx:id="activeOffersViewBox" source="myOffersView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="offerViewBox" source="offerView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="dealHistoryViewBox" source="dealHistoryView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <Pane fx:id="excludeRenterViewBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <Label style="-fx-text-fill: #FFF" text="Exclude Renters" />
-                                  <!--                            TODO after Merging: include-->
-                                  <!--                            <fx:include source="excludeRenterView.fxml" />-->
-                              </Pane>
+                              <fx:include fx:id="excludeRenterViewBox" source="excludeRenterView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="approveDealViewBox" source="approveNewProvidersView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="myBookingsViewBox" source="myBookingsView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <fx:include fx:id="loginViewBox" source="loginView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
