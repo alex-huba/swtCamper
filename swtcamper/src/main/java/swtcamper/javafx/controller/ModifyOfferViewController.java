@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import static javafx.scene.control.SelectionMode.MULTIPLE;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,8 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
@@ -30,15 +27,9 @@ import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.ValidationHelper;
-import swtcamper.backend.entities.*;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
@@ -310,68 +301,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fuelComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
-    );
-
-    // add ButtonCells to boxes in order to make their text white
-    vehicleTypeComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(VehicleType item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(vehicleTypeComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    transmissionComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(TransmissionType item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(transmissionComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    seatsComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty) {
-            setText(seatsComboBox.getPromptText());
-          } else {
-            setText(item);
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    bedsComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(bedsComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
     );
   }
 
@@ -858,11 +787,11 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #1987547f;");
   }
 
   private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   private void validateTitle(String inputTitle) {
@@ -1189,6 +1118,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Method for styling blockedDates ListView entries
+   *
    * @param listView
    */
   public void styleBlockedDatesListView(ListView listView) {
@@ -1215,6 +1145,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   /**
    * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable,
    * and in addition, if an existing offer is being updated, also makes all blockedDays pink and un-clickable
+   *
    * @param datePicker
    * @param offerDTO
    */
