@@ -1,6 +1,7 @@
 package swtcamper.api.contract;
 
 import java.util.ArrayList;
+import javafx.util.Pair;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
 
@@ -18,6 +19,7 @@ public class OfferDTO {
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
+  private ArrayList<Pair> blockedDates;
   private boolean promoted;
 
   public OfferDTO(
@@ -32,6 +34,7 @@ public class OfferDTO {
     String particularities,
     long price,
     ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates,
     boolean active,
     boolean promoted
   ) {
@@ -46,6 +49,7 @@ public class OfferDTO {
     this.particularities = particularities;
     this.price = price;
     this.rentalConditions = rentalConditions;
+    this.blockedDates = blockedDates;
     this.active = active;
     this.promoted = promoted;
   }
@@ -144,6 +148,14 @@ public class OfferDTO {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public ArrayList<Pair> getBlockedDates() {
+    return blockedDates;
+  }
+
+  public void setBlockedDates(ArrayList<Pair> blockedDates) {
+    this.blockedDates = blockedDates;
   }
 
   public boolean isPromoted() {

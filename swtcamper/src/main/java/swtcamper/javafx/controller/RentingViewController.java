@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
@@ -106,6 +109,18 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public DatePicker startDatePicker;
+
+  @FXML
+  public Button resetStartDatePickerBtn;
+
+  @FXML
+  public DatePicker endDatePicker;
+
+  @FXML
+  public Button resetEndDatePickerBtn;
+
+  @FXML
   public HBox paginationHBox;
 
   @FXML
@@ -186,6 +201,51 @@ public class RentingViewController {
     resetTransmissionTypeBtn
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
+    resetStartDatePickerBtn
+      .visibleProperty()
+      .bind(startDatePicker.valueProperty().isNotNull());
+    resetEndDatePickerBtn
+      .visibleProperty()
+      .bind(endDatePicker.valueProperty().isNotNull());
+
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
+    startDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
+    endDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
 
     fuelTypeComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
@@ -243,7 +303,7 @@ public class RentingViewController {
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     // and load the first chunk
-    loadData(subListsList.get(0));
+    loadData(subListsList.size() > 0 ? subListsList.get(0) : new ArrayList<>());
   }
 
   /**
@@ -425,7 +485,6 @@ public class RentingViewController {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
-
     if (offersList.size() > 0) addPagination();
   }
 
@@ -467,6 +526,13 @@ public class RentingViewController {
     if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
       Integer.parseInt(bedAmountTextField.getText())
     );
+    if (startDatePicker.getValue() != null) newFilter.setStartDate(
+      startDatePicker.getValue()
+    );
+    if (endDatePicker.getValue() != null) newFilter.setEndDate(
+      endDatePicker.getValue()
+    );
+
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
@@ -494,6 +560,8 @@ public class RentingViewController {
     toiletCheckBox.setSelected(false);
     kitchenCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
 
     reloadData();
   }
@@ -517,5 +585,21 @@ public class RentingViewController {
    */
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
+  }
+
+  /**
+   * resets the startDate DatePicker
+   */
+  public void resetStartDatePicker() {
+    startDatePicker.getEditor().clear();
+    startDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the endDate DatePicker
+   */
+  public void resetEndDatePicker() {
+    endDatePicker.getEditor().clear();
+    endDatePicker.setValue(null);
   }
 }

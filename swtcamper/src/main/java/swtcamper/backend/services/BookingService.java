@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -51,7 +52,7 @@ public class BookingService {
     Offer offer,
     LocalDate startDate,
     LocalDate endDate
-  ) {
+  ) throws GenericServiceException {
     long newBookingId = bookingRepository
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
@@ -67,6 +68,21 @@ public class BookingService {
         )
       )
     );
+    // add the bookingID to the offer
+    Optional<Offer> offerResponse = offerRepository.findById(
+      offer.getOfferID()
+    );
+    if (offerResponse.isPresent()) {
+      Offer tempOffer = offerResponse.get();
+      ArrayList<Long> bookings = tempOffer.getBookings();
+      bookings.add(newBookingId);
+      tempOffer.setBookings(bookings);
+      offerRepository.save(tempOffer);
+    } else {
+      throw new GenericServiceException(
+        "Offer for this booking not found. Booking creation not possible."
+      );
+    }
     return bookingRepository.findById(newBookingId).get();
   }
 
@@ -145,7 +161,7 @@ public class BookingService {
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
-              "Booking with ID %s was deactivated by user %s.",
+              "Booking with ID %s was activated by user %s.",
               bookingID,
               user.getUsername()
             )
@@ -218,53 +234,82 @@ public class BookingService {
         );
       }
       try {
-        bookingRepository.deleteById(bookingID);
-        loggingController.log(
-          modelMapper.LoggingMessageToLoggingMessageDTO(
-            new LoggingMessage(
-              LoggingLevel.INFO,
-              String.format(
-                "UBooking with ID %s was deleted by user %s",
-                bookingID,
-                user.getUsername()
+        // remove booking to be deleted from bookings list of its offer
+        Optional<Offer> offerOptional = offerRepository.findById(
+          booking.getOffer().getOfferID()
+        );
+        if (offerOptional.isPresent()) {
+          Offer offer = offerOptional.get();
+          ArrayList<Long> bookings = offer.getBookings();
+          bookings.remove(bookingID);
+          offer.setBookings(bookings);
+          offerRepository.save(offer);
+          // then delete the booking
+          bookingRepository.deleteById(bookingID);
+          loggingController.log(
+            modelMapper.LoggingMessageToLoggingMessageDTO(
+              new LoggingMessage(
+                LoggingLevel.INFO,
+                String.format(
+                  "UBooking with ID %s was deleted by user %s",
+                  bookingID,
+                  user.getUsername()
+                )
               )
             )
-          )
-        );
+          );
+        } else {
+          throw new GenericServiceException(
+            "The offer for this booking could not be found."
+          );
+        }
       } catch (IllegalArgumentException e) {
         throw new GenericServiceException(
           "The passed ID is not available: " + e
         );
       }
+    } else {
+      throw new GenericServiceException(
+        "Booking not found, deletion not possible"
+      );
     }
   }
 
   /**
-   * For a specific offer, this method gathers all days on which the offer is booked. <br> That means each startDate and endDate and all days in between.
-   *
+   * For a specific offer, this method gathers all days on which the offer is booked (by renters) or blocked (by the offer creator). <br> That means each startDate and endDate and all days in between.
+   *    *
    * @param offerID
    * @return a list of the booked days
    * @throws GenericServiceException
    */
   public List<LocalDate> getBookedDays(long offerID)
     throws GenericServiceException {
-    List<LocalDate> bookedDays = new ArrayList<>();
+    List<LocalDate> bookedOrBlockedDays = new ArrayList<>();
 
     Optional<Offer> offerResponse = offerRepository.findById(offerID);
     if (offerResponse.isPresent()) {
       Offer offer = offerResponse.get();
       ArrayList<Long> bookingIDs = offer.getBookings();
       Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
+      ArrayList<Pair> blockedDates = offer.getBlockedDates();
 
       for (Booking booking : bookings) {
         LocalDate startDate = booking.getStartDate();
         LocalDate endDate = booking.getEndDate();
         long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
         for (int i = 0; i <= amountOfDays; i++) {
-          bookedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
         }
       }
-      return bookedDays;
+      for (Pair pair : blockedDates) {
+        LocalDate startDate = (LocalDate) pair.getKey();
+        LocalDate endDate = (LocalDate) pair.getValue();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
+      }
+      return bookedOrBlockedDays;
     }
     throw new GenericServiceException(
       "Offer with following ID not found: " + offerID
@@ -279,10 +324,8 @@ public class BookingService {
    * @return a list of offerIDs of the available offers
    * @throws GenericServiceException
    */
-  public ArrayList<Long> getAvailableOffers(
-    LocalDate startDate,
-    LocalDate endDate
-  ) throws GenericServiceException {
+  public List<Offer> getAvailableOffers(LocalDate startDate, LocalDate endDate)
+    throws GenericServiceException {
     // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
@@ -291,7 +334,7 @@ public class BookingService {
     }
 
     // List that is going to be returned
-    ArrayList<Long> offerIDs = new ArrayList<>();
+    List<Offer> offers = new ArrayList<>();
 
     // Get all offers and check requested days against days that are already booked
     List<Offer> offerResponse = offerRepository.findAll();
@@ -305,13 +348,13 @@ public class BookingService {
           }
         }
         if (offerAvailable) {
-          offerIDs.add(offer.getOfferID());
+          offers.add(offer);
         }
       } catch (GenericServiceException e) {
         throw new GenericServiceException(e.getMessage());
       }
     }
-    return offerIDs;
+    return offers;
   }
 
   /**
@@ -349,5 +392,14 @@ public class BookingService {
     throw new GenericServiceException(
       "Booking with following ID not found: " + bookingID
     );
+  }
+
+  public void reject(long bookingID) {
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      Booking booking = bookingOptional.get();
+      booking.setRejected(true);
+      bookingRepository.save(booking);
+    }
   }
 }

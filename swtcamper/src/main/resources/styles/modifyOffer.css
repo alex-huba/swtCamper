@@ -23,3 +23,9 @@ Label, CheckBox {
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 3px, 3px, 2px, 1px;
 }
+
+.rentLabel {
+    -fx-background-color: #198754;
+    -fx-text-fill: white;
+    -fx-padding: 8px;
+}
