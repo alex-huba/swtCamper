@@ -1,0 +1,25 @@
+@import "global.css";
+
+.descriptionLabel {
+    -fx-font-size: 20px;
+}
+
+.inputField {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
+}
+
+.loginButton {
+    -fx-font-size: 20px;
+}
+
+.vBoxField {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20px;
+}
+
+#registerButton, #forgotPasswordButton {
+    -fx-text-fill: blue;
+    -fx-underline: true;
+    -fx-font-size: 15px;
+}

@@ -1,0 +1,182 @@
+* {
+    -fx-primary: #0d6efd;
+    -fx-secondary: #adb5bd;
+    -fx-success: #198754;
+    -fx-warning: #ffc107;
+    -fx-danger: #dc3545;
+    -fx-light: #FFFFFF;
+    -fx-dark: #333333;
+
+    -fx-active: #0a47a1;
+
+    -fx-alt-primary: #36334f;
+    -fx-alt-active: #2c2a3f;
+
+    -fx-lightGreen: #AADDA9;
+}
+
+Button {
+    -fx-cursor: hand;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: -fx-dark;
+}
+
+Label, HyperLink, CheckBox, ComboBox, .bg-primary, .bg-secondary, .bg-success, .bg-warning, .bg-danger, .bg-dark, .bg-lightGreen {
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+
+Label {
+    -fx-font-size: 15;
+}
+
+.title-heading {
+    -fx-font-size: 40;
+    -fx-text-fill: #040759;
+}
+
+.heading {
+    -fx-font-size: 30;
+    -fx-text-fill: #040759;
+}
+
+.rootNodeBackground {
+    -fx-background-color: #D6CFCD;
+}
+
+.errorMessage {
+    -fx-text-fill: -fx-danger;
+    -fx-font-size: 15px;
+}
+
+
+.p1 {
+    -fx-padding: 1;
+}
+
+.p2 {
+    -fx-padding: 2;
+}
+
+.p3 {
+    -fx-padding: 3;
+}
+
+.p4 {
+    -fx-padding: 4;
+}
+
+.p5 {
+    -fx-padding: 5;
+}
+
+
+.radius-10 {
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.radius-20 {
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+.radius-30 {
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+}
+
+.border-0 {
+    -fx-border-width: 0;
+}
+
+.border-primary {
+    -fx-border-color: -fx-primary;
+}
+
+.border-secondary {
+    -fx-border-color: -fx-secondary;
+}
+
+.border-success {
+    -fx-border-color: -fx-success;
+}
+
+.border-warning {
+    -fx-border-color: -fx-warning;
+}
+
+.border-danger {
+    -fx-border-color: -fx-danger;
+}
+
+.border-light {
+    -fx-border-color: -fx-light;
+}
+
+.border-dark {
+    -fx-border-color: -fx-dark;
+}
+
+
+.text-primary {
+    -fx-text-fill: -fx-primary !important;
+}
+
+.text-secondary {
+    -fx-text-fill: -fx-secondary !important;
+}
+
+.text-success {
+    -fx-text-fill: -fx-success !important;
+}
+
+.text-warning {
+    -fx-text-fill: -fx-warning !important;
+}
+
+.text-danger {
+    -fx-text-fill: -fx-danger !important;
+}
+
+.text-dark {
+    -fx-text-fill: -fx-dark !important;
+}
+
+
+.bg-primary {
+    -fx-base: -fx-primary;
+    -fx-text-fill: #FFFFFF;
+}
+
+.bg-secondary {
+    -fx-base: -fx-secondary;
+}
+
+.bg-success {
+    -fx-base: -fx-success;
+    -fx-text-fill: #FFFFFF;
+}
+
+.bg-warning {
+    -fx-base: -fx-warning;
+}
+
+.bg-danger {
+    -fx-base: -fx-danger;
+    -fx-text-fill: #FFFFFF;
+}
+
+.bg-dark {
+    -fx-base: -fx-dark;
+    -fx-text-fill: #FFFFFF;
+}
+
+.bg-lightGreen {
+    -fx-base: -fx-lightGreen;
+}
+
+.bg-purple {
+    -fx-base: #665fa0;
+    -fx-text-fill: #ffffff;
+}

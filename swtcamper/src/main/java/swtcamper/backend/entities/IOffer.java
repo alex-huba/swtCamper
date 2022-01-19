@@ -3,39 +3,51 @@ package swtcamper.backend.entities;
 import java.util.ArrayList;
 
 public interface IOffer {
-  public long getOfferID();
+  long getOfferID();
 
-  public void setOfferID(long offerID);
+  void setOfferID(long offerID);
 
-  public OfferedObjectType getOfferedObjectType();
+  User getCreator();
 
-  public void setOfferedObjectType(OfferedObjectType offeredObjectType);
+  void setCreator(User creator);
 
-  public Vehicle getOfferedObject();
+  OfferedObjectType getOfferedObjectType();
 
-  public void setOfferedObject(Vehicle offeredObject);
+  void setOfferedObjectType(OfferedObjectType offeredObjectType);
 
-  public ArrayList<Long> getBookings();
+  Vehicle getOfferedObject();
 
-  public void setBookings(ArrayList<Long> bookings);
+  void setOfferedObject(Vehicle offeredObject);
 
-  public long getPrice();
+  ArrayList<Long> getBookings();
 
-  public void setPrice(long price);
+  void setBookings(ArrayList<Long> bookings);
 
-  public boolean isMinAge25();
+  String getTitle();
 
-  public void setMinAge25(boolean minAge25);
+  void setTitle(String title);
 
-  public boolean isBorderCrossingAllowed();
+  String getLocation();
 
-  public void setBorderCrossingAllowed(boolean borderCrossingAllowed);
+  void setLocation(String location);
 
-  public boolean isDepositInCash();
+  String getContact();
 
-  public void setDepositInCash(boolean depositInCash);
+  void setContact(String contact);
 
-  public boolean isActive();
+  String getParticularities();
 
-  public void setActive(boolean active);
+  void setParticularities(String particularities);
+
+  long getPrice();
+
+  void setPrice(long price);
+
+  ArrayList<String> getRentalConditions();
+
+  void setRentalConditions(ArrayList<String> rentalConditions);
+
+  boolean isActive();
+
+  void setActive(boolean active);
 }

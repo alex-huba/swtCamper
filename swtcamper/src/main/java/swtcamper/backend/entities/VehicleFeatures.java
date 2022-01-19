@@ -24,7 +24,7 @@ public class VehicleFeatures {
   private double width;
   private double height;
 
-  private String engine;
+  private FuelType fuelType;
   private String transmission;
 
   private int seats;
@@ -124,12 +124,12 @@ public class VehicleFeatures {
     this.width = width;
   }
 
-  public String getEngine() {
-    return engine;
+  public FuelType getFuelType() {
+    return fuelType;
   }
 
-  public void setEngine(String engine) {
-    this.engine = engine;
+  public void setFuelType(FuelType fuelType) {
+    this.fuelType = fuelType;
   }
 
   public String getTransmission() {
@@ -236,7 +236,7 @@ public class VehicleFeatures {
       Objects.equals(make, that.make) &&
       Objects.equals(model, that.model) &&
       Objects.equals(year, that.year) &&
-      Objects.equals(engine, that.engine) &&
+      Objects.equals(fuelType, that.fuelType) &&
       Objects.equals(transmission, that.transmission)
     );
   }

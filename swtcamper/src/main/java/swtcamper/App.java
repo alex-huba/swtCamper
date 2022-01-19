@@ -4,12 +4,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class App extends Application {
 
   private ConfigurableApplicationContext springContext;
@@ -32,8 +36,16 @@ public class App extends Application {
     Parent rootNode = fxmlLoader.load();
 
     primaryStage.setTitle("SWTCamper");
-    primaryStage.setScene(new Scene(rootNode));
-    primaryStage.setResizable(false);
+    primaryStage.setScene(
+      new Scene(
+        rootNode,
+        1200 / Screen.getPrimary().getOutputScaleX(),
+        850 / Screen.getPrimary().getOutputScaleY()
+      )
+    );
+    primaryStage.setMinWidth(950);
+    primaryStage.setMinHeight(850);
+    primaryStage.getIcons().add(new Image("pictures/logo.png"));
     primaryStage.show();
   }
 

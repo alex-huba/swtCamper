@@ -1,0 +1,16 @@
+@import "global.css";
+
+.inputField, CheckBox {
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+
+Button {
+    -fx-font-size: 15px;
+}
+
+
+
+
+
+
