@@ -257,68 +257,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fuelComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
     );
-
-    // add ButtonCells to boxes in order to make their text white
-    vehicleTypeComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(VehicleType item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(vehicleTypeComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    transmissionComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(TransmissionType item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(transmissionComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    seatsComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty) {
-            setText(seatsComboBox.getPromptText());
-          } else {
-            setText(item);
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
-    bedsComboBox.setButtonCell(
-      new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(bedsComboBox.getPromptText());
-          } else {
-            setText(item.toString());
-          }
-          // weiße Textfarbe:
-          setTextFill(new Color(1, 1, 1, 1));
-        }
-      }
-    );
   }
 
   /**
@@ -655,12 +593,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateBeds(Integer.parseInt(bedsComboBox.getValue()));
   }
 
-  private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
-  }
-
   private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   private void validateTitle(String inputTitle) {
@@ -670,7 +604,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isTitleOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(titleTextField);
       isTitleOk.set(true);
     }
   }
@@ -682,7 +615,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isPriceOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(priceTextField);
       isPriceOk.set(true);
     }
   }
@@ -694,7 +626,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isLocationOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(locationTextField);
       isLocationOk.set(true);
     }
   }
@@ -706,7 +637,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isContactOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(contactTextField);
       isContactOk.set(true);
     }
   }
@@ -729,7 +659,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         fuelComboBox.setDisable(false);
       }
       errorLabel.setText("");
-      validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
     if (seatsComboBox.getValue() != null) validateSeats();
@@ -742,7 +671,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isBrandOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(brandTextField);
       isBrandOk.set(true);
     }
   }
@@ -754,7 +682,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isModelOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(modelTextField);
       isModelOk.set(true);
     }
   }
@@ -768,7 +695,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isTransmissionTypeOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(transmissionComboBox);
       isTransmissionTypeOk.set(true);
     }
   }
@@ -782,7 +708,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       Integer.parseInt(seatsComboBox.getValue()) > 0
     ) {
       errorLabel.setText("");
-      validateTrue(seatsComboBox);
       isSeatsOk.set(true);
     } else {
       errorLabel.setText("Ungültige Anzahl von Sitzplätze");
@@ -798,7 +723,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       isBedsOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(bedsComboBox);
       isBedsOk.set(true);
     }
   }
