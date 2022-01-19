@@ -161,7 +161,7 @@ public class BookingService {
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
-              "Booking with ID %s was deactivated by user %s.",
+              "Booking with ID %s was activated by user %s.",
               bookingID,
               user.getUsername()
             )
@@ -392,5 +392,14 @@ public class BookingService {
     throw new GenericServiceException(
       "Booking with following ID not found: " + bookingID
     );
+  }
+
+  public void reject(long bookingID) {
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      Booking booking = bookingOptional.get();
+      booking.setRejected(true);
+      bookingRepository.save(booking);
+    }
   }
 }

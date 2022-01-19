@@ -41,4 +41,6 @@ public interface IBookingController {
    * @throws GenericServiceException
    */
   void delete(Long bookingID) throws GenericServiceException;
+
+  void reject(long bookingID);
 }

@@ -1,7 +1,6 @@
 package swtcamper.javafx.controller;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -315,7 +314,8 @@ public class OfferViewController {
           )) {
             if (
               booking.getOffer().getOfferID() == viewedOffer.getID() &&
-              booking.isActive()
+              booking.isActive() &&
+              !booking.isRejected()
             ) {
               offerIsInRent = true;
               break;
@@ -333,6 +333,7 @@ public class OfferViewController {
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
+          .filter(booking -> !booking.isRejected())
           .filter(booking ->
             booking
               .getRenter()
@@ -345,20 +346,36 @@ public class OfferViewController {
             dateLabel.setDisable(true);
             startDatePicker.setDisable(true);
             endDatePicker.setDisable(true);
-            rentLabel.setText(
-              "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
-            );
             rentHBox.setVisible(true);
 
-            // abort open booking request
-            abortBookingRequestBtn.setOnAction(event -> {
-              try {
-                bookingController.delete(booking.getId());
+            if (booking.isActive()) {
+              rentLabel.setText(
+                "Du mietest diese Anzeige gerade. Buchungsnummer: " +
+                booking.getId()
+              );
+
+              // abort renting
+              abortBookingRequestBtn.setText("Buchung abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                bookingController.reject(booking.getId());
                 checkMode(true);
-              } catch (GenericServiceException e) {
-                mainViewController.handleExceptionMessage(e.getMessage());
-              }
-            });
+              });
+            } else {
+              rentLabel.setText(
+                "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+              );
+
+              // abort open booking request
+              abortBookingRequestBtn.setText("Anfrage abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                try {
+                  bookingController.delete(booking.getId());
+                  checkMode(true);
+                } catch (GenericServiceException e) {
+                  mainViewController.handleExceptionMessage(e.getMessage());
+                }
+              });
+            }
           }
         }
       }

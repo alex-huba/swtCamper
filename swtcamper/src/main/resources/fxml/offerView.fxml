@@ -257,7 +257,7 @@
                                     </HBox>
                            <HBox fx:id="rentHBox" spacing="5.0">
                               <children>
-                                 <Label fx:id="rentLabel" text="(Anfrage versendet. Warte auf Antwort vom Vermieter...)">
+                                 <Label fx:id="rentLabel" styleClass="rentLabel" text="(Anfrage versendet. Warte auf Antwort vom Vermieter...)">
                                     <font>
                                        <Font size="10.0" />
                                     </font>
