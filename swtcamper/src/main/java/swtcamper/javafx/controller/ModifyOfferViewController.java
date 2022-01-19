@@ -438,13 +438,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     );
     fuelComboBox.setValue(vehicle.getVehicleFeatures().getFuelType());
     transmissionComboBox.setValue(
-      vehicle.getVehicleFeatures().getTransmission() != null ?
-      (vehicle
-          .getVehicleFeatures()
-          .getTransmission()
-          .equals(TransmissionType.AUTOMATIC.toString())
-        ? TransmissionType.AUTOMATIC
-        : TransmissionType.MANUAL) : null
+      vehicle.getVehicleFeatures().getTransmission() != null
+        ? (
+          vehicle
+              .getVehicleFeatures()
+              .getTransmission()
+              .equals(TransmissionType.AUTOMATIC.toString())
+            ? TransmissionType.AUTOMATIC
+            : TransmissionType.MANUAL
+        )
+        : null
     );
     roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
     roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
@@ -768,7 +771,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         width,
         height,
         fuelComboBox.getValue(),
-        transmissionComboBox.getValue() != null ? transmissionComboBox.getValue().toString() : null,
+        transmissionComboBox.getValue() != null
+          ? transmissionComboBox.getValue().toString()
+          : null,
         Integer.parseInt(seatsComboBox.getValue()),
         Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),
@@ -807,7 +812,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         width,
         height,
         fuelComboBox.getValue(),
-        transmissionComboBox.getValue() != null ? transmissionComboBox.getValue().toString() : null,
+        transmissionComboBox.getValue() != null
+          ? transmissionComboBox.getValue().toString()
+          : null,
         Integer.parseInt(seatsComboBox.getValue()),
         Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),

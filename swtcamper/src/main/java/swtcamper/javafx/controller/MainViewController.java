@@ -398,8 +398,13 @@ public class MainViewController {
     }
 
     // give hint for blocked users
-    if (userController.getLoggedInUser() != null && userController.getLoggedInUser().isLocked()) {
-      globalHeaderLabel.setText("Du bist geblockt, deine Nutzunsmöglichkeiten sind begrenzt!");
+    if (
+      userController.getLoggedInUser() != null &&
+      userController.getLoggedInUser().isLocked()
+    ) {
+      globalHeaderLabel.setText(
+        "Du bist geblockt, deine Nutzunsmöglichkeiten sind begrenzt!"
+      );
       globalHeaderLabel.getStyleClass().add("text-danger");
     } else {
       globalHeaderLabel.getStyleClass().removeIf(s -> s.equals("text-danger"));
