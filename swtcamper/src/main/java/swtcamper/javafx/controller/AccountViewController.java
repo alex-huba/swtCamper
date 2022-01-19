@@ -1,12 +1,14 @@
 package swtcamper.javafx.controller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -65,6 +67,12 @@ public class AccountViewController {
 
   @FXML
   public ListView<User> usersListView;
+
+  @FXML
+  public TextField userFilterTextField;
+
+  @FXML
+  public Button resetUserFilterBtn;
 
   @FXML
   public VBox reportVBox;
@@ -172,6 +180,8 @@ public class AccountViewController {
     );
     if (!ascending) FXCollections.reverse(logList);
     logListView.setItems(logList);
+
+    resetUserFilterBtn.visibleProperty().bind(userFilterTextField.textProperty().isEmpty().not());
 
     // fill in all users
     usersListView.setItems(
@@ -282,5 +292,27 @@ public class AccountViewController {
   public void promoteUser() throws GenericServiceException {
     userController.promoteUserById(selectedUser.getId());
     operatorInit(false);
+  }
+
+  @FXML
+  public void filterUsers() throws GenericServiceException {
+    String searchText = userFilterTextField.getText().toLowerCase();
+    if(searchText.isEmpty()) {
+        usersListView.setItems(
+                FXCollections.observableArrayList(userController.getAllUsers()));
+        return;
+    }
+
+    usersListView.setItems(
+            FXCollections.observableArrayList(userController.getAllUsers().stream().filter(user ->
+              user.getUsername().toLowerCase().contains(searchText) || user.getSurname().toLowerCase().contains(searchText) || user.getName().toLowerCase().contains(searchText) || user.getEmail().toLowerCase().contains(searchText)
+            ).collect(Collectors.toList()))
+    );
+  }
+
+  @FXML
+  public void resetUserFilter() throws GenericServiceException {
+    userFilterTextField.clear();
+    filterUsers();
   }
 }
