@@ -210,10 +210,12 @@ public class RentingViewController {
     resetEndDatePickerBtn
       .visibleProperty()
       .bind(endDatePicker.valueProperty().isNotNull());
-    resetSeatAmountBtn.visibleProperty()
-            .bind(seatAmountComboBox.valueProperty().isNotNull());
-    resetBedAmountBtn.visibleProperty()
-            .bind(bedAmountComboBox.valueProperty().isNotNull());
+    resetSeatAmountBtn
+      .visibleProperty()
+      .bind(seatAmountComboBox.valueProperty().isNotNull());
+    resetBedAmountBtn
+      .visibleProperty()
+      .bind(bedAmountComboBox.valueProperty().isNotNull());
 
     startDatePicker.getEditor().setDisable(true);
     startDatePicker.getEditor().setOpacity(1);
@@ -255,36 +257,39 @@ public class RentingViewController {
     );
 
     seatAmountComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(seatAmountComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(seatAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
 
     bedAmountComboBox.setButtonCell(
-            new ListCell<>() {
-              @Override
-              protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                  setText(bedAmountComboBox.getPromptText());
-                } else {
-                  setText(item.toString());
-                }
-              }
-            }
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(bedAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
     );
 
-    seatAmountComboBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10));
-    bedAmountComboBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10));
-
+    seatAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
+    bedAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
 
     fuelTypeComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
