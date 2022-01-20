@@ -211,10 +211,10 @@ public class NavigationViewController {
         child instanceof Button &&
         ((Button) child).getStyleClass().contains("navBtn")
       ) {
-        ((Button) child).clear();
+        ((Button) child).setText("");
         ((Button) child).setPrefWidth(45);
 
-        logoutBtn.clear();
+        logoutBtn.setText("");
         logoutBtn.setPrefWidth(45);
       }
     }

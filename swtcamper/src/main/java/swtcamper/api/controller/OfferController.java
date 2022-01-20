@@ -2,7 +2,7 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,10 +10,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.interfaces.IOfferController;
 import swtcamper.backend.entities.*;
-import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.VehicleFeaturesRepository;
-import swtcamper.backend.repositories.VehicleRepository;
-import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -35,8 +31,8 @@ public class OfferController implements IOfferController {
   }
 
   @Override
-  public Offer getOfferById(long id) throws GenericServiceException {
-    return offerService.getOfferById(id);
+  public OfferDTO getOfferById(long id) throws GenericServiceException {
+    return modelMapper.offerToOfferDTO(offerService.getOfferById(id));
   }
 
   @Override

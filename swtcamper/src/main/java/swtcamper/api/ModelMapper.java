@@ -27,6 +27,17 @@ public class ModelMapper {
     }
   }
 
+  public OfferedObjectType offeredObjectTypeDTOToOfferedObjectType(
+          OfferedObjectTypeDTO offeredObjectTypeDTO
+  ) {
+    switch (offeredObjectTypeDTO) {
+      case VEHICLE:
+        return OfferedObjectType.VEHICLE;
+      default:
+        return null;
+    }
+  }
+
   public OfferDTO offerToOfferDTO(Offer offer) {
     return new OfferDTO(
       offer.getOfferID(),
@@ -44,6 +55,26 @@ public class ModelMapper {
       offer.isActive(),
       offer.isPromoted()
     );
+  }
+
+  public Offer offerDTOToOffer(OfferDTO offerDTO) {
+    Offer offer = new Offer();
+    offer.setOfferID(offerDTO.getID());
+    offer.setCreator(offerDTO.getCreator());
+    offer.setOfferedObjectType(offeredObjectTypeDTOToOfferedObjectType(offerDTO.getOfferedObjectType()));
+    offer.setOfferedObject(offerDTO.getOfferedObject());
+    offer.setBookings(offerDTO.getBookings());
+    offer.setTitle(offerDTO.getTitle());
+    offer.setLocation(offerDTO.getLocation());
+    offer.setContact(offerDTO.getContact());
+    offer.setParticularities(offerDTO.getParticularities());
+    offer.setPrice(offerDTO.getPrice());
+    offer.setRentalConditions(offerDTO.getRentalConditions());
+    offer.setBlockedDates(offerDTO.getBlockedDates());
+    offer.setActive(offerDTO.isActive());
+    offer.setPromoted(offerDTO.isPromoted());
+
+    return offer;
   }
 
   public List<OfferDTO> offersToOfferDTOs(List<Offer> offers)

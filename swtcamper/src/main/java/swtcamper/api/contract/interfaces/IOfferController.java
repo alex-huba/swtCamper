@@ -23,7 +23,7 @@ public interface IOfferController {
    * @return wanted Offer
    * @throws GenericServiceException
    */
-  Offer getOfferById(long id) throws GenericServiceException;
+  OfferDTO getOfferById(long id) throws GenericServiceException;
 
   /**
    * Creates a new offer and forwards it to the {@link OfferService} where it gets saved to the database

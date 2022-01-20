@@ -16,6 +16,7 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
@@ -42,6 +43,9 @@ public class OfferViewController {
 
   @Autowired
   private ValidationHelper validationHelper;
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
@@ -481,12 +485,12 @@ public class OfferViewController {
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-          Offer offer = offerController.getOfferById(viewedOffer.getID());
+          OfferDTO offerDTO = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
           try {
             BookingDTO bookingDTO = bookingController.create(
               user,
-              offer,
+              modelMapper.offerDTOToOffer(offerDTO),
               startDatePicker.getValue(),
               endDatePicker.getValue()
             );
