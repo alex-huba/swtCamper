@@ -1,5 +1,6 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
+import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;

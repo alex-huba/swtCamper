@@ -3,8 +3,8 @@ package swtcamper.api.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.ILoggingController;
 import swtcamper.api.contract.LoggingMessageDTO;
+import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
 

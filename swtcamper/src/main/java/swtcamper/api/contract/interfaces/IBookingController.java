@@ -1,6 +1,7 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
 import java.time.LocalDate;
+import swtcamper.api.contract.BookingDTO;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;

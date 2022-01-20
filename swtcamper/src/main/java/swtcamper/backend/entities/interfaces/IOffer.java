@@ -1,6 +1,10 @@
-package swtcamper.backend.entities;
+package swtcamper.backend.entities.interfaces;
 
 import java.util.ArrayList;
+import javafx.util.Pair;
+import swtcamper.backend.entities.OfferedObjectType;
+import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.Vehicle;
 
 public interface IOffer {
   long getOfferID();
@@ -50,4 +54,9 @@ public interface IOffer {
   boolean isActive();
 
   void setActive(boolean active);
+
+  ArrayList<Pair> getBlockedDates();
+  void setBlockedDates(ArrayList<Pair> blockedDates);
+  boolean isPromoted();
+  void setPromoted(boolean promoted);
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import swtcamper.backend.entities.interfaces.IOffer;
 
 @Entity
 public class Offer implements IOffer {
@@ -179,10 +180,12 @@ public class Offer implements IOffer {
     this.contact = contact;
   }
 
+  @Override
   public String getParticularities() {
     return particularities;
   }
 
+  @Override
   public void setParticularities(String particularities) {
     this.particularities = particularities;
   }
@@ -197,10 +200,12 @@ public class Offer implements IOffer {
     this.price = price;
   }
 
+  @Override
   public ArrayList<String> getRentalConditions() {
     return rentalConditions;
   }
 
+  @Override
   public void setRentalConditions(ArrayList<String> rentalConditions) {
     this.rentalConditions = rentalConditions;
   }
@@ -215,18 +220,22 @@ public class Offer implements IOffer {
     this.active = active;
   }
 
+  @Override
   public ArrayList<Pair> getBlockedDates() {
     return blockedDates;
   }
 
+  @Override
   public void setBlockedDates(ArrayList<Pair> blockedDates) {
     this.blockedDates = blockedDates;
   }
 
+  @Override
   public boolean isPromoted() {
     return promoted;
   }
 
+  @Override
   public void setPromoted(boolean promoted) {
     this.promoted = promoted;
   }

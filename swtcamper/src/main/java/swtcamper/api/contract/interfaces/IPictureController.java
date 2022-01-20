@@ -1,6 +1,7 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
 import java.util.List;
+import swtcamper.api.contract.PictureDTO;
 
 public interface IPictureController {
   PictureDTO create(PictureDTO pictureDTO);

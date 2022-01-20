@@ -1,8 +1,9 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.util.Pair;
+import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -87,5 +88,4 @@ public interface IOfferController {
   OfferDTO promoteOffer(long offerID) throws GenericServiceException;
 
   OfferDTO degradeOffer(long offerID) throws GenericServiceException;
-
 }

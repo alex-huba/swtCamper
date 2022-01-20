@@ -1,9 +1,10 @@
 package swtcamper.backend.entities;
 
 import javax.persistence.*;
+import swtcamper.backend.entities.interfaces.IVehicle;
 
 @Entity
-public class Vehicle {
+public class Vehicle implements IVehicle {
 
   @Id
   @GeneratedValue
@@ -21,18 +22,22 @@ public class Vehicle {
     super();
   }
 
+  @Override
   public long getVehicleID() {
     return vehicleID;
   }
 
+  @Override
   public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 
+  @Override
   public VehicleFeatures getVehicleFeatures() {
     return vehicleFeatures;
   }
 
+  @Override
   public void setVehicleFeatures(VehicleFeatures vehicleFeatures) {
     this.vehicleFeatures = vehicleFeatures;
   }

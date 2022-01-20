@@ -3,7 +3,7 @@ package swtcamper.api.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import swtcamper.api.contract.IUserReportController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.UserReportService;
 import swtcamper.backend.services.exceptions.GenericServiceException;

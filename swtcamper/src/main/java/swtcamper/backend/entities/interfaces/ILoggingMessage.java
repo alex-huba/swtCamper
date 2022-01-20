@@ -1,6 +1,7 @@
-package swtcamper.backend.entities;
+package swtcamper.backend.entities.interfaces;
 
 import java.time.LocalDateTime;
+import swtcamper.backend.entities.LoggingLevel;
 
 public interface ILoggingMessage {
   long getLoggingMessageID();

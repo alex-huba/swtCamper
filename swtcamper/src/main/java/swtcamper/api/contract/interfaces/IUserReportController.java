@@ -1,4 +1,4 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
 import java.util.List;
 import swtcamper.backend.entities.UserReport;
