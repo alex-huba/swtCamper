@@ -1,13 +1,12 @@
 package swtcamper.backend.entities;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import javafx.util.Pair;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import java.util.ArrayList;
-import java.util.Objects;
 
 @Entity
 public class Offer implements IOffer {

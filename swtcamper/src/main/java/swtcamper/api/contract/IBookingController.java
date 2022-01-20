@@ -1,11 +1,10 @@
 package swtcamper.api.contract;
 
+import java.time.LocalDate;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
-
-import java.time.LocalDate;
 
 public interface IBookingController {
   BookingDTO create(

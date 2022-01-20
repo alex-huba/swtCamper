@@ -31,9 +31,7 @@ public class ApproveNewProvidersViewController {
     toApproveListView.getChildren().clear();
 
     if (userController.countUser() > 0) {
-      if (
-        userController.isThereAnyDisabledUser()
-      ) {
+      if (userController.isThereAnyDisabledUser()) {
         for (User user : userController.getAllUsers()) {
           if (
             user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()

@@ -1,10 +1,9 @@
 package swtcamper.api.contract;
 
+import java.util.ArrayList;
 import javafx.util.Pair;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.Vehicle;
-
-import java.util.ArrayList;
 
 public class OfferDTO {
 

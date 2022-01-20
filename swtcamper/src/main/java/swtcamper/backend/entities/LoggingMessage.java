@@ -1,10 +1,10 @@
 package swtcamper.backend.entities;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 public class LoggingMessage implements ILoggingMessage {

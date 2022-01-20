@@ -1,5 +1,7 @@
 package swtcamper.backend.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.repositories.LoggingRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LoggingService {
@@ -70,10 +69,10 @@ public class LoggingService {
    */
   public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
     return getAllLogMessages()
-            .stream()
-            .filter(loggingMessage ->
-                    loggingMessage.getLoggingMessage().contains(selectedUser.getUsername())
-            )
-            .collect(Collectors.toList());
+      .stream()
+      .filter(loggingMessage ->
+        loggingMessage.getLoggingMessage().contains(selectedUser.getUsername())
+      )
+      .collect(Collectors.toList());
   }
 }

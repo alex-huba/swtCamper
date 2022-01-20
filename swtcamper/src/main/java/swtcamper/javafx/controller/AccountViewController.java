@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,9 +19,6 @@ import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class AccountViewController {

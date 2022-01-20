@@ -1,9 +1,8 @@
 package swtcamper.api.contract;
 
+import java.util.List;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.List;
 
 public interface IUserReportController {
   UserReport create(UserReport userReport);

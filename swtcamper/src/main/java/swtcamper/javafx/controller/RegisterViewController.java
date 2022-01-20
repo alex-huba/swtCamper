@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import static swtcamper.backend.entities.UserRole.*;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -14,8 +16,6 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import static swtcamper.backend.entities.UserRole.*;
 
 @Component
 public class RegisterViewController implements EventHandler<KeyEvent> {

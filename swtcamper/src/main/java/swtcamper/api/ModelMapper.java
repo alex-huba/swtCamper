@@ -1,12 +1,11 @@
 package swtcamper.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.*;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Maps entities to DTOs.

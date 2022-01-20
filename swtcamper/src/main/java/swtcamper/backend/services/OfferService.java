@@ -1,5 +1,11 @@
 package swtcamper.backend.services;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +19,6 @@ import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OfferService {
@@ -484,11 +483,11 @@ public class OfferService {
    * @throws GenericServiceException
    */
   public List<Offer> getOffersCreatedByUser(User user)
-          throws GenericServiceException {
+    throws GenericServiceException {
     return offers()
-            .stream()
-            .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))
-            .collect(Collectors.toList());
+      .stream()
+      .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))
+      .collect(Collectors.toList());
   }
 
   /**
@@ -499,77 +498,78 @@ public class OfferService {
    * @throws GenericServiceException
    */
   public List<OfferDTO> getFilteredOffers(Filter filter)
-          throws GenericServiceException {
+    throws GenericServiceException {
     return filter.isEmpty()
-            ? modelMapper.offersToOfferDTOs(offers())
-            : bookingController.getAvailableOffers(filter.getStartDate(), filter.getEndDate())
-            .stream()
-            .filter(offerDTO ->
-                    (
-                            filter.getLocation() == null ||
-                                    offerDTO
-                                            .getLocation()
-                                            .toLowerCase()
-                                            .contains(filter.getLocation().toLowerCase())
-                    ) &&
-                            (
-                                    filter.getVehicleType() == null ||
-                                            offerDTO
-                                                    .getOfferedObject()
-                                                    .getVehicleFeatures()
-                                                    .getVehicleType()
-                                                    .equals(filter.getVehicleType())
-                            ) &&
-                            (
-                                    filter.getVehicleBrand() == null ||
-                                            offerDTO
-                                                    .getOfferedObject()
-                                                    .getVehicleFeatures()
-                                                    .getMake()
-                                                    .toLowerCase()
-                                                    .contains(filter.getVehicleBrand().toLowerCase())
-                            ) &&
-                            (
-                                    filter.getConstructionYear() == 0 ||
-                                            Integer.parseInt(
-                                                    offerDTO.getOfferedObject().getVehicleFeatures().getYear()
-                                            ) >=
-                                                    filter.getConstructionYear()
-                            ) &&
-                            (
-                                    filter.getMaxPricePerDay() == 0 ||
-                                            offerDTO.getPrice() <= filter.getMaxPricePerDay()
-                            ) &&
-                            (
-                                    filter.getFuelType() == null ||
-                                            offerDTO
-                                                    .getOfferedObject()
-                                                    .getVehicleFeatures()
-                                                    .getFuelType()
-                                                    .equals(filter.getFuelType())
-                            ) &&
-                            (
-                                    filter.getTransmissionType() == null ||
-                                            offerDTO
-                                                    .getOfferedObject()
-                                                    .getVehicleFeatures()
-                                                    .getTransmission()
-                                                    .toUpperCase()
-                                                    .equals(filter.getTransmissionType().toString())
-                            ) &&
-                            (
-                                    filter.getSeatAmount() == 0 ||
-                                            offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >=
-                                                    filter.getSeatAmount()
-                            ) &&
-                            (
-                                    filter.getBedAmount() == 0 ||
-                                            offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >=
-                                                    filter.getBedAmount()
-                            ) &&
-                            evalCheckBoxes(offerDTO, filter)
-            )
-            .collect(Collectors.toList());
+      ? modelMapper.offersToOfferDTOs(offers())
+      : bookingController
+        .getAvailableOffers(filter.getStartDate(), filter.getEndDate())
+        .stream()
+        .filter(offerDTO ->
+          (
+            filter.getLocation() == null ||
+            offerDTO
+              .getLocation()
+              .toLowerCase()
+              .contains(filter.getLocation().toLowerCase())
+          ) &&
+          (
+            filter.getVehicleType() == null ||
+            offerDTO
+              .getOfferedObject()
+              .getVehicleFeatures()
+              .getVehicleType()
+              .equals(filter.getVehicleType())
+          ) &&
+          (
+            filter.getVehicleBrand() == null ||
+            offerDTO
+              .getOfferedObject()
+              .getVehicleFeatures()
+              .getMake()
+              .toLowerCase()
+              .contains(filter.getVehicleBrand().toLowerCase())
+          ) &&
+          (
+            filter.getConstructionYear() == 0 ||
+            Integer.parseInt(
+              offerDTO.getOfferedObject().getVehicleFeatures().getYear()
+            ) >=
+            filter.getConstructionYear()
+          ) &&
+          (
+            filter.getMaxPricePerDay() == 0 ||
+            offerDTO.getPrice() <= filter.getMaxPricePerDay()
+          ) &&
+          (
+            filter.getFuelType() == null ||
+            offerDTO
+              .getOfferedObject()
+              .getVehicleFeatures()
+              .getFuelType()
+              .equals(filter.getFuelType())
+          ) &&
+          (
+            filter.getTransmissionType() == null ||
+            offerDTO
+              .getOfferedObject()
+              .getVehicleFeatures()
+              .getTransmission()
+              .toUpperCase()
+              .equals(filter.getTransmissionType().toString())
+          ) &&
+          (
+            filter.getSeatAmount() == 0 ||
+            offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >=
+            filter.getSeatAmount()
+          ) &&
+          (
+            filter.getBedAmount() == 0 ||
+            offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >=
+            filter.getBedAmount()
+          ) &&
+          evalCheckBoxes(offerDTO, filter)
+        )
+        .collect(Collectors.toList());
   }
 
   /**
@@ -582,25 +582,25 @@ public class OfferService {
     List<Boolean> booleanList = new ArrayList<>();
 
     if (filter.isRoofTent()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
     );
     if (filter.isRoofRack()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
+      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
     );
     if (filter.isBikeRack()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
+      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
     );
     if (filter.isShower()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isShower()
+      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
     );
     if (filter.isToilet()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
+      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
     );
     if (filter.isKitchen()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
+      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
     );
     if (filter.isFridge()) booleanList.add(
-            offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
+      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
     );
     return !booleanList.contains(false);
   }

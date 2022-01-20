@@ -1,5 +1,9 @@
 package swtcamper.javafx.controller;
 
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -13,11 +17,6 @@ import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class DealHistoryViewController {
@@ -54,14 +53,15 @@ public class DealHistoryViewController {
       .stream()
       .filter(booking -> booking.isActive() || booking.isRejected())
       .filter(booking ->
-
-          booking.getRenter().getId().equals(
-          userController.getLoggedInUser().getId()
-        ) ||
-
-          booking.getOffer().getCreator().getId().equals(
-          userController.getLoggedInUser().getId()
-        )
+        booking
+          .getRenter()
+          .getId()
+          .equals(userController.getLoggedInUser().getId()) ||
+        booking
+          .getOffer()
+          .getCreator()
+          .getId()
+          .equals(userController.getLoggedInUser().getId())
       )
       .collect(Collectors.toList());
 
@@ -128,7 +128,10 @@ public class DealHistoryViewController {
 
       // check if booking is rented or provided
       if (
-              booking.getRenter().getId().equals(userController.getLoggedInUser().getId())
+        booking
+          .getRenter()
+          .getId()
+          .equals(userController.getLoggedInUser().getId())
       ) {
         bookingVBox.setStyle("-fx-background-radius: 20; -fx-padding: 10;");
         bookingVBox.getStyleClass().add("bg-purple");

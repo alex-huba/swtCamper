@@ -1,5 +1,8 @@
 package swtcamper.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,10 +16,6 @@ import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class OfferController implements IOfferController {
@@ -283,7 +282,9 @@ public class OfferController implements IOfferController {
    */
   public List<OfferDTO> getOffersCreatedByUser(User user)
     throws GenericServiceException {
-    return modelMapper.offersToOfferDTOs(offerService.getOffersCreatedByUser(user));
+    return modelMapper.offersToOfferDTOs(
+      offerService.getOffersCreatedByUser(user)
+    );
   }
 
   /**

@@ -1,9 +1,8 @@
 package swtcamper.api.contract;
 
-import swtcamper.backend.entities.LoggingLevel;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import swtcamper.backend.entities.LoggingLevel;
 
 public class LoggingMessageDTO {
 
