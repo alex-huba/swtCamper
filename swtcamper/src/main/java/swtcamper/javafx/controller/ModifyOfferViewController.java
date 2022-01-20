@@ -623,7 +623,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     isSeatsOk.set(false);
     isBedsOk.set(false);
 
-    errorLabel.setText("");
+    errorLabel.clear();
   }
 
   @Override
@@ -798,7 +798,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(titleTextField);
       isTitleOk.set(true);
     }
@@ -810,7 +810,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(priceTextField);
       isPriceOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(priceTextField);
       isPriceOk.set(true);
     }
@@ -822,7 +822,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(locationTextField);
       isLocationOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(locationTextField);
       isLocationOk.set(true);
     }
@@ -834,7 +834,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(contactTextField);
       isContactOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(contactTextField);
       isContactOk.set(true);
     }
@@ -857,7 +857,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         isTransmissionTypeOk.set(false);
         fuelComboBox.setDisable(false);
       }
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
@@ -870,7 +870,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(brandTextField);
       isBrandOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(brandTextField);
       isBrandOk.set(true);
     }
@@ -882,7 +882,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(modelTextField);
       isModelOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(modelTextField);
       isModelOk.set(true);
     }
@@ -896,7 +896,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(transmissionComboBox);
       isTransmissionTypeOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(transmissionComboBox);
       isTransmissionTypeOk.set(true);
     }
@@ -910,7 +910,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       ) ||
       Integer.parseInt(seatsComboBox.getValue()) > 0
     ) {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(seatsComboBox);
       isSeatsOk.set(true);
     } else {
@@ -926,7 +926,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(bedsComboBox);
       isBedsOk.set(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(bedsComboBox);
       isBedsOk.set(true);
     }

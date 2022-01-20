@@ -170,7 +170,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(usernameTf);
       isUsernameOk.setValue(true);
     }
@@ -185,7 +185,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(passwordPf);
       isPasswordOk.setValue(true);
     }
@@ -198,7 +198,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(repeatPasswordPf);
       isRepeatPasswordOk.setValue(true);
     }
@@ -218,7 +218,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(emailTf);
       isEmailOk.setValue(true);
     }
@@ -231,7 +231,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(phoneTf);
       isPhoneOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(phoneTf);
       isPhoneOk.setValue(true);
     }
@@ -244,7 +244,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(nameTf);
       isNameOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(nameTf);
       isNameOk.setValue(true);
     }
@@ -257,7 +257,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);
     } else {
-      errorLabel.setText("");
+      errorLabel.clear();
       validateTrue(surnameTf);
       isSurnameOk.setValue(true);
     }
@@ -286,7 +286,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
       )
       .forEach(this::validateNeutral);
 
-    errorLabel.setText("");
+    errorLabel.clear();
   }
 
   @FXML

@@ -76,7 +76,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         );
         isUsernameOk.setValue(false);
       } else {
-        errorLabel.setText("");
+        errorLabel.clear();
         isUsernameOk.setValue(true);
       }
       // Validate password
@@ -88,7 +88,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
         );
         isPasswordOk.setValue(false);
       } else {
-        errorLabel.setText("");
+        errorLabel.clear();
         isPasswordOk.setValue(true);
       }
     }

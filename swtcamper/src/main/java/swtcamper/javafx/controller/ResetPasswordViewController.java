@@ -43,7 +43,7 @@ public class ResetPasswordViewController {
 
   @FXML
   public void initialize() {
-    errorMessageLabel.setText("");
+    errorMessageLabel.clear();
 
     isUsernameOk = new SimpleBooleanProperty(false);
     isEmailOk = new SimpleBooleanProperty(false);
@@ -100,7 +100,7 @@ public class ResetPasswordViewController {
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
     } else {
-      errorMessageLabel.setText("");
+      errorMessageLabel.clear();
       validateTrue(usernameTf);
       isUsernameOk.setValue(true);
     }
@@ -114,7 +114,7 @@ public class ResetPasswordViewController {
       validateFalse(emailTf);
       isEmailOk.setValue(false);
     } else {
-      errorMessageLabel.setText("");
+      errorMessageLabel.clear();
       validateTrue(emailTf);
       isEmailOk.setValue(true);
     }
@@ -130,7 +130,7 @@ public class ResetPasswordViewController {
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
     } else {
-      errorMessageLabel.setText("");
+      errorMessageLabel.clear();
       validateTrue(passwordPf);
       isPasswordOk.setValue(true);
     }
@@ -144,7 +144,7 @@ public class ResetPasswordViewController {
       validateFalse(repeatPasswordPf);
       isRepeatPasswordOk.setValue(false);
     } else {
-      errorMessageLabel.setText("");
+      errorMessageLabel.clear();
       validateTrue(repeatPasswordPf);
       isRepeatPasswordOk.setValue(true);
     }

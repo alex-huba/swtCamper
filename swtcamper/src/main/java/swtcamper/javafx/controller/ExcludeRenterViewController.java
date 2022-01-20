@@ -182,7 +182,7 @@ public class ExcludeRenterViewController {
         try {
           userController.excludeRenterForCurrentlyLoggedInUser(user.getId());
           // reset search
-          findUsersTextField.setText("");
+          findUsersTextField.clear();
           findUsers("");
 
           reloadExcludedRenters();
