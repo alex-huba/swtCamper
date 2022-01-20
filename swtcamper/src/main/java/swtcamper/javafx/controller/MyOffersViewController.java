@@ -23,6 +23,12 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MyOffersViewController {
 
+  @FXML
+  public ScrollPane offerListScroll;
+
+  @FXML
+  public VBox offerListRoot;
+
   @Autowired
   private MainViewController mainViewController;
 
@@ -43,12 +49,6 @@ public class MyOffersViewController {
 
   @Autowired
   private OfferViewController offerViewController;
-
-  @FXML
-  public ScrollPane offerListScroll;
-
-  @FXML
-  public VBox offerListRoot;
 
   public void reloadData() throws GenericServiceException {
     // create the "cards" that has been created by the logged-in user

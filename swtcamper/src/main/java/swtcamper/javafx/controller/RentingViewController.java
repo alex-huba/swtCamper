@@ -33,21 +33,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class RentingViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private OfferViewController offerViewController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private UserController userController;
-
   @FXML
   public TextField locationTextField;
 
@@ -147,9 +132,25 @@ public class RentingViewController {
   @FXML
   public AnchorPane rootAnchorPane;
 
+  int lastPageVisited;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private OfferViewController offerViewController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
+
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;
-  int lastPageVisited;
 
   @FXML
   private void initialize() throws GenericServiceException {
@@ -311,9 +312,9 @@ public class RentingViewController {
       .visibleProperty()
       .bind(fuelTypeComboBox.valueProperty().isNotNull());
 
-    offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
+    HBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-    offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
+    VBox.setVgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setPrefHeight(
       rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
@@ -321,6 +322,7 @@ public class RentingViewController {
 
   /**
    * Gets all available offers from the database and creates subLists.
+   *
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
@@ -383,8 +385,9 @@ public class RentingViewController {
 
   /**
    * Partitions an offer-list into sublists of a specific max length
+   *
    * @param inputList offer-list to partition
-   * @param size max length of each sublist
+   * @param size      max length of each sublist
    * @return list of lists, each with a max length
    */
   private List<List<OfferDTO>> createOfferSublists(
@@ -402,6 +405,7 @@ public class RentingViewController {
 
   /**
    * Loads a specific list to the visible view
+   *
    * @param offersList list to load
    */
   private void loadData(List<OfferDTO> offersList) {

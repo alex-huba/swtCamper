@@ -25,7 +25,9 @@ public class PictureController implements IPictureController {
 
   @Override
   public List<PictureDTO> getPicturesForVehicle(long vehicleId) {
-    return modelMapper.picturesToPictureDTOs(pictureService.getPicturesForVehicle(vehicleId));
+    return modelMapper.picturesToPictureDTOs(
+      pictureService.getPicturesForVehicle(vehicleId)
+    );
   }
 
   @Override

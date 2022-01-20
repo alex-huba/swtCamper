@@ -12,6 +12,7 @@ import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 
 public interface IBookingController {
   List<Booking> getAllBookings();
+
   List<Booking> getBookingsForUser(User user);
 
   BookingDTO create(
@@ -30,6 +31,7 @@ public interface IBookingController {
 
   /**
    * Updates a booking by setting active = true.
+   *
    * @param bookingID
    * @throws GenericServiceException
    */
@@ -37,6 +39,7 @@ public interface IBookingController {
 
   /**
    * Updates a booking by setting active = false.
+   *
    * @param bookingID
    * @throws GenericServiceException
    */
@@ -44,6 +47,7 @@ public interface IBookingController {
 
   /**
    * Deletes a booking by its ID.
+   *
    * @param bookingID
    * @throws GenericServiceException
    */

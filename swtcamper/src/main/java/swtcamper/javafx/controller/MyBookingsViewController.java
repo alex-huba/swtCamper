@@ -23,6 +23,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MyBookingsViewController {
 
+  @FXML
+  public VBox bookingsListVBox;
+
   @Autowired
   private ModelMapper modelMapper;
 
@@ -37,9 +40,6 @@ public class MyBookingsViewController {
 
   @Autowired
   private OfferViewController offerViewController;
-
-  @FXML
-  public VBox bookingsListVBox;
 
   public void reloadData() {
     bookingsListVBox.getChildren().clear();
@@ -350,6 +350,7 @@ public class MyBookingsViewController {
 
   /**
    * Checks if the same offer is also in another booking that is active already and has overlapping renting dates
+   *
    * @param booking the {@link Booking} that shall be evaluated
    * @return true if the offer is already in another active booking, false if it is available
    */

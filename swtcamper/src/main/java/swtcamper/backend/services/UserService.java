@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.ModelMapper;
 import swtcamper.api.controller.HashHelper;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.LoggingLevel;
@@ -37,12 +36,12 @@ public class UserService {
    *
    * @param username Unique username
    * @param password password with at least length of 8
-   * @param email unique email address (gets validated in {@link swtcamper.javafx.controller.RegisterViewController})
-   * @param phone unique phone number
-   * @param name first name of user
-   * @param surname last name of user
+   * @param email    unique email address (gets validated in {@link swtcamper.javafx.controller.RegisterViewController})
+   * @param phone    unique phone number
+   * @param name     first name of user
+   * @param surname  last name of user
    * @param userRole {@link UserRole} the user wants to start with
-   * @param enabled if user wants to be a Provider, he/she is disabled by default until an Operator accepts him/her
+   * @param enabled  if user wants to be a Provider, he/she is disabled by default until an Operator accepts him/her
    * @return created User
    * @throws GenericServiceException
    */
@@ -62,7 +61,7 @@ public class UserService {
     user.setSurname(surname);
     user.setEmail(email);
     user.setPhone(phone);
-    user.setPassword(hashHelper.hashIt(password));
+    user.setPassword(HashHelper.hashIt(password));
     user.setUserRole(userRole);
     user.setEnabled(enabled);
     userRepository.save(user);
@@ -84,6 +83,7 @@ public class UserService {
 
   /**
    * Deletes a user by his/her ID
+   *
    * @param id of the user to delete
    */
   public void delete(long id) {
@@ -98,6 +98,7 @@ public class UserService {
 
   /**
    * Overwrites an existing user
+   *
    * @param user to get updates with new values
    */
   public User update(User user) {
@@ -166,6 +167,7 @@ public class UserService {
 
   /**
    * Get the currently logged-in User
+   *
    * @return User of the person who is currently using the application
    */
   public User getLoggedInUser() {
@@ -174,6 +176,7 @@ public class UserService {
 
   /**
    * Sets the currently logged-in User
+   *
    * @param loggedInUser User that is logged-in from now on
    */
   public void setLoggedInUser(User loggedInUser) {
@@ -183,6 +186,7 @@ public class UserService {
   /**
    * Adds the User that has the given ID to the list of excluded renters of the currently logged-in User
    * ==> Given User will no longer see offers from the currently logged-in User, if logged-in
+   *
    * @param idOfRenterToExclude ID of the User to exclude
    * @throws GenericServiceException
    */
@@ -213,6 +217,7 @@ public class UserService {
   /**
    * Removes the User that has the given ID from the list of excluded renters of the currently logged-in User
    * ==> Given User will see offers from the currently logged-in User again, if logged-in
+   *
    * @param idOfRenterToInclude ID of the User to include
    * @throws GenericServiceException
    */
@@ -249,7 +254,7 @@ public class UserService {
   public User login(String username, String password)
     throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
-    String hashedPassword = hashHelper.hashIt(password);
+    String hashedPassword = HashHelper.hashIt(password);
     if (userRepository.existsByUsernameAndPassword(username, hashedPassword)) {
       User user;
       Optional<User> userOptional = userRepository.findByUsername(username);
@@ -485,7 +490,7 @@ public class UserService {
    * Changes a users' password.
    *
    * @param username Username of the user whose password shall be reset
-   * @param email Email of the user whose password shall be reset (for validation)
+   * @param email    Email of the user whose password shall be reset (for validation)
    * @param password new password
    * @throws GenericServiceException if user account doesn't exist in database
    */
@@ -495,7 +500,7 @@ public class UserService {
     if (userRepository.existsByUsernameAndEmail(username, email)) {
       // Get user if it exists in database, change password and save it back on database
       User user = userRepository.findByUsername(username).get();
-      String hashedPassword = hashHelper.hashIt(password);
+      String hashedPassword = HashHelper.hashIt(password);
       user.setPassword(hashedPassword);
       userRepository.save(user);
 

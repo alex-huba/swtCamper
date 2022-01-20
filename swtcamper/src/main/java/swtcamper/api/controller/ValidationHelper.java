@@ -54,6 +54,7 @@ public class ValidationHelper {
 
   /**
    * Checks if startDate is before endDate or on the same day
+   *
    * @param startDate
    * @param endDate
    * @return true if startDate is before endDate and not on the same day
@@ -66,7 +67,8 @@ public class ValidationHelper {
   }
 
   /**
-   *  Checks if booked days of an offer lie between a startDate and an endDate
+   * Checks if booked days of an offer lie between a startDate and an endDate
+   *
    * @param startDate
    * @param endDate
    * @param offer

@@ -36,6 +36,7 @@ public interface IUserController {
 
   /**
    * see {@link UserService#login}
+   *
    * @return
    */
   UserDTO login(String username, String password)

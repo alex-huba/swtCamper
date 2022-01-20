@@ -1,6 +1,7 @@
 package swtcamper.backend.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -92,7 +93,9 @@ public class PictureServiceTest {
     mockPictureToPictureDTO(giveMeTestPicture());
 
     // When
-    pictureServiceUnderTest.create(modelMapper.pictureDTOToPicture(giveMeTestPictureDTO()));
+    pictureServiceUnderTest.create(
+      modelMapper.pictureDTOToPicture(giveMeTestPictureDTO())
+    );
 
     ArgumentCaptor<Picture> pictureArgumentCaptor = ArgumentCaptor.forClass(
       Picture.class

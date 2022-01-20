@@ -195,7 +195,9 @@ public class OfferController implements IOfferController {
   @Override
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
-    return modelMapper.offersToOfferDTOs(offerService.getFilteredOffers(filter));
+    return modelMapper.offersToOfferDTOs(
+      offerService.getFilteredOffers(filter)
+    );
   }
 
   @Override

@@ -193,12 +193,20 @@ public class ModelMapper {
   }
 
   public UserReportDTO userReportToUserReportDTO(UserReport userReport) {
-    return new UserReportDTO(userReport.getId(),userReport.isActive(),userReport.getReporter(),userReport.getReportee(),userReport.getReportReason());
+    return new UserReportDTO(
+      userReport.getId(),
+      userReport.isActive(),
+      userReport.getReporter(),
+      userReport.getReportee(),
+      userReport.getReportReason()
+    );
   }
 
-  public List<UserReportDTO> userReportsToUserReportDTOs(List<UserReport> userReportList) {
+  public List<UserReportDTO> userReportsToUserReportDTOs(
+    List<UserReport> userReportList
+  ) {
     List<UserReportDTO> userReportDTOList = new ArrayList<>();
-    for(UserReport userReport : userReportList) {
+    for (UserReport userReport : userReportList) {
       userReportDTOList.add(userReportToUserReportDTO(userReport));
     }
     return userReportDTOList;

@@ -12,12 +12,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ResetPasswordViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
   @FXML
   public Label errorMessageLabel;
 
@@ -40,6 +34,12 @@ public class ResetPasswordViewController {
   SimpleBooleanProperty isEmailOk;
   SimpleBooleanProperty isPasswordOk;
   SimpleBooleanProperty isRepeatPasswordOk;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public void initialize() {

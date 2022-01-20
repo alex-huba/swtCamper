@@ -19,15 +19,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class NavigationViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private NavigationViewController navigationViewController;
-
-  @Autowired
-  private UserController userController;
-
   @FXML
   public AnchorPane navigationRoot;
 
@@ -72,6 +63,15 @@ public class NavigationViewController {
 
   @FXML
   public Button logoutBtn;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private NavigationViewController navigationViewController;
+
+  @Autowired
+  private UserController userController;
 
   private boolean isShortText = true;
 

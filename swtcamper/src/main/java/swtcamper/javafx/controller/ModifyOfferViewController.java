@@ -42,26 +42,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
-  @Autowired
-  private ModelMapper modelMapper;
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private ValidationHelper validationHelper;
-
   private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
   private final LongStringConverter longStringConverter = new LongStringConverter();
+  private final ArrayList<Long> bookings = new ArrayList<>();
+  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
   public TextField titleTextField;
@@ -147,6 +131,35 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   public TextField rentalConditionsTextField;
 
+  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
+
   @FXML
   private ListView<String> rentalConditionsListView = new ListView<>();
 
@@ -159,25 +172,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   private ListView<Pair> blockedDatesListView;
 
-  private final ArrayList<Long> bookings = new ArrayList<>();
-
   private List<String> rentalConditions = new ArrayList<>();
-
-  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
-
   private long offerID;
   private Vehicle offeredObject;
   private OfferDTO offerDTO;
-
   private List<Picture> pictures;
 
   @Autowired
@@ -188,8 +186,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private BookingService bookingService;
-
-  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   private ArrayList<Pair> blockedDates = new ArrayList<>();
 
@@ -793,7 +789,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTitle(String inputTitle) {
-    if (!validationHelper.checkOfferTitle(inputTitle)) {
+    if (!ValidationHelper.checkOfferTitle(inputTitle)) {
       errorLabel.setText("Invalid title");
       validateFalse(titleTextField);
       isTitleOk.set(false);
@@ -805,7 +801,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validatePrice(String inputPrice) {
-    if (!validationHelper.checkOfferPrice(inputPrice)) {
+    if (!ValidationHelper.checkOfferPrice(inputPrice)) {
       errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
       isPriceOk.set(false);
@@ -986,9 +982,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     // add all newly needed pictures to the database
     for (Picture picture : pictures) {
-      pictureController.create(
-        picture
-      );
+      pictureController.create(picture);
     }
   }
 

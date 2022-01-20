@@ -12,6 +12,8 @@ import swtcamper.backend.entities.interfaces.IOffer;
 @Entity
 public class Offer implements IOffer {
 
+  ArrayList<Pair> blockedDates;
+
   @Id
   @GeneratedValue
   private long offerID;
@@ -31,7 +33,6 @@ public class Offer implements IOffer {
   private ArrayList<Long> bookings;
   private long price;
   private boolean active;
-  ArrayList<Pair> blockedDates;
   private boolean promoted;
 
   // Rental Conditions

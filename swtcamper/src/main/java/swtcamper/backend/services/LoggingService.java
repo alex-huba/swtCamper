@@ -15,18 +15,19 @@ import swtcamper.backend.repositories.LoggingRepository;
 @Service
 public class LoggingService {
 
+  private static final Logger logger = LogManager.getLogger(
+    LoggingService.class
+  );
+
   @Autowired
   private ModelMapper modelMapper;
 
   @Autowired
   private LoggingRepository loggingRepository;
 
-  private static final Logger logger = LogManager.getLogger(
-    LoggingService.class
-  );
-
   /**
    * Logs a LoggingMessage to console and to the database
+   *
    * @param loggingMessageDTO Message to be logged
    */
   public void log(LoggingMessageDTO loggingMessageDTO) {
@@ -47,7 +48,7 @@ public class LoggingService {
       default:
         logger.error(
           "[LoggingLevel could not be determined!] " +
-                  loggingMessageDTO.getLoggingMessage()
+          loggingMessageDTO.getLoggingMessage()
         );
         break;
     }
@@ -55,16 +56,16 @@ public class LoggingService {
 
   /**
    * Gets a list of all available Log Messages
+   *
    * @return List of all available log messages
    */
   public List<LoggingMessage> getAllLogMessages() {
-    return
-      loggingRepository.findAll()
-    ;
+    return loggingRepository.findAll();
   }
 
   /**
    * Get a list of all LogMessages related to a specific User
+   *
    * @param selectedUser specified User to look for
    * @return List of all LogMessages related to selectedUser
    */

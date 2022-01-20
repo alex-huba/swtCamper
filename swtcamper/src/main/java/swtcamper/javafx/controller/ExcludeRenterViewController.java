@@ -14,11 +14,19 @@ import swtcamper.api.contract.UserReportDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ExcludeRenterViewController {
+
+  @FXML
+  public VBox excludedRentersVBox;
+
+  @FXML
+  public TextField findUsersTextField;
+
+  @FXML
+  public VBox userResultsVBox;
 
   @Autowired
   private UserController userController;
@@ -31,15 +39,6 @@ public class ExcludeRenterViewController {
 
   @Autowired
   private ReportUserViewController reportUserViewController;
-
-  @FXML
-  public VBox excludedRentersVBox;
-
-  @FXML
-  public TextField findUsersTextField;
-
-  @FXML
-  public VBox userResultsVBox;
 
   @FXML
   public void initialize() throws GenericServiceException {
@@ -123,6 +122,7 @@ public class ExcludeRenterViewController {
 
   /**
    * Searches for users that fit to the given searchText and displays the result in userResultsVBox
+   *
    * @param searchText String that shall be used to filter available usernames
    * @throws GenericServiceException
    */

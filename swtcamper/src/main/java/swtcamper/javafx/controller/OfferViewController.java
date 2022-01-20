@@ -21,7 +21,10 @@ import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
-import swtcamper.backend.entities.*;
+import swtcamper.backend.entities.Booking;
+import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -29,39 +32,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class OfferViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private BookingController bookingController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private ValidationHelper validationHelper;
-
-  @Autowired
-  private ModelMapper modelMapper;
-
-  @Autowired
-  private ModifyOfferViewController modifyOfferViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private BookingService bookingService;
-
-  @Autowired
-  private OfferService offerService;
-
-  LongStringConverter longStringConverter = new LongStringConverter();
-
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   @FXML
   public HBox pictureHorizontHBox;
@@ -166,8 +137,38 @@ public class OfferViewController {
   public Button abortBookingRequestBtn;
 
   public OfferDTO viewedOffer;
+  LongStringConverter longStringConverter = new LongStringConverter();
+  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
-  private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private BookingController bookingController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
+
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
+  private ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private BookingService bookingService;
+
+  @Autowired
+  private OfferService offerService;
 
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
@@ -397,14 +398,10 @@ public class OfferViewController {
    * Makes promote / degrade offer button visible, only if operator is logged in.
    */
   public void checkUserRole() {
-    if (
+    promotingButton.setVisible(
       userController.getLoggedInUser() != null &&
       userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)
-    ) {
-      promotingButton.setVisible(true);
-    } else {
-      promotingButton.setVisible(false);
-    }
+    );
   }
 
   /**
@@ -510,6 +507,7 @@ public class OfferViewController {
   /**
    * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable and
    * all blockedDays and bookedDays pink and un-clickable
+   *
    * @param datePicker
    * @param offerDTO
    */

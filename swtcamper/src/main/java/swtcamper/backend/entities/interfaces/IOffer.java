@@ -56,7 +56,10 @@ public interface IOffer {
   void setActive(boolean active);
 
   ArrayList<Pair> getBlockedDates();
+
   void setBlockedDates(ArrayList<Pair> blockedDates);
+
   boolean isPromoted();
+
   void setPromoted(boolean promoted);
 }

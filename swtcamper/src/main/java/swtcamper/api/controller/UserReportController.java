@@ -21,21 +21,29 @@ public class UserReportController implements IUserReportController {
 
   @Override
   public UserReportDTO create(UserReport userReport) {
-    return modelMapper.userReportToUserReportDTO(userReportService.create(userReport));
+    return modelMapper.userReportToUserReportDTO(
+      userReportService.create(userReport)
+    );
   }
 
   @Override
   public List<UserReportDTO> getAllUserReports() {
-    return modelMapper.userReportsToUserReportDTOs(userReportService.getAllUserReports());
+    return modelMapper.userReportsToUserReportDTOs(
+      userReportService.getAllUserReports()
+    );
   }
 
   @Override
   public UserReportDTO accept(long userID) throws GenericServiceException {
-    return modelMapper.userReportToUserReportDTO(userReportService.acceptUserReport(userID));
+    return modelMapper.userReportToUserReportDTO(
+      userReportService.acceptUserReport(userID)
+    );
   }
 
   @Override
   public UserReportDTO reject(long userID) throws GenericServiceException {
-    return modelMapper.userReportToUserReportDTO(userReportService.rejectUserReport(userID));
+    return modelMapper.userReportToUserReportDTO(
+      userReportService.rejectUserReport(userID)
+    );
   }
 }

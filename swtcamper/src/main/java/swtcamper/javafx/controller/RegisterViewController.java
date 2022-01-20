@@ -20,12 +20,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class RegisterViewController implements EventHandler<KeyEvent> {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
   @FXML
   public TextField usernameTf;
 
@@ -64,6 +58,12 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @FXML
   public VBox rootElement;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;

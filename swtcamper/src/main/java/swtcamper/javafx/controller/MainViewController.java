@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.api.contract.UserReportDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
@@ -31,6 +32,56 @@ public class MainViewController {
    */
   public final boolean startNavigationHidden = true;
   public final String startPageAfterLogin = "home";
+
+  @FXML
+  public Label globalHeaderLabel;
+
+  @FXML
+  public AnchorPane mainStage;
+
+  @FXML
+  public Node homeViewBox;
+
+  @FXML
+  public Node placeOfferViewBox;
+
+  @FXML
+  public Pane offerViewBox;
+
+  @FXML
+  public Pane activeOffersViewBox;
+
+  @FXML
+  public Pane dealHistoryViewBox;
+
+  @FXML
+  public Pane excludeRenterViewBox;
+
+  @FXML
+  public Pane approveDealViewBox;
+
+  @FXML
+  public Pane myBookingsViewBox;
+
+  @FXML
+  public Pane loginViewBox;
+
+  @FXML
+  public Pane accountViewBox;
+
+  @FXML
+  public Pane registerViewBox;
+
+  @FXML
+  public Pane forgotPasswordViewBox;
+
+  @FXML
+  public Pane moreAboutOfferViewBox;
+
+  @FXML
+  public Pane reportUserViewBox;
+
+  boolean updateHappening = false;
 
   @Autowired
   private ModelMapper modelMapper;
@@ -80,57 +131,8 @@ public class MainViewController {
   @Autowired
   private DealHistoryViewController dealHistoryViewController;
 
-  @FXML
-  public Label globalHeaderLabel;
-
-  @FXML
-  public AnchorPane mainStage;
-
-  @FXML
-  public Node homeViewBox;
-
-  @FXML
-  public Node placeOfferViewBox;
-
-  @FXML
-  public Pane offerViewBox;
-
-  @FXML
-  public Pane activeOffersViewBox;
-
-  @FXML
-  public Pane dealHistoryViewBox;
-
-  @FXML
-  public Pane excludeRenterViewBox;
-
-  @FXML
-  public Pane approveDealViewBox;
-
-  @FXML
-  public Pane myBookingsViewBox;
-
-  @FXML
-  public Pane loginViewBox;
-
-  @FXML
-  public Pane accountViewBox;
-
-  @FXML
-  public Pane registerViewBox;
-
-  @FXML
-  public Pane forgotPasswordViewBox;
-
   private User latestLoggedInStatus = null;
   private String latestView = null;
-  boolean updateHappening = false;
-
-  @FXML
-  public Pane moreAboutOfferViewBox;
-
-  @FXML
-  public Pane reportUserViewBox;
 
   @FXML
   private void initialize() throws GenericServiceException {
@@ -160,7 +162,7 @@ public class MainViewController {
         userReportController
           .getAllUserReports()
           .stream()
-          .anyMatch(UserReport::isActive)
+          .anyMatch(UserReportDTO::isActive)
       ) {
         navigationViewController.showAccountNotification();
       } else {

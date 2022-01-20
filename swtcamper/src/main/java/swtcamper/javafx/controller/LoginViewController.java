@@ -18,17 +18,8 @@ import swtcamper.backend.services.exceptions.WrongPasswordException;
 @Component
 public class LoginViewController implements EventHandler<KeyEvent> {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private RegisterViewController registerViewController;
-
-  @Autowired
-  private ResetPasswordViewController resetPasswordViewController;
+  private final BooleanProperty isUsernameOk = new SimpleBooleanProperty(false);
+  private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
 
   @FXML
   public Button loginButton;
@@ -48,8 +39,17 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   @FXML
   public Label errorLabel;
 
-  private final BooleanProperty isUsernameOk = new SimpleBooleanProperty(false);
-  private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private RegisterViewController registerViewController;
+
+  @Autowired
+  private ResetPasswordViewController resetPasswordViewController;
 
   @FXML
   public void initialize() {

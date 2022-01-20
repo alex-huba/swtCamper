@@ -15,15 +15,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ReportUserViewController {
 
-  @Autowired
-  private UserReportController userReportController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private MainViewController mainViewController;
-
   @FXML
   public TextField reportThisUserTextField;
 
@@ -32,6 +23,15 @@ public class ReportUserViewController {
 
   @FXML
   public Button sendReportButton;
+
+  @Autowired
+  private UserReportController userReportController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private MainViewController mainViewController;
 
   public void initialize(User userToReport) {
     reportThisUserTextField.setText(userToReport.getUsername());
