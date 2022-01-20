@@ -2,7 +2,6 @@ package swtcamper.api.contract.interfaces;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.entities.Booking;
@@ -52,8 +51,6 @@ public interface IBookingController {
 
   void reject(long bookingID);
 
-  List<OfferDTO> getAvailableOffers(
-          LocalDate startDate,
-          LocalDate endDate
-  ) throws GenericServiceException;
+  List<OfferDTO> getAvailableOffers(LocalDate startDate, LocalDate endDate)
+    throws GenericServiceException;
 }

@@ -9,7 +9,6 @@ import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 public interface IOfferController {
-
   /**
    * Get a List of OfferDTOs of all available offers in the database
    * @return List of OfferDTOs

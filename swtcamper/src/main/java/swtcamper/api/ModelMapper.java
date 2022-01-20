@@ -28,7 +28,7 @@ public class ModelMapper {
   }
 
   public OfferedObjectType offeredObjectTypeDTOToOfferedObjectType(
-          OfferedObjectTypeDTO offeredObjectTypeDTO
+    OfferedObjectTypeDTO offeredObjectTypeDTO
   ) {
     switch (offeredObjectTypeDTO) {
       case VEHICLE:
@@ -61,7 +61,9 @@ public class ModelMapper {
     Offer offer = new Offer();
     offer.setOfferID(offerDTO.getID());
     offer.setCreator(offerDTO.getCreator());
-    offer.setOfferedObjectType(offeredObjectTypeDTOToOfferedObjectType(offerDTO.getOfferedObjectType()));
+    offer.setOfferedObjectType(
+      offeredObjectTypeDTOToOfferedObjectType(offerDTO.getOfferedObjectType())
+    );
     offer.setOfferedObject(offerDTO.getOfferedObject());
     offer.setBookings(offerDTO.getBookings());
     offer.setTitle(offerDTO.getTitle());

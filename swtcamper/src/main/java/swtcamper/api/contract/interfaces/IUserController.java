@@ -1,5 +1,6 @@
 package swtcamper.api.contract.interfaces;
 
+import java.util.ArrayList;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
@@ -7,8 +8,6 @@ import swtcamper.backend.services.UserService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
-
-import java.util.ArrayList;
 
 public interface IUserController {
   /**
@@ -30,11 +29,10 @@ public interface IUserController {
   ArrayList<User> getAllUsers() throws GenericServiceException;
 
   void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
-          throws GenericServiceException;
+    throws GenericServiceException;
 
-  void removeExcludedRenterForCurrentlyLoggedInUser(
-          long idOfRenterToInclude
-  ) throws GenericServiceException;
+  void removeExcludedRenterForCurrentlyLoggedInUser(long idOfRenterToInclude)
+    throws GenericServiceException;
 
   /**
    * see {@link UserService#login}

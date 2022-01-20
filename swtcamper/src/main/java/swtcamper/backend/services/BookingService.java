@@ -72,13 +72,13 @@ public class BookingService {
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
     loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "User %s booked offer with ID %s.",
-            user.getUsername(),
-            offer.getOfferID()
-          )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "User %s booked offer with ID %s.",
+          user.getUsername(),
+          offer.getOfferID()
+        )
       )
     );
     // add the bookingID to the offer
@@ -133,14 +133,14 @@ public class BookingService {
       booking.setActive(active);
 
       loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Booking with ID %s got updated by user %s.",
-              bookingID,
-              user.getUsername()
-            )
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s got updated by user %s.",
+            bookingID,
+            user.getUsername()
           )
+        )
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -168,13 +168,13 @@ public class BookingService {
       booking.setActive(true);
 
       loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Booking with ID %s was activated by user %s.",
-              bookingID,
-              user.getUsername()
-            )
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s was activated by user %s.",
+            bookingID,
+            user.getUsername()
+          )
         )
       );
       // Save update back to database
@@ -203,14 +203,14 @@ public class BookingService {
       booking.setActive(false);
 
       loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Booking with ID %s was deactivated by user %s.",
-              bookingID,
-              user.getUsername()
-            )
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Booking with ID %s was deactivated by user %s.",
+            bookingID,
+            user.getUsername()
           )
+        )
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -254,14 +254,14 @@ public class BookingService {
           // then delete the booking
           bookingRepository.deleteById(bookingID);
           loggingController.log(
-              new LoggingMessage(
-                LoggingLevel.INFO,
-                String.format(
-                  "UBooking with ID %s was deleted by user %s",
-                  bookingID,
-                  user.getUsername()
-                )
+            new LoggingMessage(
+              LoggingLevel.INFO,
+              String.format(
+                "UBooking with ID %s was deleted by user %s",
+                bookingID,
+                user.getUsername()
               )
+            )
           );
         } else {
           throw new GenericServiceException(

@@ -2,7 +2,6 @@ package swtcamper.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

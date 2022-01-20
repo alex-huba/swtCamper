@@ -157,24 +157,24 @@ public class OfferService {
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "New vehicle with ID %s created by user %s.",
-            newVehicleId,
-            creator.getUsername()
-          )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New vehicle with ID %s created by user %s.",
+          newVehicleId,
+          creator.getUsername()
+        )
       )
     );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "New offer with ID %s created by user %s.",
-            newOfferId,
-            creator.getUsername()
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New offer with ID %s created by user %s.",
+          newOfferId,
+          creator.getUsername()
         )
       )
     );
@@ -322,13 +322,13 @@ public class OfferService {
         vehicle.setVehicleFeatures(vehicleFeatures);
         vehicleRepository.save(vehicle);
         loggingController.log(
-            new LoggingMessage(
-              LoggingLevel.INFO,
-              String.format(
-                "Vehicle with ID %s got updated by user %s.",
-                vehicle.getVehicleID(),
-                user.getUsername()
-              )
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Vehicle with ID %s got updated by user %s.",
+              vehicle.getVehicleID(),
+              user.getUsername()
+            )
           )
         );
 
@@ -344,13 +344,13 @@ public class OfferService {
         offer.setRentalConditions(rentalConditions);
         offer.setBlockedDates(blockedDates);
         loggingController.log(
-            new LoggingMessage(
-              LoggingLevel.INFO,
-              String.format(
-                "Offer with ID %s got updated by user %s.",
-                offer.getOfferID(),
-                user.getUsername()
-              )
+          new LoggingMessage(
+            LoggingLevel.INFO,
+            String.format(
+              "Offer with ID %s got updated by user %s.",
+              offer.getOfferID(),
+              user.getUsername()
+            )
           )
         );
         return offerRepository.save(offer);
@@ -444,12 +444,12 @@ public class OfferService {
     try {
       offerRepository.deleteById(id);
       loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Offer with ID %s got deleted by user %s.",
-              id,
-              user.getUsername()
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got deleted by user %s.",
+            id,
+            user.getUsername()
           )
         )
       );
@@ -628,13 +628,13 @@ public class OfferService {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(true);
     loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Offer with ID %s got promoted by operator %s.",
-            offerID,
-            userService.getLoggedInUser().getUsername()
-          )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "Offer with ID %s got promoted by operator %s.",
+          offerID,
+          userService.getLoggedInUser().getUsername()
+        )
       )
     );
     return offerRepository.save(offer);
@@ -644,13 +644,13 @@ public class OfferService {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(false);
     loggingController.log(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "Offer with ID %s got degraded by operator %s.",
-            offerID,
-            userService.getLoggedInUser().getUsername()
-          )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "Offer with ID %s got degraded by operator %s.",
+          offerID,
+          userService.getLoggedInUser().getUsername()
+        )
       )
     );
     return offerRepository.save(offer);

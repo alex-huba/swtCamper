@@ -21,7 +21,9 @@ public class LoggingController implements ILoggingController {
 
   @Override
   public void log(LoggingMessage loggingMessage) {
-    loggingService.log(modelMapper.LoggingMessageToLoggingMessageDTO(loggingMessage));
+    loggingService.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(loggingMessage)
+    );
   }
 
   @Override
