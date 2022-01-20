@@ -27,73 +27,19 @@ public class OfferController implements IOfferController {
   private ModelMapper modelMapper;
 
   @Autowired
-  private OfferRepository offerRepository;
-
-  @Autowired
-  private VehicleRepository vehicleRepository;
-
-  @Autowired
-  private VehicleFeaturesRepository vehicleFeaturesRepository;
-
-  @Autowired
   private UserController userController;
 
-  @Autowired
-  private BookingService bookingService;
-
-  /**
-   * Get a List of OfferDTOs of all available offers in the database
-   * @return List of OfferDTOs
-   * @throws GenericServiceException
-   */
+  @Override
   public List<OfferDTO> offers() throws GenericServiceException {
     return modelMapper.offersToOfferDTOs(offerService.offers());
   }
 
-  /**
-   * Get a specific offer by its ID
-   * @param id ID of the wanted offer
-   * @return wanted Offer
-   * @throws GenericServiceException
-   */
+  @Override
   public Offer getOfferById(long id) throws GenericServiceException {
-    Optional<Offer> offerResult = offerRepository.findById(id);
-    if (offerResult.isPresent()) {
-      return offerResult.get();
-    }
-    throw new GenericServiceException(
-      String.format("Offer with ID %s could not be found.", id)
-    );
+    return offerService.getOfferById(id);
   }
 
-  /**
-   * Creates a new offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param title of the new offer
-   * @param location where the {@link Vehicle} can be picked up from
-   * @param contact How the provider can be reached
-   * @param particularities Any points that should be said about the offer
-   * @param price per day for the vehicle
-   * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
-   * @param make brand of the offered {@link Vehicle}
-   * @param model model of the offered {@link Vehicle}
-   * @param year in which the offered {@link Vehicle} was produced
-   * @param length of the vehicle in cm
-   * @param width of the vehicle in cm
-   * @param height of the vehicle in cm
-   * @param fuelType Rather specifies the vehicle's fuel type
-   * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
-   * @param seats Amount of seats that the offered vehicle has
-   * @param beds Amount of beds that the offered vehicle has
-   * @param roofTent Does the vehicle have a roof tent?
-   * @param roofRack Does the vehicle have a roof rack?
-   * @param bikeRack Does the vehicle have a bike rack?
-   * @param shower Does the vehicle have a shower?
-   * @param toilet Does the vehicle have a toilet?
-   * @param kitchenUnit Does the vehicle have a kitchen unit?
-   * @param fridge Does the vehicle have a fridge?
-   * @return {@link OfferDTO} of the new offer
-   */
+  @Override
   public OfferDTO create(
     // Offer-Parameter
     String title,
@@ -157,34 +103,7 @@ public class OfferController implements IOfferController {
     );
   }
 
-  /**
-   * Updates an existing offer and forwards it to the {@link OfferService} where it gets saved to the database
-   * @param title of the new offer
-   * @param location where the {@link Vehicle} can be picked up from
-   * @param contact How the provider can be reached
-   * @param particularities Any points that should be said about the offer
-   * @param price per day for the vehicle
-   * @param rentalConditions List of (String) conditions that are wanted by the provider
-   * @param vehicleType {@link VehicleType} of the offered {@link Vehicle}
-   * @param make brand of the offered {@link Vehicle}
-   * @param model model of the offered {@link Vehicle}
-   * @param year in which the offered {@link Vehicle} was produced
-   * @param length of the vehicle in cm
-   * @param width of the vehicle in cm
-   * @param height of the vehicle in cm
-   * @param fuelType Rather specifies the vehicle's fuel type
-   * @param transmission {@link swtcamper.backend.entities.TransmissionType} of the offered vehicle
-   * @param seats Amount of seats that the offered vehicle has
-   * @param beds Amount of beds that the offered vehicle has
-   * @param roofTent Does the vehicle have a roof tent?
-   * @param roofRack Does the vehicle have a roof rack?
-   * @param bikeRack Does the vehicle have a bike rack?
-   * @param shower Does the vehicle have a shower?
-   * @param toilet Does the vehicle have a toilet?
-   * @param kitchenUnit Does the vehicle have a kitchen unit?
-   * @param fridge Does the vehicle have a fridge?
-   * @return {@link OfferDTO} of the new offer
-   */
+  @Override
   public OfferDTO update(
     long offerId,
     User creator,
@@ -258,11 +177,7 @@ public class OfferController implements IOfferController {
     );
   }
 
-  /**
-   * Deletes an existing offer from the database
-   * @param id ID of the offer to delete
-   * @throws GenericServiceException if there is no offer with the given ID
-   */
+  @Override
   public void delete(long id) throws GenericServiceException {
     try {
       offerService.delete(
@@ -274,12 +189,7 @@ public class OfferController implements IOfferController {
     }
   }
 
-  /**
-   * Gets all offers from the database that were created by a user
-   * @param user {@link User} whose offers shall be searched
-   * @return List of OfferDTOs of offers that were created by the user
-   * @throws GenericServiceException
-   */
+  @Override
   public List<OfferDTO> getOffersCreatedByUser(User user)
     throws GenericServiceException {
     return modelMapper.offersToOfferDTOs(
@@ -287,32 +197,18 @@ public class OfferController implements IOfferController {
     );
   }
 
-  /**
-   * Looks for fitting offers in the database
-   *
-   * @param filter {@link Filter} to hold search settings.
-   * @return (Array)List of offers that fit to the given Filter
-   * @throws GenericServiceException
-   */
+  @Override
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
     return offerService.getFilteredOffers(filter);
   }
 
-  /**
-   * Promotes an offer, s.t. it is highlighted next to the normal offers
-   * @param offerID ID of the offer to promote
-   * @throws GenericServiceException
-   */
+  @Override
   public OfferDTO promoteOffer(long offerID) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(offerService.promoteOffer(offerID));
   }
 
-  /**
-   * Degrades an offer, s.t. it is just seen like any other offer
-   * @param offerID ID of the offer to degrade
-   * @throws GenericServiceException
-   */
+  @Override
   public OfferDTO degradeOffer(long offerID) throws GenericServiceException {
     return modelMapper.offerToOfferDTO(offerService.degradeOffer(offerID));
   }

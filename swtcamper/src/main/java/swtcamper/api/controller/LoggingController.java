@@ -3,8 +3,10 @@ package swtcamper.api.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.contract.interfaces.ILoggingController;
+import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
 
@@ -14,14 +16,20 @@ public class LoggingController implements ILoggingController {
   @Autowired
   private LoggingService loggingService;
 
-  public void log(LoggingMessageDTO loggingMessageDTO) {
-    loggingService.log(loggingMessageDTO);
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Override
+  public void log(LoggingMessage loggingMessage) {
+    loggingService.log(modelMapper.LoggingMessageToLoggingMessageDTO(loggingMessage));
   }
 
+  @Override
   public List<LoggingMessageDTO> getAllLogMessages() {
     return loggingService.getAllLogMessages();
   }
 
+  @Override
   public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
     return loggingService.getLogForUser(selectedUser);
   }

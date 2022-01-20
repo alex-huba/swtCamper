@@ -26,10 +26,12 @@ public class BookingController implements IBookingController {
   @Autowired
   private UserController userController;
 
+  @Override
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
   }
 
+  @Override
   public List<Booking> getBookingsForUser(User user) {
     return bookingService.getBookingsForUser(user);
   }
@@ -109,6 +111,7 @@ public class BookingController implements IBookingController {
     bookingService.reject(bookingID);
   }
 
+  @Override
   public List<OfferDTO> getAvailableOffers(
     LocalDate startDate,
     LocalDate endDate

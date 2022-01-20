@@ -14,18 +14,22 @@ public class UserReportController implements IUserReportController {
   @Autowired
   private UserReportService userReportService;
 
+  @Override
   public UserReport create(UserReport userReport) {
     return userReportService.create(userReport);
   }
 
+  @Override
   public List<UserReport> getAllUserReports() {
     return userReportService.getAllUserReports();
   }
 
+  @Override
   public UserReport accept(long userID) throws GenericServiceException {
     return userReportService.acceptUserReport(userID);
   }
 
+  @Override
   public UserReport reject(long userID) throws GenericServiceException {
     return userReportService.rejectUserReport(userID);
   }

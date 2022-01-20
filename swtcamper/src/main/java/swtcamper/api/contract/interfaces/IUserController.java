@@ -8,6 +8,8 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
 
+import java.util.ArrayList;
+
 public interface IUserController {
   /**
    * see {@link UserService#create}
@@ -25,12 +27,23 @@ public interface IUserController {
 
   User getLoggedInUser();
 
+  ArrayList<User> getAllUsers() throws GenericServiceException;
+
+  void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+          throws GenericServiceException;
+
+  void removeExcludedRenterForCurrentlyLoggedInUser(
+          long idOfRenterToInclude
+  ) throws GenericServiceException;
+
   /**
    * see {@link UserService#login}
    * @return
    */
   UserDTO login(String username, String password)
     throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
+
+  void logout();
 
   /**
    * see {@link UserService#isUsernameFree}

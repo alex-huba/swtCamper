@@ -72,7 +72,6 @@ public class BookingService {
       .save(new Booking(user, offer, startDate, endDate))
       .getId();
     loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -80,7 +79,6 @@ public class BookingService {
             user.getUsername(),
             offer.getOfferID()
           )
-        )
       )
     );
     // add the bookingID to the offer
@@ -135,7 +133,6 @@ public class BookingService {
       booking.setActive(active);
 
       loggingController.log(
-        modelMapper.LoggingMessageToLoggingMessageDTO(
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
@@ -144,7 +141,6 @@ public class BookingService {
               user.getUsername()
             )
           )
-        )
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -172,7 +168,6 @@ public class BookingService {
       booking.setActive(true);
 
       loggingController.log(
-        modelMapper.LoggingMessageToLoggingMessageDTO(
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
@@ -180,7 +175,6 @@ public class BookingService {
               bookingID,
               user.getUsername()
             )
-          )
         )
       );
       // Save update back to database
@@ -209,7 +203,6 @@ public class BookingService {
       booking.setActive(false);
 
       loggingController.log(
-        modelMapper.LoggingMessageToLoggingMessageDTO(
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
@@ -218,7 +211,6 @@ public class BookingService {
               user.getUsername()
             )
           )
-        )
       );
       // Save update back to database
       return bookingRepository.save(booking);
@@ -262,7 +254,6 @@ public class BookingService {
           // then delete the booking
           bookingRepository.deleteById(bookingID);
           loggingController.log(
-            modelMapper.LoggingMessageToLoggingMessageDTO(
               new LoggingMessage(
                 LoggingLevel.INFO,
                 String.format(
@@ -271,7 +262,6 @@ public class BookingService {
                   user.getUsername()
                 )
               )
-            )
           );
         } else {
           throw new GenericServiceException(

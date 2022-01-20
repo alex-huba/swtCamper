@@ -157,7 +157,6 @@ public class OfferService {
     );
     long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
     loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -165,20 +164,17 @@ public class OfferService {
             newVehicleId,
             creator.getUsername()
           )
-        )
       )
     );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
             "New offer with ID %s created by user %s.",
             newOfferId,
             creator.getUsername()
-          )
         )
       )
     );
@@ -326,7 +322,6 @@ public class OfferService {
         vehicle.setVehicleFeatures(vehicleFeatures);
         vehicleRepository.save(vehicle);
         loggingController.log(
-          modelMapper.LoggingMessageToLoggingMessageDTO(
             new LoggingMessage(
               LoggingLevel.INFO,
               String.format(
@@ -334,7 +329,6 @@ public class OfferService {
                 vehicle.getVehicleID(),
                 user.getUsername()
               )
-            )
           )
         );
 
@@ -350,7 +344,6 @@ public class OfferService {
         offer.setRentalConditions(rentalConditions);
         offer.setBlockedDates(blockedDates);
         loggingController.log(
-          modelMapper.LoggingMessageToLoggingMessageDTO(
             new LoggingMessage(
               LoggingLevel.INFO,
               String.format(
@@ -358,7 +351,6 @@ public class OfferService {
                 offer.getOfferID(),
                 user.getUsername()
               )
-            )
           )
         );
         return offerRepository.save(offer);
@@ -452,14 +444,12 @@ public class OfferService {
     try {
       offerRepository.deleteById(id);
       loggingController.log(
-        modelMapper.LoggingMessageToLoggingMessageDTO(
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
               "Offer with ID %s got deleted by user %s.",
               id,
               user.getUsername()
-            )
           )
         )
       );
@@ -638,7 +628,6 @@ public class OfferService {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(true);
     loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -646,7 +635,6 @@ public class OfferService {
             offerID,
             userService.getLoggedInUser().getUsername()
           )
-        )
       )
     );
     return offerRepository.save(offer);
@@ -656,7 +644,6 @@ public class OfferService {
     Offer offer = getOfferById(offerID);
     offer.setPromoted(false);
     loggingController.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -664,7 +651,6 @@ public class OfferService {
             offerID,
             userService.getLoggedInUser().getUsername()
           )
-        )
       )
     );
     return offerRepository.save(offer);

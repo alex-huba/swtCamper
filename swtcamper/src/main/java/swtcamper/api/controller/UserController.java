@@ -22,6 +22,7 @@ public class UserController implements IUserController {
   @Autowired
   private ModelMapper modelMapper;
 
+  @Override
   public UserDTO register(
     String username,
     String password,
@@ -46,19 +47,23 @@ public class UserController implements IUserController {
     );
   }
 
+  @Override
   public User getLoggedInUser() {
     return userService.getLoggedInUser();
   }
 
+  @Override
   public ArrayList<User> getAllUsers() throws GenericServiceException {
     return new ArrayList<>(userService.user());
   }
 
+  @Override
   public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
     throws GenericServiceException {
     userService.excludeRenterForCurrentlyLoggedInUser(idOfRenterToExclude);
   }
 
+  @Override
   public void removeExcludedRenterForCurrentlyLoggedInUser(
     long idOfRenterToInclude
   ) throws GenericServiceException {
@@ -79,6 +84,7 @@ public class UserController implements IUserController {
     }
   }
 
+  @Override
   public void logout() {
     userService.setLoggedInUser(null);
   }
