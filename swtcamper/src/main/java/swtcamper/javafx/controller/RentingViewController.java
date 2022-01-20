@@ -350,7 +350,7 @@ public class RentingViewController {
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     // and load the first chunk
-    loadData(subListsList.size() > 0 ? subListsList.get(0) : new ArrayList<>());
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
   }
 
   /**
@@ -410,7 +410,7 @@ public class RentingViewController {
     Label header = new Label(
       String.format(
         "%s Angebote für Sie",
-        offersList.size() > 0 ? "Passende" : "Keine passenden"
+        !offersList.isEmpty() ? "Passende" : "Keine passenden"
       )
     );
     header.setStyle("-fx-font-size: 30");
@@ -439,10 +439,9 @@ public class RentingViewController {
 
       Image image;
       if (
-        pictureController
+        !pictureController
           .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .size() >
-        0
+          .isEmpty()
       ) {
         image =
           new Image(
@@ -532,7 +531,7 @@ public class RentingViewController {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
-    if (offersList.size() > 0) addPagination();
+    if (!offersList.isEmpty()) addPagination();
   }
 
   /**

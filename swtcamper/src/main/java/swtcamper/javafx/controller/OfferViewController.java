@@ -196,7 +196,7 @@ public class OfferViewController {
     rentalConditionsVBox.getChildren().clear();
     if (
       offer.getRentalConditions() != null &&
-      offer.getRentalConditions().size() > 0
+      !offer.getRentalConditions().isEmpty()
     ) {
       for (String rentalCondition : offer.getRentalConditions()) {
         rentalConditionsVBox

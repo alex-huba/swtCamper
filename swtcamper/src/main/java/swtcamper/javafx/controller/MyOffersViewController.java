@@ -64,10 +64,9 @@ public class MyOffersViewController {
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
       if (
-        pictureController
+        !pictureController
           .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .size() >
-        0
+          .isEmpty()
       ) {
         image =
           new Image(

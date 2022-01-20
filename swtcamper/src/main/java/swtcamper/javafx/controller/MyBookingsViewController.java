@@ -68,7 +68,7 @@ public class MyBookingsViewController {
       .filter(booking -> !booking.isRejected())
       .collect(Collectors.toList());
 
-    if (bookingList.size() > 0) {
+    if (!bookingList.isEmpty()) {
       // create a card for each booking request
       for (Booking booking : bookingList) {
         String vehicleType = booking
@@ -231,7 +231,7 @@ public class MyBookingsViewController {
       }
     }
 
-    if (rentingList.size() > 0) {
+    if (!rentingList.isEmpty()) {
       // create a card for each booking request
       for (Booking booking : rentingList) {
         String vehicleType = booking

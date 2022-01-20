@@ -200,7 +200,7 @@ public class UserService {
     User user = getLoggedInUser();
     ArrayList<Long> excludedRenters = getLoggedInUser().getExcludedRenters() ==
       null ||
-      getLoggedInUser().getExcludedRenters().size() == 0
+      getLoggedInUser().getExcludedRenters().isEmpty()
       ? new ArrayList<>()
       : getLoggedInUser().getExcludedRenters();
     excludedRenters.add(idOfRenterToExclude);
