@@ -32,9 +32,6 @@ public class MainViewController {
   public final boolean startNavigationHidden = true;
   public final String startPageAfterLogin = "home";
 
-  @FXML
-  public Label globalHeaderLabel;
-
   @Autowired
   private ModelMapper modelMapper;
 
@@ -81,10 +78,10 @@ public class MainViewController {
   private ApproveNewProvidersViewController approveNewProvidersViewController;
 
   @Autowired
-  private OfferViewController offerViewController;
-
-  @Autowired
   private DealHistoryViewController dealHistoryViewController;
+
+  @FXML
+  public Label globalHeaderLabel;
 
   @FXML
   public AnchorPane mainStage;

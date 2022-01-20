@@ -249,7 +249,7 @@
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="180.0" styleClass="descriptionLabel" text="Bilder:" />
-                                        <HBox fx:id="picturesHbox" maxHeight="70.0" maxWidth="500.0" prefHeight="70.0" prefWidth="500.0" spacing="2.0" style="-fx-border-color: gray; -fx-border-radius: 5;">
+                                        <HBox fx:id="picturesHBox" maxHeight="70.0" maxWidth="500.0" prefHeight="70.0" prefWidth="500.0" spacing="2.0" style="-fx-border-color: gray; -fx-border-radius: 5;">
                                             <children>
                                                 <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#importFileChooserAction" style="-fx-background-color: white; -fx-border-color: gray; -fx-border-radius: 10;">
                                                     <graphic>

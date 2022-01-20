@@ -59,8 +59,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @Autowired
   private ValidationHelper validationHelper;
 
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
-  LongStringConverter longStringConverter = new LongStringConverter();
+  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private final LongStringConverter longStringConverter = new LongStringConverter();
 
   @FXML
   public TextField titleTextField;
@@ -138,7 +138,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public CheckBox fridgeCheckBox;
 
   @FXML
-  public HBox picturesHbox;
+  public HBox picturesHBox;
 
   @FXML
   public Button placeOfferButton;
@@ -156,9 +156,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private DatePicker endDatePicker;
 
   @FXML
-  private ListView blockedDatesListView;
+  private ListView<Pair> blockedDatesListView;
 
-  private ArrayList<Long> bookings = new ArrayList<>();
+  private final ArrayList<Long> bookings = new ArrayList<>();
 
   private List<String> rentalConditions = new ArrayList<>();
 
@@ -183,19 +183,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private VehicleRepository vehicleRepository;
 
   @Autowired
-  private BookingController bookingController;
-
-  @Autowired
-  private OfferRepository offerRepository;
-
-  @Autowired
-  private BookingRepository bookingRepository;
-
-  @Autowired
   private OfferService offerService;
 
   @Autowired
-  BookingService bookingService;
+  private BookingService bookingService;
 
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
@@ -531,9 +522,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void loadPictures(List<Picture> pictureList) {
-    picturesHbox
+    picturesHBox
       .getChildren()
-      .subList(1, picturesHbox.getChildren().size())
+      .subList(1, picturesHBox.getChildren().size())
       .clear();
 
     for (Picture picture : pictureList) {
@@ -554,7 +545,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       HBox imageBox = new HBox(thumbnail, deleteBtn);
       imageBox.setSpacing(-15);
 
-      picturesHbox.getChildren().add(imageBox);
+      picturesHBox.getChildren().add(imageBox);
     }
   }
 
@@ -578,8 +569,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       FXCollections.observableArrayList(VehicleType.values())
     );
     vehicleTypeComboBox.setValue(null);
-    //TODO braucht man die Zeile unten?
-    //vehicleTypeComboBox.getSelectionModel().clearSelection();
     brandTextField.clear();
     modelTextField.clear();
     constructionYearTextField.clear();
@@ -593,8 +582,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     transmissionComboBox.setValue(null);
     seatsComboBox.setValue(null);
     bedsComboBox.setValue(null);
-    //TODO siehe kommentar oben
-    transmissionComboBox.getSelectionModel().clearSelection();
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -604,7 +591,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fridgeCheckBox.setSelected(false);
 
     pictures = new ArrayList<>();
-    picturesHbox.getChildren().remove(1, picturesHbox.getChildren().size());
+    picturesHBox.getChildren().remove(1, picturesHBox.getChildren().size());
 
     startDatePicker.setValue(null);
     endDatePicker.setValue(null);

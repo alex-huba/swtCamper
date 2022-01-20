@@ -57,12 +57,12 @@ public class DealHistoryViewController {
       .stream()
       .filter(booking -> booking.isActive() || booking.isRejected())
       .filter(booking ->
-        Objects.equals(
-          booking.getRenter().getId(),
+
+          booking.getRenter().getId().equals(
           userController.getLoggedInUser().getId()
         ) ||
-        Objects.equals(
-          booking.getOffer().getCreator().getId(),
+
+          booking.getOffer().getCreator().getId().equals(
           userController.getLoggedInUser().getId()
         )
       )
@@ -131,7 +131,7 @@ public class DealHistoryViewController {
 
       // check if booking is rented or provided
       if (
-        booking.getRenter().getId() == userController.getLoggedInUser().getId()
+              booking.getRenter().getId().equals(userController.getLoggedInUser().getId())
       ) {
         bookingVBox.setStyle("-fx-background-radius: 20; -fx-padding: 10;");
         bookingVBox.getStyleClass().add("bg-purple");
