@@ -538,23 +538,37 @@ public class OfferService {
               offerDTO.getPrice() <= filter.getMaxPricePerDay()
             ) &&
             (
-              filter.getFuelType() != null &&
-              offerDTO.getOfferedObject().getVehicleFeatures().getFuelType() !=
-              null &&
-              offerDTO
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getFuelType()
-                .equals(filter.getFuelType())
+              (
+                filter.getFuelType() == null ||
+                (
+                  !offerDTO
+                    .getOfferedObject()
+                    .getVehicleFeatures()
+                    .getVehicleType()
+                    .equals(VehicleType.TRAILER) &&
+                  offerDTO
+                    .getOfferedObject()
+                    .getVehicleFeatures()
+                    .getFuelType()
+                    .equals(filter.getFuelType())
+                )
+              )
             ) &&
             (
               filter.getTransmissionType() == null ||
-              offerDTO
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getTransmission()
-                .toUpperCase()
-                .equals(filter.getTransmissionType().toString())
+              (
+                !offerDTO
+                  .getOfferedObject()
+                  .getVehicleFeatures()
+                  .getVehicleType()
+                  .equals(VehicleType.TRAILER) &&
+                offerDTO
+                  .getOfferedObject()
+                  .getVehicleFeatures()
+                  .getTransmission()
+                  .toUpperCase()
+                  .equals(filter.getTransmissionType().toString())
+              )
             ) &&
             (
               filter.getSeatAmount() == 0 ||

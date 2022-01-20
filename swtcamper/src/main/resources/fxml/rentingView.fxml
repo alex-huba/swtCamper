@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootVBOX" stylesheets="@../styles/rentingview.css"
-      xmlns="http://javafx.com/javafx/17" fx:controller="swtcamper.javafx.controller.RentingViewController">
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
     <children>
         <TitledPane styleClass="bg-warning" text="Filter benutzen">
             <content>
@@ -18,51 +28,39 @@
                                     <children>
                                         <VBox spacing="5.0">
                                             <children>
-                                                <Label text="Fahrzeug:"/>
+                                                <Label text="Fahrzeug:" />
                                                 <HBox spacing="5.0">
                                                     <children>
                                                         <VBox spacing="5.0">
                                                             <children>
-                                                                <TextField fx:id="vehicleBrandTextField"
-                                                                           promptText="Fahrzeughersteller"/>
+                                                                <TextField fx:id="vehicleBrandTextField" promptText="Fahrzeughersteller" />
                                                                 <HBox spacing="2.0">
                                                                     <children>
-                                                                        <ComboBox fx:id="vehicleTypeComboBox"
-                                                                                  prefWidth="120.0"
-                                                                                  promptText="Fahrzeugtyp"/>
-                                                                        <Button fx:id="resetVehicleTypeBtn"
-                                                                                mnemonicParsing="false"
-                                                                                onAction="#resetVehicleTypeComboBox"
-                                                                                text="X">
+                                                                        <ComboBox fx:id="vehicleTypeComboBox" prefWidth="120.0" promptText="Fahrzeugtyp" />
+                                                                        <Button fx:id="resetVehicleTypeBtn" mnemonicParsing="false" onAction="#resetVehicleTypeComboBox" text="X">
                                                                             <styleClass>
-                                                                                <String fx:value="bg-danger"/>
-                                                                                <String fx:value="radius-30"/>
-                                                                                <String fx:value="resetBtn_small"/>
+                                                                                <String fx:value="bg-danger" />
+                                                                                <String fx:value="radius-30" />
+                                                                                <String fx:value="resetBtn_small" />
                                                                             </styleClass>
                                                                             <font>
-                                                                                <Font size="8.0"/>
+                                                                                <Font size="8.0" />
                                                                             </font>
                                                                         </Button>
                                                                     </children>
                                                                 </HBox>
-                                                                <TextField fx:id="constructionYearTextField"
-                                                                           promptText="Baujahr"/>
+                                                                <TextField fx:id="constructionYearTextField" promptText="Baujahr" />
                                                                 <HBox spacing="2.0">
                                                                     <children>
-                                                                        <ComboBox fx:id="fuelTypeComboBox"
-                                                                                  prefWidth="120.0"
-                                                                                  promptText="Kraftstoff"/>
-                                                                        <Button fx:id="resetFuelTypeBtn"
-                                                                                mnemonicParsing="false"
-                                                                                onAction="#resetFuelTypeComboBox"
-                                                                                text="X">
+                                                                        <ComboBox fx:id="fuelTypeComboBox" prefWidth="120.0" promptText="Kraftstoff" />
+                                                                        <Button fx:id="resetFuelTypeBtn" mnemonicParsing="false" onAction="#resetFuelTypeComboBox" text="X">
                                                                             <styleClass>
-                                                                                <String fx:value="bg-danger"/>
-                                                                                <String fx:value="radius-30"/>
-                                                                                <String fx:value="resetBtn_small"/>
+                                                                                <String fx:value="bg-danger" />
+                                                                                <String fx:value="radius-30" />
+                                                                                <String fx:value="resetBtn_small" />
                                                                             </styleClass>
                                                                             <font>
-                                                                                <Font size="8.0"/>
+                                                                                <Font size="8.0" />
                                                                             </font>
                                                                         </Button>
                                                                     </children>
@@ -73,60 +71,45 @@
                                                             <children>
                                                                 <HBox spacing="2.0">
                                                                     <children>
-                                                                        <ComboBox fx:id="seatAmountComboBox"
-                                                                                  prefWidth="120.0"
-                                                                                  promptText="Platzanzahl"/>
-                                                                        <Button fx:id="resetSeatAmountBtn"
-                                                                                mnemonicParsing="false"
-                                                                                onAction="#resetSeatAmountComboBox"
-                                                                                text="X">
+                                                                        <ComboBox fx:id="seatAmountComboBox" prefWidth="120.0" promptText="Platzanzahl" />
+                                                                        <Button fx:id="resetSeatAmountBtn" mnemonicParsing="false" onAction="#resetSeatAmountComboBox" text="X">
                                                                             <styleClass>
-                                                                                <String fx:value="bg-danger"/>
-                                                                                <String fx:value="radius-30"/>
-                                                                                <String fx:value="resetBtn_small"/>
+                                                                                <String fx:value="bg-danger" />
+                                                                                <String fx:value="radius-30" />
+                                                                                <String fx:value="resetBtn_small" />
                                                                             </styleClass>
                                                                             <font>
-                                                                                <Font size="8.0"/>
+                                                                                <Font size="8.0" />
                                                                             </font>
                                                                         </Button>
                                                                     </children>
                                                                 </HBox>
                                                                 <HBox spacing="2.0">
                                                                     <children>
-                                                                        <ComboBox fx:id="bedAmountComboBox"
-                                                                                  prefWidth="120.0"
-                                                                                  promptText="Bettenanzahl"/>
-                                                                        <Button fx:id="resetBedAmountBtn"
-                                                                                mnemonicParsing="false"
-                                                                                onAction="#resetBedAmountComboBox"
-                                                                                text="X">
+                                                                        <ComboBox fx:id="bedAmountComboBox" prefWidth="120.0" promptText="Bettenanzahl" />
+                                                                        <Button fx:id="resetBedAmountBtn" mnemonicParsing="false" onAction="#resetBedAmountComboBox" text="X">
                                                                             <styleClass>
-                                                                                <String fx:value="bg-danger"/>
-                                                                                <String fx:value="radius-30"/>
-                                                                                <String fx:value="resetBtn_small"/>
+                                                                                <String fx:value="bg-danger" />
+                                                                                <String fx:value="radius-30" />
+                                                                                <String fx:value="resetBtn_small" />
                                                                             </styleClass>
                                                                             <font>
-                                                                                <Font size="8.0"/>
+                                                                                <Font size="8.0" />
                                                                             </font>
                                                                         </Button>
                                                                     </children>
                                                                 </HBox>
                                                                 <HBox spacing="2.0">
                                                                     <children>
-                                                                        <ComboBox fx:id="transmissionComboBox"
-                                                                                  prefWidth="120.0"
-                                                                                  promptText="Schaltung"/>
-                                                                        <Button fx:id="resetTransmissionTypeBtn"
-                                                                                mnemonicParsing="false"
-                                                                                onAction="#resetTransmissionTypeComboBox"
-                                                                                text="X">
+                                                                        <ComboBox fx:id="transmissionComboBox" prefWidth="120.0" promptText="Schaltung" />
+                                                                        <Button fx:id="resetTransmissionTypeBtn" mnemonicParsing="false" onAction="#resetTransmissionTypeComboBox" text="X">
                                                                             <styleClass>
-                                                                                <String fx:value="bg-danger"/>
-                                                                                <String fx:value="radius-30"/>
-                                                                                <String fx:value="resetBtn_small"/>
+                                                                                <String fx:value="bg-danger" />
+                                                                                <String fx:value="radius-30" />
+                                                                                <String fx:value="resetBtn_small" />
                                                                             </styleClass>
                                                                             <font>
-                                                                                <Font size="8.0"/>
+                                                                                <Font size="8.0" />
                                                                             </font>
                                                                         </Button>
                                                                     </children>
@@ -140,33 +123,22 @@
                                         </VBox>
                                         <VBox spacing="5.0">
                                             <children>
-                                                <Label text="Features:"/>
+                                                <Label text="Features:" />
                                                 <HBox>
                                                     <children>
                                                         <VBox spacing="13.0">
                                                             <children>
-                                                                <CheckBox fx:id="showerCheckBox" mnemonicParsing="false"
-                                                                          styleClass="text-dark" text="Dusche"/>
-                                                                <CheckBox fx:id="toiletCheckBox" mnemonicParsing="false"
-                                                                          styleClass="text-dark" text="Toilette"/>
-                                                                <CheckBox fx:id="kitchenCheckBox"
-                                                                          mnemonicParsing="false" styleClass="text-dark"
-                                                                          text="Küche"/>
-                                                                <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false"
-                                                                          styleClass="text-dark" text="Kühlschrank"/>
+                                                                <CheckBox fx:id="showerCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dusche" />
+                                                                <CheckBox fx:id="toiletCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Toilette" />
+                                                                <CheckBox fx:id="kitchenCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Küche" />
+                                                                <CheckBox fx:id="fridgeCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Kühlschrank" />
                                                             </children>
                                                         </VBox>
                                                         <VBox spacing="13.0">
                                                             <children>
-                                                                <CheckBox fx:id="roofTentCheckBox"
-                                                                          mnemonicParsing="false" styleClass="text-dark"
-                                                                          text="Dachzelt"/>
-                                                                <CheckBox fx:id="roofRackCheckBox"
-                                                                          mnemonicParsing="false" styleClass="text-dark"
-                                                                          text="Dachgepäckträger"/>
-                                                                <CheckBox fx:id="bikeRackCheckBox"
-                                                                          mnemonicParsing="false" styleClass="text-dark"
-                                                                          text="Fahrradträger"/>
+                                                                <CheckBox fx:id="roofTentCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachzelt" />
+                                                                <CheckBox fx:id="roofRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Dachgepäckträger" />
+                                                                <CheckBox fx:id="bikeRackCheckBox" mnemonicParsing="false" styleClass="text-dark" text="Fahrradträger" />
                                                             </children>
                                                         </VBox>
                                                     </children>
@@ -175,41 +147,38 @@
                                         </VBox>
                                         <VBox spacing="5.0">
                                             <children>
-                                                <Label text="Mieten:"/>
-                                                <TextField fx:id="locationTextField" promptText="Abholort"/>
-                                                <TextField fx:id="maxPricePerDayTextField"
-                                                           promptText="Max. Preis pro Tag"/>
+                                                <Label text="Mieten:" />
+                                                <TextField fx:id="locationTextField" promptText="Abholort" />
+                                                <TextField fx:id="maxPricePerDayTextField" promptText="Max. Preis pro Tag" />
                                                 <VBox spacing="5.0">
                                                     <HBox spacing="2.0">
-                                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:"/>
-                                                        <Button fx:id="resetStartDatePickerBtn" mnemonicParsing="false"
-                                                                onAction="#resetStartDatePicker" text="X">
+                                                        <DatePicker fx:id="startDatePicker" promptText="Beginn:" />
+                                                        <Button fx:id="resetStartDatePickerBtn" mnemonicParsing="false" onAction="#resetStartDatePicker" text="X">
                                                             <styleClass>
-                                                                <String fx:value="bg-danger"/>
-                                                                <String fx:value="radius-30"/>
-                                                                <String fx:value="resetBtn_small"/>
+                                                                <String fx:value="bg-danger" />
+                                                                <String fx:value="radius-30" />
+                                                                <String fx:value="resetBtn_small" />
                                                             </styleClass>
                                                             <font>
-                                                                <Font size="8.0"/>
+                                                                <Font size="8.0" />
                                                             </font>
                                                         </Button>
                                                     </HBox>
                                                     <HBox spacing="2.0">
-                                                        <DatePicker fx:id="endDatePicker" promptText="Ende:"/>
-                                                        <Button fx:id="resetEndDatePickerBtn" mnemonicParsing="false"
-                                                                onAction="#resetEndDatePicker" text="X">
+                                                        <DatePicker fx:id="endDatePicker" promptText="Ende:" />
+                                                        <Button fx:id="resetEndDatePickerBtn" mnemonicParsing="false" onAction="#resetEndDatePicker" text="X">
                                                             <styleClass>
-                                                                <String fx:value="bg-danger"/>
-                                                                <String fx:value="radius-30"/>
-                                                                <String fx:value="resetBtn_small"/>
+                                                                <String fx:value="bg-danger" />
+                                                                <String fx:value="radius-30" />
+                                                                <String fx:value="resetBtn_small" />
                                                             </styleClass>
                                                             <font>
-                                                                <Font size="8.0"/>
+                                                                <Font size="8.0" />
                                                             </font>
                                                         </Button>
                                                     </HBox>
                                                     <VBox.margin>
-                                                        <Insets top="10.0"/>
+                                                        <Insets top="10.0" />
                                                     </VBox.margin>
                                                 </VBox>
                                             </children>
@@ -218,63 +187,60 @@
                                 </HBox>
                             </children>
                             <padding>
-                                <Insets left="5.0" top="5.0"/>
+                                <Insets left="5.0" top="5.0" />
                             </padding>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="419.0" layoutY="156.0" spacing="10.0"
-                              AnchorPane.rightAnchor="14.0">
+                        <HBox alignment="CENTER" layoutX="419.0" layoutY="156.0" spacing="10.0" AnchorPane.rightAnchor="14.0">
                             <children>
-                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch"
-                                        text="Suchen">
+                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#startSearch" text="Suchen">
                                     <font>
-                                        <Font name="System Bold" size="12.0"/>
+                                        <Font name="System Bold" size="12.0" />
                                     </font>
                                     <styleClass>
-                                        <String fx:value="radius-20"/>
-                                        <String fx:value="border-dark"/>
-                                        <String fx:value="bg-primary"/>
+                                        <String fx:value="radius-20" />
+                                        <String fx:value="border-dark" />
+                                        <String fx:value="bg-primary" />
                                     </styleClass>
                                 </Button>
-                                <Button fx:id="resetFilterButton" mnemonicParsing="false" onAction="#resetFilter"
-                                        text="Zurücksetzen">
+                                <Button fx:id="resetFilterButton" mnemonicParsing="false" onAction="#resetFilter" text="Zurücksetzen">
                                     <font>
-                                        <Font name="System Bold" size="12.0"/>
+                                        <Font name="System Bold" size="12.0" />
                                     </font>
                                     <styleClass>
-                                        <String fx:value="radius-20"/>
-                                        <String fx:value="border-dark"/>
+                                        <String fx:value="radius-20" />
+                                        <String fx:value="border-dark" />
                                     </styleClass>
                                 </Button>
                             </children>
                         </HBox>
                     </children>
                     <padding>
-                        <Insets bottom="5.0" right="5.0"/>
+                        <Insets bottom="5.0" right="5.0" />
                     </padding>
                 </AnchorPane>
             </content>
         </TitledPane>
         <HBox fx:id="paginationHBox" alignment="CENTER" spacing="5.0">
             <children>
-                <Button mnemonicParsing="false" styleClass="bg-secondary" text="1"/>
-                <Button mnemonicParsing="false" styleClass="bg-secondary" text="2"/>
+                <Button mnemonicParsing="false" styleClass="bg-secondary" text="1" />
+                <Button mnemonicParsing="false" styleClass="bg-secondary" text="2" />
                 <HBox fx:id="offersPerPageHBox" alignment="CENTER" spacing="2.0">
                     <children>
-                        <ChoiceBox fx:id="offersPerPageChoiceBox" styleClass="bg-secondary"/>
-                        <Label style="-fx-font-size: 10;" text="Anzeigen pro Seite"/>
+                        <ChoiceBox fx:id="offersPerPageChoiceBox" styleClass="bg-secondary" />
+                        <Label style="-fx-font-size: 10;" text="Anzeigen pro Seite" />
                     </children>
                 </HBox>
             </children>
             <padding>
-                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
             </padding>
         </HBox>
         <ScrollPane fx:id="offerListScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
             <content>
-                <VBox fx:id="offerListRoot" alignment="CENTER" spacing="20"/>
+                <VBox fx:id="offerListRoot" alignment="CENTER" spacing="20" />
             </content>
             <padding>
-                <Insets left="10.0" right="10.0"/>
+                <Insets left="10.0" right="10.0" />
             </padding>
         </ScrollPane>
     </children>

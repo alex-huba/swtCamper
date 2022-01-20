@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -318,6 +320,23 @@ public class RentingViewController {
     offerListScroll.setPrefHeight(
       rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
+
+    // make it impossible to enter characters instead of numbers for number fields
+    constructionYearTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          constructionYearTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
+
+    maxPricePerDayTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          maxPricePerDayTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
   }
 
   /**
@@ -545,43 +564,49 @@ public class RentingViewController {
    */
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
-    if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
-      locationTextField.getText()
-    );
-    if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
-      vehicleTypeComboBox.getValue()
-    );
-    if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
-      vehicleBrandTextField.getText()
-    );
-    if (
-      !constructionYearTextField.getText().isEmpty()
-    ) newFilter.setConstructionYear(
-      Integer.parseInt(constructionYearTextField.getText())
-    );
-    if (
-      !maxPricePerDayTextField.getText().isEmpty()
-    ) newFilter.setMaxPricePerDay(
-      Integer.parseInt(maxPricePerDayTextField.getText())
-    );
-    if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
-      fuelTypeComboBox.getValue()
-    );
-    if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
-      transmissionComboBox.getValue()
-    );
-    if (seatAmountComboBox.getValue() != null) newFilter.setSeatAmount(
-      seatAmountComboBox.getValue()
-    );
-    if (bedAmountComboBox.getValue() != null) newFilter.setBedAmount(
-      bedAmountComboBox.getValue()
-    );
-    if (startDatePicker.getValue() != null) newFilter.setStartDate(
-      startDatePicker.getValue()
-    );
-    if (endDatePicker.getValue() != null) newFilter.setEndDate(
-      endDatePicker.getValue()
-    );
+    try {
+      if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
+        locationTextField.getText()
+      );
+      if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
+        vehicleTypeComboBox.getValue()
+      );
+      if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
+        vehicleBrandTextField.getText()
+      );
+      if (
+        !constructionYearTextField.getText().isEmpty()
+      ) newFilter.setConstructionYear(
+        Integer.parseInt(constructionYearTextField.getText())
+      );
+      if (
+        !maxPricePerDayTextField.getText().isEmpty()
+      ) newFilter.setMaxPricePerDay(
+        Integer.parseInt(maxPricePerDayTextField.getText())
+      );
+      if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
+        fuelTypeComboBox.getValue()
+      );
+      if (
+        transmissionComboBox.getValue() != null
+      ) newFilter.setTransmissionType(transmissionComboBox.getValue());
+      if (seatAmountComboBox.getValue() != null) newFilter.setSeatAmount(
+        seatAmountComboBox.getValue()
+      );
+      if (bedAmountComboBox.getValue() != null) newFilter.setBedAmount(
+        bedAmountComboBox.getValue()
+      );
+      if (startDatePicker.getValue() != null) newFilter.setStartDate(
+        startDatePicker.getValue()
+      );
+      if (endDatePicker.getValue() != null) newFilter.setEndDate(
+        endDatePicker.getValue()
+      );
+    } catch (NumberFormatException e) {
+      mainViewController.handleExceptionMessage(
+        "Bitte nutze für die Suche realistische Zahlen."
+      );
+    }
 
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
@@ -601,6 +626,7 @@ public class RentingViewController {
     constructionYearTextField.clear();
     maxPricePerDayTextField.clear();
     transmissionComboBox.setValue(null);
+    fuelTypeComboBox.setValue(null);
     seatAmountComboBox.setValue(null);
     bedAmountComboBox.setValue(null);
     roofTentCheckBox.setSelected(false);
