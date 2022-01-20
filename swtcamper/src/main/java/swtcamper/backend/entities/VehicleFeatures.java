@@ -1,7 +1,7 @@
 package swtcamper.backend.entities;
 
-import java.util.Objects;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class VehicleFeatures {

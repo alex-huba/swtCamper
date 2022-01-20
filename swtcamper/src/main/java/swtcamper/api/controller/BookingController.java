@@ -1,9 +1,5 @@
 package swtcamper.api.controller;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
@@ -16,6 +12,9 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.javafx.controller.MainViewController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class BookingController implements IBookingController {

@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

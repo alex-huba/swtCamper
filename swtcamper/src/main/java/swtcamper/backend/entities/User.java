@@ -1,7 +1,7 @@
 package swtcamper.backend.entities;
 
-import java.util.ArrayList;
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class User {

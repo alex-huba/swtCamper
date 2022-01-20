@@ -1,10 +1,11 @@
 package swtcamper.api.contract;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.util.Pair;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public interface IOfferController {
   List<OfferDTO> offers() throws GenericServiceException;

@@ -1,9 +1,10 @@
 package swtcamper.backend.entities;
 
+import swtcamper.api.contract.PictureDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import swtcamper.api.contract.PictureDTO;
 
 @Entity
 public class Picture implements IPicture {

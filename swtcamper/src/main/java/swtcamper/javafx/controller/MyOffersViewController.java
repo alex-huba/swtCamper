@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -19,6 +18,8 @@ import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+
+import java.util.Optional;
 
 @Component
 public class MyOffersViewController {

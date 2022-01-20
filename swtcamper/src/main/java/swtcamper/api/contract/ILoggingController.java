@@ -1,8 +1,8 @@
 package swtcamper.api.contract;
 
-import java.util.List;
-import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
+
+import java.util.List;
 
 public interface ILoggingController {
   void log(LoggingMessageDTO loggingMessageDTO);

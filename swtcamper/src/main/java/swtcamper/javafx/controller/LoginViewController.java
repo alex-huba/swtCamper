@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.Optional;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
@@ -14,6 +13,8 @@ import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
+
+import java.util.Optional;
 
 @Component
 public class LoginViewController implements EventHandler<KeyEvent> {
