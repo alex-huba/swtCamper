@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,20 @@ public class BookingService {
    */
   public List<Booking> getAllBookings() {
     return bookingRepository.findAll();
+  }
+
+  /**
+   * Get a list of all bookings that were created by a specified User
+   * @param user User to look for bookings created by him/her
+   * @return list of all bookings that were created by the user
+   */
+  public List<Booking> getBookingsForUser(User user) {
+    return getAllBookings()
+            .stream()
+            .filter(booking ->
+                    booking.getOffer().getCreator().getId().equals(user.getId())
+            )
+            .collect(Collectors.toList());
   }
 
   /**

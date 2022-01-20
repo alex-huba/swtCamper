@@ -25,11 +25,6 @@ public class LoggingController implements ILoggingController {
   }
 
   public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
-    return getAllLogMessages()
-      .stream()
-      .filter(loggingMessage ->
-        loggingMessage.getLoggingMessage().contains(selectedUser.getUsername())
-      )
-      .collect(Collectors.toList());
+    return loggingService.getLogForUser(selectedUser);
   }
 }

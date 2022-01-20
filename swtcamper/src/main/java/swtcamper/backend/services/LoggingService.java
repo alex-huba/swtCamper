@@ -1,6 +1,8 @@
 package swtcamper.backend.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.backend.entities.LoggingMessage;
+import swtcamper.backend.entities.User;
 import swtcamper.backend.repositories.LoggingRepository;
 
 @Service
@@ -59,5 +62,19 @@ public class LoggingService {
     return modelMapper.LoggingMessagesToLoggingMessageDTOs(
       loggingRepository.findAll()
     );
+  }
+
+  /**
+   * Get a list of all LogMessages related to a specific User
+   * @param selectedUser specified User to look for
+   * @return List of all LogMessages related to selectedUser
+   */
+  public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
+    return getAllLogMessages()
+            .stream()
+            .filter(loggingMessage ->
+                    loggingMessage.getLoggingMessage().contains(selectedUser.getUsername())
+            )
+            .collect(Collectors.toList());
   }
 }

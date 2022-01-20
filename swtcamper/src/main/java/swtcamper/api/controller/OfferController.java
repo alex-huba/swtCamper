@@ -52,15 +52,6 @@ public class OfferController implements IOfferController {
     return modelMapper.offersToOfferDTOs(offerService.offers());
   }
 
-  public List<OfferDTO> offersFilteredByDate(
-    LocalDate startDate,
-    LocalDate endDate
-  ) throws GenericServiceException {
-    return modelMapper.offersToOfferDTOs(
-      bookingService.getAvailableOffers(startDate, endDate)
-    );
-  }
-
   /**
    * Get a specific offer by its ID
    * @param id ID of the wanted offer
@@ -293,10 +284,7 @@ public class OfferController implements IOfferController {
    */
   public List<OfferDTO> getOffersCreatedByUser(User user)
     throws GenericServiceException {
-    return offers()
-      .stream()
-      .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))
-      .collect(Collectors.toList());
+    return modelMapper.offersToOfferDTOs(offerService.getOffersCreatedByUser(user));
   }
 
   /**
@@ -308,109 +296,7 @@ public class OfferController implements IOfferController {
    */
   public List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException {
-    return filter.isEmpty()
-      ? offers()
-      : offersFilteredByDate(filter.getStartDate(), filter.getEndDate())
-        .stream()
-        .filter(offerDTO ->
-          (
-            filter.getLocation() == null ||
-            offerDTO
-              .getLocation()
-              .toLowerCase()
-              .contains(filter.getLocation().toLowerCase())
-          ) &&
-          (
-            filter.getVehicleType() == null ||
-            offerDTO
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getVehicleType()
-              .equals(filter.getVehicleType())
-          ) &&
-          (
-            filter.getVehicleBrand() == null ||
-            offerDTO
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getMake()
-              .toLowerCase()
-              .contains(filter.getVehicleBrand().toLowerCase())
-          ) &&
-          (
-            filter.getConstructionYear() == 0 ||
-            Integer.parseInt(
-              offerDTO.getOfferedObject().getVehicleFeatures().getYear()
-            ) >=
-            filter.getConstructionYear()
-          ) &&
-          (
-            filter.getMaxPricePerDay() == 0 ||
-            offerDTO.getPrice() <= filter.getMaxPricePerDay()
-          ) &&
-          (
-            filter.getFuelType() == null ||
-            offerDTO
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getFuelType()
-              .equals(filter.getFuelType())
-          ) &&
-          (
-            filter.getTransmissionType() == null ||
-            offerDTO
-              .getOfferedObject()
-              .getVehicleFeatures()
-              .getTransmission()
-              .toUpperCase()
-              .equals(filter.getTransmissionType().toString())
-          ) &&
-          (
-            filter.getSeatAmount() == 0 ||
-            offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >=
-            filter.getSeatAmount()
-          ) &&
-          (
-            filter.getBedAmount() == 0 ||
-            offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >=
-            filter.getBedAmount()
-          ) &&
-          evalCheckBoxes(offerDTO, filter)
-        )
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Evaluates whether one of the checkboxes in the offer does not equal to its value in the filter
-   * @param offerDTO Offer that shall be looked in
-   * @param filter {@link Filter} that holds the settings of the checkboxes
-   * @return true if all checkboxes in the offer equal to their values in the filter, false if there is at least one that does not
-   */
-  private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
-    List<Boolean> booleanList = new ArrayList<>();
-
-    if (filter.isRoofTent()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
-    );
-    if (filter.isRoofRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
-    );
-    if (filter.isBikeRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
-    );
-    if (filter.isShower()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
-    );
-    if (filter.isToilet()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
-    );
-    if (filter.isKitchen()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
-    );
-    if (filter.isFridge()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
-    );
-    return !booleanList.contains(false);
+    return offerService.getFilteredOffers(filter);
   }
 
   /**
