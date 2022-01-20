@@ -113,6 +113,7 @@ public class UserController implements IUserController {
     return userService.isEnabled(username);
   }
 
+  @Override
   public boolean isThereAnyDisabledUser() throws GenericServiceException {
     return userService.isThereAnyDisabledUser();
   }

@@ -84,31 +84,8 @@ public interface IOfferController {
   List<OfferDTO> getFilteredOffers(Filter filter)
     throws GenericServiceException;
 
-  private boolean evalCheckBoxes(OfferDTO offerDTO, Filter filter) {
-    List<Boolean> booleanList = new ArrayList<>();
+  OfferDTO promoteOffer(long offerID) throws GenericServiceException;
 
-    if (filter.isRoofTent()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
-    );
-    if (filter.isRoofRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
-    );
-    if (filter.isBikeRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
-    );
-    if (filter.isShower()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
-    );
-    if (filter.isToilet()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
-    );
-    if (filter.isKitchen()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
-    );
-    if (filter.isFridge()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
-    );
+  OfferDTO degradeOffer(long offerID) throws GenericServiceException;
 
-    return !booleanList.contains(false);
-  }
 }

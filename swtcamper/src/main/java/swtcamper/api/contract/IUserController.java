@@ -57,6 +57,8 @@ public interface IUserController {
    */
   boolean isEnabled(String username) throws UserDoesNotExistException;
 
+  boolean isThereAnyDisabledUser() throws GenericServiceException;
+
   /**
    * see {@link UserService#getUserById(long)}
    */
