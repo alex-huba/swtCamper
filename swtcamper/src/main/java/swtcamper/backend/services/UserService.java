@@ -119,6 +119,12 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  public boolean isThereAnyDisabledUser() throws GenericServiceException {
+    return user()
+            .stream()
+            .anyMatch(user -> !user.isEnabled());
+  }
+
   /**
    * Finds a specific user by its id.
    *

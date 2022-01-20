@@ -33,10 +33,7 @@ public class ApproveNewProvidersViewController {
 
     if (userController.countUser() > 0) {
       if (
-        userController
-          .getAllUsers()
-          .stream()
-          .anyMatch(user -> !user.isEnabled())
+        userController.isThereAnyDisabledUser()
       ) {
         for (User user : userController.getAllUsers()) {
           if (
