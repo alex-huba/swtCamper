@@ -987,11 +987,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     // add all newly needed pictures to the database
     for (Picture picture : pictures) {
       pictureController.create(
-        new PictureDTO(
-          picture.getPictureID(),
-          offeredObject.getVehicleID(),
-          picture.getPath()
-        )
+        picture
       );
     }
   }

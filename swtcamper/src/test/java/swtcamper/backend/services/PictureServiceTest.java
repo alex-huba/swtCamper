@@ -92,7 +92,7 @@ public class PictureServiceTest {
     mockPictureToPictureDTO(giveMeTestPicture());
 
     // When
-    pictureServiceUnderTest.create(giveMeTestPictureDTO());
+    pictureServiceUnderTest.create(modelMapper.pictureDTOToPicture(giveMeTestPictureDTO()));
 
     ArgumentCaptor<Picture> pictureArgumentCaptor = ArgumentCaptor.forClass(
       Picture.class
@@ -113,10 +113,10 @@ public class PictureServiceTest {
     when(modelMapper.picturesToPictureDTOs(any()))
       .thenReturn(giveMeListOfPicturesDTO());
 
-    List<PictureDTO> actual = pictureServiceUnderTest.getPicturesForVehicle(
+    List<Picture> actual = pictureServiceUnderTest.getPicturesForVehicle(
       giveMeTestPictureDTO().getVehicleID()
     );
-    PictureDTO actualPicture = actual.get(0);
+    Picture actualPicture = actual.get(0);
 
     List<PictureDTO> expected = new ArrayList<>();
     expected.add(giveMeTestPictureDTO());

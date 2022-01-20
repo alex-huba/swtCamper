@@ -88,6 +88,14 @@ public class ModelMapper {
     return offerDTOs;
   }
 
+  public List<Offer> offerDTOsToOffer(List<OfferDTO> offerDTOList) {
+    List<Offer> offerList = new ArrayList<>();
+    for (OfferDTO offerDTO : offerDTOList) {
+      offerList.add(offerDTOToOffer(offerDTO));
+    }
+    return offerList;
+  }
+
   public UserDTO userToUserDTO(User user) {
     return new UserDTO(
       user.getId(),
@@ -148,7 +156,7 @@ public class ModelMapper {
     return pictureDTOs;
   }
 
-  public LoggingMessageDTO LoggingMessageToLoggingMessageDTO(
+  public LoggingMessageDTO loggingMessageToLoggingMessageDTO(
     LoggingMessage loggingMessage
   ) {
     return new LoggingMessageDTO(
@@ -159,7 +167,7 @@ public class ModelMapper {
     );
   }
 
-  public LoggingMessage LoggingMessageDTOToLoggingMessage(
+  public LoggingMessage loggingMessageDTOToLoggingMessage(
     LoggingMessageDTO loggingMessageDTO
   ) {
     LoggingMessage loggingMessage = new LoggingMessage();
@@ -177,10 +185,22 @@ public class ModelMapper {
     List<LoggingMessageDTO> loggingMessageDTOList = new ArrayList<>();
     for (LoggingMessage loggingMessage : loggingMessageList) {
       loggingMessageDTOList.add(
-        LoggingMessageToLoggingMessageDTO(loggingMessage)
+        loggingMessageToLoggingMessageDTO(loggingMessage)
       );
     }
 
     return loggingMessageDTOList;
+  }
+
+  public UserReportDTO userReportToUserReportDTO(UserReport userReport) {
+    return new UserReportDTO(userReport.getId(),userReport.isActive(),userReport.getReporter(),userReport.getReportee(),userReport.getReportReason());
+  }
+
+  public List<UserReportDTO> userReportsToUserReportDTOs(List<UserReport> userReportList) {
+    List<UserReportDTO> userReportDTOList = new ArrayList<>();
+    for(UserReport userReport : userReportList) {
+      userReportDTOList.add(userReportToUserReportDTO(userReport));
+    }
+    return userReportDTOList;
   }
 }

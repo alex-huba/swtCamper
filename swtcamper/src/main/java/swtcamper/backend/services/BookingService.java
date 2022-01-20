@@ -29,9 +29,6 @@ public class BookingService {
   @Autowired
   private LoggingController loggingController;
 
-  @Autowired
-  private ModelMapper modelMapper;
-
   /**
    * Get a List of all available bookings
    * @return List of all available bookings

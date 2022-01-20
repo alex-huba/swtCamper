@@ -487,11 +487,11 @@ public class OfferService {
    * @return (Array)List of offers that fit to the given Filter
    * @throws GenericServiceException
    */
-  public List<OfferDTO> getFilteredOffers(Filter filter)
+  public List<Offer> getFilteredOffers(Filter filter)
     throws GenericServiceException {
     return filter.isEmpty()
-      ? modelMapper.offersToOfferDTOs(offers())
-      : bookingController
+      ? offers()
+      : modelMapper.offerDTOsToOffer(bookingController
         .getAvailableOffers(filter.getStartDate(), filter.getEndDate())
         .stream()
         .filter(offerDTO ->
@@ -559,7 +559,7 @@ public class OfferService {
           ) &&
           evalCheckBoxes(offerDTO, filter)
         )
-        .collect(Collectors.toList());
+        .collect(Collectors.toList()));
   }
 
   /**

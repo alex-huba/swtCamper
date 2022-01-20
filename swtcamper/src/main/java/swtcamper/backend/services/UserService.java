@@ -27,9 +27,6 @@ public class UserService {
   private LoggingController loggingController;
 
   @Autowired
-  private ModelMapper modelMapper;
-
-  @Autowired
   private HashHelper hashHelper;
 
   private User loggedInUser;

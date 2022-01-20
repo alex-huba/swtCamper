@@ -22,17 +22,17 @@ public class LoggingController implements ILoggingController {
   @Override
   public void log(LoggingMessage loggingMessage) {
     loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(loggingMessage)
+      modelMapper.loggingMessageToLoggingMessageDTO(loggingMessage)
     );
   }
 
   @Override
   public List<LoggingMessageDTO> getAllLogMessages() {
-    return loggingService.getAllLogMessages();
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(loggingService.getAllLogMessages());
   }
 
   @Override
   public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
-    return loggingService.getLogForUser(selectedUser);
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(loggingService.getLogForUser(selectedUser));
   }
 }

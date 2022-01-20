@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
@@ -19,13 +20,10 @@ public class UserReportService {
   private UserReportRepository userReportRepository;
 
   @Autowired
-  private LoggingService loggingService;
+  private LoggingController loggingController;
 
   @Autowired
   private UserController userController;
-
-  @Autowired
-  private ModelMapper modelMapper;
 
   /**
    * Creates a new {@link UserReport}
@@ -34,14 +32,9 @@ public class UserReportService {
    */
   public UserReport create(UserReport userReport) {
     UserReport reported = userReportRepository.save(
-      new UserReport(
-        userReport.getReporter(),
-        userReport.getReportee(),
-        userReport.getReportReason()
-      )
+      userReport
     );
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
+    loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -50,7 +43,6 @@ public class UserReportService {
             reported.getReportee().getUsername(),
             reported.getId()
           )
-        )
       )
     );
     return reported;
@@ -90,8 +82,7 @@ public class UserReportService {
     throws GenericServiceException {
     UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
+    loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -100,7 +91,6 @@ public class UserReportService {
             userController.getLoggedInUser().getUsername(),
             userReport.getReportee()
           )
-        )
       )
     );
     userController.blockUserById(userReport.getReportee().getId());
@@ -117,8 +107,7 @@ public class UserReportService {
     throws GenericServiceException {
     UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
+    loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -126,7 +115,6 @@ public class UserReportService {
             userReportID,
             userController.getLoggedInUser().getUsername()
           )
-        )
       )
     );
     return userReportRepository.save(userReport);
@@ -137,8 +125,7 @@ public class UserReportService {
    * @param id ID of the UserReport to delete
    */
   public void delete(long id) {
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
+    loggingController.log(
         new LoggingMessage(
           LoggingLevel.INFO,
           String.format(
@@ -147,7 +134,6 @@ public class UserReportService {
             userController.getLoggedInUser().getUsername()
           )
         )
-      )
     );
     userReportRepository.deleteById(id);
   }

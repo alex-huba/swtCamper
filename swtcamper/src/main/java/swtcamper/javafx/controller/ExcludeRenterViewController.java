@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.UserReportDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
@@ -200,14 +201,14 @@ public class ExcludeRenterViewController {
       Button reportButton = new Button("Diesen Nutzer melden");
       // determine whether there is another active report from this user about that user already
       boolean isThisUserAlreadyReportedByLoggedInUser = false;
-      for (UserReport userReport : userReportController.getAllUserReports()) {
+      for (UserReportDTO userReportDTO : userReportController.getAllUserReports()) {
         if (
-          userReport.getReportee().getId().equals(user.getId()) &&
-          userReport
+          userReportDTO.getReportee().getId().equals(user.getId()) &&
+          userReportDTO
             .getReporter()
             .getId()
             .equals(userController.getLoggedInUser().getId()) &&
-          userReport.isActive()
+          userReportDTO.isActive()
         ) {
           isThisUserAlreadyReportedByLoggedInUser = true;
           break;

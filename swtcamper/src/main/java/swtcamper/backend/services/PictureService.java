@@ -13,20 +13,17 @@ import swtcamper.backend.repositories.PictureRepository;
 public class PictureService {
 
   @Autowired
-  private ModelMapper modelMapper;
-
-  @Autowired
   private PictureRepository pictureRepository;
 
   /**
    * Saves a new {@link Picture} to the database
-   * @param pictureDTO DTO of new Picture to create
+   * @param picture new Picture to create
    * @return DTO of newly saved Picture
    */
-  public PictureDTO create(PictureDTO pictureDTO) {
-    return modelMapper.pictureToPictureDTO(
-      pictureRepository.save(modelMapper.pictureDTOToPicture(pictureDTO))
-    );
+  public Picture create(Picture picture) {
+    return
+      pictureRepository.save(picture)
+    ;
   }
 
   /**
@@ -34,14 +31,14 @@ public class PictureService {
    * @param vehicleId ID of the vehicle to get the pictures for
    * @return List of available pictures for this vehicle
    */
-  public List<PictureDTO> getPicturesForVehicle(long vehicleId) {
-    return modelMapper.picturesToPictureDTOs(
+  public List<Picture> getPicturesForVehicle(long vehicleId) {
+    return
       pictureRepository
         .findAll()
         .stream()
         .filter(picture -> picture.getVehicleID() == vehicleId)
         .collect(Collectors.toList())
-    );
+    ;
   }
 
   /**
