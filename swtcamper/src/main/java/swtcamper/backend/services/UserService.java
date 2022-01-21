@@ -296,6 +296,19 @@ public class UserService {
   }
 
   /**
+   * Sets the current logged-in user to null
+   */
+  public void logout() {
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format("User %s logged out.", loggedInUser.getUsername())
+      )
+    );
+    setLoggedInUser(null);
+  }
+
+  /**
    * Checks if username is already existing in database.
    *
    * @param username

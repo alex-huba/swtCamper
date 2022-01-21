@@ -86,7 +86,7 @@ public class UserController implements IUserController {
 
   @Override
   public void logout() {
-    userService.setLoggedInUser(null);
+    userService.logout();
   }
 
   @Override
