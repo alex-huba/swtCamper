@@ -222,12 +222,21 @@
         </TitledPane>
         <HBox fx:id="paginationHBox" alignment="CENTER" spacing="5.0">
             <children>
-                <Button mnemonicParsing="false" styleClass="bg-secondary" text="1" />
-                <Button mnemonicParsing="false" styleClass="bg-secondary" text="2" />
+            <HBox fx:id="paginationButtonsHBox" alignment="CENTER" spacing="5.0">
+               <children>
+                      <Button mnemonicParsing="false" styleClass="bg-secondary" text="1" />
+                      <Button mnemonicParsing="false" styleClass="bg-secondary" text="2" />
+               </children>
+               <styleClass>
+                  <String fx:value="border-dark" />
+                  <String fx:value="radius-20" />
+                  <String fx:value="p3" />
+               </styleClass>
+            </HBox>
                 <HBox fx:id="offersPerPageHBox" alignment="CENTER" spacing="2.0">
                     <children>
                         <ChoiceBox fx:id="offersPerPageChoiceBox" styleClass="bg-secondary" />
-                        <Label style="-fx-font-size: 10;" text="Anzeigen pro Seite" />
+                        <Label prefHeight="24.0" prefWidth="75.0" style="-fx-font-size: 10;" text="max. Anzeigen pro Seite" wrapText="true" />
                     </children>
                 </HBox>
             </children>

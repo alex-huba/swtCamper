@@ -114,6 +114,9 @@ public class RentingViewController {
   public HBox paginationHBox;
 
   @FXML
+  public HBox paginationButtonsHBox;
+
+  @FXML
   public ChoiceBox<Integer> offersPerPageChoiceBox;
 
   @FXML
@@ -383,7 +386,7 @@ public class RentingViewController {
       offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
     );
 
-    paginationHBox.getChildren().clear();
+    paginationButtonsHBox.getChildren().clear();
     for (int i = 0; i < pageAmount; i++) {
       Button pageButton = new Button(String.valueOf(i + 1));
       pageButton
@@ -395,9 +398,8 @@ public class RentingViewController {
         lastPageVisited = finalI;
         loadData(subListsList.get(finalI));
       });
-      paginationHBox.getChildren().add(pageButton);
+      paginationButtonsHBox.getChildren().add(pageButton);
     }
-    paginationHBox.getChildren().add(offersPerPageHBox);
 
     offerListRoot.getChildren().add(paginationHBox);
   }
