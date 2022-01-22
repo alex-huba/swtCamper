@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -88,6 +89,10 @@ public class ResetPasswordViewController {
     element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
   }
 
+  private void validateNeutral(Node element) {
+    element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
+  }
+
   private void validateFalse(Node element) {
     element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
@@ -151,9 +156,11 @@ public class ResetPasswordViewController {
   }
 
   public void resetInputFields() {
-    usernameTf.clear();
-    emailTf.clear();
-    passwordPf.clear();
-    repeatPasswordPf.clear();
+    FXCollections
+      .observableArrayList(usernameTf, emailTf, passwordPf, repeatPasswordPf)
+      .forEach(textField -> {
+        textField.clear();
+        validateNeutral(textField);
+      });
   }
 }

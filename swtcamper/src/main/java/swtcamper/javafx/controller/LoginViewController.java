@@ -149,6 +149,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   public void resetInputFields() {
     usernameTf.clear();
     passwordPf.clear();
+
+    errorLabel.setText("");
   }
 
   @FXML

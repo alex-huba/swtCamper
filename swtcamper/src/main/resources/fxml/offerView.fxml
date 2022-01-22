@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="offerView" stylesheets="@../styles/modifyOffer.css"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="offerView" stylesheets="@../styles/modify-offer-view.css"
             xmlns="http://javafx.com/javafx/17" fx:controller="swtcamper.javafx.controller.OfferViewController">
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="5.0">

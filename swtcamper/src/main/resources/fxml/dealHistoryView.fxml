@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="80.0" prefWidth="303.0"
-            stylesheets="@../styles/dealhistoryview.css" xmlns="http://javafx.com/javafx/17"
+            stylesheets="@../styles/deal-history-view.css" xmlns="http://javafx.com/javafx/17"
             fx:controller="swtcamper.javafx.controller.DealHistoryViewController">
     <center>
         <VBox fx:id="bookingsListVBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">

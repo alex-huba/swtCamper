@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" styleClass="rootNodeBackground"
-            stylesheets="@../styles/reportUser-view.css" xmlns="http://javafx.com/javafx/17"
+            stylesheets="@../styles/report-user-view.css" xmlns="http://javafx.com/javafx/17"
             fx:controller="swtcamper.javafx.controller.ReportUserViewController">
     <children>
         <Button fx:id="sendReportButton" layoutX="273.0" layoutY="240.0" mnemonicParsing="false" onAction="#sendReport"

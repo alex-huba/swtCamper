@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootVBOX" stylesheets="@../styles/rentingview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
+<VBox fx:id="rootVBOX" stylesheets="@../styles/renting-view.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.RentingViewController">
     <children>
         <TitledPane styleClass="bg-warning" text="Filter benutzen">
             <content>

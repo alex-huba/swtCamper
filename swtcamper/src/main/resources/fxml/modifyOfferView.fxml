@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import java.net.URL?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="offerDetailsMainView" stylesheets="@../styles/modifyOffer.css"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="offerDetailsMainView" stylesheets="@../styles/modify-offer-view.css"
             xmlns="http://javafx.com/javafx/17" fx:controller="swtcamper.javafx.controller.ModifyOfferViewController">
     <bottom>
         <HBox alignment="TOP_RIGHT" spacing="5.0">
@@ -329,7 +329,7 @@
                                                         <CheckBox fx:id="kitchenUnitCheckBox"
                                                                   text="Küche / Kocheinheit">
                                                             <stylesheets>
-                                                                <URL value="@../styles/modifyOffer.css"/>
+                                                                <URL value="@../styles/modify-offer-view.css"/>
                                                                 <URL value="@../styles/global.css"/>
                                                             </stylesheets>
                                                         </CheckBox>

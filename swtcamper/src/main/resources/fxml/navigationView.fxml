@@ -175,6 +175,6 @@
         </Button>
     </children>
     <stylesheets>
-        <URL value="@../styles/navigation.css"/>
+        <URL value="@../styles/navigation-view.css"/>
     </stylesheets>
 </AnchorPane>
