@@ -61,6 +61,13 @@ public class MyOffersViewController {
   private void createCards(User user) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
+    if (offerController.getOffersCreatedByUser(user).isEmpty()) {
+      Label infoLabel = new Label("Du hast noch keine Anzeigen erstellt.");
+      infoLabel.setDisable(true);
+      offerListRoot.getChildren().add(infoLabel);
+      return;
+    }
+
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
       if (
@@ -177,8 +184,6 @@ public class MyOffersViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
           try {
             offerController.delete(offer.getID());
-          } catch (GenericServiceException ignore) {}
-          try {
             reloadData();
           } catch (GenericServiceException ignore) {}
         }
