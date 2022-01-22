@@ -157,7 +157,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
       errorLabel.setText(
         "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
       );
@@ -178,7 +178,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validatePasswordPf() {
     String input = passwordPf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
       errorLabel.setText(
         "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
       );
@@ -239,7 +239,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateNameTf() {
     String input = nameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z]*")) {
+    if (input.length() < 3 || !input.matches("^[a-zA-ZäöüÄÖÜ]*")) {
       errorLabel.setText("Ungültiger Name: 2 Buchstaben mindestens");
       validateFalse(nameTf);
       isNameOk.setValue(false);
@@ -252,7 +252,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateSurnameTf() {
     String input = surnameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 3 || !input.matches("^[a-zA-Z-äöüÄÖÜ]*")) {
       errorLabel.setText("Ungültiger Nachname: 2 Buchstaben mindestens");
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);
