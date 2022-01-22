@@ -207,10 +207,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setOnKeyTyped(this);
     brandTextField.setOnKeyTyped(this);
     modelTextField.setOnKeyTyped(this);
-    seatsComboBox.setOnHiding(event -> validateSeats());
-    bedsComboBox.setOnHiding(event ->
-      validateBeds(Integer.parseInt(bedsComboBox.getValue()))
-    );
+    seatsComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) validateSeats();
+      });
+    bedsComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) validateBeds(Integer.parseInt(newValue));
+      });
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
     contactTextField.setOnKeyTyped(this);
@@ -258,6 +264,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     endDatePicker.getEditor().setOpacity(1);
     setCellFactory(startDatePicker, null);
     setCellFactory(endDatePicker, null);
+
+    startDatePicker
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (endDatePicker.getValue() == null) endDatePicker.setValue(newValue);
+      });
 
     seatsComboBox.setItems(
       FXCollections.observableArrayList(
