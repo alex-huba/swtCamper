@@ -252,7 +252,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateSurnameTf() {
     String input = surnameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z-äöüÄÖÜ]*")) {
+    if (input.length() < 3 || !input.matches("^[a-zA-Z-äöüÄÖÜß]*")) {
       errorLabel.setText("Ungültiger Nachname: 2 Buchstaben mindestens");
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);
