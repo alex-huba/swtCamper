@@ -212,61 +212,31 @@ public class OfferViewController {
       rentalConditionsVBox.getChildren().add(new Label(" / "));
     }
 
-    vehicleTypeLabel.setText(
-      String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())
-    );
-    brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
-    modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
-    transmissionLabel.setText(
-      offeredObject.getVehicleFeatures().getTransmission()
-    );
-    seatsLabel.setText(
-      Integer.toString(offeredObject.getVehicleFeatures().getSeats())
-    );
-    bedsLabel.setText(
-      Integer.toString(offeredObject.getVehicleFeatures().getBeds())
-    );
-    constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(
-      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
-    );
+    vehicleTypeLabel.setText(String.valueOf(offeredObject.getVehicleType()));
+    brandLabel.setText(offeredObject.getMake());
+    modelLabel.setText(offeredObject.getModel());
+    transmissionLabel.setText(offeredObject.getTransmission());
+    seatsLabel.setText(Integer.toString(offeredObject.getSeats()));
+    bedsLabel.setText(Integer.toString(offeredObject.getBeds()));
+    constructionLabel.setText(offeredObject.getYear());
+    engineLabel.setText(String.valueOf(offeredObject.getFuelType()));
     widthLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getWidth()
-      )
+      doubleStringConverter.toString(offeredObject.getWidth())
     );
     lengthLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getLength()
-      )
+      doubleStringConverter.toString(offeredObject.getLength())
     );
     heightLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getHeight()
-      )
+      doubleStringConverter.toString(offeredObject.getHeight())
     );
 
-    roofTentLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isRoofTent())
-    );
-    roofRackLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isRoofRack())
-    );
-    bikeRackLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isBikeRack())
-    );
-    showerLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isShower())
-    );
-    toiletLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isToilet())
-    );
-    kitchenUnitLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isKitchenUnit())
-    );
-    fridgeLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isFridge())
-    );
+    roofTentLabel.setOpacity(labelOpacity(offeredObject.isRoofTent()));
+    roofRackLabel.setOpacity(labelOpacity(offeredObject.isRoofRack()));
+    bikeRackLabel.setOpacity(labelOpacity(offeredObject.isBikeRack()));
+    showerLabel.setOpacity(labelOpacity(offeredObject.isShower()));
+    toiletLabel.setOpacity(labelOpacity(offeredObject.isToilet()));
+    kitchenUnitLabel.setOpacity(labelOpacity(offeredObject.isKitchenUnit()));
+    fridgeLabel.setOpacity(labelOpacity(offeredObject.isFridge()));
     startDatePicker.getEditor().setDisable(true);
     startDatePicker.getEditor().setOpacity(1);
     endDatePicker.getEditor().setDisable(true);

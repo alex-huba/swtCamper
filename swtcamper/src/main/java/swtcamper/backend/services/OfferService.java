@@ -16,7 +16,6 @@ import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
-import swtcamper.backend.repositories.VehicleFeaturesRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -31,9 +30,6 @@ public class OfferService {
 
   @Autowired
   private VehicleRepository vehicleRepository;
-
-  @Autowired
-  private VehicleFeaturesRepository vehicleFeaturesRepository;
 
   @Autowired
   private OfferRepository offerRepository;
@@ -117,33 +113,26 @@ public class OfferService {
     }
 
     Vehicle vehicle = new Vehicle();
+    vehicle.setVehicleType(vehicleType);
+    vehicle.setMake(make);
+    vehicle.setModel(model);
+    vehicle.setYear(year);
+    vehicle.setLength(length);
+    vehicle.setWidth(width);
+    vehicle.setHeight(height);
+    vehicle.setFuelType(fuelType);
+    vehicle.setTransmission(transmission);
+    vehicle.setSeats(seats);
+    vehicle.setBeds(beds);
+    vehicle.setRoofTent(roofTent);
+    vehicle.setRoofRack(roofRack);
+    vehicle.setBikeRack(bikeRack);
+    vehicle.setShower(shower);
+    vehicle.setToilet(toilet);
+    vehicle.setKitchenUnit(kitchenUnit);
+    vehicle.setFridge(fridge);
+
     vehicleRepository.save(vehicle);
-
-    VehicleFeatures vehicleFeatures = new VehicleFeatures(vehicle);
-    setVehicleFeatures(
-      vehicleFeatures,
-      vehicleType,
-      make,
-      model,
-      year,
-      length,
-      width,
-      height,
-      fuelType,
-      transmission,
-      seats,
-      beds,
-      roofTent,
-      roofRack,
-      bikeRack,
-      shower,
-      toilet,
-      kitchenUnit,
-      fridge
-    );
-    vehicleFeaturesRepository.save(vehicleFeatures);
-
-    vehicle.setVehicleFeatures(vehicleFeatures);
 
     Offer offer = new Offer(
       creator,
@@ -293,139 +282,61 @@ public class OfferService {
     );
     if (vehicleResponse.isPresent()) {
       Vehicle vehicle = vehicleResponse.get();
-      Optional<VehicleFeatures> vehicleFeaturesResponse = vehicleFeaturesRepository.findById(
-        vehicle.getVehicleFeatures().getVehicleFeaturesID()
+      vehicle.setVehicleType(vehicleType);
+      vehicle.setMake(make);
+      vehicle.setModel(model);
+      vehicle.setYear(year);
+      vehicle.setLength(length);
+      vehicle.setWidth(width);
+      vehicle.setHeight(height);
+      vehicle.setFuelType(fuelType);
+      vehicle.setTransmission(transmission);
+      vehicle.setSeats(seats);
+      vehicle.setBeds(beds);
+      vehicle.setRoofTent(roofTent);
+      vehicle.setRoofRack(roofRack);
+      vehicle.setBikeRack(bikeRack);
+      vehicle.setShower(shower);
+      vehicle.setToilet(toilet);
+      vehicle.setKitchenUnit(kitchenUnit);
+      vehicle.setFridge(fridge);
+      vehicleRepository.save(vehicle);
+      loggingController.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Vehicle with ID %s got updated by user %s.",
+            vehicle.getVehicleID(),
+            user.getUsername()
+          )
+        )
       );
-      if (vehicleFeaturesResponse.isPresent()) {
-        VehicleFeatures vehicleFeatures = vehicleFeaturesResponse.get();
-        setVehicleFeatures(
-          vehicleFeatures,
-          vehicleType,
-          make,
-          model,
-          year,
-          length,
-          width,
-          height,
-          fuelType,
-          transmission,
-          seats,
-          beds,
-          roofTent,
-          roofRack,
-          bikeRack,
-          shower,
-          toilet,
-          kitchenUnit,
-          fridge
-        );
-        vehicleFeaturesRepository.save(vehicleFeatures);
 
-        vehicle.setVehicleFeatures(vehicleFeatures);
-        vehicleRepository.save(vehicle);
-        loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Vehicle with ID %s got updated by user %s.",
-              vehicle.getVehicleID(),
-              user.getUsername()
-            )
+      offer.setCreator(creator);
+      offer.setOfferedObject(vehicle);
+      offer.setBookings(bookings);
+      offer.setTitle(title);
+      offer.setLocation(location);
+      offer.setContact(contact);
+      offer.setParticularities(particularities);
+      offer.setPrice(price);
+      offer.setActive(active);
+      offer.setRentalConditions(rentalConditions);
+      offer.setBlockedDates(blockedDates);
+      loggingController.log(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got updated by user %s.",
+            offer.getOfferID(),
+            user.getUsername()
           )
-        );
-
-        offer.setCreator(creator);
-        offer.setOfferedObject(vehicle);
-        offer.setBookings(bookings);
-        offer.setTitle(title);
-        offer.setLocation(location);
-        offer.setContact(contact);
-        offer.setParticularities(particularities);
-        offer.setPrice(price);
-        offer.setActive(active);
-        offer.setRentalConditions(rentalConditions);
-        offer.setBlockedDates(blockedDates);
-        loggingController.log(
-          new LoggingMessage(
-            LoggingLevel.INFO,
-            String.format(
-              "Offer with ID %s got updated by user %s.",
-              offer.getOfferID(),
-              user.getUsername()
-            )
-          )
-        );
-        return offerRepository.save(offer);
-      } else {
-        throw new GenericServiceException("VehicleFeatures not found.");
-      }
+        )
+      );
+      return offerRepository.save(offer);
     } else {
       throw new GenericServiceException("Vehicle not found.");
     }
-  }
-
-  /**
-   * Sets features for given {@link VehicleFeatures}
-   *
-   * @param vehicleFeatures
-   * @param vehicleType
-   * @param make
-   * @param model
-   * @param year
-   * @param length
-   * @param width
-   * @param height
-   * @param fuelType
-   * @param transmission
-   * @param seats
-   * @param beds
-   * @param roofTent
-   * @param roofRack
-   * @param bikeRack
-   * @param shower
-   * @param toilet
-   * @param kitchenUnit
-   * @param fridge
-   */
-  private void setVehicleFeatures(
-    VehicleFeatures vehicleFeatures,
-    VehicleType vehicleType,
-    String make,
-    String model,
-    String year,
-    double length,
-    double width,
-    double height,
-    FuelType fuelType,
-    String transmission,
-    int seats,
-    int beds,
-    boolean roofTent,
-    boolean roofRack,
-    boolean bikeRack,
-    boolean shower,
-    boolean toilet,
-    boolean kitchenUnit,
-    boolean fridge
-  ) {
-    vehicleFeatures.setVehicleType(vehicleType);
-    vehicleFeatures.setMake(make);
-    vehicleFeatures.setModel(model);
-    vehicleFeatures.setYear(year);
-    vehicleFeatures.setLength(length);
-    vehicleFeatures.setWidth(width);
-    vehicleFeatures.setHeight(height);
-    vehicleFeatures.setFuelType(fuelType);
-    vehicleFeatures.setTransmission(transmission);
-    vehicleFeatures.setSeats(seats);
-    vehicleFeatures.setBeds(beds);
-    vehicleFeatures.setRoofTent(roofTent);
-    vehicleFeatures.setRoofRack(roofRack);
-    vehicleFeatures.setBikeRack(bikeRack);
-    vehicleFeatures.setShower(shower);
-    vehicleFeatures.setToilet(toilet);
-    vehicleFeatures.setKitchenUnit(kitchenUnit);
-    vehicleFeatures.setFridge(fridge);
   }
 
   /**
@@ -513,7 +424,6 @@ public class OfferService {
               filter.getVehicleType() == null ||
               offerDTO
                 .getOfferedObject()
-                .getVehicleFeatures()
                 .getVehicleType()
                 .equals(filter.getVehicleType())
             ) &&
@@ -521,16 +431,13 @@ public class OfferService {
               filter.getVehicleBrand() == null ||
               offerDTO
                 .getOfferedObject()
-                .getVehicleFeatures()
                 .getMake()
                 .toLowerCase()
                 .contains(filter.getVehicleBrand().toLowerCase())
             ) &&
             (
               filter.getConstructionYear() == 0 ||
-              Integer.parseInt(
-                offerDTO.getOfferedObject().getVehicleFeatures().getYear()
-              ) >=
+              Integer.parseInt(offerDTO.getOfferedObject().getYear()) >=
               filter.getConstructionYear()
             ) &&
             (
@@ -543,12 +450,10 @@ public class OfferService {
                 (
                   !offerDTO
                     .getOfferedObject()
-                    .getVehicleFeatures()
                     .getVehicleType()
                     .equals(VehicleType.TRAILER) &&
                   offerDTO
                     .getOfferedObject()
-                    .getVehicleFeatures()
                     .getFuelType()
                     .equals(filter.getFuelType())
                 )
@@ -559,12 +464,10 @@ public class OfferService {
               (
                 !offerDTO
                   .getOfferedObject()
-                  .getVehicleFeatures()
                   .getVehicleType()
                   .equals(VehicleType.TRAILER) &&
                 offerDTO
                   .getOfferedObject()
-                  .getVehicleFeatures()
                   .getTransmission()
                   .toUpperCase()
                   .equals(filter.getTransmissionType().toString())
@@ -572,13 +475,11 @@ public class OfferService {
             ) &&
             (
               filter.getSeatAmount() == 0 ||
-              offerDTO.getOfferedObject().getVehicleFeatures().getSeats() >=
-              filter.getSeatAmount()
+              offerDTO.getOfferedObject().getSeats() >= filter.getSeatAmount()
             ) &&
             (
               filter.getBedAmount() == 0 ||
-              offerDTO.getOfferedObject().getVehicleFeatures().getBeds() >=
-              filter.getBedAmount()
+              offerDTO.getOfferedObject().getBeds() >= filter.getBedAmount()
             ) &&
             evalCheckBoxes(offerDTO, filter)
           )
@@ -597,25 +498,25 @@ public class OfferService {
     List<Boolean> booleanList = new ArrayList<>();
 
     if (filter.isRoofTent()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofTent()
+      offerDTO.getOfferedObject().isRoofTent()
     );
     if (filter.isRoofRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isRoofRack()
+      offerDTO.getOfferedObject().isRoofRack()
     );
     if (filter.isBikeRack()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isBikeRack()
+      offerDTO.getOfferedObject().isBikeRack()
     );
     if (filter.isShower()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isShower()
+      offerDTO.getOfferedObject().isShower()
     );
     if (filter.isToilet()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isToilet()
+      offerDTO.getOfferedObject().isToilet()
     );
     if (filter.isKitchen()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isKitchenUnit()
+      offerDTO.getOfferedObject().isKitchenUnit()
     );
     if (filter.isFridge()) booleanList.add(
-      offerDTO.getOfferedObject().getVehicleFeatures().isFridge()
+      offerDTO.getOfferedObject().isFridge()
     );
     return !booleanList.contains(false);
   }

@@ -74,7 +74,6 @@ public class MyBookingsViewController {
         String vehicleType = booking
           .getOffer()
           .getOfferedObject()
-          .getVehicleFeatures()
           .getVehicleType()
           .toString();
         String vehicle =
@@ -86,16 +85,8 @@ public class MyBookingsViewController {
               "%s will deinen %s %s %s von %s bis %s mieten.",
               booking.getRenter().getUsername(),
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking
                 .getStartDate()
                 .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
@@ -106,16 +97,8 @@ public class MyBookingsViewController {
             : String.format(
               "Dein %s %s %s ist von %s bis %s vermietet an %s.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking
                 .getStartDate()
                 .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
@@ -237,7 +220,6 @@ public class MyBookingsViewController {
         String vehicleType = booking
           .getOffer()
           .getOfferedObject()
-          .getVehicleFeatures()
           .getVehicleType()
           .toString();
         String vehicle =
@@ -248,16 +230,8 @@ public class MyBookingsViewController {
             ? String.format(
               "Du hast den %s %s %s von Nutzer %s von %s bis %s gemietet.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking.getOffer().getCreator().getUsername(),
               booking
                 .getStartDate()
@@ -269,16 +243,8 @@ public class MyBookingsViewController {
             : String.format(
               "Du hast angefragt, den %s %s %s von Nutzer %s von %s bis %s zu mieten.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking.getOffer().getCreator().getUsername(),
               booking
                 .getStartDate()

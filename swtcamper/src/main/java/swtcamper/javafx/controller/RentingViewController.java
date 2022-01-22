@@ -507,7 +507,7 @@ public class RentingViewController {
 
       // brand
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getMake()
       );
       brandLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -515,7 +515,7 @@ public class RentingViewController {
 
       // model
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getModel()
       );
       modelLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"

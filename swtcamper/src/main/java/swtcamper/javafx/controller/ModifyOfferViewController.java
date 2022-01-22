@@ -348,31 +348,20 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     activeCheckBox.setSelected(offer.isActive());
 
     assert vehicle != null;
-    vehicleTypeComboBox.setValue(vehicle.getVehicleFeatures().getVehicleType());
-    brandTextField.setText(vehicle.getVehicleFeatures().getMake());
-    modelTextField.setText(vehicle.getVehicleFeatures().getModel());
-    seatsComboBox.setValue(
-      String.valueOf(vehicle.getVehicleFeatures().getSeats())
-    );
-    bedsComboBox.setValue(
-      String.valueOf(vehicle.getVehicleFeatures().getBeds())
-    );
-    constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
-    widthTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getWidth())
-    );
-    lengthTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getLength())
-    );
-    heightTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getHeight())
-    );
-    fuelComboBox.setValue(vehicle.getVehicleFeatures().getFuelType());
+    vehicleTypeComboBox.setValue(vehicle.getVehicleType());
+    brandTextField.setText(vehicle.getMake());
+    modelTextField.setText(vehicle.getModel());
+    seatsComboBox.setValue(String.valueOf(vehicle.getSeats()));
+    bedsComboBox.setValue(String.valueOf(vehicle.getBeds()));
+    constructionYearTextField.setText(vehicle.getYear());
+    widthTextField.setText(String.valueOf(vehicle.getWidth()));
+    lengthTextField.setText(String.valueOf(vehicle.getLength()));
+    heightTextField.setText(String.valueOf(vehicle.getHeight()));
+    fuelComboBox.setValue(vehicle.getFuelType());
     transmissionComboBox.setValue(
-      vehicle.getVehicleFeatures().getTransmission() != null
+      vehicle.getTransmission() != null
         ? (
           vehicle
-              .getVehicleFeatures()
               .getTransmission()
               .equals(TransmissionType.AUTOMATIC.toString())
             ? TransmissionType.AUTOMATIC
@@ -380,15 +369,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         )
         : null
     );
-    roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
-    roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
-    bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
-    showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
-    toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
-    kitchenUnitCheckBox.setSelected(
-      vehicle.getVehicleFeatures().isKitchenUnit()
-    );
-    fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
+    roofTentCheckBox.setSelected(vehicle.isRoofTent());
+    roofRackCheckBox.setSelected(vehicle.isRoofRack());
+    bikeRackCheckBox.setSelected(vehicle.isBikeRack());
+    showerCheckBox.setSelected(vehicle.isShower());
+    toiletCheckBox.setSelected(vehicle.isToilet());
+    kitchenUnitCheckBox.setSelected(vehicle.isKitchenUnit());
+    fridgeCheckBox.setSelected(vehicle.isFridge());
 
     pictures.clear();
     for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
