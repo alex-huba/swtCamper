@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,11 +19,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
@@ -76,7 +79,7 @@ public class AccountViewController {
   public ListView<LoggingMessageDTO> logListView;
 
   @FXML
-  public ListView<User> usersListView;
+  public TableView<User> usersTableView;
 
   @FXML
   public TextField userFilterTextField;
@@ -85,22 +88,28 @@ public class AccountViewController {
   public Button resetUserFilterBtn;
 
   @FXML
+  public Button resetLogBtn;
+
+  @FXML
   public VBox reportVBox;
 
   private User selectedUser = null;
+  private SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
+    false
+  );
 
   @FXML
   public void initialize() {
     // disable all control buttons by default and enable needed ones later
     showLogBtn
       .disableProperty()
-      .bind(usersListView.getSelectionModel().selectedItemProperty().isNull());
+      .bind(usersTableView.getSelectionModel().selectedItemProperty().isNull());
     blockBtn.setDisable(true);
     degradeBtn.setDisable(true);
     promoteBtn.setDisable(true);
 
     // listen for selected list elements (= users) and get their roles
-    usersListView
+    usersTableView
       .getSelectionModel()
       .selectedItemProperty()
       .addListener((observable, oldValue, newValue) -> {
@@ -184,17 +193,16 @@ public class AccountViewController {
   public void operatorInit(boolean ascending) throws GenericServiceException {
     buttonToolbar.getItems().clear();
 
-    Separator verticalSeparator = new Separator();
-    verticalSeparator.setOrientation(Orientation.VERTICAL);
-
     buttonToolbar
       .getItems()
       .addAll(
+        resetLogBtn,
         showLogBtn,
+        new Separator(Orientation.VERTICAL),
         blockBtn,
         degradeBtn,
         promoteBtn,
-        verticalSeparator,
+        new Separator(Orientation.VERTICAL),
         logoutBtn
       );
 
@@ -208,10 +216,36 @@ public class AccountViewController {
       .visibleProperty()
       .bind(userFilterTextField.textProperty().isEmpty().not());
 
-    // fill in all users
-    usersListView.setItems(
-      FXCollections.observableArrayList(userController.getAllUsers())
-    );
+    resetLogBtn.disableProperty().bind(showingLogForSpecificUser.not());
+
+    // generate table and fill in all users
+    usersTableView.getColumns().clear();
+    usersTableView.getItems().clear();
+
+    FXCollections
+      .observableArrayList(
+        new Pair<>("Nickname", "username"),
+        new Pair<>("Name", "name"),
+        new Pair<>("Nachname", "surname"),
+        new Pair<>("Email", "email"),
+        new Pair<>("Befugnis", "userRole"),
+        new Pair<>("akzeptiert?", "enabled"),
+        new Pair<>("blockiert?", "locked")
+      )
+      .forEach(category -> {
+        TableColumn<User, Object> tableColumn = new TableColumn<>(
+          category.getKey()
+        );
+        tableColumn.setCellValueFactory(
+          new PropertyValueFactory<>(category.getValue())
+        );
+
+        usersTableView.getColumns().add(tableColumn);
+      });
+
+    for (User user : userController.getAllUsers()) {
+      usersTableView.getItems().add(user);
+    }
 
     // user reports
     reportVBox.getChildren().clear();
@@ -293,17 +327,14 @@ public class AccountViewController {
    * Filters all log messages that include the selected user
    */
   public void showLogForUser() {
-    if (showLogBtn.getText().equals("Zeige alle Logs")) {
-      usersListView.getSelectionModel().select(null);
-      loadLogsIntoListView(loggingController.getAllLogMessages(), false);
-      showLogBtn.setText("Zeige Logs zu diesem Nutzer");
-    } else {
-      loadLogsIntoListView(
-        loggingController.getLogForUser(selectedUser),
-        false
-      );
-      showLogBtn.setText("Zeige alle Logs");
-    }
+    loadLogsIntoListView(loggingController.getLogForUser(selectedUser), false);
+    showingLogForSpecificUser.set(true);
+  }
+
+  @FXML
+  public void resetLogList() {
+    loadLogsIntoListView(loggingController.getAllLogMessages(), false);
+    showingLogForSpecificUser.set(false);
   }
 
   public void degradeUser() throws GenericServiceException {
@@ -320,13 +351,13 @@ public class AccountViewController {
   public void filterUsers() throws GenericServiceException {
     String searchText = userFilterTextField.getText().toLowerCase();
     if (searchText.isEmpty()) {
-      usersListView.setItems(
+      usersTableView.setItems(
         FXCollections.observableArrayList(userController.getAllUsers())
       );
       return;
     }
 
-    usersListView.setItems(
+    usersTableView.setItems(
       FXCollections.observableArrayList(
         userController
           .getAllUsers()
@@ -355,37 +386,40 @@ public class AccountViewController {
 
     List<LoggingMessageDTO> logToDownload = logListView.getItems();
 
-    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-      "TXT files (*.txt)",
-      "*.txt"
-    );
     FileChooser fileChooser = new FileChooser();
 
     fileChooser.setTitle("Verzeichnis wählen");
-    fileChooser.getExtensionFilters().add(extFilter);
+    fileChooser
+      .getExtensionFilters()
+      .addAll(
+        new FileChooser.ExtensionFilter("LOG file (*.log)", "*.log"),
+        new FileChooser.ExtensionFilter("TXT file (*.txt)", "*.txt")
+      );
     fileChooser.setInitialFileName(
       String.format(
-        "log_swtcamper_%s.txt",
+        "log_swtcamper_%s",
         LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
       )
     );
 
     File file = fileChooser.showSaveDialog(window);
-    if (file.exists()) file.delete();
+    if (file != null) {
+      if (file.exists()) file.delete();
 
-    try (
-      BufferedWriter writer = Files.newBufferedWriter(
-        Path.of(file.getPath()),
-        StandardCharsets.UTF_8,
-        StandardOpenOption.CREATE
-      )
-    ) {
-      for (LoggingMessageDTO logMsg : logToDownload) {
-        writer.write(logMsg.toString());
-        writer.newLine();
+      try (
+        BufferedWriter writer = Files.newBufferedWriter(
+          Path.of(file.getPath()),
+          StandardCharsets.UTF_8,
+          StandardOpenOption.CREATE
+        )
+      ) {
+        for (LoggingMessageDTO logMsg : logToDownload) {
+          writer.write(logMsg.toString());
+          writer.newLine();
+        }
+      } catch (IOException e) {
+        mainViewController.handleExceptionMessage(e.getMessage());
       }
-    } catch (IOException e) {
-      mainViewController.handleExceptionMessage(e.getMessage());
     }
   }
 }

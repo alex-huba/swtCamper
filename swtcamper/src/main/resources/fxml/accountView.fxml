@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +20,9 @@
     <top>
         <ToolBar fx:id="buttonToolbar" prefHeight="40.0" BorderPane.alignment="CENTER">
             <items>
+            <Button fx:id="resetLogBtn" mnemonicParsing="false" onAction="#resetLogList" text="Zeige alle Logs" />
                 <Button fx:id="showLogBtn" mnemonicParsing="false" onAction="#showLogForUser" text="Zeige Logs zu diesem Nutzer" />
+            <Separator orientation="VERTICAL" />
                 <Button fx:id="blockBtn" mnemonicParsing="false" text="Global Blockieren" />
                 <Button fx:id="promoteBtn" mnemonicParsing="false" onAction="#promoteUser" text="Befördern" />
                 <Button fx:id="degradeBtn" mnemonicParsing="false" onAction="#degradeUser" text="Degradieren" />
@@ -37,7 +41,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                                       <Label text="Log History" />
-                              <Button mnemonicParsing="false" onAction="#downloadLog" styleClass="bg-primary" text="Download" />
+                              <Button mnemonicParsing="false" onAction="#downloadLog" text="Download" />
                            </children>
                            <padding>
                               <Insets bottom="2.0" left="2.0" top="3.0" />
@@ -70,7 +74,14 @@
                                           <Insets bottom="2.0" left="2.0" top="2.0" />
                                        </padding>
                                     </HBox>
-                                                <ListView fx:id="usersListView" />
+                                    <TableView fx:id="usersTableView">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="Username" />
+                                        <TableColumn prefWidth="75.0" text="Name" />
+                                          <TableColumn prefWidth="75.0" text="Email" />
+                                          <TableColumn prefWidth="177.0" text="(more generated in code)" />
+                                      </columns>
+                                    </TableView>
                                             </children>
                                         </VBox>
                                     </children>
