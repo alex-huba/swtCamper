@@ -80,26 +80,26 @@
                                   <HBox alignment="CENTER_LEFT">
                                       <children>
                                           <Label prefWidth="175.0" styleClass="descriptionLabel" text="Preis pro Tag*:" />
-                                          <Label fx:id="priceLabel" text="Keine Angabe" />
+                                          <Label fx:id="priceLabel" maxWidth="700.0" text="Keine Angabe" />
                                           <Label prefHeight="6.0" text=" €" />
                                       </children>
                                   </HBox>
                                   <HBox alignment="CENTER_LEFT">
                                       <children>
                                           <Label prefWidth="175.0" styleClass="descriptionLabel" text="Kontaktdaten*: " />
-                                          <Label fx:id="contactLabel" prefWidth="200.0" text="Keine Angabe" />
+                                          <Label fx:id="contactLabel" maxWidth="700.0" text="Keine Angabe" />
                                       </children>
                                   </HBox>
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label prefWidth="175.0" styleClass="descriptionLabel" text="Abholort*:" />
-                                        <Label fx:id="locationLabel" text="Keine Angabe" />
+                                        <Label fx:id="locationLabel" maxWidth="700.0" text="Keine Angabe" />
                                     </children>
                                 </HBox>
                                 <HBox>
                                     <children>
                                         <Label prefWidth="175.0" styleClass="descriptionLabel" text="Besonderheiten:" />
-                                        <Label fx:id="particularitiesLabel" text="Keine Angabe" />
+                                        <Label fx:id="particularitiesLabel" maxWidth="700.0" text="Keine Angabe" wrapText="true" />
                                     </children>
                                 </HBox>
                                 <HBox>
