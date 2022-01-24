@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -118,8 +119,11 @@ public class AccountViewController {
           blockBtn.setDisable(true);
           degradeBtn.setDisable(true);
           promoteBtn.setDisable(true);
+
+          showLogBtn.setText("Zeige Logs zu diesem Nutzer");
         } else {
           selectedUser = newValue;
+          showLogBtn.setText("Zeige Logs zu: " + selectedUser.getUsername());
 
           if (
             // an operator can only (un)block or change the UserRole of other users
@@ -209,7 +213,12 @@ public class AccountViewController {
     operatorDashboard.setVisible(true);
 
     // fill in all log messages DESC
-    loadLogsIntoListView(loggingController.getAllLogMessages(), ascending);
+    loadLogsIntoListView(
+      selectedUser == null
+        ? loggingController.getAllLogMessages()
+        : loggingController.getLogForUser(selectedUser),
+      ascending
+    );
     logListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     resetUserFilterBtn
@@ -243,9 +252,10 @@ public class AccountViewController {
         usersTableView.getColumns().add(tableColumn);
       });
 
-    for (User user : userController.getAllUsers()) {
-      usersTableView.getItems().add(user);
-    }
+    //    for (User user : userController.getAllUsers()) {
+    //      usersTableView.getItems().add(user);
+    //    }
+    filterUsers();
 
     // user reports
     reportVBox.getChildren().clear();
