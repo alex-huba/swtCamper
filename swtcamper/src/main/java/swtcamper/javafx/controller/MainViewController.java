@@ -163,133 +163,124 @@ public class MainViewController {
 
   @FXML
   public void goBack() throws GenericServiceException {
-    int listLength = historyList.size();
     // button is invisible anyway at this point but just be safe...
-    if (listLength <= 1) return;
+    if (historyList.size() <= 1) return;
 
     historyList.removeLast();
     // set boolean false in order to not overwrite the last index directly again
     createHistory = false;
-    changeView(historyList.get(listLength - 2));
+    changeView(historyList.getLast());
   }
 
   @Scheduled(fixedDelay = 1000)
   private void listenForDataBaseChanges() throws GenericServiceException {
     User loggedInUser = userController.getLoggedInUser();
+    if (loggedInUser == null) return;
 
-    if (loggedInUser != null) {
-      // check for new user reports
-      if (
-        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
-        userReportController
-          .getAllUserReports()
-          .stream()
-          .anyMatch(UserReportDTO::isActive)
-      ) {
-        navigationViewController.showAccountNotification();
-      } else {
-        navigationViewController.hideAccountNotification();
-      }
+    // check for new user reports
+    if (
+      loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
+      userReportController
+        .getAllUserReports()
+        .stream()
+        .anyMatch(UserReportDTO::isActive)
+    ) {
+      navigationViewController.showAccountNotification();
+    } else {
+      navigationViewController.hideAccountNotification();
+    }
 
-      // check for new booking requests
-      if (
-        !bookingController.getBookingsForUser(loggedInUser).isEmpty() &&
-        !bookingController
-          .getBookingsForUser(loggedInUser)
-          .stream()
-          .allMatch(Booking::isActive)
-      ) {
-        navigationViewController.showBookingNotification();
-      } else {
-        navigationViewController.hideBookingNotification();
-      }
+    // check for new booking requests
+    if (
+      !bookingController.getBookingsForUser(loggedInUser).isEmpty() &&
+      !bookingController
+        .getBookingsForUser(loggedInUser)
+        .stream()
+        .allMatch(Booking::isActive)
+    ) {
+      navigationViewController.showBookingNotification();
+    } else {
+      navigationViewController.hideBookingNotification();
+    }
 
-      // check for new providers that need to be enabled
-      if (
-        loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
-        userController
-          .getAllUsers()
-          .stream()
-          .anyMatch(user -> !user.isEnabled())
-      ) {
-        navigationViewController.showApproveNotification();
-      } else {
-        navigationViewController.hideApproveNotification();
-      }
+    // check for new providers that need to be enabled
+    if (
+      loggedInUser.getUserRole().equals(UserRole.OPERATOR) &&
+      userController.getAllUsers().stream().anyMatch(user -> !user.isEnabled())
+    ) {
+      navigationViewController.showApproveNotification();
+    } else {
+      navigationViewController.hideApproveNotification();
+    }
 
-      if (latestLoggedInStatus != null && latestView != null) {
-        // get the latest update for the logged-in user to check if there were made any changes
-        User checkUser = userController.getUserById(loggedInUser.getId());
-        if (!updateHappening) {
-          // user-role has changed
-          if (
-            !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
-          ) {
-            updateHappening = true;
-            Platform.runLater(() -> {
-              try {
-                handleInformationMessage(
-                  "Deine Rolle hat sich geändert zu " +
-                  checkUser.getUserRole() +
-                  "!\nDie Oberfläche wird sich aktualisieren"
-                );
-                login(modelMapper.userToUserDTO(checkUser), "home");
-                updateHappening = false;
-              } catch (GenericServiceException ignore) {}
-            });
-            // user got enabled
-          } else if (
-            checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()
-          ) {
-            updateHappening = true;
-            Platform.runLater(() -> {
-              try {
-                handleInformationMessage(
-                  "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
-                );
-                login(modelMapper.userToUserDTO(checkUser), latestView);
-                updateHappening = false;
-              } catch (GenericServiceException ignore) {}
-            });
-            // user got disabled
-          } else if (
-            !checkUser.isEnabled() && latestLoggedInStatus.isEnabled()
-          ) {
-            updateHappening = true;
-            Platform.runLater(() -> {
-              try {
-                handleInformationMessage(
-                  "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
-                );
-                login(modelMapper.userToUserDTO(checkUser), "home");
-                updateHappening = false;
-              } catch (GenericServiceException ignore) {}
-            });
-            // user got locked globally
-          } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
-            updateHappening = true;
-            Platform.runLater(() -> {
-              try {
-                handleInformationMessage(
-                  "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
-                );
-                login(modelMapper.userToUserDTO(checkUser), "home");
-                updateHappening = false;
-              } catch (GenericServiceException ignore) {}
-            });
-            // user got unlocked from global lock
-          } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
-            updateHappening = true;
-            Platform.runLater(() -> {
-              try {
-                handleInformationMessage(
-                  "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
-                );
-                login(modelMapper.userToUserDTO(checkUser), latestView);
-                updateHappening = false;
-              } catch (GenericServiceException ignore) {}
-            });
-          }
+    if (latestLoggedInStatus != null && latestView != null) {
+      // get the latest update for the logged-in user to check if there were made any changes
+      User checkUser = userController.getUserById(loggedInUser.getId());
+      if (!updateHappening) {
+        // user-role has changed
+        if (
+          !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
+        ) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage(
+                "Deine Rolle hat sich geändert zu " +
+                checkUser.getUserRole() +
+                "!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {}
+          });
+          // user got enabled
+        } else if (checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage(
+                "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(modelMapper.userToUserDTO(checkUser), latestView);
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {}
+          });
+          // user got disabled
+        } else if (!checkUser.isEnabled() && latestLoggedInStatus.isEnabled()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage(
+                "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {}
+          });
+          // user got locked globally
+        } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage(
+                "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(modelMapper.userToUserDTO(checkUser), "home");
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {}
+          });
+          // user got unlocked from global lock
+        } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
+          updateHappening = true;
+          Platform.runLater(() -> {
+            try {
+              handleInformationMessage(
+                "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
+              );
+              login(modelMapper.userToUserDTO(checkUser), latestView);
+              updateHappening = false;
+            } catch (GenericServiceException ignore) {}
+          });
         }
       }
     }
@@ -300,7 +291,10 @@ public class MainViewController {
 
     // add new page to historyList if createHistory says so, if not turn it true again
     if (createHistory) {
-      historyList.add(switchTo);
+      // only add new page if it is not the last one as well
+      if (historyList.isEmpty() || !historyList.getLast().equals(switchTo)) {
+        historyList.add(switchTo);
+      }
     } else {
       createHistory = true;
     }
