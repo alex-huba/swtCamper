@@ -51,8 +51,12 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   @Autowired
   private ResetPasswordViewController resetPasswordViewController;
 
+  private int loginAttempts;
+
   @FXML
   public void initialize() {
+    loginAttempts = 0;
+
     usernameTf.setOnKeyTyped(this::validateInput);
     passwordPf.setOnKeyTyped(this::validateInput);
 
@@ -105,34 +109,29 @@ public class LoginViewController implements EventHandler<KeyEvent> {
       mainViewController.login(userController.login(username, password));
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
-      Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicken Sie OK um das Passwort zurückzusetzen"
-      );
-      alert.setTitle("Authentifizierung fehlgeschlagen!");
-      alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
-        mainViewController.changeView("forgotPassword");
-        resetPasswordViewController.usernameTf.setText(username);
-        resetPasswordViewController.validateUsernameTf();
+      errorLabel.setText("Falsches Passwort, bitte versuchen Sie es erneut.");
+
+      // ask user to change password after 3 wrong tries
+      if (loginAttempts == 2) {
+        Alert alert = new Alert(
+          Alert.AlertType.ERROR,
+          "Sie haben Ihr Passwort 3x hintereinander falsch eingegeben.\nKlicken Sie OK um es zurückzusetzen."
+        );
+        alert.setTitle("Authentifizierung fehlgeschlagen!");
+        alert.setHeaderText("Falsches Passwort. Zurücksetzen?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+          mainViewController.changeView("forgotPassword");
+          resetPasswordViewController.usernameTf.setText(username);
+          resetPasswordViewController.validateUsernameTf();
+        }
+      } else {
+        loginAttempts++;
       }
     } catch (UserDoesNotExistException e) {
-      // Inform user that user account doesn't exist
-      Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicke OK um einen neuen Account zu erstellen"
+      errorLabel.setText(
+        "Es gibt keinen Account mit diesem Nutzernamen; bitte registrieren Sie sich zuerst wenn sie noch keinen Nutzeraccount haben."
       );
-      alert.setTitle("Authentifizierung fehlgeschlagen!");
-      alert.setHeaderText("Es gibt keinen Account mit diesem Nutzernamen");
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
-        mainViewController.changeView("register");
-        registerViewController.usernameTf.setText(username);
-        registerViewController.passwordPf.setText(password);
-        registerViewController.validateUsernameTf();
-        registerViewController.validatePasswordPf();
-      }
     }
   }
 
@@ -147,6 +146,8 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   public void resetInputFields() {
+    loginAttempts = 0;
+
     usernameTf.clear();
     passwordPf.clear();
 
