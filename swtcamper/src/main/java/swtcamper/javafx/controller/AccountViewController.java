@@ -210,6 +210,12 @@ public class AccountViewController {
           )
         );
         acceptReportButton.getStyleClass().add("bg-warning");
+        acceptReportButton.setDisable(
+          userReportDTO
+            .getReportee()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        );
         acceptReportButton.setOnAction(event -> {
           try {
             userReportController.accept(userReportDTO.getId());
@@ -219,6 +225,12 @@ public class AccountViewController {
 
         Button rejectReportButton = new Button("Beschwerde ignorieren");
         rejectReportButton.getStyleClass().add("bg-primary");
+        rejectReportButton.setDisable(
+          userReportDTO
+            .getReportee()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        );
         rejectReportButton.setOnAction(event -> {
           try {
             userReportController.reject(userReportDTO.getId());
