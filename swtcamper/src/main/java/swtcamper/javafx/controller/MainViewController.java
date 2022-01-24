@@ -274,11 +274,6 @@ public class MainViewController {
   }
 
   public void changeView(String switchTo) throws GenericServiceException {
-    changeView(switchTo, true);
-  }
-
-  public void changeView(String switchTo, boolean reloadData)
-    throws GenericServiceException {
     latestView = switchTo;
     clearView();
 
@@ -286,7 +281,7 @@ public class MainViewController {
       case "home":
         mainStage.getChildren().add(homeViewBox);
         globalHeaderLabel.setText("SWTCamper - Finde Deinen perfekten Camper");
-        if (reloadData) rentingViewController.reloadData();
+        rentingViewController.reloadData();
         navigationViewController.setButtonActive(
           navigationViewController.homeButton
         );
@@ -383,10 +378,6 @@ public class MainViewController {
           navigationViewController.accountButton
         );
         resetPasswordViewController.resetInputFields();
-        break;
-      case "moreInfoOffer":
-        mainStage.getChildren().add(moreAboutOfferViewBox);
-        globalHeaderLabel.setText("SWTCamper - Anzeigenansicht");
         break;
       case "reportUser":
         mainStage.getChildren().add(reportUserViewBox);
