@@ -1,10 +1,13 @@
 package swtcamper.javafx.controller;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -24,6 +27,9 @@ import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Component
 public class MainViewController {
 
@@ -35,6 +41,9 @@ public class MainViewController {
 
   @FXML
   public Label globalHeaderLabel;
+
+  @FXML
+  public Button globalBackBtn;
 
   @FXML
   public AnchorPane mainStage;
@@ -133,10 +142,23 @@ public class MainViewController {
 
   private User latestLoggedInStatus = null;
   private String latestView = null;
+  private LinkedList<String> historyList = new LinkedList<>();
 
   @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
+  }
+
+  @FXML
+  public void goBack() throws GenericServiceException {
+    System.out.println(historyList);
+
+    historyList.removeLast();
+
+    System.out.println(historyList);
+
+    int listLength = historyList.size()-1;
+    changeView(historyList.get(listLength));
   }
 
   public void reloadData() {
@@ -280,6 +302,7 @@ public class MainViewController {
   public void changeView(String switchTo, boolean reloadData)
     throws GenericServiceException {
     latestView = switchTo;
+    historyList.add(switchTo);
     clearView();
 
     switch (switchTo) {
