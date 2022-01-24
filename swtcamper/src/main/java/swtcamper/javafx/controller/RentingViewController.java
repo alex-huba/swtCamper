@@ -618,7 +618,13 @@ public class RentingViewController {
     newFilter.setKitchen(kitchenCheckBox.isSelected());
     newFilter.setFridge(fridgeCheckBox.isSelected());
 
-    loadData(offerController.getFilteredOffers(newFilter));
+    // get filtered offers and save them as (global) offerDTOList
+    offerDTOList = offerController.getFilteredOffers(newFilter);
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
   }
 
   public void resetFilter() throws GenericServiceException {
