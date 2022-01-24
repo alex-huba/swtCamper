@@ -71,6 +71,9 @@ public class NavigationViewController {
   public Button accountButton;
 
   @FXML
+  public Circle accountNotificationDot;
+
+  @FXML
   public Button logoutBtn;
 
   private boolean isShortText = true;
@@ -121,7 +124,6 @@ public class NavigationViewController {
     if (isLocked) {
       navBarList.add(dealHistoryButton);
       navBarList.add(accountButton);
-      navBarList.add(logoutBtn);
     } else {
       switch (userRole) {
         // Enable renter functionalities
@@ -130,8 +132,7 @@ public class NavigationViewController {
             homeButton,
             dealHistoryButton,
             myBookingsButton,
-            accountButton,
-            logoutBtn
+            accountButton
           );
           break;
         // Enable provider functionalities
@@ -143,17 +144,14 @@ public class NavigationViewController {
               activeOffersButton,
               dealHistoryButton,
               excludeButton,
-              myBookingsButton,
-              accountButton,
-              logoutBtn
+              myBookingsButton
             );
           } else {
             navBarList.addAll(
               homeButton,
               dealHistoryButton,
               myBookingsButton,
-              accountButton,
-              logoutBtn
+              accountButton
             );
           }
           break;
@@ -167,15 +165,16 @@ public class NavigationViewController {
             excludeButton,
             approveButton,
             myBookingsButton,
-            accountButton,
-            logoutBtn
+            accountButton
           );
           break;
         default:
-          navBarList.addAll(homeButton, accountButton, logoutBtn);
+          navBarList.addAll(homeButton, accountButton);
           break;
       }
     }
+
+    logoutBtn.setVisible(true);
 
     mainViewController.changeView(startPage);
     if (isShortText) {
@@ -187,6 +186,7 @@ public class NavigationViewController {
 
   public void logout() throws GenericServiceException {
     setStartButtons();
+    logoutBtn.setVisible(false);
     mainViewController.changeView("home");
     if (isShortText) {
       setShortTexts();
@@ -216,6 +216,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText("");
         ((Button) child).setPrefWidth(45);
+
+        logoutBtn.setText("");
+        logoutBtn.setPrefWidth(45);
       }
     }
   }
@@ -233,6 +236,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText(((Button) child).getAccessibleText());
         ((Button) child).setPrefWidth(172);
+
+        logoutBtn.setText(logoutBtn.getAccessibleText());
+        logoutBtn.setPrefWidth(172);
       }
     }
   }
@@ -250,12 +256,23 @@ public class NavigationViewController {
 
   public void showBookingNotification() {
     Tooltip t = new Tooltip("Es gibt neue Buchungsanfragen");
-    Tooltip.install(approveNotificationDot, t);
+    Tooltip.install(myBookingsNotificationDot, t);
 
     myBookingsNotificationDot.setVisible(true);
   }
 
-  public void resetBookingNotification() {
+  public void hideBookingNotification() {
     myBookingsNotificationDot.setVisible(false);
+  }
+
+  public void showAccountNotification() {
+    Tooltip t = new Tooltip("Es gibt neue Nutzerbeschwerden");
+    Tooltip.install(accountNotificationDot, t);
+
+    accountNotificationDot.setVisible(true);
+  }
+
+  public void hideAccountNotification() {
+    accountNotificationDot.setVisible(false);
   }
 }

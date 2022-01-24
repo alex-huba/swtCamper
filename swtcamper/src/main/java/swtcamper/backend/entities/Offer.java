@@ -31,6 +31,7 @@ public class Offer implements IOffer {
   private long price;
   private boolean active;
   ArrayList<Pair> blockedDates;
+  private boolean promoted;
 
   // Rental Conditions
   private ArrayList<String> rentalConditions;
@@ -220,6 +221,14 @@ public class Offer implements IOffer {
 
   public void setBlockedDates(ArrayList<Pair> blockedDates) {
     this.blockedDates = blockedDates;
+  }
+
+  public boolean isPromoted() {
+    return promoted;
+  }
+
+  public void setPromoted(boolean promoted) {
+    this.promoted = promoted;
   }
 
   @Override

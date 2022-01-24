@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
@@ -31,16 +31,27 @@ public class BookingService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Get a List of all available bookings
+   * @return List of all available bookings
+   */
   public List<Booking> getAllBookings() {
     return bookingRepository.findAll();
   }
 
+  /**
+   * Creates a new booking (active state will be false by default ({@link Booking}))
+   * @param user User that wants to book the given offer
+   * @param offer {@link Offer} that the given User wants to book
+   * @param startDate date to begin the booking
+   * @param endDate date until the booking shall go
+   * @return created Booking
+   */
   public Booking create(
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
+    LocalDate endDate
   ) throws GenericServiceException {
     Booking booking = bookingRepository.save(
       new Booking(user, offer, startDate, endDate)
@@ -76,6 +87,16 @@ public class BookingService {
     return bookingRepository.findById(newBookingId).get();
   }
 
+  /**
+   * Updates a booking with new values
+   * @param bookingID
+   * @param startDate
+   * @param endDate
+   * @param active
+   * @param user
+   * @return the updated booking
+   * @throws GenericServiceException
+   */
   public Booking update(
     Long bookingID,
     LocalDate startDate,
@@ -119,6 +140,13 @@ public class BookingService {
     );
   }
 
+  /**
+   * Activates a booking (will be active)
+   * @param bookingID ID of the booking to activate
+   * @param user User that gave the order to activate this booking (for logging)
+   * @return activated booking
+   * @throws GenericServiceException
+   */
   public Booking activate(Long bookingID, UserDTO user)
     throws GenericServiceException {
     // Search for booking in database
@@ -134,7 +162,7 @@ public class BookingService {
           new LoggingMessage(
             LoggingLevel.INFO,
             String.format(
-              "Booking with ID %s was deactivated by user %s.",
+              "Booking with ID %s was activated by user %s.",
               bookingID,
               user.getUsername()
             )
@@ -149,6 +177,13 @@ public class BookingService {
     );
   }
 
+  /**
+   * Deactivates a booking (will not be active anymore)
+   * @param bookingID ID of the booking to deactivate
+   * @param user User that gave the order to deactivate this booking (for logging)
+   * @return deactivated booking
+   * @throws GenericServiceException
+   */
   public Booking deactivate(Long bookingID, UserDTO user)
     throws GenericServiceException {
     // Search for booking in database
@@ -179,6 +214,12 @@ public class BookingService {
     );
   }
 
+  /**
+   * Deletes a booking from the database
+   * @param bookingID ID of the booking that shall be deleted
+   * @param user user that gave the order to delete this booking (for logging)
+   * @throws GenericServiceException
+   */
   public void delete(Long bookingID, UserDTO user)
     throws GenericServiceException {
     Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
@@ -236,31 +277,40 @@ public class BookingService {
   }
 
   /**
-   * For a specific offer, this method gathers all days on which the offer is booked. <br> That means each startDate and endDate and all days in between.
-   *
+   * For a specific offer, this method gathers all days on which the offer is booked (by renters) or blocked (by the offer creator). <br> That means each startDate and endDate and all days in between.
+   *    *
    * @param offerID
    * @return a list of the booked days
    * @throws GenericServiceException
    */
   public List<LocalDate> getBookedDays(long offerID)
     throws GenericServiceException {
-    List<LocalDate> bookedDays = new ArrayList<>();
+    List<LocalDate> bookedOrBlockedDays = new ArrayList<>();
 
     Optional<Offer> offerResponse = offerRepository.findById(offerID);
     if (offerResponse.isPresent()) {
       Offer offer = offerResponse.get();
       ArrayList<Long> bookingIDs = offer.getBookings();
       Iterable<Booking> bookings = bookingRepository.findAllById(bookingIDs);
+      ArrayList<Pair> blockedDates = offer.getBlockedDates();
 
       for (Booking booking : bookings) {
         LocalDate startDate = booking.getStartDate();
         LocalDate endDate = booking.getEndDate();
         long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
         for (int i = 0; i <= amountOfDays; i++) {
-          bookedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
         }
       }
-      return bookedDays;
+      for (Pair pair : blockedDates) {
+        LocalDate startDate = (LocalDate) pair.getKey();
+        LocalDate endDate = (LocalDate) pair.getValue();
+        long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        for (int i = 0; i <= amountOfDays; i++) {
+          bookedOrBlockedDays.add(startDate.plus(i, ChronoUnit.DAYS));
+        }
+      }
+      return bookedOrBlockedDays;
     }
     throw new GenericServiceException(
       "Offer with following ID not found: " + offerID
@@ -277,6 +327,10 @@ public class BookingService {
    */
   public List<Offer> getAvailableOffers(LocalDate startDate, LocalDate endDate)
     throws GenericServiceException {
+    if (startDate == null || endDate == null) {
+      return offerRepository.findAll();
+    }
+
     // List of all requested days
     List<LocalDate> requestedDays = new ArrayList<>();
     long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
@@ -343,5 +397,14 @@ public class BookingService {
     throw new GenericServiceException(
       "Booking with following ID not found: " + bookingID
     );
+  }
+
+  public void reject(long bookingID) {
+    Optional<Booking> bookingOptional = bookingRepository.findById(bookingID);
+    if (bookingOptional.isPresent()) {
+      Booking booking = bookingOptional.get();
+      booking.setRejected(true);
+      bookingRepository.save(booking);
+    }
   }
 }

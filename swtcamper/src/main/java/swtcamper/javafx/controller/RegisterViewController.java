@@ -4,6 +4,7 @@ import static swtcamper.backend.entities.UserRole.*;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -152,6 +153,10 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
   }
 
+  private void validateNeutral(Node element) {
+    element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
+  }
+
   private void validateFalse(Node element) {
     element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
@@ -274,6 +279,18 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     surnameTf.clear();
     providerCb.setSelected(false);
     renterCb.setSelected(false);
+
+    FXCollections
+      .observableArrayList(
+        usernameTf,
+        passwordPf,
+        repeatPasswordPf,
+        emailTf,
+        phoneTf,
+        nameTf,
+        surnameTf
+      )
+      .forEach(this::validateNeutral);
 
     errorLabel.setText("");
   }

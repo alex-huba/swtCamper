@@ -1,12 +1,10 @@
 package swtcamper.javafx.controller;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -145,6 +143,9 @@ public class OfferViewController {
   public Button bookingButton;
 
   @FXML
+  public Button promotingButton;
+
+  @FXML
   public Label dateLabel;
 
   @FXML
@@ -169,6 +170,11 @@ public class OfferViewController {
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
     checkMode(rentingMode);
+    // enable button to promote / degrade offer
+    // ...only if user role is OPERATOR
+    checkUserRole();
+    checkOfferStatus();
+
     Vehicle offeredObject = offer.getOfferedObject();
 
     pictureHorizontHBox.getChildren().clear();
@@ -218,7 +224,9 @@ public class OfferViewController {
       Integer.toString(offeredObject.getVehicleFeatures().getBeds())
     );
     constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(offeredObject.getVehicleFeatures().getEngine());
+    engineLabel.setText(
+      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
+    );
     widthLabel.setText(
       doubleStringConverter.toString(
         offeredObject.getVehicleFeatures().getWidth()
@@ -290,6 +298,9 @@ public class OfferViewController {
     isRentingMode.set(rentingMode);
     if (isRentingMode.get()) {
       if (userController.getLoggedInUser() != null) {
+        // blocked user cannot book an offer
+        bookingButton.setDisable(userController.getLoggedInUser().isLocked());
+
         // remove ability to book own offer
         if (
           viewedOffer
@@ -306,7 +317,8 @@ public class OfferViewController {
           )) {
             if (
               booking.getOffer().getOfferID() == viewedOffer.getID() &&
-              booking.isActive()
+              booking.isActive() &&
+              !booking.isRejected()
             ) {
               offerIsInRent = true;
               break;
@@ -324,6 +336,7 @@ public class OfferViewController {
         for (Booking booking : bookingController
           .getAllBookings()
           .stream()
+          .filter(booking -> !booking.isRejected())
           .filter(booking ->
             booking
               .getRenter()
@@ -336,20 +349,36 @@ public class OfferViewController {
             dateLabel.setDisable(true);
             startDatePicker.setDisable(true);
             endDatePicker.setDisable(true);
-            rentLabel.setText(
-              "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
-            );
             rentHBox.setVisible(true);
 
-            // abort open booking request
-            abortBookingRequestBtn.setOnAction(event -> {
-              try {
-                bookingController.delete(booking.getId());
+            if (booking.isActive()) {
+              rentLabel.setText(
+                "Du mietest diese Anzeige gerade. Buchungsnummer: " +
+                booking.getId()
+              );
+
+              // abort renting
+              abortBookingRequestBtn.setText("Buchung abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                bookingController.reject(booking.getId());
                 checkMode(true);
-              } catch (GenericServiceException e) {
-                mainViewController.handleExceptionMessage(e.getMessage());
-              }
-            });
+              });
+            } else {
+              rentLabel.setText(
+                "Buchungsanfrage verschickt. Buchungsnummer: " + booking.getId()
+              );
+
+              // abort open booking request
+              abortBookingRequestBtn.setText("Anfrage abbrechen");
+              abortBookingRequestBtn.setOnAction(event -> {
+                try {
+                  bookingController.delete(booking.getId());
+                  checkMode(true);
+                } catch (GenericServiceException e) {
+                  mainViewController.handleExceptionMessage(e.getMessage());
+                }
+              });
+            }
           }
         }
       }
@@ -360,6 +389,41 @@ public class OfferViewController {
       endDatePicker.setVisible(false);
       rentHBox.setVisible(false);
     }
+  }
+
+  /**
+   * Makes promote / degrade offer button visible, only if operator is logged in.
+   */
+  public void checkUserRole() {
+    if (
+      userController.getLoggedInUser() != null &&
+      userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)
+    ) {
+      promotingButton.setVisible(true);
+    } else {
+      promotingButton.setVisible(false);
+    }
+  }
+
+  /**
+   * Checks if offer is promoted and sets button text accordingly.
+   */
+  public void checkOfferStatus() {
+    if (this.viewedOffer.isPromoted()) {
+      promotingButton.setText("Nicht mehr hervorheben");
+    } else {
+      promotingButton.setText("Angebot hervorheben");
+    }
+  }
+
+  @FXML
+  public void promotingAction() throws GenericServiceException {
+    if (this.viewedOffer.isPromoted()) {
+      offerController.degradeOffer(this.viewedOffer.getID());
+    } else {
+      offerController.promoteOffer(this.viewedOffer.getID());
+    }
+    backAction();
   }
 
   @FXML
@@ -385,7 +449,7 @@ public class OfferViewController {
       // Liegt Startdatum nach Enddatum?
       // Startdatum == Enddatum?
       if (
-        !validationHelper.checkRentingDates(
+        !ValidationHelper.checkRentingDates(
           startDatePicker.getValue(),
           endDatePicker.getValue()
         )
@@ -395,10 +459,13 @@ public class OfferViewController {
         );
         // Gibt es gebuchte Tage zwischen Start- und Enddatum?
       } else if (
-        !validationHelper.checkRentingDatesWithOffer(
+        !ValidationHelper.checkRentingDatesWithOffer(
           startDatePicker.getValue(),
           endDatePicker.getValue(),
-          this.viewedOffer
+          this.viewedOffer,
+          bookingService,
+          offerService,
+          mainViewController
         )
       ) {
         mainViewController.handleExceptionMessage(
@@ -418,13 +485,16 @@ public class OfferViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
           Offer offer = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
-          BookingDTO bookingDTO = bookingController.create(
-            user,
-            offer,
-            startDatePicker.getValue(),
-            endDatePicker.getValue(),
-            false
-          );
+          try {
+            BookingDTO bookingDTO = bookingController.create(
+              user,
+              offer,
+              startDatePicker.getValue(),
+              endDatePicker.getValue()
+            );
+          } catch (GenericServiceException e) {
+            mainViewController.handleExceptionMessage(e.getMessage());
+          }
           checkMode(true);
         }
       }

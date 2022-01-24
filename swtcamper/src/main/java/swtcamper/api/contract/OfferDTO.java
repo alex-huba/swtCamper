@@ -20,6 +20,7 @@ public class OfferDTO {
   private long price;
   private boolean active;
   private ArrayList<Pair> blockedDates;
+  private boolean promoted;
 
   public OfferDTO(
     long offerID,
@@ -34,7 +35,8 @@ public class OfferDTO {
     long price,
     ArrayList<String> rentalConditions,
     ArrayList<Pair> blockedDates,
-    boolean active
+    boolean active,
+    boolean promoted
   ) {
     this.offerID = offerID;
     this.creator = creator;
@@ -49,6 +51,7 @@ public class OfferDTO {
     this.rentalConditions = rentalConditions;
     this.blockedDates = blockedDates;
     this.active = active;
+    this.promoted = promoted;
   }
 
   public long getID() {
@@ -153,6 +156,14 @@ public class OfferDTO {
 
   public void setBlockedDates(ArrayList<Pair> blockedDates) {
     this.blockedDates = blockedDates;
+  }
+
+  public boolean isPromoted() {
+    return promoted;
+  }
+
+  public void setPromoted(boolean promoted) {
+    this.promoted = promoted;
   }
 
   @Override

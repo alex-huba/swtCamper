@@ -12,7 +12,6 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.OfferController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleFeaturesRepository;
@@ -24,6 +23,9 @@ public class OfferService {
 
   @Autowired
   OfferService offerService;
+
+  @Autowired
+  UserService userService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -43,6 +45,37 @@ public class OfferService {
   @Autowired
   private ModelMapper modelMapper;
 
+  /**
+   * Creates a new offer
+   * @param creator
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param price
+   * @param rentalConditions
+   * @param blockedDates
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @return created offer
+   * @throws GenericServiceException
+   */
   public Offer create(
     // TODO validation
     User creator,
@@ -62,7 +95,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -93,7 +126,7 @@ public class OfferService {
       length,
       width,
       height,
-      engine,
+      fuelType,
       transmission,
       seats,
       beds,
@@ -157,6 +190,42 @@ public class OfferService {
     }
   }
 
+  /**
+   * Updates an offer with new values
+   * @param offerId
+   * @param creator
+   * @param offeredObject
+   * @param title
+   * @param location
+   * @param contact
+   * @param particularities
+   * @param bookings
+   * @param price
+   * @param active
+   * @param rentalConditions
+   * @param blockedDates
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   * @param user
+   * @return updated offer
+   * @throws GenericServiceException
+   */
   public Offer update(
     long offerId,
     User creator,
@@ -179,7 +248,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -238,7 +307,7 @@ public class OfferService {
           length,
           width,
           height,
-          engine,
+          fuelType,
           transmission,
           seats,
           beds,
@@ -299,6 +368,28 @@ public class OfferService {
     }
   }
 
+  /**
+   * Sets features for given {@link VehicleFeatures}
+   * @param vehicleFeatures
+   * @param vehicleType
+   * @param make
+   * @param model
+   * @param year
+   * @param length
+   * @param width
+   * @param height
+   * @param fuelType
+   * @param transmission
+   * @param seats
+   * @param beds
+   * @param roofTent
+   * @param roofRack
+   * @param bikeRack
+   * @param shower
+   * @param toilet
+   * @param kitchenUnit
+   * @param fridge
+   */
   private void setVehicleFeatures(
     VehicleFeatures vehicleFeatures,
     VehicleType vehicleType,
@@ -308,7 +399,7 @@ public class OfferService {
     double length,
     double width,
     double height,
-    String engine,
+    FuelType fuelType,
     String transmission,
     int seats,
     int beds,
@@ -327,7 +418,7 @@ public class OfferService {
     vehicleFeatures.setLength(length);
     vehicleFeatures.setWidth(width);
     vehicleFeatures.setHeight(height);
-    vehicleFeatures.setEngine(engine);
+    vehicleFeatures.setFuelType(fuelType);
     vehicleFeatures.setTransmission(transmission);
     vehicleFeatures.setSeats(seats);
     vehicleFeatures.setBeds(beds);
@@ -341,6 +432,7 @@ public class OfferService {
   }
 
   /**
+   * Deletes a specific offer from the database (Warning: This is not constructive for Offer-History)
    * @param id ID of the offer to get deleted
    * @throws GenericServiceException if the given ID is not available
    */
@@ -374,6 +466,10 @@ public class OfferService {
     }
   }
 
+  /**
+   * Gets a list of all available offers
+   * @return list of all available offers
+   */
   public List<Offer> offers() {
     return offerRepository.findAll();
   }
@@ -404,6 +500,52 @@ public class OfferService {
     }
     throw new GenericServiceException(
       "Offer with following ID not found: " + offerID
+    );
+  }
+
+  public Offer promoteOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(true);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got promoted by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer degradeOffer(long offerID) throws GenericServiceException {
+    Offer offer = getOfferById(offerID);
+    offer.setPromoted(false);
+    loggingController.log(
+      modelMapper.LoggingMessageToLoggingMessageDTO(
+        new LoggingMessage(
+          LoggingLevel.INFO,
+          String.format(
+            "Offer with ID %s got degraded by operator %s.",
+            offerID,
+            userService.getLoggedInUser().getUsername()
+          )
+        )
+      )
+    );
+    return offerRepository.save(offer);
+  }
+
+  public Offer getOfferById(long offerID) throws GenericServiceException {
+    Optional<Offer> offerOptional = offerRepository.findById(offerID);
+    if (offerOptional.isPresent()) {
+      return offerOptional.get();
+    }
+    throw new GenericServiceException(
+      "There is no offer with ID " + offerID + "."
     );
   }
 }

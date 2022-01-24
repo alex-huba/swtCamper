@@ -17,7 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
@@ -34,6 +34,7 @@ import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleRepository;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -104,16 +105,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public TextField heightTextField;
 
   @FXML
-  public TextField engineTextField;
+  public ComboBox<FuelType> fuelComboBox;
 
   @FXML
   public ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public TextField seatsTextField;
+  public ComboBox<String> seatsComboBox;
 
   @FXML
-  public TextField bedsTextField;
+  public ComboBox<String> bedsComboBox;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -193,6 +194,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @Autowired
   private OfferService offerService;
 
+  @Autowired
+  BookingService bookingService;
+
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   private ArrayList<Pair> blockedDates = new ArrayList<>();
@@ -215,8 +219,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setOnKeyTyped(this);
     brandTextField.setOnKeyTyped(this);
     modelTextField.setOnKeyTyped(this);
-    seatsTextField.setOnKeyTyped(this);
-    bedsTextField.setOnKeyTyped(this);
+    seatsComboBox.setOnHiding(event -> validateSeats());
+    bedsComboBox.setOnHiding(event ->
+      validateBeds(Integer.parseInt(bedsComboBox.getValue()))
+    );
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
     contactTextField.setOnKeyTyped(this);
@@ -264,6 +270,40 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     endDatePicker.getEditor().setOpacity(1);
     setCellFactory(startDatePicker, null);
     setCellFactory(endDatePicker, null);
+
+    seatsComboBox.setItems(
+      FXCollections.observableArrayList(
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      )
+    );
+    bedsComboBox.setItems(
+      FXCollections.observableArrayList(
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      )
+    );
+    fuelComboBox.setItems(
+      FXCollections.observableArrayList((FuelType.values()))
+    );
   }
 
   /**
@@ -311,6 +351,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     vehicleTypeComboBox.setValue(vehicle.getVehicleFeatures().getVehicleType());
     brandTextField.setText(vehicle.getVehicleFeatures().getMake());
     modelTextField.setText(vehicle.getVehicleFeatures().getModel());
+    seatsComboBox.setValue(
+      String.valueOf(vehicle.getVehicleFeatures().getSeats())
+    );
+    bedsComboBox.setValue(
+      String.valueOf(vehicle.getVehicleFeatures().getBeds())
+    );
     constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
     widthTextField.setText(
       String.valueOf(vehicle.getVehicleFeatures().getWidth())
@@ -321,20 +367,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     heightTextField.setText(
       String.valueOf(vehicle.getVehicleFeatures().getHeight())
     );
-    engineTextField.setText(vehicle.getVehicleFeatures().getEngine());
+    fuelComboBox.setValue(vehicle.getVehicleFeatures().getFuelType());
     transmissionComboBox.setValue(
-      vehicle
-          .getVehicleFeatures()
-          .getTransmission()
-          .equals(TransmissionType.AUTOMATIC.toString())
-        ? TransmissionType.AUTOMATIC
-        : TransmissionType.MANUAL
-    );
-    seatsTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getSeats())
-    );
-    bedsTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getBeds())
+      vehicle.getVehicleFeatures().getTransmission() != null
+        ? (
+          vehicle
+              .getVehicleFeatures()
+              .getTransmission()
+              .equals(TransmissionType.AUTOMATIC.toString())
+            ? TransmissionType.AUTOMATIC
+            : TransmissionType.MANUAL
+        )
+        : null
     );
     roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
     roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
@@ -407,13 +451,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       .addListener((observable, oldValue, newValue) ->
         placeOfferButton.visibleProperty().set(true)
       );
-    seatsTextField
-      .textProperty()
+    seatsComboBox
+      .valueProperty()
       .addListener((observable, oldValue, newValue) ->
         placeOfferButton.visibleProperty().set(true)
       );
-    bedsTextField
-      .textProperty()
+    bedsComboBox
+      .valueProperty()
       .addListener((observable, oldValue, newValue) ->
         placeOfferButton.visibleProperty().set(true)
       );
@@ -422,8 +466,8 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       .addListener((observable, oldValue, newValue) ->
         placeOfferButton.visibleProperty().set(true)
       );
-    engineTextField
-      .textProperty()
+    fuelComboBox
+      .valueProperty()
       .addListener((observable, oldValue, newValue) ->
         placeOfferButton.visibleProperty().set(true)
       );
@@ -525,24 +569,32 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     contactTextField.clear();
     particularitiesTextArea.clear();
 
+    rentalConditions.clear();
+    rentalConditionsListView.setItems(
+      FXCollections.observableArrayList(rentalConditions)
+    );
+
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
-    vehicleTypeComboBox.getSelectionModel().clearSelection();
+    vehicleTypeComboBox.setValue(null);
+    //TODO braucht man die Zeile unten?
+    //vehicleTypeComboBox.getSelectionModel().clearSelection();
     brandTextField.clear();
     modelTextField.clear();
     constructionYearTextField.clear();
     widthTextField.clear();
     lengthTextField.clear();
     heightTextField.clear();
-    engineTextField.clear();
+    fuelComboBox.setValue(null);
     transmissionComboBox.setItems(
       FXCollections.observableArrayList(TransmissionType.values())
     );
+    transmissionComboBox.setValue(null);
+    seatsComboBox.setValue(null);
+    bedsComboBox.setValue(null);
+    //TODO siehe kommentar oben
     transmissionComboBox.getSelectionModel().clearSelection();
-
-    seatsTextField.clear();
-    bedsTextField.clear();
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -564,18 +616,22 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setStyle("");
     locationTextField.setStyle("");
     contactTextField.setStyle("");
+    vehicleTypeComboBox.setStyle("");
     brandTextField.setStyle("");
     modelTextField.setStyle("");
-    seatsTextField.setStyle("");
-    bedsTextField.setStyle("");
+    transmissionComboBox.setStyle("");
+    seatsComboBox.setStyle("");
+    bedsComboBox.setStyle("");
 
     // reset validated properties
     isTitleOk.set(false);
     isPriceOk.set(false);
     isLocationOk.set(false);
     isContactOk.set(false);
+    isVehicleTypeOk.set(false);
     isBrandOk.set(false);
     isModelOk.set(false);
+    isTransmissionTypeOk.set(false);
     isSeatsOk.set(false);
     isBedsOk.set(false);
 
@@ -584,7 +640,32 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @Override
   public void handle(KeyEvent event) {
-    validateOfferInput(event);
+    Object source = event.getSource();
+
+    if (titleTextField.equals(source)) {
+      String inputTitle = titleTextField.getText();
+      validateTitle(inputTitle);
+    } else if (priceTextField.equals(source)) {
+      String inputPrice = priceTextField.getText();
+      validatePrice(inputPrice);
+    } else if (locationTextField.equals(source)) {
+      String inputLocation = locationTextField.getText();
+      validateLocation(inputLocation);
+    } else if (contactTextField.equals(source)) {
+      String inputContact = contactTextField.getText();
+      validateContact(inputContact);
+    } else if (brandTextField.equals(source)) {
+      String inputBrand = brandTextField.getText();
+      validateBrand(inputBrand);
+    } else if (modelTextField.equals(source)) {
+      String inputModel = modelTextField.getText();
+      validateModel(inputModel);
+    } else if (seatsComboBox.equals(source)) {
+      validateSeats();
+    } else if (bedsComboBox.equals(source)) {
+      int inputBeds = Integer.parseInt(bedsComboBox.getValue());
+      validateBeds(inputBeds);
+    }
   }
 
   /**
@@ -617,14 +698,15 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         brandTextField.getText(),
         modelTextField.getText(),
         constructionYearTextField.getText(),
-        // TODO length etc aus Feldern holen
         length,
         width,
         height,
-        engineTextField.getText(),
-        transmissionComboBox.getValue().toString(),
-        Integer.parseInt(seatsTextField.getText()),
-        Integer.parseInt(bedsTextField.getText()),
+        fuelComboBox.getValue(),
+        transmissionComboBox.getValue() != null
+          ? transmissionComboBox.getValue().toString()
+          : null,
+        Integer.parseInt(seatsComboBox.getValue()),
+        Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),
         roofRackCheckBox.isSelected(),
         bikeRackCheckBox.isSelected(),
@@ -640,8 +722,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         String.format("Neues Angebot \"%s\" wurde erstellt.", offerDTO.getID())
       );
     } else if (isEditMode.get()) {
-      // TODO raus: ArrayList<Long> bookings = null;
-
       offerController.update(
         offerID,
         userController.getLoggedInUser(),
@@ -662,10 +742,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         length,
         width,
         height,
-        engineTextField.getText(),
-        transmissionComboBox.getValue().toString(),
-        Integer.parseInt(seatsTextField.getText()),
-        Integer.parseInt(bedsTextField.getText()),
+        fuelComboBox.getValue(),
+        transmissionComboBox.getValue() != null
+          ? transmissionComboBox.getValue().toString()
+          : null,
+        Integer.parseInt(seatsComboBox.getValue()),
+        Integer.parseInt(bedsComboBox.getValue()),
         roofTentCheckBox.isSelected(),
         roofRackCheckBox.isSelected(),
         bikeRackCheckBox.isSelected(),
@@ -701,36 +783,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateOfferInput(KeyEvent event) {
-    Object source = event.getSource();
-
-    if (titleTextField.equals(source)) {
-      String inputTitle = titleTextField.getText();
-      validateTitle(inputTitle);
-    } else if (priceTextField.equals(source)) {
-      String inputPrice = priceTextField.getText();
-      validatePrice(inputPrice);
-    } else if (locationTextField.equals(source)) {
-      String inputLocation = locationTextField.getText();
-      validateLocation(inputLocation);
-    } else if (contactTextField.equals(source)) {
-      String inputContact = contactTextField.getText();
-      validateContact(inputContact);
-    } else if (brandTextField.equals(source)) {
-      String inputBrand = brandTextField.getText();
-      validateBrand(inputBrand);
-    } else if (modelTextField.equals(source)) {
-      String inputModel = modelTextField.getText();
-      validateModel(inputModel);
-    } else if (seatsTextField.equals(source)) {
-      String inputSeats = seatsTextField.getText();
-      validateSeats(inputSeats);
-    } else if (bedsTextField.equals(source)) {
-      String inputBeds = bedsTextField.getText();
-      validateBeds(inputBeds);
-    }
-  }
-
   private void validateMandatoryFields() {
     validateTitle(titleTextField.getText());
     validatePrice(priceTextField.getText());
@@ -740,16 +792,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateBrand(brandTextField.getText());
     validateModel(modelTextField.getText());
     validateTransmissionType(transmissionComboBox.getValue());
-    validateSeats(seatsTextField.getText());
-    validateBeds(bedsTextField.getText());
+    validateSeats();
+    validateBeds(Integer.parseInt(bedsComboBox.getValue()));
   }
 
   private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #1987547f;");
   }
 
   private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   private void validateTitle(String inputTitle) {
@@ -806,10 +858,22 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateFalse(vehicleTypeComboBox);
       isVehicleTypeOk.set(false);
     } else {
+      if (inputVehicleType.equals(VehicleType.TRAILER)) {
+        transmissionComboBox.setDisable(true);
+        transmissionComboBox.setValue(null);
+        isTransmissionTypeOk.set(true);
+        fuelComboBox.setDisable(true);
+        fuelComboBox.setValue(null);
+      } else {
+        transmissionComboBox.setDisable(false);
+        isTransmissionTypeOk.set(false);
+        fuelComboBox.setDisable(false);
+      }
       errorLabel.setText("");
       validateTrue(vehicleTypeComboBox);
       isVehicleTypeOk.set(true);
     }
+    if (seatsComboBox.getValue() != null) validateSeats();
   }
 
   private void validateBrand(String inputBrand) {
@@ -850,30 +914,32 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateSeats(String inputSeats) {
+  private void validateSeats() {
     if (
-      inputSeats.isEmpty() ||
-      !inputSeats.matches("[0-9]*") ||
-      Integer.parseInt(inputSeats) == 0
+      (
+        vehicleTypeComboBox.getValue() != null &&
+        vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
+      ) ||
+      Integer.parseInt(seatsComboBox.getValue()) > 0
     ) {
-      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
-      validateFalse(seatsTextField);
-      isSeatsOk.set(false);
-    } else {
       errorLabel.setText("");
-      validateTrue(seatsTextField);
+      validateTrue(seatsComboBox);
       isSeatsOk.set(true);
+    } else {
+      errorLabel.setText("Ungültige Anzahl von Sitzplätze");
+      validateFalse(seatsComboBox);
+      isSeatsOk.set(false);
     }
   }
 
-  private void validateBeds(String inputBeds) {
-    if (inputBeds.isEmpty() || !inputBeds.matches("[0-9]*")) {
+  private void validateBeds(int inputBeds) {
+    if (inputBeds < 0) {
       errorLabel.setText("Ungültige Anzahl von Betten");
-      validateFalse(bedsTextField);
+      validateFalse(bedsComboBox);
       isBedsOk.set(false);
     } else {
       errorLabel.setText("");
-      validateTrue(bedsTextField);
+      validateTrue(bedsComboBox);
       isBedsOk.set(true);
     }
   }
@@ -995,7 +1061,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     if (
       startDatePicker.getValue() == null ||
       endDatePicker.getValue() == null ||
-      !validationHelper.checkRentingDates(
+      !ValidationHelper.checkRentingDates(
         startDatePicker.getValue(),
         endDatePicker.getValue()
       )
@@ -1005,10 +1071,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       );
     } else if (
       isEditMode.get() &&
-      !validationHelper.checkRentingDatesWithOffer(
+      !ValidationHelper.checkRentingDatesWithOffer(
         startDatePicker.getValue(),
         endDatePicker.getValue(),
-        offerDTO
+        offerDTO,
+        bookingService,
+        offerService,
+        mainViewController
       )
     ) {
       mainViewController.handleExceptionMessage(
@@ -1059,6 +1128,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   /**
    * Method for styling blockedDates ListView entries
+   *
    * @param listView
    */
   public void styleBlockedDatesListView(ListView listView) {
@@ -1085,6 +1155,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   /**
    * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable,
    * and in addition, if an existing offer is being updated, also makes all blockedDays pink and un-clickable
+   *
    * @param datePicker
    * @param offerDTO
    */

@@ -51,6 +51,10 @@ public class LoggingService {
     }
   }
 
+  /**
+   * Gets a list of all available Log Messages
+   * @return List of all available log messages
+   */
   public List<LoggingMessageDTO> getAllLogMessages() {
     return modelMapper.LoggingMessagesToLoggingMessageDTOs(
       loggingRepository.findAll()
