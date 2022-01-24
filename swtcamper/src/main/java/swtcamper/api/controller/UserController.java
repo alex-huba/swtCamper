@@ -89,6 +89,10 @@ public class UserController implements IUserController {
     userService.logout();
   }
 
+  public void setLoggedInUser(User user) {
+    userService.setLoggedInUser(user);
+  }
+
   @Override
   public boolean isUsernameFree(String username) {
     return userService.isUsernameFree(username);

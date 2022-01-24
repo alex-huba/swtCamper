@@ -1,10 +1,8 @@
 package swtcamper.javafx.controller;
 
 import java.util.LinkedList;
-import java.util.List;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -25,7 +23,6 @@ import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -86,7 +83,9 @@ public class MainViewController {
   @FXML
   public Pane reportUserViewBox;
 
-  boolean updateHappening = false;
+  private SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
+    false
+  );
 
   @Autowired
   private ModelMapper modelMapper;
@@ -216,12 +215,14 @@ public class MainViewController {
     if (latestLoggedInStatus != null && latestView != null) {
       // get the latest update for the logged-in user to check if there were made any changes
       User checkUser = userController.getUserById(loggedInUser.getId());
-      if (!updateHappening) {
+      if (!updateHappening.get()) {
+        userController.setLoggedInUser(checkUser);
+
         // user-role has changed
         if (
           !checkUser.getUserRole().equals(latestLoggedInStatus.getUserRole())
         ) {
-          updateHappening = true;
+          updateHappening.set(true);
           Platform.runLater(() -> {
             try {
               handleInformationMessage(
@@ -230,55 +231,43 @@ public class MainViewController {
                 "!\nDie Oberfläche wird sich aktualisieren"
               );
               login(modelMapper.userToUserDTO(checkUser), "home");
-              updateHappening = false;
+              updateHappening.set(false);
             } catch (GenericServiceException ignore) {}
           });
           // user got enabled
         } else if (checkUser.isEnabled() && !latestLoggedInStatus.isEnabled()) {
-          updateHappening = true;
+          updateHappening.set(true);
           Platform.runLater(() -> {
             try {
               handleInformationMessage(
                 "Du wurdest akzeptiert und kannst jetzt Anzeigen erstellen!\nDie Oberfläche wird sich aktualisieren"
               );
               login(modelMapper.userToUserDTO(checkUser), latestView);
-              updateHappening = false;
-            } catch (GenericServiceException ignore) {}
-          });
-          // user got disabled
-        } else if (!checkUser.isEnabled() && latestLoggedInStatus.isEnabled()) {
-          updateHappening = true;
-          Platform.runLater(() -> {
-            try {
-              handleInformationMessage(
-                "Du wurdest ent-akzeptiert und kannst keine Anzeigen mehr erstellen!\nDie Oberfläche wird sich aktualisieren"
-              );
-              login(modelMapper.userToUserDTO(checkUser), "home");
-              updateHappening = false;
+              updateHappening.set(false);
             } catch (GenericServiceException ignore) {}
           });
           // user got locked globally
         } else if (checkUser.isLocked() && !latestLoggedInStatus.isLocked()) {
-          updateHappening = true;
+          updateHappening.set(true);
           Platform.runLater(() -> {
             try {
               handleInformationMessage(
                 "Du wurdest gesperrt und kannst nicht mehr mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
               login(modelMapper.userToUserDTO(checkUser), "home");
-              updateHappening = false;
+              updateHappening.set(false);
             } catch (GenericServiceException ignore) {}
           });
           // user got unlocked from global lock
         } else if (!checkUser.isLocked() && latestLoggedInStatus.isLocked()) {
-          updateHappening = true;
+          updateHappening.set(true);
           Platform.runLater(() -> {
             try {
               handleInformationMessage(
                 "Du wurdest entsperrt und kannst wieder mit anderen Nutzern interagieren!\nDie Oberfläche wird sich aktualisieren"
               );
               login(modelMapper.userToUserDTO(checkUser), latestView);
-              updateHappening = false;
+              updateHappening.set(false);
             } catch (GenericServiceException ignore) {}
           });
         }
