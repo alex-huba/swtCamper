@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.util.LinkedList;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -26,9 +28,6 @@ import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Component
 public class MainViewController {
@@ -85,9 +84,6 @@ public class MainViewController {
   public Pane forgotPasswordViewBox;
 
   @FXML
-  public Pane moreAboutOfferViewBox;
-
-  @FXML
   public Pane reportUserViewBox;
 
   boolean updateHappening = false;
@@ -142,23 +138,15 @@ public class MainViewController {
 
   private User latestLoggedInStatus = null;
   private String latestView = null;
-  private LinkedList<String> historyList = new LinkedList<>();
+
+  private final LinkedList<String> historyList = new LinkedList<>();
+  // needed in order to make the back button work (see goBack())
+  private boolean createHistory;
 
   @FXML
   private void initialize() throws GenericServiceException {
+    createHistory = true;
     changeView("home");
-  }
-
-  @FXML
-  public void goBack() throws GenericServiceException {
-    System.out.println(historyList);
-
-    historyList.removeLast();
-
-    System.out.println(historyList);
-
-    int listLength = historyList.size()-1;
-    changeView(historyList.get(listLength));
   }
 
   public void reloadData() {
@@ -171,6 +159,18 @@ public class MainViewController {
 
   public void clearView() {
     mainStage.getChildren().removeIf(node -> node instanceof Pane);
+  }
+
+  @FXML
+  public void goBack() throws GenericServiceException {
+    int listLength = historyList.size();
+    // button is invisible anyway at this point but just be safe...
+    if (listLength <= 1) return;
+
+    historyList.removeLast();
+    // set boolean false in order to not overwrite the last index directly again
+    createHistory = false;
+    changeView(historyList.get(listLength - 2));
   }
 
   @Scheduled(fixedDelay = 1000)
@@ -297,9 +297,17 @@ public class MainViewController {
 
   public void changeView(String switchTo) throws GenericServiceException {
     latestView = switchTo;
-    historyList.add(switchTo);
-    clearView();
 
+    // add new page to historyList if createHistory says so, if not turn it true again
+    if (createHistory) {
+      historyList.add(switchTo);
+    } else {
+      createHistory = true;
+    }
+    // hide back button if user cannot go back any further
+    globalBackBtn.setVisible(historyList.size() > 1);
+
+    clearView();
     switch (switchTo) {
       case "home":
         mainStage.getChildren().add(homeViewBox);
