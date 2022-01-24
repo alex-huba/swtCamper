@@ -37,10 +37,6 @@ public class ReportUserViewController {
     reportThisUserTextField.setText(userToReport.getUsername());
   }
 
-  public void goBackToExcludeView() throws GenericServiceException {
-    mainViewController.changeView("exclude");
-  }
-
   public void sendReport() throws GenericServiceException {
     // user cannot report him/herself
     if (

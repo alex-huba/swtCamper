@@ -392,11 +392,8 @@ public class OfferViewController {
     } else {
       offerController.promoteOffer(this.viewedOffer.getID());
     }
-    backAction();
-  }
 
-  @FXML
-  public void backAction() throws GenericServiceException {
+    // go back to overview
     if (isRentingMode.get()) {
       mainViewController.changeView("home");
     } else {
