@@ -1,6 +1,7 @@
 package swtcamper.javafx.controller;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -416,6 +417,20 @@ public class OfferViewController {
     }
   }
 
+  /**
+   * calculates the number of days for a booking, multiplies it with the price and
+   * returns a String with the result
+   */
+  public String calculateTotalPrice () {
+    long daysBetween = ChronoUnit.DAYS.between(startDatePicker.getValue(), endDatePicker.getValue());
+    String totalPrice = "Das Angebot kostet " +
+            daysBetween*viewedOffer.getPrice() +
+            "€ für " +
+            daysBetween +
+            " Tage.";
+    return totalPrice;
+  }
+
   @FXML
   public void promotingAction() throws GenericServiceException {
     if (this.viewedOffer.isPromoted()) {
@@ -479,7 +494,8 @@ public class OfferViewController {
           startDatePicker.getValue() +
           " bis " +
           endDatePicker.getValue() +
-          " buchen?"
+          " buchen? " +
+                  calculateTotalPrice()
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
