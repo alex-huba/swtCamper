@@ -13,7 +13,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.util.Pair;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
@@ -63,7 +62,12 @@ public class BookingServiceUnitTest {
     Booking booking1 = createValidBooking();
     LocalDate startDate1 = startDate.plus(2, ChronoUnit.DAYS);
     LocalDate endDate1 = endDate.plus(3, ChronoUnit.DAYS);
-    Booking booking2 = new Booking(createEmptyUser(), createValidOffer(), startDate1, endDate1);
+    Booking booking2 = new Booking(
+      createEmptyUser(),
+      createValidOffer(),
+      startDate1,
+      endDate1
+    );
     twoValidBookings.add(booking1);
     twoValidBookings.add(booking2);
     return twoValidBookings;
@@ -71,10 +75,10 @@ public class BookingServiceUnitTest {
 
   private Booking createValidBooking() {
     Booking booking = new Booking(
-            createEmptyUser(),
-            createValidOffer(),
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1)
+      createEmptyUser(),
+      createValidOffer(),
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1)
     );
     booking.setId(1L);
     return booking;
@@ -82,10 +86,10 @@ public class BookingServiceUnitTest {
 
   private Booking createValidActiveBooking() {
     Booking booking = new Booking(
-            createEmptyUser(),
-            createValidOffer(),
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1)
+      createEmptyUser(),
+      createValidOffer(),
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1)
     );
     booking.setId(1L);
     booking.setActive(true);
@@ -97,9 +101,7 @@ public class BookingServiceUnitTest {
   }
 
   public void mockSaveBooking(Booking booking) {
-    doReturn(booking)
-            .when(bookingRepository)
-            .save(any());
+    doReturn(booking).when(bookingRepository).save(any());
   }
 
   public void mockFindBookingByIdReturnsEmptyOptional() {
@@ -108,14 +110,14 @@ public class BookingServiceUnitTest {
 
   public void mockFindBookingByIdReturnsFilledOptional() {
     doReturn(Optional.of(createValidBooking()))
-            .when(bookingRepository)
-            .findById(any());
+      .when(bookingRepository)
+      .findById(any());
   }
 
   public void mockFindBookingByIdReturnsFilledActiveOptional() {
     doReturn(Optional.of(createValidActiveBooking()))
-            .when(bookingRepository)
-            .findById(any());
+      .when(bookingRepository)
+      .findById(any());
   }
 
   public void mockBookingGetId(Booking booking) {
@@ -125,24 +127,22 @@ public class BookingServiceUnitTest {
   public void mockFindAllBookingsByIdReturnsListOf1Booking() {
     List<Booking> bookings = new ArrayList<>();
     bookings.add(createValidBooking());
-    doReturn(bookings)
-            .when(bookingRepository)
-            .findAllById(any());
+    doReturn(bookings).when(bookingRepository).findAllById(any());
   }
 
   // Offer Stuff
 
   public Offer createValidOffer() {
     Offer offer = new Offer(
-            new User(),
-            new Vehicle(),
-            "title",
-            "location",
-            "contact",
-            "particularities",
-            1,
-            new ArrayList<String>(),
-            new ArrayList<Pair>()
+      new User(),
+      new Vehicle(),
+      "title",
+      "location",
+      "contact",
+      "particularities",
+      1,
+      new ArrayList<String>(),
+      new ArrayList<Pair>()
     );
     return offer;
   }
@@ -155,45 +155,40 @@ public class BookingServiceUnitTest {
 
   public void mockFindOfferByIdReturnsFilledOptional() {
     doReturn(Optional.of(createValidOffer()))
-            .when(offerRepository)
-            .findById(any());
+      .when(offerRepository)
+      .findById(any());
   }
 
   public void mockFindOfferByIdReturnsFilledOptionalWithBooking() {
     doReturn(Optional.of(createValidOfferWith1Booking()))
-            .when(offerRepository)
-            .findById(any());
+      .when(offerRepository)
+      .findById(any());
   }
 
   public void mockFindOfferByIdReturnsEmptyOptional() {
-    doReturn(Optional.empty())
-            .when(offerRepository)
-            .findById(any());
+    doReturn(Optional.empty()).when(offerRepository).findById(any());
   }
 
   public void mockFindOfferByIdReturnsOptionalWithBlockedDates() {
     Offer offer = createValidOffer();
-    Pair pair = new Pair(createValidDateOfTodayPlusXDays(2), createValidDateOfTodayPlusXDays(3));
+    Pair pair = new Pair(
+      createValidDateOfTodayPlusXDays(2),
+      createValidDateOfTodayPlusXDays(3)
+    );
     ArrayList<Pair> blockedDates = new ArrayList<>();
     blockedDates.add(pair);
     offer.setBlockedDates(blockedDates);
-    doReturn(Optional.of(offer))
-            .when(offerRepository)
-            .findById(any());
+    doReturn(Optional.of(offer)).when(offerRepository).findById(any());
   }
 
   public void mockSaveOffer(Offer offer) {
-    doReturn(offer)
-            .when(offerRepository)
-            .save(any());
+    doReturn(offer).when(offerRepository).save(any());
   }
 
   public void mockFindAllOffersReturnsListWith1Offer() {
     List<Offer> offers = new ArrayList<>();
     offers.add(createValidOffer());
-    doReturn(offers)
-            .when(offerRepository)
-            .findAll();
+    doReturn(offers).when(offerRepository).findAll();
   }
 
   // User stuff
@@ -239,92 +234,115 @@ public class BookingServiceUnitTest {
    */
   @Test
   public void createShouldGiveBookingToRepository()
-          throws GenericServiceException {
+    throws GenericServiceException {
     // arrange
     mockSaveBooking(createValidBooking());
     mockFindBookingByIdReturnsFilledOptional();
     mockFindOfferByIdReturnsFilledOptional();
     mockSaveOffer(createValidOffer());
     ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(
-            Booking.class
+      Booking.class
     );
     User user = createEmptyUser();
     Offer offer = createValidOffer();
     Booking expected = new Booking(
-            user,
-            offer,
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1)
+      user,
+      offer,
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1)
     );
     // act
     Booking actual = bookingServiceUnderTest.create(
-            user,
-            offer,
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1)
+      user,
+      offer,
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1)
     );
     // assert
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
-    assertEquals(bookingArgumentCaptor.getValue().getRenter(), expected.getRenter());
-    assertEquals(bookingArgumentCaptor.getValue().getOffer(), expected.getOffer());
-    assertEquals(bookingArgumentCaptor.getValue().getStartDate(), expected.getStartDate());
-    assertEquals(bookingArgumentCaptor.getValue().getEndDate(), expected.getEndDate());
+    assertEquals(
+      bookingArgumentCaptor.getValue().getRenter(),
+      expected.getRenter()
+    );
+    assertEquals(
+      bookingArgumentCaptor.getValue().getOffer(),
+      expected.getOffer()
+    );
+    assertEquals(
+      bookingArgumentCaptor.getValue().getStartDate(),
+      expected.getStartDate()
+    );
+    assertEquals(
+      bookingArgumentCaptor.getValue().getEndDate(),
+      expected.getEndDate()
+    );
   }
 
   @Test(expected = GenericServiceException.class)
-  public void createShouldThrowGSEIfOfferNotPresent() throws GenericServiceException {
+  public void createShouldThrowGSEIfOfferNotPresent()
+    throws GenericServiceException {
     // arrange
     mockSaveBooking(createValidBooking());
     mockFindBookingByIdReturnsFilledOptional();
     mockFindOfferByIdReturnsEmptyOptional();
     // act
-    bookingServiceUnderTest.create(createEmptyUser(),
-            createValidOffer(),
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1));
+    bookingServiceUnderTest.create(
+      createEmptyUser(),
+      createValidOffer(),
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1)
+    );
   }
 
   // update()
 
   @Test(expected = GenericServiceException.class)
-  public void updateShouldThrowGSEIfOfferNotPresent() throws GenericServiceException {
+  public void updateShouldThrowGSEIfOfferNotPresent()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsEmptyOptional();
     // act
     bookingServiceUnderTest.update(
-            1L,
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1),
-            false,
-            createEmptyUserDTO());
+      1L,
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1),
+      false,
+      createEmptyUserDTO()
+    );
   }
 
   @Test(expected = GenericServiceException.class)
-  public void updateShouldThrowGSEIfBookingIsActive() throws GenericServiceException {
+  public void updateShouldThrowGSEIfBookingIsActive()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledActiveOptional();
     // act
-    bookingServiceUnderTest.update(1L,
-            createValidDateOfTodayPlusXDays(0),
-            createValidDateOfTodayPlusXDays(1),
-            false,
-            createEmptyUserDTO());
+    bookingServiceUnderTest.update(
+      1L,
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(1),
+      false,
+      createEmptyUserDTO()
+    );
   }
 
   @Test
-  public void updateShouldGiveUpdatedBookingToRepo() throws GenericServiceException {
+  public void updateShouldGiveUpdatedBookingToRepo()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledOptional();
     LocalDate newStartDate = createValidDateOfTodayPlusXDays(2);
     LocalDate newEndDate = createValidDateOfTodayPlusXDays(3);
-    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(Booking.class);
+    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(
+      Booking.class
+    );
     // act
     bookingServiceUnderTest.update(
-            1L,
-            newStartDate,
-            newEndDate,
-            true,
-            new UserDTO()
+      1L,
+      newStartDate,
+      newEndDate,
+      true,
+      new UserDTO()
     );
     // assert
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
@@ -337,7 +355,7 @@ public class BookingServiceUnitTest {
 
   @Test(expected = GenericServiceException.class)
   public void activateShouldThrowGSEIfBookingNotFound()
-          throws GenericServiceException {
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsEmptyOptional();
     // act
@@ -348,7 +366,9 @@ public class BookingServiceUnitTest {
   public void activateShouldSetActiveToTrue() throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledOptional();
-    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(Booking.class);
+    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(
+      Booking.class
+    );
     mockSaveBooking(createValidBooking());
     // act
     bookingServiceUnderTest.activate(2L, createEmptyUserDTO());
@@ -361,7 +381,7 @@ public class BookingServiceUnitTest {
 
   @Test(expected = GenericServiceException.class)
   public void deactivateShouldThrowGSEIfBookingNotFound()
-          throws GenericServiceException {
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsEmptyOptional();
     // act
@@ -369,10 +389,13 @@ public class BookingServiceUnitTest {
   }
 
   @Test
-  public void deactivateShouldSetActiveToFalse() throws GenericServiceException {
+  public void deactivateShouldSetActiveToFalse()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledActiveOptional();
-    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(Booking.class);
+    ArgumentCaptor<Booking> bookingArgumentCaptor = ArgumentCaptor.forClass(
+      Booking.class
+    );
     // act
     bookingServiceUnderTest.deactivate(1L, new UserDTO());
     // assert
@@ -383,7 +406,8 @@ public class BookingServiceUnitTest {
   // delete()
 
   @Test(expected = GenericServiceException.class)
-  public void deleteShouldThrowGSEIfBookingNotFound() throws GenericServiceException {
+  public void deleteShouldThrowGSEIfBookingNotFound()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsEmptyOptional();
     // act
@@ -391,7 +415,8 @@ public class BookingServiceUnitTest {
   }
 
   @Test(expected = GenericServiceException.class)
-  public void deleteShouldThrowGSEIfBookingIsActive() throws GenericServiceException {
+  public void deleteShouldThrowGSEIfBookingIsActive()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledActiveOptional();
     // act
@@ -399,7 +424,8 @@ public class BookingServiceUnitTest {
   }
 
   @Test(expected = GenericServiceException.class)
-  public void deleteShouldThrowGSEIfOfferNotFound() throws GenericServiceException {
+  public void deleteShouldThrowGSEIfOfferNotFound()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledOptional();
     mockFindOfferByIdReturnsEmptyOptional();
@@ -408,22 +434,29 @@ public class BookingServiceUnitTest {
   }
 
   @Test
-  public void deleteShouldRemoveBookingIdFromOffer() throws GenericServiceException {
+  public void deleteShouldRemoveBookingIdFromOffer()
+    throws GenericServiceException {
     // arrange
     mockFindBookingByIdReturnsFilledOptional();
     mockFindOfferByIdReturnsFilledOptionalWithBooking();
-    ArgumentCaptor<Offer> offerArgumentCaptor = ArgumentCaptor.forClass(Offer.class);
+    ArgumentCaptor<Offer> offerArgumentCaptor = ArgumentCaptor.forClass(
+      Offer.class
+    );
     // act
     bookingServiceUnderTest.delete(1L, new UserDTO());
     // assert
     verify(offerRepository).save(offerArgumentCaptor.capture());
-    assertEquals(false, offerArgumentCaptor.getValue().getBookings().contains(1L));
+    assertEquals(
+      false,
+      offerArgumentCaptor.getValue().getBookings().contains(1L)
+    );
   }
 
   // getBookedDays()
 
   @Test(expected = GenericServiceException.class)
-  public void getBookedDaysShouldThrowGSEIfOfferNotFound() throws GenericServiceException {
+  public void getBookedDaysShouldThrowGSEIfOfferNotFound()
+    throws GenericServiceException {
     // arrange
     mockFindOfferByIdReturnsEmptyOptional();
     // act
@@ -431,7 +464,8 @@ public class BookingServiceUnitTest {
   }
 
   @Test
-  public void getBookedDaysShouldReturnCorrectResult() throws GenericServiceException {
+  public void getBookedDaysShouldReturnCorrectResult()
+    throws GenericServiceException {
     // arrange
     mockFindOfferByIdReturnsOptionalWithBlockedDates();
     mockFindAllBookingsByIdReturnsListOf1Booking();
@@ -447,29 +481,34 @@ public class BookingServiceUnitTest {
   }
 
   @Test
-  public void getAvailableOffersShouldReturnZeroOffers() throws GenericServiceException {
+  public void getAvailableOffersShouldReturnZeroOffers()
+    throws GenericServiceException {
     // arrange
     mockFindOfferByIdReturnsOptionalWithBlockedDates();
     mockFindAllBookingsByIdReturnsListOf1Booking();
     mockFindAllOffersReturnsListWith1Offer();
     // act
-    List<Offer> actual = bookingServiceUnderTest.getAvailableOffers(createValidDateOfTodayPlusXDays(0), createValidDateOfTodayPlusXDays(2));
+    List<Offer> actual = bookingServiceUnderTest.getAvailableOffers(
+      createValidDateOfTodayPlusXDays(0),
+      createValidDateOfTodayPlusXDays(2)
+    );
     // assert
     assertEquals(0, actual.size());
   }
 
   @Test
-  public void getAvailableOffersShouldReturn1Offer() throws GenericServiceException {
+  public void getAvailableOffersShouldReturn1Offer()
+    throws GenericServiceException {
     // arrange
     mockFindOfferByIdReturnsOptionalWithBlockedDates();
     mockFindAllBookingsByIdReturnsListOf1Booking();
     mockFindAllOffersReturnsListWith1Offer();
     // act
-    List<Offer> actual = bookingServiceUnderTest.getAvailableOffers(createValidDateOfTodayPlusXDays(5), createValidDateOfTodayPlusXDays(8));
+    List<Offer> actual = bookingServiceUnderTest.getAvailableOffers(
+      createValidDateOfTodayPlusXDays(5),
+      createValidDateOfTodayPlusXDays(8)
+    );
     // assert
     assertEquals(1, actual.size());
   }
-
-
 }
-
