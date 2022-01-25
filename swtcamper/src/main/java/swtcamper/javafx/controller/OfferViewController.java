@@ -421,13 +421,18 @@ public class OfferViewController {
    * calculates the number of days for a booking, multiplies it with the price and
    * returns a String with the result
    */
-  public String calculateTotalPrice () {
-    long daysBetween = ChronoUnit.DAYS.between(startDatePicker.getValue(), endDatePicker.getValue());
-    String totalPrice = "Das Angebot kostet " +
-            daysBetween*viewedOffer.getPrice() +
-            "€ für " +
-            daysBetween +
-            " Tage.";
+  public String calculateTotalPrice() {
+    long daysBetween = ChronoUnit.DAYS.between(
+      startDatePicker.getValue(),
+      endDatePicker.getValue()
+    );
+    String totalPrice =
+      "Das Angebot kostet " +
+      daysBetween *
+      viewedOffer.getPrice() +
+      "€ für " +
+      daysBetween +
+      " Tage.";
     return totalPrice;
   }
 
@@ -495,7 +500,7 @@ public class OfferViewController {
           " bis " +
           endDatePicker.getValue() +
           " buchen? " +
-                  calculateTotalPrice()
+          calculateTotalPrice()
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
