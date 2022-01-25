@@ -12,10 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -435,7 +432,7 @@ public class RentingViewController {
         );
       }
 
-      root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
+      root.setEffect(new DropShadow(10, Color.BLACK));
 
       Image image;
       if (
