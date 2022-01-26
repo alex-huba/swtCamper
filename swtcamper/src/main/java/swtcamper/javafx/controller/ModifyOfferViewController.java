@@ -161,7 +161,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private ValidationHelper validationHelper;
 
   @FXML
-  private ListView<String> rentalConditionsListView = new ListView<>();
+  private ListView<String> rentalConditionsListView;
 
   @FXML
   private DatePicker startDatePicker;
@@ -304,6 +304,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fuelComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
     );
+    rentalConditionsListView = new ListView<>();
   }
 
   /**
