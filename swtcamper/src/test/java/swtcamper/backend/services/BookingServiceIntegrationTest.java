@@ -1,16 +1,21 @@
 package swtcamper.backend.services;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
+
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import swtcamper.api.controller.LoggingController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.repositories.BookingRepository;
+import swtcamper.backend.repositories.OfferRepository;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -54,6 +59,11 @@ public class BookingServiceIntegrationTest {
         List<Booking> actual = bookingServiceUnderTest.getAllBookings();
         // assert
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test(){
+        assertEquals(true, true);
     }
 
 }
