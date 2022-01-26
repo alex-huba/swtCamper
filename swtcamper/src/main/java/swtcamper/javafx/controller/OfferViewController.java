@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -184,6 +186,13 @@ public class OfferViewController {
     for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
       offer.getOfferedObject().getVehicleID()
     )) {
+      if (
+        pictureDTO.getPath().startsWith("file:///") &&
+        Files.notExists(Path.of(pictureDTO.getPath().substring(8)))
+      ) {
+        continue;
+      }
+
       ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
       thumbnail.setFitHeight(150);
       thumbnail.setPreserveRatio(true);

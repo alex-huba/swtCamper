@@ -1,5 +1,8 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,6 +15,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
@@ -69,11 +73,18 @@ public class MyOffersViewController {
     }
 
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
+      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
+        offer.getOfferedObject().getVehicleID()
+      );
       Image image;
+      // validate picture(s)
       if (
-        !pictureController
-          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .isEmpty()
+        !picturesForVehicle.isEmpty() &&
+          picturesForVehicle.get(0).getPath().startsWith("file:///")
+          ? Files.exists(
+            Path.of(picturesForVehicle.get(0).getPath().substring(8))
+          )
+          : true
       ) {
         image =
           new Image(

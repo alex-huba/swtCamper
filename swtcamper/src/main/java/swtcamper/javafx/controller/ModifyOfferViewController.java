@@ -886,7 +886,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateTransmissionType(
     TransmissionType inputTransmissionType
   ) {
-    if (vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)) {
+    if (
+      vehicleTypeComboBox.getValue() != null &&
+      vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
+    ) {
       isTransmissionTypeOk.set(true);
       return;
     }

@@ -1,5 +1,7 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
@@ -462,11 +465,18 @@ public class RentingViewController {
 
       root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
 
+      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
+        offer.getOfferedObject().getVehicleID()
+      );
       Image image;
+      // validate picture(s)
       if (
-        !pictureController
-          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .isEmpty()
+        !picturesForVehicle.isEmpty() &&
+          picturesForVehicle.get(0).getPath().startsWith("file:///")
+          ? Files.exists(
+            Path.of(picturesForVehicle.get(0).getPath().substring(8))
+          )
+          : true
       ) {
         image =
           new Image(
