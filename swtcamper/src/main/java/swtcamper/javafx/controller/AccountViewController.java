@@ -252,9 +252,6 @@ public class AccountViewController {
         usersTableView.getColumns().add(tableColumn);
       });
 
-    //    for (User user : userController.getAllUsers()) {
-    //      usersTableView.getItems().add(user);
-    //    }
     filterUsers();
 
     // user reports
