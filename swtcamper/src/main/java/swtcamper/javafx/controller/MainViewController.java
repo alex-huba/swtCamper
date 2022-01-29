@@ -83,7 +83,7 @@ public class MainViewController {
   @FXML
   public Pane reportUserViewBox;
 
-  private SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
+  private final SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
     false
   );
 

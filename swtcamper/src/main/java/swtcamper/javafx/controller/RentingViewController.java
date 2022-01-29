@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -471,12 +469,9 @@ public class RentingViewController {
       Image image;
       // validate picture(s)
       if (
-        !picturesForVehicle.isEmpty() &&
-          picturesForVehicle.get(0).getPath().startsWith("file:///")
-          ? Files.exists(
-            Path.of(picturesForVehicle.get(0).getPath().substring(8))
-          )
-          : true
+        picturesForVehicle.isEmpty() ||
+        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
+        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
       ) {
         image =
           new Image(

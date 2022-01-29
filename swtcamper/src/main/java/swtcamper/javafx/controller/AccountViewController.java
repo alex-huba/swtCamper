@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,7 +34,6 @@ import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
@@ -96,7 +94,7 @@ public class AccountViewController {
   private MainViewController mainViewController;
 
   private User selectedUser = null;
-  private SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
+  private final SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
     false
   );
 
@@ -175,7 +173,8 @@ public class AccountViewController {
 
   /**
    * Loads a given list of loggingMessages into their ListView
-   * @param logList list of LogMessages to load
+   *
+   * @param logList   list of LogMessages to load
    * @param ascending if true, order all log messages from oldest to newest, if false from newest to oldest
    */
   private void loadLogsIntoListView(

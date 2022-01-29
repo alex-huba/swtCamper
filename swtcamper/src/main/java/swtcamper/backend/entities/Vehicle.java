@@ -1,6 +1,8 @@
 package swtcamper.backend.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import swtcamper.backend.entities.interfaces.IVehicle;
 
 @Entity

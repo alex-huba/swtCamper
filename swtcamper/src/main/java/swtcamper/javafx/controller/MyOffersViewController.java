@@ -79,12 +79,9 @@ public class MyOffersViewController {
       Image image;
       // validate picture(s)
       if (
-        !picturesForVehicle.isEmpty() &&
-          picturesForVehicle.get(0).getPath().startsWith("file:///")
-          ? Files.exists(
-            Path.of(picturesForVehicle.get(0).getPath().substring(8))
-          )
-          : true
+        picturesForVehicle.isEmpty() ||
+        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
+        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
       ) {
         image =
           new Image(
