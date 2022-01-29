@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.contract.IUserController;
 import swtcamper.api.contract.UserDTO;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
@@ -22,6 +22,7 @@ public class UserController implements IUserController {
   @Autowired
   private ModelMapper modelMapper;
 
+  @Override
   public UserDTO register(
     String username,
     String password,
@@ -46,19 +47,27 @@ public class UserController implements IUserController {
     );
   }
 
+  @Override
   public User getLoggedInUser() {
     return userService.getLoggedInUser();
   }
 
+  public void setLoggedInUser(User user) {
+    userService.setLoggedInUser(user);
+  }
+
+  @Override
   public ArrayList<User> getAllUsers() throws GenericServiceException {
     return new ArrayList<>(userService.user());
   }
 
+  @Override
   public void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
     throws GenericServiceException {
     userService.excludeRenterForCurrentlyLoggedInUser(idOfRenterToExclude);
   }
 
+  @Override
   public void removeExcludedRenterForCurrentlyLoggedInUser(
     long idOfRenterToInclude
   ) throws GenericServiceException {
@@ -79,8 +88,9 @@ public class UserController implements IUserController {
     }
   }
 
+  @Override
   public void logout() {
-    userService.setLoggedInUser(null);
+    userService.logout();
   }
 
   @Override
@@ -111,6 +121,11 @@ public class UserController implements IUserController {
   @Override
   public boolean isEnabled(String username) throws UserDoesNotExistException {
     return userService.isEnabled(username);
+  }
+
+  @Override
+  public boolean isThereAnyDisabledUser() throws GenericServiceException {
+    return userService.isThereAnyDisabledUser();
   }
 
   @Override
