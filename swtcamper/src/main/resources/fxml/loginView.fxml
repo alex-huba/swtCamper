@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/loginview.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
+<VBox alignment="CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/login-view.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.LoginViewController">
 
     <Label styleClass="heading" text="Login" />
     <Label fx:id="errorLabel" styleClass="errorMessage" />
