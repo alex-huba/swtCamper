@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,27 +29,15 @@ import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
+import swtcamper.api.contract.UserReportDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class AccountViewController {
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private LoggingController loggingController;
-
-  @Autowired
-  private UserReportController userReportController;
-
-  @Autowired
-  private MainViewController mainViewController;
 
   @FXML
   public BorderPane accountRootPane;
@@ -94,8 +81,20 @@ public class AccountViewController {
   @FXML
   public VBox reportVBox;
 
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private LoggingController loggingController;
+
+  @Autowired
+  private UserReportController userReportController;
+
+  @Autowired
+  private MainViewController mainViewController;
+
   private User selectedUser = null;
-  private SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
+  private final SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
     false
   );
 
@@ -174,7 +173,8 @@ public class AccountViewController {
 
   /**
    * Loads a given list of loggingMessages into their ListView
-   * @param logList list of LogMessages to load
+   *
+   * @param logList   list of LogMessages to load
    * @param ascending if true, order all log messages from oldest to newest, if false from newest to oldest
    */
   private void loadLogsIntoListView(
@@ -256,10 +256,10 @@ public class AccountViewController {
 
     // user reports
     reportVBox.getChildren().clear();
-    List<UserReport> activeUserReports = userReportController
+    List<UserReportDTO> activeUserReports = userReportController
       .getAllUserReports()
       .stream()
-      .filter(UserReport::isActive)
+      .filter(UserReportDTO::isActive)
       .collect(Collectors.toList());
     if (activeUserReports.isEmpty()) {
       Label thereAreNoActiveReportsLabel = new Label(
@@ -268,33 +268,48 @@ public class AccountViewController {
       thereAreNoActiveReportsLabel.setDisable(true);
       reportVBox.getChildren().add(thereAreNoActiveReportsLabel);
     } else {
-      for (UserReport userReport : activeUserReports) {
+      for (UserReportDTO userReportDTO : activeUserReports) {
         Label infoLabel = new Label(
           String.format(
             "Beschwerde von %s über %s.",
-            userReport.getReporter().getUsername(),
-            userReport.getReportee().getUsername()
+            userReportDTO.getReporter().getUsername(),
+            userReportDTO.getReportee().getUsername()
           )
         );
         infoLabel.setStyle("-fx-font-size: 20");
-        Label reasonLabel = new Label(userReport.getReportReason());
+        Label reasonLabel = new Label(userReportDTO.getReportReason());
 
         Button acceptReportButton = new Button(
-          String.format("%s blockieren", userReport.getReportee().getUsername())
+          String.format(
+            "%s blockieren",
+            userReportDTO.getReportee().getUsername()
+          )
         );
         acceptReportButton.getStyleClass().add("bg-warning");
+        acceptReportButton.setDisable(
+          userReportDTO
+            .getReportee()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        );
         acceptReportButton.setOnAction(event -> {
           try {
-            userReportController.accept(userReport.getId());
+            userReportController.accept(userReportDTO.getId());
             operatorInit(false);
           } catch (GenericServiceException ignore) {}
         });
 
         Button rejectReportButton = new Button("Beschwerde ignorieren");
         rejectReportButton.getStyleClass().add("bg-primary");
+        rejectReportButton.setDisable(
+          userReportDTO
+            .getReportee()
+            .getId()
+            .equals(userController.getLoggedInUser().getId())
+        );
         rejectReportButton.setOnAction(event -> {
           try {
-            userReportController.reject(userReport.getId());
+            userReportController.reject(userReportDTO.getId());
             operatorInit(false);
           } catch (GenericServiceException ignore) {}
         });

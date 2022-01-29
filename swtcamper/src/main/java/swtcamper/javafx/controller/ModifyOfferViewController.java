@@ -29,10 +29,11 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.*;
+import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
-import swtcamper.backend.repositories.BookingRepository;
-import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
@@ -41,26 +42,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
-  @Autowired
-  private ModelMapper modelMapper;
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private ValidationHelper validationHelper;
-
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
-  LongStringConverter longStringConverter = new LongStringConverter();
+  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private final LongStringConverter longStringConverter = new LongStringConverter();
+  private final ArrayList<Long> bookings = new ArrayList<>();
+  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
   public TextField titleTextField;
@@ -138,29 +123,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   public CheckBox fridgeCheckBox;
 
   @FXML
-  public HBox picturesHbox;
+  public HBox picturesHBox;
 
   @FXML
   public Button placeOfferButton;
 
   @FXML
   public TextField rentalConditionsTextField;
-
-  @FXML
-  private ListView<String> rentalConditionsListView;
-
-  @FXML
-  private DatePicker startDatePicker;
-
-  @FXML
-  private DatePicker endDatePicker;
-
-  @FXML
-  private ListView blockedDatesListView;
-
-  private ArrayList<Long> bookings = new ArrayList<>();
-
-  private List<String> rentalConditions = new ArrayList<>();
 
   SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
   SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
@@ -173,31 +142,50 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
   SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
 
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
+
+  @FXML
+  private ListView<String> rentalConditionsListView = new ListView<>();
+
+  @FXML
+  private DatePicker startDatePicker;
+
+  @FXML
+  private DatePicker endDatePicker;
+
+  @FXML
+  private ListView<Pair> blockedDatesListView;
+
+  private List<String> rentalConditions = new ArrayList<>();
   private long offerID;
   private Vehicle offeredObject;
   private OfferDTO offerDTO;
-
   private List<Picture> pictures;
 
   @Autowired
   private VehicleRepository vehicleRepository;
 
   @Autowired
-  private BookingController bookingController;
-
-  @Autowired
-  private OfferRepository offerRepository;
-
-  @Autowired
-  private BookingRepository bookingRepository;
-
-  @Autowired
   private OfferService offerService;
 
   @Autowired
-  BookingService bookingService;
-
-  private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
+  private BookingService bookingService;
 
   private ArrayList<Pair> blockedDates = new ArrayList<>();
 
@@ -219,10 +207,16 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     priceTextField.setOnKeyTyped(this);
     brandTextField.setOnKeyTyped(this);
     modelTextField.setOnKeyTyped(this);
-    seatsComboBox.setOnHiding(event -> validateSeats());
-    bedsComboBox.setOnHiding(event ->
-      validateBeds(Integer.parseInt(bedsComboBox.getValue()))
-    );
+    seatsComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) validateSeats();
+      });
+    bedsComboBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) validateBeds(Integer.parseInt(newValue));
+      });
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
     contactTextField.setOnKeyTyped(this);
@@ -270,6 +264,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     endDatePicker.getEditor().setOpacity(1);
     setCellFactory(startDatePicker, null);
     setCellFactory(endDatePicker, null);
+
+    startDatePicker
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (endDatePicker.getValue() == null) endDatePicker.setValue(newValue);
+      });
 
     seatsComboBox.setItems(
       FXCollections.observableArrayList(
@@ -349,31 +349,20 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     activeCheckBox.setSelected(offer.isActive());
 
     assert vehicle != null;
-    vehicleTypeComboBox.setValue(vehicle.getVehicleFeatures().getVehicleType());
-    brandTextField.setText(vehicle.getVehicleFeatures().getMake());
-    modelTextField.setText(vehicle.getVehicleFeatures().getModel());
-    seatsComboBox.setValue(
-      String.valueOf(vehicle.getVehicleFeatures().getSeats())
-    );
-    bedsComboBox.setValue(
-      String.valueOf(vehicle.getVehicleFeatures().getBeds())
-    );
-    constructionYearTextField.setText(vehicle.getVehicleFeatures().getYear());
-    widthTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getWidth())
-    );
-    lengthTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getLength())
-    );
-    heightTextField.setText(
-      String.valueOf(vehicle.getVehicleFeatures().getHeight())
-    );
-    fuelComboBox.setValue(vehicle.getVehicleFeatures().getFuelType());
+    vehicleTypeComboBox.setValue(vehicle.getVehicleType());
+    brandTextField.setText(vehicle.getMake());
+    modelTextField.setText(vehicle.getModel());
+    seatsComboBox.setValue(String.valueOf(vehicle.getSeats()));
+    bedsComboBox.setValue(String.valueOf(vehicle.getBeds()));
+    constructionYearTextField.setText(vehicle.getYear());
+    widthTextField.setText(String.valueOf(vehicle.getWidth()));
+    lengthTextField.setText(String.valueOf(vehicle.getLength()));
+    heightTextField.setText(String.valueOf(vehicle.getHeight()));
+    fuelComboBox.setValue(vehicle.getFuelType());
     transmissionComboBox.setValue(
-      vehicle.getVehicleFeatures().getTransmission() != null
+      vehicle.getTransmission() != null
         ? (
           vehicle
-              .getVehicleFeatures()
               .getTransmission()
               .equals(TransmissionType.AUTOMATIC.toString())
             ? TransmissionType.AUTOMATIC
@@ -381,15 +370,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         )
         : null
     );
-    roofTentCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofTent());
-    roofRackCheckBox.setSelected(vehicle.getVehicleFeatures().isRoofRack());
-    bikeRackCheckBox.setSelected(vehicle.getVehicleFeatures().isBikeRack());
-    showerCheckBox.setSelected(vehicle.getVehicleFeatures().isShower());
-    toiletCheckBox.setSelected(vehicle.getVehicleFeatures().isToilet());
-    kitchenUnitCheckBox.setSelected(
-      vehicle.getVehicleFeatures().isKitchenUnit()
-    );
-    fridgeCheckBox.setSelected(vehicle.getVehicleFeatures().isFridge());
+    roofTentCheckBox.setSelected(vehicle.isRoofTent());
+    roofRackCheckBox.setSelected(vehicle.isRoofRack());
+    bikeRackCheckBox.setSelected(vehicle.isBikeRack());
+    showerCheckBox.setSelected(vehicle.isShower());
+    toiletCheckBox.setSelected(vehicle.isToilet());
+    kitchenUnitCheckBox.setSelected(vehicle.isKitchenUnit());
+    fridgeCheckBox.setSelected(vehicle.isFridge());
 
     pictures.clear();
     for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
@@ -532,9 +519,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void loadPictures(List<Picture> pictureList) {
-    picturesHbox
+    picturesHBox
       .getChildren()
-      .subList(1, picturesHbox.getChildren().size())
+      .subList(1, picturesHBox.getChildren().size())
       .clear();
 
     for (Picture picture : pictureList) {
@@ -555,7 +542,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       HBox imageBox = new HBox(thumbnail, deleteBtn);
       imageBox.setSpacing(-15);
 
-      picturesHbox.getChildren().add(imageBox);
+      picturesHBox.getChildren().add(imageBox);
     }
   }
 
@@ -579,8 +566,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       FXCollections.observableArrayList(VehicleType.values())
     );
     vehicleTypeComboBox.setValue(null);
-    //TODO braucht man die Zeile unten?
-    //vehicleTypeComboBox.getSelectionModel().clearSelection();
     brandTextField.clear();
     modelTextField.clear();
     constructionYearTextField.clear();
@@ -594,8 +579,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     transmissionComboBox.setValue(null);
     seatsComboBox.setValue(null);
     bedsComboBox.setValue(null);
-    //TODO siehe kommentar oben
-    transmissionComboBox.getSelectionModel().clearSelection();
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -605,7 +588,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fridgeCheckBox.setSelected(false);
 
     pictures = new ArrayList<>();
-    picturesHbox.getChildren().remove(1, picturesHbox.getChildren().size());
+    picturesHBox.getChildren().remove(1, picturesHBox.getChildren().size());
 
     startDatePicker.setValue(null);
     endDatePicker.setValue(null);
@@ -806,7 +789,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTitle(String inputTitle) {
-    if (!validationHelper.checkOfferTitle(inputTitle)) {
+    if (!ValidationHelper.checkOfferTitle(inputTitle)) {
       errorLabel.setText("Invalid title");
       validateFalse(titleTextField);
       isTitleOk.set(false);
@@ -818,7 +801,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validatePrice(String inputPrice) {
-    if (!validationHelper.checkOfferPrice(inputPrice)) {
+    if (!ValidationHelper.checkOfferPrice(inputPrice)) {
       errorLabel.setText("Ungültiger Preis");
       validateFalse(priceTextField);
       isPriceOk.set(false);
@@ -904,6 +887,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateTransmissionType(
     TransmissionType inputTransmissionType
   ) {
+    if (
+      vehicleTypeComboBox.getValue() != null &&
+      vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
+    ) {
+      isTransmissionTypeOk.set(true);
+      return;
+    }
     if (inputTransmissionType == null) {
       errorLabel.setText("Ungültige Schaltung");
       validateFalse(transmissionComboBox);
@@ -999,13 +989,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
     // add all newly needed pictures to the database
     for (Picture picture : pictures) {
-      pictureController.create(
-        new PictureDTO(
-          picture.getPictureID(),
-          offeredObject.getVehicleID(),
-          picture.getPath()
-        )
-      );
+      Picture pictureToSave = new Picture();
+      pictureToSave.setPictureID(picture.getPictureID());
+      pictureToSave.setVehicleID(offeredObject.getVehicleID());
+      pictureToSave.setPath(picture.getPath());
+
+      pictureController.create(pictureToSave);
     }
   }
 

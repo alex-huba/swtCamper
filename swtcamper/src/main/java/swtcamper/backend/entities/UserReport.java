@@ -1,6 +1,10 @@
 package swtcamper.backend.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import swtcamper.backend.entities.interfaces.IUserReport;
 
 @Entity
 public class UserReport implements IUserReport {
@@ -28,42 +32,52 @@ public class UserReport implements IUserReport {
     this.reportReason = reportReason;
   }
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
+  @Override
   public boolean isActive() {
     return active;
   }
 
+  @Override
   public void setActive(boolean active) {
     this.active = active;
   }
 
+  @Override
   public User getReporter() {
     return reporter;
   }
 
+  @Override
   public void setReporter(User reporter) {
     this.reporter = reporter;
   }
 
+  @Override
   public User getReportee() {
     return reportee;
   }
 
+  @Override
   public void setReportee(User reportee) {
     this.reportee = reportee;
   }
 
+  @Override
   public String getReportReason() {
     return reportReason;
   }
 
+  @Override
   public void setReportReason(String reportReason) {
     this.reportReason = reportReason;
   }
