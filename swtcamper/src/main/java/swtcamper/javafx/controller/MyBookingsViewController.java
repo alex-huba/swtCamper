@@ -23,6 +23,9 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MyBookingsViewController {
 
+  @FXML
+  public VBox bookingsListVBox;
+
   @Autowired
   private ModelMapper modelMapper;
 
@@ -37,9 +40,6 @@ public class MyBookingsViewController {
 
   @Autowired
   private OfferViewController offerViewController;
-
-  @FXML
-  public VBox bookingsListVBox;
 
   public void reloadData() {
     bookingsListVBox.getChildren().clear();
@@ -68,13 +68,12 @@ public class MyBookingsViewController {
       .filter(booking -> !booking.isRejected())
       .collect(Collectors.toList());
 
-    if (bookingList.size() > 0) {
+    if (!bookingList.isEmpty()) {
       // create a card for each booking request
       for (Booking booking : bookingList) {
         String vehicleType = booking
           .getOffer()
           .getOfferedObject()
-          .getVehicleFeatures()
           .getVehicleType()
           .toString();
         String vehicle =
@@ -86,16 +85,8 @@ public class MyBookingsViewController {
               "%s will deinen %s %s %s von %s bis %s mieten.",
               booking.getRenter().getUsername(),
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking
                 .getStartDate()
                 .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
@@ -106,16 +97,8 @@ public class MyBookingsViewController {
             : String.format(
               "Dein %s %s %s ist von %s bis %s vermietet an %s.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking
                 .getStartDate()
                 .format(DateTimeFormatter.ofPattern("dd.MM.YYYY")),
@@ -231,13 +214,12 @@ public class MyBookingsViewController {
       }
     }
 
-    if (rentingList.size() > 0) {
+    if (!rentingList.isEmpty()) {
       // create a card for each booking request
       for (Booking booking : rentingList) {
         String vehicleType = booking
           .getOffer()
           .getOfferedObject()
-          .getVehicleFeatures()
           .getVehicleType()
           .toString();
         String vehicle =
@@ -248,16 +230,8 @@ public class MyBookingsViewController {
             ? String.format(
               "Du hast den %s %s %s von Nutzer %s von %s bis %s gemietet.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking.getOffer().getCreator().getUsername(),
               booking
                 .getStartDate()
@@ -269,16 +243,8 @@ public class MyBookingsViewController {
             : String.format(
               "Du hast angefragt, den %s %s %s von Nutzer %s von %s bis %s zu mieten.",
               vehicle,
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getMake(),
-              booking
-                .getOffer()
-                .getOfferedObject()
-                .getVehicleFeatures()
-                .getModel(),
+              booking.getOffer().getOfferedObject().getMake(),
+              booking.getOffer().getOfferedObject().getModel(),
               booking.getOffer().getCreator().getUsername(),
               booking
                 .getStartDate()
@@ -350,6 +316,7 @@ public class MyBookingsViewController {
 
   /**
    * Checks if the same offer is also in another booking that is active already and has overlapping renting dates
+   *
    * @param booking the {@link Booking} that shall be evaluated
    * @return true if the offer is already in another active booking, false if it is available
    */

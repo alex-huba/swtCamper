@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.ModelMapper;
+import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
@@ -19,37 +19,27 @@ public class UserReportService {
   private UserReportRepository userReportRepository;
 
   @Autowired
-  private LoggingService loggingService;
+  private LoggingController loggingController;
 
   @Autowired
   private UserController userController;
 
-  @Autowired
-  private ModelMapper modelMapper;
-
   /**
    * Creates a new {@link UserReport}
+   *
    * @param userReport UserReport to save
    * @return newly saved UserReport
    */
   public UserReport create(UserReport userReport) {
-    UserReport reported = userReportRepository.save(
-      new UserReport(
-        userReport.getReporter(),
-        userReport.getReportee(),
-        userReport.getReportReason()
-      )
-    );
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "User %s reported user %s. (UserReport-ID %s)",
-            reported.getReporter().getUsername(),
-            reported.getReportee().getUsername(),
-            reported.getId()
-          )
+    UserReport reported = userReportRepository.save(userReport);
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "User %s reported user %s. (UserReport-ID %s)",
+          reported.getReporter().getUsername(),
+          reported.getReportee().getUsername(),
+          reported.getId()
         )
       )
     );
@@ -58,6 +48,7 @@ public class UserReportService {
 
   /**
    * Gets a specific UserReport by its ID
+   *
    * @param id ID of the UserReport to get
    * @return found UserReport
    * @throws GenericServiceException if no UserReport could be found
@@ -74,6 +65,7 @@ public class UserReportService {
 
   /**
    * Gets a list of all available UserReports
+   *
    * @return list of all available UserReports
    */
   public List<UserReport> getAllUserReports() {
@@ -82,6 +74,7 @@ public class UserReportService {
 
   /**
    * Sets the active state of a specific UserReport to false and blocks the reported User (reportee)
+   *
    * @param userReportID ID of the UserReport to accept
    * @return accepted UserReport
    * @throws GenericServiceException if there is no UserReport with this ID
@@ -90,16 +83,14 @@ public class UserReportService {
     throws GenericServiceException {
     UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "UserReport with ID %s was accepted by %s. User %s gets blocked.",
-            userReportID,
-            userController.getLoggedInUser().getUsername(),
-            userReport.getReportee()
-          )
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "UserReport with ID %s was accepted by %s. User %s gets blocked.",
+          userReportID,
+          userController.getLoggedInUser().getUsername(),
+          userReport.getReportee()
         )
       )
     );
@@ -109,6 +100,7 @@ public class UserReportService {
 
   /**
    * Sets the active state of a specific UserReport to false
+   *
    * @param userReportID ID of the UserReport to reject
    * @return rejected UserReport
    * @throws GenericServiceException if there is no UserReport with this ID
@@ -117,15 +109,13 @@ public class UserReportService {
     throws GenericServiceException {
     UserReport userReport = getUserReportById(userReportID);
     userReport.setActive(false);
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "UserReport with ID %s was rejected by %s.",
-            userReportID,
-            userController.getLoggedInUser().getUsername()
-          )
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "UserReport with ID %s was rejected by %s.",
+          userReportID,
+          userController.getLoggedInUser().getUsername()
         )
       )
     );
@@ -134,18 +124,17 @@ public class UserReportService {
 
   /**
    * Deletes a specific UserReport
+   *
    * @param id ID of the UserReport to delete
    */
   public void delete(long id) {
-    loggingService.log(
-      modelMapper.LoggingMessageToLoggingMessageDTO(
-        new LoggingMessage(
-          LoggingLevel.INFO,
-          String.format(
-            "UserReport with ID %s was deleted by %s.",
-            id,
-            userController.getLoggedInUser().getUsername()
-          )
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "UserReport with ID %s was deleted by %s.",
+          id,
+          userController.getLoggedInUser().getUsername()
         )
       )
     );

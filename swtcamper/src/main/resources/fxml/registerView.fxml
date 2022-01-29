@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootElement" alignment="CENTER" spacing="30"
-      styleClass="rootNodeBackground" stylesheets="@../styles/registerview.css" xmlns="http://javafx.com/javafx/17"
+      styleClass="rootNodeBackground" stylesheets="@../styles/register-view.css" xmlns="http://javafx.com/javafx/17"
       fx:controller="swtcamper.javafx.controller.RegisterViewController">
 
     <children>

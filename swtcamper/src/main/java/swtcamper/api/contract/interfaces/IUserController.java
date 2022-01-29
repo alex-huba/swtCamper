@@ -1,5 +1,7 @@
-package swtcamper.api.contract;
+package swtcamper.api.contract.interfaces;
 
+import java.util.ArrayList;
+import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.UserService;
@@ -24,12 +26,23 @@ public interface IUserController {
 
   User getLoggedInUser();
 
+  ArrayList<User> getAllUsers() throws GenericServiceException;
+
+  void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)
+    throws GenericServiceException;
+
+  void removeExcludedRenterForCurrentlyLoggedInUser(long idOfRenterToInclude)
+    throws GenericServiceException;
+
   /**
    * see {@link UserService#login}
+   *
    * @return
    */
   UserDTO login(String username, String password)
     throws GenericServiceException, WrongPasswordException, UserDoesNotExistException;
+
+  void logout();
 
   /**
    * see {@link UserService#isUsernameFree}
@@ -56,6 +69,8 @@ public interface IUserController {
    * see {@link UserService#isEnabled}
    */
   boolean isEnabled(String username) throws UserDoesNotExistException;
+
+  boolean isThereAnyDisabledUser() throws GenericServiceException;
 
   /**
    * see {@link UserService#getUserById(long)}
