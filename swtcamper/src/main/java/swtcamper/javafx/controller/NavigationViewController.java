@@ -76,6 +76,9 @@ public class NavigationViewController {
   @FXML
   public Button logoutBtn;
 
+  @FXML
+  public Button faqBtn;
+
   private boolean isShortText = true;
 
   @FXML
@@ -91,7 +94,7 @@ public class NavigationViewController {
 
   private void setStartButtons() {
     navBarItems.getChildren().clear();
-    navBarItems.getChildren().addAll(homeButton, loginButton);
+    navBarItems.getChildren().addAll(homeButton, loginButton, faqBtn);
   }
 
   @FXML
@@ -132,7 +135,8 @@ public class NavigationViewController {
             homeButton,
             dealHistoryButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+            faqBtn
           );
           break;
         // Enable provider functionalities
@@ -144,14 +148,16 @@ public class NavigationViewController {
               activeOffersButton,
               dealHistoryButton,
               excludeButton,
-              myBookingsButton
+              myBookingsButton,
+              faqBtn
             );
           } else {
             navBarList.addAll(
               homeButton,
               dealHistoryButton,
               myBookingsButton,
-              accountButton
+              accountButton,
+              faqBtn
             );
           }
           break;
@@ -165,11 +171,12 @@ public class NavigationViewController {
             excludeButton,
             approveButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+            faqBtn
           );
           break;
         default:
-          navBarList.addAll(homeButton, accountButton);
+          navBarList.addAll(homeButton, accountButton, faqBtn);
           break;
       }
     }
@@ -217,6 +224,9 @@ public class NavigationViewController {
         ((Button) child).setText("");
         ((Button) child).setPrefWidth(45);
 
+        faqBtn.setText("");
+        faqBtn.setPrefWidth(45);
+
         logoutBtn.setText("");
         logoutBtn.setPrefWidth(45);
       }
@@ -236,6 +246,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText(((Button) child).getAccessibleText());
         ((Button) child).setPrefWidth(172);
+
+        faqBtn.setText("FAQ");
+        faqBtn.setPrefWidth(172);
 
         logoutBtn.setText(logoutBtn.getAccessibleText());
         logoutBtn.setPrefWidth(172);

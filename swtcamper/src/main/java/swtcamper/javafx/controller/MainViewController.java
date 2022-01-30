@@ -136,6 +136,9 @@ public class MainViewController {
   public Pane reportUserViewBox;
 
   @FXML
+  public Pane faqViewBox;
+
+  @FXML
   private void initialize() throws GenericServiceException {
     changeView("home");
   }
@@ -394,6 +397,13 @@ public class MainViewController {
         break;
       case "logout":
         logout();
+        break;
+      case "faq":
+        mainStage.getChildren().add(faqViewBox);
+        globalHeaderLabel.setText("SWTCamper - Frequently Asked Question ");
+        navigationViewController.setButtonActive(
+          navigationViewController.faqBtn
+        );
         break;
     }
 
