@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -16,15 +15,6 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ReportUserViewController {
 
-  @Autowired
-  private UserReportController userReportController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private MainViewController mainViewController;
-
   @FXML
   public TextField reportThisUserTextField;
 
@@ -34,15 +24,33 @@ public class ReportUserViewController {
   @FXML
   public Button sendReportButton;
 
+  @Autowired
+  private UserReportController userReportController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private MainViewController mainViewController;
+
   public void initialize(User userToReport) {
     reportThisUserTextField.setText(userToReport.getUsername());
   }
 
-  public void goBackToExcludeView() throws GenericServiceException {
-    mainViewController.changeView("exclude");
-  }
-
   public void sendReport() throws GenericServiceException {
+    // user cannot report him/herself
+    if (
+      userController
+        .getLoggedInUser()
+        .getUsername()
+        .equals(reportThisUserTextField.getText())
+    ) {
+      mainViewController.handleInformationMessage(
+        "Du kannst dich nicht selber melden ;)"
+      );
+      return;
+    }
+
     boolean userIsReal = false;
     // check if user is valid
     for (User user : userController.getAllUsers()) {

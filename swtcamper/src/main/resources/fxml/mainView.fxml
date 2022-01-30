@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0"
-            styleClass="rootNodeBackground" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="swtcamper.javafx.controller.MainViewController">
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0"
+            minWidth="600.0" styleClass="rootNodeBackground" stylesheets="@../styles/global.css"
+            xmlns="http://javafx.com/javafx/17" fx:controller="swtcamper.javafx.controller.MainViewController">
     <left>
         <fx:include source="navigationView.fxml"/>
     </left>
@@ -29,9 +27,16 @@
                                 <Insets bottom="20.0" left="20.0" top="20.0"/>
                             </padding>
                         </Label>
+                        <Button fx:id="globalBackBtn" layoutX="664.0" layoutY="26.0" mnemonicParsing="false"
+                                onAction="#goBack" text="Zurück" AnchorPane.rightAnchor="30.0">
+                            <styleClass>
+                                <String fx:value="bg-warning"/>
+                                <String fx:value="border-0"/>
+                            </styleClass>
+                        </Button>
                     </children>
                 </AnchorPane>
-                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
                     <content>
                         <AnchorPane fx:id="mainStage" prefHeight="1000.0">
                             <children>
@@ -46,11 +51,9 @@
                                 <fx:include fx:id="offerViewBox" source="offerView.fxml" AnchorPane.bottomAnchor="0.0"
                                             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                             AnchorPane.topAnchor="0.0"/>
-                                <Pane fx:id="dealHistoryViewBox">
-                                    <Label style="-fx-text-fill: #FFF" text="Deal History"/>
-                                    <!--                            TODO after Merging: include-->
-                                    <!--                            <fx:include source="dealHistoryView.fxml" />-->
-                                </Pane>
+                                <fx:include fx:id="dealHistoryViewBox" source="dealHistoryView.fxml"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                 <fx:include fx:id="excludeRenterViewBox" source="excludeRenterView.fxml"
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
@@ -70,9 +73,6 @@
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                 <fx:include fx:id="forgotPasswordViewBox" source="resetPasswordView.fxml"
-                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                                <fx:include fx:id="moreAboutOfferViewBox" source="moreAboutOfferView.fxml"
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                 <fx:include fx:id="reportUserViewBox" source="reportUserView.fxml"

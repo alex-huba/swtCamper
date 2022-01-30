@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,22 +12,12 @@ import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private NavigationViewController navigationViewController;
-
-  @Autowired
-  private UserController userController;
 
   @FXML
   public AnchorPane navigationRoot;
@@ -72,6 +60,18 @@ public class NavigationViewController {
 
   @FXML
   public Circle accountNotificationDot;
+
+  @FXML
+  public Button logoutBtn;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private NavigationViewController navigationViewController;
+
+  @Autowired
+  private UserController userController;
 
   private boolean isShortText = true;
 
@@ -141,8 +141,7 @@ public class NavigationViewController {
               activeOffersButton,
               dealHistoryButton,
               excludeButton,
-              myBookingsButton,
-              accountButton
+              myBookingsButton
             );
           } else {
             navBarList.addAll(
@@ -172,6 +171,8 @@ public class NavigationViewController {
       }
     }
 
+    logoutBtn.setVisible(true);
+
     mainViewController.changeView(startPage);
     if (isShortText) {
       setShortTexts();
@@ -182,6 +183,7 @@ public class NavigationViewController {
 
   public void logout() throws GenericServiceException {
     setStartButtons();
+    logoutBtn.setVisible(false);
     mainViewController.changeView("home");
     if (isShortText) {
       setShortTexts();
@@ -211,6 +213,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText("");
         ((Button) child).setPrefWidth(45);
+
+        logoutBtn.setText("");
+        logoutBtn.setPrefWidth(45);
       }
     }
   }
@@ -228,6 +233,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText(((Button) child).getAccessibleText());
         ((Button) child).setPrefWidth(172);
+
+        logoutBtn.setText(logoutBtn.getAccessibleText());
+        logoutBtn.setPrefWidth(172);
       }
     }
   }

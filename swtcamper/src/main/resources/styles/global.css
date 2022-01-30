@@ -175,3 +175,8 @@ Label {
 .bg-lightGreen {
     -fx-base: -fx-lightGreen;
 }
+
+.bg-purple {
+    -fx-base: #665fa0;
+    -fx-text-fill: #ffffff;
+}

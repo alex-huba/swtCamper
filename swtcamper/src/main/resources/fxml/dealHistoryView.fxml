@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="80.0" prefWidth="303.0"
+            stylesheets="@../styles/deal-history-view.css" xmlns="http://javafx.com/javafx/17"
+            fx:controller="swtcamper.javafx.controller.DealHistoryViewController">
+    <center>
+        <VBox fx:id="bookingsListVBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="77.0" prefWidth="100.0">
+                    <children>
+                        <Label text="Historie meiner abgeschlossenen Deals"/>
+                        <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="303.0">
+                            <children>
+                                <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#showDetails"
+                                        text="Details"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

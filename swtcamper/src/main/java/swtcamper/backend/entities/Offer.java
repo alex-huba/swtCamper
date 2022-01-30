@@ -2,13 +2,17 @@ package swtcamper.backend.entities;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import javafx.util.Pair;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import swtcamper.backend.entities.interfaces.IOffer;
 
 @Entity
 public class Offer implements IOffer {
+
+  ArrayList<Pair> blockedDates;
 
   @Id
   @GeneratedValue
@@ -42,7 +46,8 @@ public class Offer implements IOffer {
     String contact,
     String particularities,
     long price,
-    ArrayList<String> rentalConditions
+    ArrayList<String> rentalConditions,
+    ArrayList<Pair> blockedDates
   ) {
     this.creator = creator;
     this.offeredObjectType = OfferedObjectType.VEHICLE;
@@ -55,6 +60,7 @@ public class Offer implements IOffer {
     this.price = price;
     this.rentalConditions = rentalConditions;
     this.active = true;
+    this.blockedDates = blockedDates;
   }
 
   public Offer(
@@ -175,10 +181,12 @@ public class Offer implements IOffer {
     this.contact = contact;
   }
 
+  @Override
   public String getParticularities() {
     return particularities;
   }
 
+  @Override
   public void setParticularities(String particularities) {
     this.particularities = particularities;
   }
@@ -193,10 +201,12 @@ public class Offer implements IOffer {
     this.price = price;
   }
 
+  @Override
   public ArrayList<String> getRentalConditions() {
     return rentalConditions;
   }
 
+  @Override
   public void setRentalConditions(ArrayList<String> rentalConditions) {
     this.rentalConditions = rentalConditions;
   }
@@ -211,10 +221,22 @@ public class Offer implements IOffer {
     this.active = active;
   }
 
+  @Override
+  public ArrayList<Pair> getBlockedDates() {
+    return blockedDates;
+  }
+
+  @Override
+  public void setBlockedDates(ArrayList<Pair> blockedDates) {
+    this.blockedDates = blockedDates;
+  }
+
+  @Override
   public boolean isPromoted() {
     return promoted;
   }
 
+  @Override
   public void setPromoted(boolean promoted) {
     this.promoted = promoted;
   }
@@ -265,6 +287,8 @@ public class Offer implements IOffer {
       price +
       ", active=" +
       active +
+      ", blockedDates=" +
+      blockedDates +
       '}'
     );
   }

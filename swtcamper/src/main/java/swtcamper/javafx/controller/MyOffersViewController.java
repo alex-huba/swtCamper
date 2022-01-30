@@ -1,5 +1,8 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,6 +15,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
@@ -22,6 +26,12 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class MyOffersViewController {
+
+  @FXML
+  public ScrollPane offerListScroll;
+
+  @FXML
+  public VBox offerListRoot;
 
   @Autowired
   private MainViewController mainViewController;
@@ -44,12 +54,6 @@ public class MyOffersViewController {
   @Autowired
   private OfferViewController offerViewController;
 
-  @FXML
-  public ScrollPane offerListScroll;
-
-  @FXML
-  public VBox offerListRoot;
-
   public void reloadData() throws GenericServiceException {
     // create the "cards" that has been created by the logged-in user
     createCards(userController.getLoggedInUser());
@@ -61,13 +65,23 @@ public class MyOffersViewController {
   private void createCards(User user) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
+    if (offerController.getOffersCreatedByUser(user).isEmpty()) {
+      Label infoLabel = new Label("Du hast noch keine Anzeigen erstellt.");
+      infoLabel.setDisable(true);
+      offerListRoot.getChildren().add(infoLabel);
+      return;
+    }
+
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
+      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
+        offer.getOfferedObject().getVehicleID()
+      );
       Image image;
+      // validate picture(s)
       if (
-        pictureController
-          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .size() >
-        0
+        picturesForVehicle.isEmpty() ||
+        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
+        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
       ) {
         image =
           new Image(
@@ -109,7 +123,7 @@ public class MyOffersViewController {
 
       // brand
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getMake()
       );
       brandLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -117,7 +131,7 @@ public class MyOffersViewController {
 
       // model
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getModel()
       );
       modelLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -146,7 +160,9 @@ public class MyOffersViewController {
         userController.getLoggedInUser()
       )) {
         if (
-          booking.getOffer().getOfferID() == offer.getID() && booking.isActive()
+          booking.getOffer().getOfferID() == offer.getID() &&
+          booking.isActive() &&
+          !booking.isRejected()
         ) {
           isOfferRentedRightNow = true;
           break;
@@ -176,8 +192,6 @@ public class MyOffersViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
           try {
             offerController.delete(offer.getID());
-          } catch (GenericServiceException ignore) {}
-          try {
             reloadData();
           } catch (GenericServiceException ignore) {}
         }

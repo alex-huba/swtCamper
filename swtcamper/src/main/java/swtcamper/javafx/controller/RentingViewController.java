@@ -1,30 +1,29 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
@@ -32,25 +31,7 @@ import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
-public class RentingViewController implements EventHandler<KeyEvent> {
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private OfferViewController offerViewController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private ValidationHelper validationHelper;
+public class RentingViewController {
 
   @FXML
   public TextField locationTextField;
@@ -71,9 +52,6 @@ public class RentingViewController implements EventHandler<KeyEvent> {
   public TextField maxPricePerDayTextField;
 
   @FXML
-  public TextField engineTextField;
-
-  @FXML
   public ComboBox<FuelType> fuelTypeComboBox;
 
   @FXML
@@ -86,10 +64,16 @@ public class RentingViewController implements EventHandler<KeyEvent> {
   public Button resetTransmissionTypeBtn;
 
   @FXML
-  public TextField seatAmountTextField;
+  public ComboBox<Integer> seatAmountComboBox;
 
   @FXML
-  public TextField bedAmountTextField;
+  public Button resetSeatAmountBtn;
+
+  @FXML
+  public ComboBox<Integer> bedAmountComboBox;
+
+  @FXML
+  public Button resetBedAmountBtn;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -113,7 +97,22 @@ public class RentingViewController implements EventHandler<KeyEvent> {
   public CheckBox fridgeCheckBox;
 
   @FXML
+  public DatePicker startDatePicker;
+
+  @FXML
+  public Button resetStartDatePickerBtn;
+
+  @FXML
+  public DatePicker endDatePicker;
+
+  @FXML
+  public Button resetEndDatePickerBtn;
+
+  @FXML
   public HBox paginationHBox;
+
+  @FXML
+  public HBox paginationButtonsHBox;
 
   @FXML
   public ChoiceBox<Integer> offersPerPageChoiceBox;
@@ -136,15 +135,28 @@ public class RentingViewController implements EventHandler<KeyEvent> {
   @FXML
   public AnchorPane rootAnchorPane;
 
-  @FXML
-  public Label errorLabel;
+  int lastPageVisited;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private OfferViewController offerViewController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
 
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;
-  int lastPageVisited;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws GenericServiceException {
     offersPerPageChoiceBox.setItems(
       FXCollections.observableArrayList(1, 5, 10, 20)
     );
@@ -196,6 +208,92 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     resetTransmissionTypeBtn
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
+    resetStartDatePickerBtn
+      .visibleProperty()
+      .bind(startDatePicker.valueProperty().isNotNull());
+    resetEndDatePickerBtn
+      .visibleProperty()
+      .bind(endDatePicker.valueProperty().isNotNull());
+    resetSeatAmountBtn
+      .visibleProperty()
+      .bind(seatAmountComboBox.valueProperty().isNotNull());
+    resetBedAmountBtn
+      .visibleProperty()
+      .bind(bedAmountComboBox.valueProperty().isNotNull());
+
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
+    startDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
+    endDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
+
+    seatAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(seatAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    bedAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(bedAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    seatAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
+    bedAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
 
     fuelTypeComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
@@ -217,95 +315,34 @@ public class RentingViewController implements EventHandler<KeyEvent> {
       .visibleProperty()
       .bind(fuelTypeComboBox.valueProperty().isNotNull());
 
-    offerListBox.setHgrow(offerListScroll, Priority.ALWAYS);
+    HBox.setHgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-    offerListRoot.setVgrow(offerListScroll, Priority.ALWAYS);
+    VBox.setVgrow(offerListScroll, Priority.ALWAYS);
     offerListScroll.setPrefHeight(
       rootVBOX.getHeight() - rootAnchorPane.getHeight()
     );
-    errorLabel.setText("");
 
-    constructionYearTextField.setOnKeyTyped(this);
-    maxPricePerDayTextField.setOnKeyTyped(this);
-    seatAmountTextField.setOnKeyTyped(this);
-    bedAmountTextField.setOnKeyTyped(this);
-  }
+    // make it impossible to enter characters instead of numbers for number fields
+    constructionYearTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          constructionYearTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
 
-  @Override
-  public void handle(KeyEvent event) {
-    validateInput(event);
-  }
-
-  private void validateInput(KeyEvent event) {
-    Object source = event.getSource();
-
-    if (constructionYearTextField.equals(source)) {
-      int inputYear = Integer.parseInt(constructionYearTextField.getText());
-      validateYear(inputYear);
-    } else if (maxPricePerDayTextField.equals(source)) {
-      String inputPrice = maxPricePerDayTextField.getText();
-      validatePrice(inputPrice);
-    } else if (seatAmountTextField.equals(source)) {
-      String inputSeats = seatAmountTextField.getText();
-      validateSeats(inputSeats);
-    } else if (bedAmountTextField.equals(source)) {
-      String inputBeds = bedAmountTextField.getText();
-      validateBeds(inputBeds);
-    }
-  }
-
-  private void validateYear(int inputYear) {
-    if (!validationHelper.checkYear(inputYear)) {
-      errorLabel.setText("Wählen Sie bitte ein gültiges Baujahr");
-      validateFalse(constructionYearTextField);
-    } else {
-      errorLabel.setText("");
-      validateTrue(constructionYearTextField);
-    }
-  }
-
-  private void validatePrice(String inputPrice) {
-    if (!validationHelper.checkOfferPrice(inputPrice)) {
-      errorLabel.setText("Wählen Sie bitte ein gültigen Preis");
-      validateFalse(maxPricePerDayTextField);
-    } else {
-      errorLabel.setText("");
-      validateTrue(maxPricePerDayTextField);
-    }
-  }
-
-  private void validateSeats(String inputSeats) {
-    if (!validationHelper.checkSeats(inputSeats)) {
-      errorLabel.setText("Wählen Sie bitte eine gültige Anzahl von Sitzplätze");
-      validateFalse(seatAmountTextField);
-    } else {
-      errorLabel.setText("");
-      validateTrue(seatAmountTextField);
-    }
-  }
-
-  private void validateBeds(String inputBeds) {
-    if (!validationHelper.checkBeds(inputBeds)) {
-      errorLabel.setText("Wählen Sie bitte eine gültige Anzahl von Betten");
-      validateFalse(bedAmountTextField);
-    } else {
-      errorLabel.setText("");
-      validateTrue(bedAmountTextField);
-    }
-  }
-
-  private void validateTrue(Node element) {
-    element.setStyle(
-      "-fx-background-color: #transparent; -fx-text-fill: #000000"
-    );
-  }
-
-  private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+    maxPricePerDayTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          maxPricePerDayTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
   }
 
   /**
    * Gets all available offers from the database and creates subLists.
+   *
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
@@ -328,11 +365,14 @@ public class RentingViewController implements EventHandler<KeyEvent> {
         )
         .collect(Collectors.toList());
 
+    // made pagination invisible if there are no offers to show
+    paginationHBox.setVisible(!offerDTOList.isEmpty());
+
     // partition them according to offersPerPageChoiceBox's value
     subListsList =
       createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
     // and load the first chunk
-    loadData(subListsList.get(0));
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
   }
 
   /**
@@ -344,7 +384,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
       offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
     );
 
-    paginationHBox.getChildren().clear();
+    paginationButtonsHBox.getChildren().clear();
     for (int i = 0; i < pageAmount; i++) {
       Button pageButton = new Button(String.valueOf(i + 1));
       pageButton
@@ -356,17 +396,17 @@ public class RentingViewController implements EventHandler<KeyEvent> {
         lastPageVisited = finalI;
         loadData(subListsList.get(finalI));
       });
-      paginationHBox.getChildren().add(pageButton);
+      paginationButtonsHBox.getChildren().add(pageButton);
     }
-    paginationHBox.getChildren().add(offersPerPageHBox);
 
     offerListRoot.getChildren().add(paginationHBox);
   }
 
   /**
    * Partitions an offer-list into sublists of a specific max length
+   *
    * @param inputList offer-list to partition
-   * @param size max length of each sublist
+   * @param size      max length of each sublist
    * @return list of lists, each with a max length
    */
   private List<List<OfferDTO>> createOfferSublists(
@@ -384,6 +424,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
 
   /**
    * Loads a specific list to the visible view
+   *
    * @param offersList list to load
    */
   private void loadData(List<OfferDTO> offersList) {
@@ -392,7 +433,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     Label header = new Label(
       String.format(
         "%s Angebote für Sie",
-        offersList.size() > 0 ? "Passende" : "Keine passenden"
+        !offersList.isEmpty() ? "Passende" : "Keine passenden"
       )
     );
     header.setStyle("-fx-font-size: 30");
@@ -417,14 +458,17 @@ public class RentingViewController implements EventHandler<KeyEvent> {
         );
       }
 
-      root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
+      root.setEffect(new DropShadow(10, Color.BLACK));
 
+      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
+        offer.getOfferedObject().getVehicleID()
+      );
       Image image;
+      // validate picture(s)
       if (
-        pictureController
-          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .size() >
-        0
+        picturesForVehicle.isEmpty() ||
+        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
+        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
       ) {
         image =
           new Image(
@@ -465,7 +509,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
 
       // brand
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getMake()
       );
       brandLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -473,7 +517,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
 
       // model
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getModel()
       );
       modelLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -514,8 +558,7 @@ public class RentingViewController implements EventHandler<KeyEvent> {
       root.getChildren().add(offerDetails);
       offerListRoot.getChildren().add(root);
     }
-
-    if (offersList.size() > 0) addPagination();
+    if (!offersList.isEmpty()) addPagination();
   }
 
   /**
@@ -525,37 +568,50 @@ public class RentingViewController implements EventHandler<KeyEvent> {
    */
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
-    if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
-      locationTextField.getText()
-    );
-    if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
-      vehicleTypeComboBox.getValue()
-    );
-    if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
-      vehicleBrandTextField.getText()
-    );
-    if (
-      !constructionYearTextField.getText().isEmpty()
-    ) newFilter.setConstructionYear(
-      Integer.parseInt(constructionYearTextField.getText())
-    );
-    if (
-      !maxPricePerDayTextField.getText().isEmpty()
-    ) newFilter.setMaxPricePerDay(
-      Integer.parseInt(maxPricePerDayTextField.getText())
-    );
-    if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
-      fuelTypeComboBox.getValue()
-    );
-    if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
-      transmissionComboBox.getValue()
-    );
-    if (!seatAmountTextField.getText().isEmpty()) newFilter.setSeatAmount(
-      Integer.parseInt(seatAmountTextField.getText())
-    );
-    if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
-      Integer.parseInt(bedAmountTextField.getText())
-    );
+    try {
+      if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
+        locationTextField.getText()
+      );
+      if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
+        vehicleTypeComboBox.getValue()
+      );
+      if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
+        vehicleBrandTextField.getText()
+      );
+      if (
+        !constructionYearTextField.getText().isEmpty()
+      ) newFilter.setConstructionYear(
+        Integer.parseInt(constructionYearTextField.getText())
+      );
+      if (
+        !maxPricePerDayTextField.getText().isEmpty()
+      ) newFilter.setMaxPricePerDay(
+        Integer.parseInt(maxPricePerDayTextField.getText())
+      );
+      if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
+        fuelTypeComboBox.getValue()
+      );
+      if (
+        transmissionComboBox.getValue() != null
+      ) newFilter.setTransmissionType(transmissionComboBox.getValue());
+      if (seatAmountComboBox.getValue() != null) newFilter.setSeatAmount(
+        seatAmountComboBox.getValue()
+      );
+      if (bedAmountComboBox.getValue() != null) newFilter.setBedAmount(
+        bedAmountComboBox.getValue()
+      );
+      if (startDatePicker.getValue() != null) newFilter.setStartDate(
+        startDatePicker.getValue()
+      );
+      if (endDatePicker.getValue() != null) newFilter.setEndDate(
+        endDatePicker.getValue()
+      );
+    } catch (NumberFormatException e) {
+      mainViewController.handleExceptionMessage(
+        "Bitte nutze für die Suche realistische Zahlen."
+      );
+    }
+
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
@@ -563,7 +619,14 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     newFilter.setToilet(toiletCheckBox.isSelected());
     newFilter.setKitchen(kitchenCheckBox.isSelected());
     newFilter.setFridge(fridgeCheckBox.isSelected());
-    loadData(offerController.getFilteredOffers(newFilter));
+
+    // get filtered offers and save them as (global) offerDTOList
+    offerDTOList = offerController.getFilteredOffers(newFilter);
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
   }
 
   public void resetFilter() throws GenericServiceException {
@@ -572,10 +635,10 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     vehicleBrandTextField.clear();
     constructionYearTextField.clear();
     maxPricePerDayTextField.clear();
-    engineTextField.clear();
     transmissionComboBox.setValue(null);
-    seatAmountTextField.clear();
-    bedAmountTextField.clear();
+    fuelTypeComboBox.setValue(null);
+    seatAmountComboBox.setValue(null);
+    bedAmountComboBox.setValue(null);
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -583,6 +646,8 @@ public class RentingViewController implements EventHandler<KeyEvent> {
     toiletCheckBox.setSelected(false);
     kitchenCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
 
     reloadData();
   }
@@ -606,5 +671,35 @@ public class RentingViewController implements EventHandler<KeyEvent> {
    */
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
+  }
+
+  /**
+   * resets the startDate DatePicker
+   */
+  public void resetStartDatePicker() {
+    startDatePicker.getEditor().clear();
+    startDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the endDate DatePicker
+   */
+  public void resetEndDatePicker() {
+    endDatePicker.getEditor().clear();
+    endDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the seat amount in the filter
+   */
+  public void resetSeatAmountComboBox() {
+    seatAmountComboBox.setValue(null);
+  }
+
+  /**
+   * resets the bed amount in the filter
+   */
+  public void resetBedAmountComboBox() {
+    bedAmountComboBox.setValue(null);
   }
 }

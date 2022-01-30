@@ -4,32 +4,21 @@ import static swtcamper.backend.entities.UserRole.*;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class RegisterViewController implements EventHandler<KeyEvent> {
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
 
   @FXML
   public TextField usernameTf;
@@ -69,6 +58,12 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @FXML
   public VBox rootElement;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
@@ -152,13 +147,17 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
   }
 
+  private void validateNeutral(Node element) {
+    element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
+  }
+
   private void validateFalse(Node element) {
     element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
       errorLabel.setText(
         "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
       );
@@ -179,7 +178,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validatePasswordPf() {
     String input = passwordPf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
       errorLabel.setText(
         "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
       );
@@ -240,7 +239,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateNameTf() {
     String input = nameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z]*")) {
+    if (input.length() < 3 || !input.matches("^[a-zA-ZäöüÄÖÜ]*")) {
       errorLabel.setText("Ungültiger Name: 2 Buchstaben mindestens");
       validateFalse(nameTf);
       isNameOk.setValue(false);
@@ -253,7 +252,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateSurnameTf() {
     String input = surnameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z0-9.-]*")) {
+    if (input.length() < 3 || !input.matches("^[a-zA-Z-äöüÄÖÜß]*")) {
       errorLabel.setText("Ungültiger Nachname: 2 Buchstaben mindestens");
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);
@@ -274,6 +273,18 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
     surnameTf.clear();
     providerCb.setSelected(false);
     renterCb.setSelected(false);
+
+    FXCollections
+      .observableArrayList(
+        usernameTf,
+        passwordPf,
+        repeatPasswordPf,
+        emailTf,
+        phoneTf,
+        nameTf,
+        surnameTf
+      )
+      .forEach(this::validateNeutral);
 
     errorLabel.setText("");
   }
