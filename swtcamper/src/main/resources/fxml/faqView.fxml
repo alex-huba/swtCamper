@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.TextField?>
-<VBox alignment="TOP_CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/faqview.css" xmlns="http://javafx.com/javafx/17">
+<VBox alignment="TOP_CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/faq-view.css" xmlns="http://javafx.com/javafx/17">
     <Accordion>
      <panes>
        <TitledPane text="Wie miete ich ein Wohnmobil bei SWTcamper?" styleClass="section-heading">
