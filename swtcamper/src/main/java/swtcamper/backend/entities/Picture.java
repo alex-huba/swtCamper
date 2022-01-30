@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import swtcamper.api.contract.PictureDTO;
+import swtcamper.backend.entities.interfaces.IPicture;
 
 @Entity
 public class Picture implements IPicture {
@@ -33,26 +34,32 @@ public class Picture implements IPicture {
 
   public Picture() {}
 
+  @Override
   public long getPictureID() {
     return pictureID;
   }
 
+  @Override
   public void setPictureID(long pictureID) {
     this.pictureID = pictureID;
   }
 
+  @Override
   public long getVehicleID() {
     return vehicleID;
   }
 
+  @Override
   public void setVehicleID(long vehicleID) {
     this.vehicleID = vehicleID;
   }
 
+  @Override
   public String getPath() {
     return path;
   }
 
+  @Override
   public void setPath(String path) {
     this.path = String.valueOf(path);
   }

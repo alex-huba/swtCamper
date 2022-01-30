@@ -1,12 +1,12 @@
 package swtcamper.api.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.contract.ILoggingController;
 import swtcamper.api.contract.LoggingMessageDTO;
+import swtcamper.api.contract.interfaces.ILoggingController;
+import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.LoggingService;
 
@@ -16,20 +16,27 @@ public class LoggingController implements ILoggingController {
   @Autowired
   private LoggingService loggingService;
 
-  public void log(LoggingMessageDTO loggingMessageDTO) {
-    loggingService.log(loggingMessageDTO);
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Override
+  public void log(LoggingMessage loggingMessage) {
+    loggingService.log(
+      modelMapper.loggingMessageToLoggingMessageDTO(loggingMessage)
+    );
   }
 
+  @Override
   public List<LoggingMessageDTO> getAllLogMessages() {
-    return loggingService.getAllLogMessages();
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(
+      loggingService.getAllLogMessages()
+    );
   }
 
+  @Override
   public List<LoggingMessageDTO> getLogForUser(User selectedUser) {
-    return getAllLogMessages()
-      .stream()
-      .filter(loggingMessage ->
-        loggingMessage.getLoggingMessage().contains(selectedUser.getUsername())
-      )
-      .collect(Collectors.toList());
+    return modelMapper.LoggingMessagesToLoggingMessageDTOs(
+      loggingService.getLogForUser(selectedUser)
+    );
   }
 }

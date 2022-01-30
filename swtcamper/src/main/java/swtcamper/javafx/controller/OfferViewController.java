@@ -1,14 +1,15 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,11 +19,15 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.*;
-import swtcamper.backend.entities.*;
+import swtcamper.backend.entities.Booking;
+import swtcamper.backend.entities.User;
+import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -30,36 +35,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class OfferViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private BookingController bookingController;
-
-  @Autowired
-  private OfferController offerController;
-
-  @Autowired
-  private PictureController pictureController;
-
-  @Autowired
-  private ValidationHelper validationHelper;
-
-  @Autowired
-  private ModifyOfferViewController modifyOfferViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private BookingService bookingService;
-
-  @Autowired
-  private OfferService offerService;
-
-  LongStringConverter longStringConverter = new LongStringConverter();
-
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   @FXML
   public HBox pictureHorizontHBox;
@@ -164,8 +140,38 @@ public class OfferViewController {
   public Button abortBookingRequestBtn;
 
   public OfferDTO viewedOffer;
+  LongStringConverter longStringConverter = new LongStringConverter();
+  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
-  private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private BookingController bookingController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
+
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
+  private ModifyOfferViewController modifyOfferViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private BookingService bookingService;
+
+  @Autowired
+  private OfferService offerService;
 
   public void initialize(OfferDTO offer, boolean rentingMode) {
     this.viewedOffer = offer;
@@ -181,6 +187,13 @@ public class OfferViewController {
     for (PictureDTO pictureDTO : pictureController.getPicturesForVehicle(
       offer.getOfferedObject().getVehicleID()
     )) {
+      if (
+        pictureDTO.getPath().startsWith("file:///") &&
+        Files.notExists(Path.of(pictureDTO.getPath().substring(8)))
+      ) {
+        continue;
+      }
+
       ImageView thumbnail = new ImageView(new Image(pictureDTO.getPath()));
       thumbnail.setFitHeight(150);
       thumbnail.setPreserveRatio(true);
@@ -198,7 +211,7 @@ public class OfferViewController {
     rentalConditionsVBox.getChildren().clear();
     if (
       offer.getRentalConditions() != null &&
-      offer.getRentalConditions().size() > 0
+      !offer.getRentalConditions().isEmpty()
     ) {
       for (String rentalCondition : offer.getRentalConditions()) {
         rentalConditionsVBox
@@ -209,61 +222,31 @@ public class OfferViewController {
       rentalConditionsVBox.getChildren().add(new Label(" / "));
     }
 
-    vehicleTypeLabel.setText(
-      String.valueOf(offeredObject.getVehicleFeatures().getVehicleType())
-    );
-    brandLabel.setText(offeredObject.getVehicleFeatures().getMake());
-    modelLabel.setText(offeredObject.getVehicleFeatures().getModel());
-    transmissionLabel.setText(
-      offeredObject.getVehicleFeatures().getTransmission()
-    );
-    seatsLabel.setText(
-      Integer.toString(offeredObject.getVehicleFeatures().getSeats())
-    );
-    bedsLabel.setText(
-      Integer.toString(offeredObject.getVehicleFeatures().getBeds())
-    );
-    constructionLabel.setText(offeredObject.getVehicleFeatures().getYear());
-    engineLabel.setText(
-      String.valueOf(offeredObject.getVehicleFeatures().getFuelType())
-    );
+    vehicleTypeLabel.setText(String.valueOf(offeredObject.getVehicleType()));
+    brandLabel.setText(offeredObject.getMake());
+    modelLabel.setText(offeredObject.getModel());
+    transmissionLabel.setText(offeredObject.getTransmission());
+    seatsLabel.setText(Integer.toString(offeredObject.getSeats()));
+    bedsLabel.setText(Integer.toString(offeredObject.getBeds()));
+    constructionLabel.setText(offeredObject.getYear());
+    engineLabel.setText(String.valueOf(offeredObject.getFuelType()));
     widthLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getWidth()
-      )
+      doubleStringConverter.toString(offeredObject.getWidth())
     );
     lengthLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getLength()
-      )
+      doubleStringConverter.toString(offeredObject.getLength())
     );
     heightLabel.setText(
-      doubleStringConverter.toString(
-        offeredObject.getVehicleFeatures().getHeight()
-      )
+      doubleStringConverter.toString(offeredObject.getHeight())
     );
 
-    roofTentLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isRoofTent())
-    );
-    roofRackLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isRoofRack())
-    );
-    bikeRackLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isBikeRack())
-    );
-    showerLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isShower())
-    );
-    toiletLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isToilet())
-    );
-    kitchenUnitLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isKitchenUnit())
-    );
-    fridgeLabel.setOpacity(
-      labelOpacity(offeredObject.getVehicleFeatures().isFridge())
-    );
+    roofTentLabel.setOpacity(labelOpacity(offeredObject.isRoofTent()));
+    roofRackLabel.setOpacity(labelOpacity(offeredObject.isRoofRack()));
+    bikeRackLabel.setOpacity(labelOpacity(offeredObject.isBikeRack()));
+    showerLabel.setOpacity(labelOpacity(offeredObject.isShower()));
+    toiletLabel.setOpacity(labelOpacity(offeredObject.isToilet()));
+    kitchenUnitLabel.setOpacity(labelOpacity(offeredObject.isKitchenUnit()));
+    fridgeLabel.setOpacity(labelOpacity(offeredObject.isFridge()));
     startDatePicker.getEditor().setDisable(true);
     startDatePicker.getEditor().setOpacity(1);
     endDatePicker.getEditor().setDisable(true);
@@ -395,14 +378,10 @@ public class OfferViewController {
    * Makes promote / degrade offer button visible, only if operator is logged in.
    */
   public void checkUserRole() {
-    if (
+    promotingButton.setVisible(
       userController.getLoggedInUser() != null &&
       userController.getLoggedInUser().getUserRole().equals(UserRole.OPERATOR)
-    ) {
-      promotingButton.setVisible(true);
-    } else {
-      promotingButton.setVisible(false);
-    }
+    );
   }
 
   /**
@@ -416,6 +395,25 @@ public class OfferViewController {
     }
   }
 
+  /**
+   * calculates the number of days for a booking, multiplies it with the price and
+   * returns a String with the result
+   */
+  public String calculateTotalPrice() {
+    long daysBetween = ChronoUnit.DAYS.between(
+      startDatePicker.getValue(),
+      endDatePicker.getValue()
+    );
+    String totalPrice =
+      "Das Angebot kostet " +
+      daysBetween *
+      viewedOffer.getPrice() +
+      "€ für " +
+      daysBetween +
+      " Tage.";
+    return totalPrice;
+  }
+
   @FXML
   public void promotingAction() throws GenericServiceException {
     if (this.viewedOffer.isPromoted()) {
@@ -423,11 +421,8 @@ public class OfferViewController {
     } else {
       offerController.promoteOffer(this.viewedOffer.getID());
     }
-    backAction();
-  }
 
-  @FXML
-  public void backAction() throws GenericServiceException {
+    // go back to overview
     if (isRentingMode.get()) {
       mainViewController.changeView("home");
     } else {
@@ -479,16 +474,17 @@ public class OfferViewController {
           startDatePicker.getValue() +
           " bis " +
           endDatePicker.getValue() +
-          " buchen?"
+          " buchen? " +
+          calculateTotalPrice()
         );
         Optional<ButtonType> result = confirmBooking.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-          Offer offer = offerController.getOfferById(viewedOffer.getID());
+          OfferDTO offerDTO = offerController.getOfferById(viewedOffer.getID());
           User user = userController.getLoggedInUser();
           try {
             BookingDTO bookingDTO = bookingController.create(
               user,
-              offer,
+              modelMapper.offerDTOToOffer(offerDTO),
               startDatePicker.getValue(),
               endDatePicker.getValue()
             );
@@ -508,6 +504,7 @@ public class OfferViewController {
   /**
    * Creates and sets a cellFactory for the given DatePicker, which makes all days before today un-clickable and
    * all blockedDays and bookedDays pink and un-clickable
+   *
    * @param datePicker
    * @param offerDTO
    */

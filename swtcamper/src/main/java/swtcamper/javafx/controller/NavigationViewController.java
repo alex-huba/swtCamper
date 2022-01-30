@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,22 +12,12 @@ import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.contract.UserRoleDTO;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
-
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private NavigationViewController navigationViewController;
-
-  @Autowired
-  private UserController userController;
 
   @FXML
   public AnchorPane navigationRoot;
@@ -75,6 +63,15 @@ public class NavigationViewController {
 
   @FXML
   public Button logoutBtn;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private NavigationViewController navigationViewController;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public Button faqBtn;

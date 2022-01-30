@@ -2,18 +2,17 @@ package swtcamper.api.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
-import swtcamper.api.contract.IBookingController;
+import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.interfaces.IBookingController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import swtcamper.javafx.controller.MainViewController;
 
 @Component
 public class BookingController implements IBookingController {
@@ -27,20 +26,14 @@ public class BookingController implements IBookingController {
   @Autowired
   private UserController userController;
 
-  @Autowired
-  private MainViewController mainViewController;
-
+  @Override
   public List<Booking> getAllBookings() {
     return bookingService.getAllBookings();
   }
 
+  @Override
   public List<Booking> getBookingsForUser(User user) {
-    return getAllBookings()
-      .stream()
-      .filter(booking ->
-        booking.getOffer().getCreator().getId().equals(user.getId())
-      )
-      .collect(Collectors.toList());
+    return bookingService.getBookingsForUser(user);
   }
 
   @Override
@@ -116,5 +109,15 @@ public class BookingController implements IBookingController {
   @Override
   public void reject(long bookingID) {
     bookingService.reject(bookingID);
+  }
+
+  @Override
+  public List<OfferDTO> getAvailableOffers(
+    LocalDate startDate,
+    LocalDate endDate
+  ) throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(
+      bookingService.getAvailableOffers(startDate, endDate)
+    );
   }
 }

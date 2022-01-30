@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,11 +16,11 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ApproveNewProvidersViewController {
 
-  @Autowired
-  private UserController userController;
-
   @FXML
   public VBox toApproveListView;
+
+  @Autowired
+  private UserController userController;
 
   @FXML
   public void initialize() throws GenericServiceException {
@@ -32,12 +31,7 @@ public class ApproveNewProvidersViewController {
     toApproveListView.getChildren().clear();
 
     if (userController.countUser() > 0) {
-      if (
-        userController
-          .getAllUsers()
-          .stream()
-          .anyMatch(user -> !user.isEnabled())
-      ) {
+      if (userController.isThereAnyDisabledUser()) {
         for (User user : userController.getAllUsers()) {
           if (
             user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()

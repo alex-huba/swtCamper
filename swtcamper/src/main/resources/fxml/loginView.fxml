@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="30.0" styleClass="rootNodeBackground"
-      stylesheets="@../styles/loginview.css" xmlns="http://javafx.com/javafx/17"
+      stylesheets="@../styles/login-view.css" xmlns="http://javafx.com/javafx/17"
       fx:controller="swtcamper.javafx.controller.LoginViewController">
 
     <Label styleClass="heading" text="Login"/>
@@ -29,7 +30,7 @@
         </styleClass>
     </Button>
 
-    <VBox spacing="20">
+    <VBox maxWidth="420.0" spacing="20">
         <children>
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                 <Label styleClass="descriptionLabel" text="Du hast noch keinen Account?"/>
@@ -39,5 +40,8 @@
                 <Hyperlink fx:id="forgotPasswordButton" onAction="#handleForgotPassword" text="Passwort vergessen?"/>
             </HBox>
         </children>
+        <VBox.margin>
+            <Insets top="50.0"/>
+        </VBox.margin>
     </VBox>
 </VBox>
