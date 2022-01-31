@@ -1,6 +1,7 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -119,14 +120,14 @@ public class ValidationHelper {
   }
 
   public boolean checkYear(int toCheck) {
-    return (toCheck > 1907 && toCheck < 2023);
+    return (toCheck > 1907 && toCheck < LocalDate.now().getYear() + 1);
   }
 
   public boolean checkSeats(String toCheck) {
     return (
       !toCheck.isEmpty() &&
       isNumber(toCheck) &&
-      Integer.parseInt(toCheck) > -1 &&
+      Integer.parseInt(toCheck) > 0 &&
       Integer.parseInt(toCheck) < 13
     );
   }

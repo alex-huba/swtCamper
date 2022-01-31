@@ -941,7 +941,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         vehicleTypeComboBox.getValue() != null &&
         vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
       ) ||
-      Integer.parseInt(seatsComboBox.getValue()) > 0
+      validationHelper.checkSeats(seatsComboBox.getValue())
     ) {
       errorLabel.setText("");
       validateTrue(seatsComboBox);
@@ -954,7 +954,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBeds(int inputBeds) {
-    if (inputBeds < 0) {
+    if (!validationHelper.checkBeds(String.valueOf(inputBeds))) {
       errorLabel.setText("Ungültige Anzahl von Betten");
       validateFalse(bedsComboBox);
       isBedsOk.set(false);
