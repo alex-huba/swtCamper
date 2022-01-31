@@ -484,9 +484,12 @@ public class RentingViewController {
       // thumbnail
       ImageView thumbnail = new ImageView(image);
       thumbnail.setFitHeight(150);
+      thumbnail.setFitWidth(150);
       thumbnail.setPreserveRatio(true);
       HBox thumbnailHbox = new HBox(thumbnail);
-      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setPrefWidth(150);
+      thumbnailHbox.setPrefHeight(150);
+      thumbnailHbox.setAlignment(Pos.BASELINE_CENTER);
       thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
 
       // title
