@@ -137,7 +137,7 @@ public class MainViewController {
   private User latestLoggedInStatus = null;
   private String latestView = null;
   private final SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
-          false
+    false
   );
   private final LinkedList<String> historyList = new LinkedList<>();
   // needed in order to make the back button work (see goBack())
