@@ -1,17 +1,20 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
-import swtcamper.api.contract.IBookingController;
+import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.interfaces.IBookingController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.Offer;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
-import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 
+@Component
 public class BookingController implements IBookingController {
 
   @Autowired
@@ -20,14 +23,26 @@ public class BookingController implements IBookingController {
   @Autowired
   private ModelMapper modelMapper;
 
+  @Autowired
+  private UserController userController;
+
+  @Override
+  public List<Booking> getAllBookings() {
+    return bookingService.getAllBookings();
+  }
+
+  @Override
+  public List<Booking> getBookingsForUser(User user) {
+    return bookingService.getBookingsForUser(user);
+  }
+
   @Override
   public BookingDTO create(
     User user,
     Offer offer,
     LocalDate startDate,
-    LocalDate endDate,
-    boolean active
-  ) {
+    LocalDate endDate
+  ) throws GenericServiceException {
     return modelMapper.bookingToBookingDTO(
       bookingService.create(user, offer, startDate, endDate)
     );
@@ -42,7 +57,27 @@ public class BookingController implements IBookingController {
   ) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.update(bookingID, startDate, endDate, active)
+        bookingService.update(
+          bookingID,
+          startDate,
+          endDate,
+          active,
+          modelMapper.userToUserDTO(userController.getLoggedInUser())
+        )
+      );
+    } catch (GenericServiceException e) {
+      throw new GenericServiceException(e.getMessage());
+    }
+  }
+
+  @Override
+  public BookingDTO activate(Long bookingID) throws GenericServiceException {
+    try {
+      return modelMapper.bookingToBookingDTO(
+        bookingService.activate(
+          bookingID,
+          modelMapper.userToUserDTO(userController.getLoggedInUser())
+        )
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
@@ -53,10 +88,36 @@ public class BookingController implements IBookingController {
   public BookingDTO deactivate(Long bookingID) throws GenericServiceException {
     try {
       return modelMapper.bookingToBookingDTO(
-        bookingService.deactivate(bookingID)
+        bookingService.deactivate(
+          bookingID,
+          modelMapper.userToUserDTO(userController.getLoggedInUser())
+        )
       );
     } catch (GenericServiceException e) {
       throw new GenericServiceException(e.getMessage());
     }
+  }
+
+  @Override
+  public void delete(Long bookingID) throws GenericServiceException {
+    bookingService.delete(
+      bookingID,
+      modelMapper.userToUserDTO(userController.getLoggedInUser())
+    );
+  }
+
+  @Override
+  public void reject(long bookingID) {
+    bookingService.reject(bookingID);
+  }
+
+  @Override
+  public List<OfferDTO> getAvailableOffers(
+    LocalDate startDate,
+    LocalDate endDate
+  ) throws GenericServiceException {
+    return modelMapper.offersToOfferDTOs(
+      bookingService.getAvailableOffers(startDate, endDate)
+    );
   }
 }

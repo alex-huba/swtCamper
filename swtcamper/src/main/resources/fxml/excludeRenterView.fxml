@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" styleClass="rootNodeBackground"
+            stylesheets="@../styles/exclude-renter-view.css" xmlns="http://javafx.com/javafx/17"
+            fx:controller="swtcamper.javafx.controller.ExcludeRenterViewController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Nutzer finden"/>
+                <TextField fx:id="findUsersTextField" onKeyTyped="#findUsers" promptText="Vollständiger Nutzername"/>
+                <VBox fx:id="userResultsVBox" spacing="10.0">
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                </VBox>
+            </children>
+            <padding>
+                <Insets left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane hbarPolicy="NEVER" styleClass="rootNodeBackground" BorderPane.alignment="CENTER">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <children>
+                        <VBox>
+                            <children>
+                                <Label text="Von mir ausgeschlossene Nutzer"/>
+                                <VBox fx:id="excludedRentersVBox" spacing="10.0">
+                                    <VBox.margin>
+                                        <Insets top="10.0"/>
+                                    </VBox.margin>
+                                </VBox>
+                            </children>
+                            <padding>
+                                <Insets left="5.0" right="5.0" top="5.0"/>
+                            </padding>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -1,17 +1,19 @@
 package swtcamper.backend.entities;
 
-public class Filter {
+import java.time.LocalDate;
+import swtcamper.backend.entities.interfaces.IFilter;
+
+public class Filter implements IFilter {
 
   private String location;
   private VehicleType vehicleType;
   private String vehicleBrand;
   private int constructionYear;
   private int maxPricePerDay;
-  private String engine;
+  private FuelType fuelType;
   private TransmissionType transmissionType;
   private int seatAmount;
   private int bedAmount;
-  private boolean excludeInactive;
   private boolean roofTent;
   private boolean roofRack;
   private boolean bikeRack;
@@ -19,170 +21,190 @@ public class Filter {
   private boolean toilet;
   private boolean kitchen;
   private boolean fridge;
-  private boolean minAge21;
-  private boolean crossingBordersAllowed;
-  private boolean depositInCash;
+  private LocalDate startDate;
+  private LocalDate endDate;
 
+  @Override
   public String getLocation() {
     return location;
   }
 
+  @Override
   public void setLocation(String location) {
     this.location = location;
   }
 
+  @Override
   public VehicleType getVehicleType() {
     return vehicleType;
   }
 
+  @Override
   public void setVehicleType(VehicleType vehicleType) {
     this.vehicleType = vehicleType;
   }
 
+  @Override
   public String getVehicleBrand() {
     return vehicleBrand;
   }
 
+  @Override
   public void setVehicleBrand(String vehicleBrand) {
     this.vehicleBrand = vehicleBrand;
   }
 
+  @Override
   public int getConstructionYear() {
     return constructionYear;
   }
 
+  @Override
   public void setConstructionYear(int constructionYear) {
     this.constructionYear = constructionYear;
   }
 
+  @Override
   public int getMaxPricePerDay() {
     return maxPricePerDay;
   }
 
+  @Override
   public void setMaxPricePerDay(int maxPricePerDay) {
     this.maxPricePerDay = maxPricePerDay;
   }
 
-  public String getEngine() {
-    return engine;
+  @Override
+  public FuelType getFuelType() {
+    return fuelType;
   }
 
-  public void setEngine(String engine) {
-    this.engine = engine;
+  @Override
+  public void setFuelType(FuelType fuelType) {
+    this.fuelType = fuelType;
   }
 
+  @Override
   public TransmissionType getTransmissionType() {
     return transmissionType;
   }
 
+  @Override
   public void setTransmissionType(TransmissionType transmissionType) {
     this.transmissionType = transmissionType;
   }
 
+  @Override
   public int getSeatAmount() {
     return seatAmount;
   }
 
+  @Override
   public void setSeatAmount(int seatAmount) {
     this.seatAmount = seatAmount;
   }
 
+  @Override
   public int getBedAmount() {
     return bedAmount;
   }
 
+  @Override
   public void setBedAmount(int bedAmount) {
     this.bedAmount = bedAmount;
   }
 
-  public boolean isExcludeInactive() {
-    return excludeInactive;
-  }
-
-  public void setExcludeInactive(boolean excludeInactive) {
-    this.excludeInactive = excludeInactive;
-  }
-
+  @Override
   public boolean isRoofTent() {
     return roofTent;
   }
 
+  @Override
   public void setRoofTent(boolean roofTent) {
     this.roofTent = roofTent;
   }
 
+  @Override
   public boolean isRoofRack() {
     return roofRack;
   }
 
+  @Override
   public void setRoofRack(boolean roofRack) {
     this.roofRack = roofRack;
   }
 
+  @Override
   public boolean isBikeRack() {
     return bikeRack;
   }
 
+  @Override
   public void setBikeRack(boolean bikeRack) {
     this.bikeRack = bikeRack;
   }
 
+  @Override
   public boolean isShower() {
     return shower;
   }
 
+  @Override
   public void setShower(boolean shower) {
     this.shower = shower;
   }
 
+  @Override
   public boolean isToilet() {
     return toilet;
   }
 
+  @Override
   public void setToilet(boolean toilet) {
     this.toilet = toilet;
   }
 
+  @Override
   public boolean isKitchen() {
     return kitchen;
   }
 
+  @Override
   public void setKitchen(boolean kitchen) {
     this.kitchen = kitchen;
   }
 
+  @Override
   public boolean isFridge() {
     return fridge;
   }
 
+  @Override
   public void setFridge(boolean fridge) {
     this.fridge = fridge;
   }
 
-  public boolean isMinAge21() {
-    return minAge21;
+  @Override
+  public LocalDate getStartDate() {
+    return startDate;
   }
 
-  public void setMinAge21(boolean minAge21) {
-    this.minAge21 = minAge21;
+  @Override
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
   }
 
-  public boolean isCrossingBordersAllowed() {
-    return crossingBordersAllowed;
+  @Override
+  public LocalDate getEndDate() {
+    return endDate;
   }
 
-  public void setCrossingBordersAllowed(boolean crossingBordersAllowed) {
-    this.crossingBordersAllowed = crossingBordersAllowed;
+  @Override
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
   }
 
-  public boolean isDepositInCash() {
-    return depositInCash;
-  }
-
-  public void setDepositInCash(boolean depositInCash) {
-    this.depositInCash = depositInCash;
-  }
-
+  @Override
   public boolean isEmpty() {
     return (
       location == null &&
@@ -190,11 +212,10 @@ public class Filter {
       vehicleBrand == null &&
       constructionYear == 0 &&
       maxPricePerDay == 0 &&
-      engine == null &&
+      fuelType == null &&
       transmissionType == null &&
       seatAmount == 0 &&
       bedAmount == 0 &&
-      !excludeInactive &&
       !roofTent &&
       !roofRack &&
       !bikeRack &&
@@ -202,9 +223,8 @@ public class Filter {
       !toilet &&
       !kitchen &&
       !fridge &&
-      !minAge21 &&
-      !crossingBordersAllowed &&
-      !depositInCash
+      startDate == null &&
+      endDate == null
     );
   }
 
@@ -225,7 +245,7 @@ public class Filter {
       ", maxPricePerDay=" +
       maxPricePerDay +
       ", engine='" +
-      engine +
+      fuelType +
       '\'' +
       ", transmissionType=" +
       transmissionType +
@@ -233,8 +253,6 @@ public class Filter {
       seatAmount +
       ", bedAmount=" +
       bedAmount +
-      ", excludeInactive=" +
-      excludeInactive +
       ", roofTent=" +
       roofTent +
       ", roofRack=" +
@@ -249,12 +267,6 @@ public class Filter {
       kitchen +
       ", fridge=" +
       fridge +
-      ", minAge21=" +
-      minAge21 +
-      ", crossingBordersAllowed=" +
-      crossingBordersAllowed +
-      ", depositInCash=" +
-      depositInCash +
       '}'
     );
   }

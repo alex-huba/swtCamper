@@ -5,15 +5,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.UserController;
@@ -24,17 +18,8 @@ import swtcamper.backend.services.exceptions.WrongPasswordException;
 @Component
 public class LoginViewController implements EventHandler<KeyEvent> {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @Autowired
-  private RegisterViewController registerViewController;
-
-  @Autowired
-  private ResetPasswordViewController resetPasswordViewController;
+  private final BooleanProperty isUsernameOk = new SimpleBooleanProperty(false);
+  private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
 
   @FXML
   public Button loginButton;
@@ -54,11 +39,24 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   @FXML
   public Label errorLabel;
 
-  private final BooleanProperty isUsernameOk = new SimpleBooleanProperty(false);
-  private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private UserController userController;
+
+  @Autowired
+  private RegisterViewController registerViewController;
+
+  @Autowired
+  private ResetPasswordViewController resetPasswordViewController;
+
+  private int loginAttempts;
 
   @FXML
   public void initialize() {
+    loginAttempts = 0;
+
     usernameTf.setOnKeyTyped(this::validateInput);
     passwordPf.setOnKeyTyped(this::validateInput);
 
@@ -108,40 +106,32 @@ public class LoginViewController implements EventHandler<KeyEvent> {
 
     // Try to login if user input matches data in database
     try {
-      mainViewController.login(
-        userController.login(username, password),
-        userController.isEnabled(username)
-      );
+      mainViewController.login(userController.login(username, password));
     } catch (WrongPasswordException e) {
       // Inform user that entered password is wrong
-      Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicken Sie OK um das Passwort zurückzusetzen"
-      );
-      alert.setTitle("Authentifizierung fehlgeschlagen!");
-      alert.setHeaderText("Falsches Passwort. Bitte erneut eingeben.");
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
-        mainViewController.changeView("forgotPassword");
-        resetPasswordViewController.usernameTf.setText(username);
-        resetPasswordViewController.validateUsernameTf();
+      errorLabel.setText("Falsches Passwort, bitte versuchen Sie es erneut.");
+
+      // ask user to change password after 3 wrong tries
+      if (loginAttempts == 2) {
+        Alert alert = new Alert(
+          Alert.AlertType.ERROR,
+          "Sie haben Ihr Passwort 3x hintereinander falsch eingegeben.\nKlicken Sie OK um es zurückzusetzen."
+        );
+        alert.setTitle("Authentifizierung fehlgeschlagen!");
+        alert.setHeaderText("Falsches Passwort. Zurücksetzen?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+          mainViewController.changeView("forgotPassword");
+          resetPasswordViewController.usernameTf.setText(username);
+          resetPasswordViewController.validateUsernameTf();
+        }
+      } else {
+        loginAttempts++;
       }
     } catch (UserDoesNotExistException e) {
-      // Inform user that user account doesn't exist
-      Alert alert = new Alert(
-        Alert.AlertType.ERROR,
-        "Klicke OK um einen neuen Account zu erstellen"
+      errorLabel.setText(
+        "Es gibt keinen Account mit diesem Nutzernamen; bitte registrieren Sie sich zuerst wenn sie noch keinen Nutzeraccount haben."
       );
-      alert.setTitle("Authentifizierung fehlgeschlagen!");
-      alert.setHeaderText("Es gibt keinen Account mit diesem Nutzernamen");
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
-        mainViewController.changeView("register");
-        registerViewController.usernameTf.setText(username);
-        registerViewController.passwordPf.setText(password);
-        registerViewController.validateUsernameTf();
-        registerViewController.validatePasswordPf();
-      }
     }
   }
 
@@ -156,10 +146,15 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   }
 
   public void resetInputFields() {
+    loginAttempts = 0;
+
     usernameTf.clear();
     passwordPf.clear();
+
+    errorLabel.setText("");
   }
 
+  @FXML
   public void handleEnterKey(KeyEvent event) throws GenericServiceException {
     if (event.getCode() == KeyCode.ENTER) handleLogin();
   }

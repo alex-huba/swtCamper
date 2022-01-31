@@ -30,6 +30,11 @@ Label {
     -fx-font-size: 15;
 }
 
+.title-heading {
+    -fx-font-size: 40;
+    -fx-text-fill: #040759;
+}
+
 .heading {
     -fx-font-size: 30;
     -fx-text-fill: #040759;
@@ -169,4 +174,9 @@ Label {
 
 .bg-lightGreen {
     -fx-base: -fx-lightGreen;
+}
+
+.bg-purple {
+    -fx-base: #665fa0;
+    -fx-text-fill: #ffffff;
 }

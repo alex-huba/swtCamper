@@ -1,27 +1,40 @@
 package swtcamper.javafx.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.Region;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
+import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.controller.OfferController;
+import swtcamper.api.controller.PictureController;
+import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
+import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
 import swtcamper.backend.entities.VehicleType;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class RentingViewController {
-
-  @Autowired
-  private OfferController offerController;
-
-  @FXML
-  public TitledPane searchBoxTitledPane;
 
   @FXML
   public TextField locationTextField;
@@ -42,7 +55,10 @@ public class RentingViewController {
   public TextField maxPricePerDayTextField;
 
   @FXML
-  public TextField engineTextField;
+  public ComboBox<FuelType> fuelTypeComboBox;
+
+  @FXML
+  public Button resetFuelTypeBtn;
 
   @FXML
   public ComboBox<TransmissionType> transmissionComboBox;
@@ -51,13 +67,16 @@ public class RentingViewController {
   public Button resetTransmissionTypeBtn;
 
   @FXML
-  public TextField seatAmountTextField;
+  public ComboBox<Integer> seatAmountComboBox;
 
   @FXML
-  public TextField bedAmountTextField;
+  public Button resetSeatAmountBtn;
 
   @FXML
-  public CheckBox excludeInactiveCheckBox;
+  public ComboBox<Integer> bedAmountComboBox;
+
+  @FXML
+  public Button resetBedAmountBtn;
 
   @FXML
   public CheckBox roofTentCheckBox;
@@ -81,34 +100,79 @@ public class RentingViewController {
   public CheckBox fridgeCheckBox;
 
   @FXML
-  public CheckBox min21CheckBox;
+  public DatePicker startDatePicker;
 
   @FXML
-  public CheckBox crossBordersCheckBox;
+  public Button resetStartDatePickerBtn;
 
   @FXML
-  public CheckBox payCashCheckBox;
+  public DatePicker endDatePicker;
 
   @FXML
-  public ListView<OfferDTO> offersList;
+  public Button resetEndDatePickerBtn;
+
+  @FXML
+  public HBox paginationHBox;
+
+  @FXML
+  public HBox paginationButtonsHBox;
+
+  @FXML
+  public ChoiceBox<Integer> offersPerPageChoiceBox;
+
+  @FXML
+  public HBox offersPerPageHBox;
+
+  @FXML
+  public HBox offerListBox;
+
+  @FXML
+  public ScrollPane offerListScroll;
+
+  @FXML
+  public VBox offerListRoot;
+
+  @FXML
+  public VBox rootVBOX;
+
+  @FXML
+  public AnchorPane rootAnchorPane;
+
+  int lastPageVisited;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private OfferViewController offerViewController;
+
+  @Autowired
+  private OfferController offerController;
+
+  @Autowired
+  private PictureController pictureController;
+
+  @Autowired
+  private UserController userController;
+
+  private List<OfferDTO> offerDTOList;
+  private List<List<OfferDTO>> subListsList;
 
   @FXML
   private void initialize() throws GenericServiceException {
-    reloadData();
-    offersList.setOnMouseClicked(click -> {
-      OfferDTO selectedItem = offersList.getSelectionModel().getSelectedItem();
-      //Listener for right click
-      if (click.isSecondaryButtonDown()) {
-        //ignore
-      }
-      //Listener for double click
-      if (click.getClickCount() == 2) {
-        showInfoAlert(selectedItem);
-      }
-    });
+    offersPerPageChoiceBox.setItems(
+      FXCollections.observableArrayList(1, 5, 10, 20)
+    );
+    offersPerPageChoiceBox.setValue(5);
+    offersPerPageChoiceBox
+      .valueProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        try {
+          lastPageVisited = 0;
+          reloadData();
+        } catch (GenericServiceException ignore) {}
+      });
 
-    searchBoxTitledPane.setExpanded(false);
-    excludeInactiveCheckBox.setSelected(true);
     vehicleTypeComboBox.setItems(
       FXCollections.observableArrayList(VehicleType.values())
     );
@@ -147,23 +211,362 @@ public class RentingViewController {
     resetTransmissionTypeBtn
       .visibleProperty()
       .bind(transmissionComboBox.valueProperty().isNotNull());
+    resetStartDatePickerBtn
+      .visibleProperty()
+      .bind(startDatePicker.valueProperty().isNotNull());
+    resetEndDatePickerBtn
+      .visibleProperty()
+      .bind(endDatePicker.valueProperty().isNotNull());
+    resetSeatAmountBtn
+      .visibleProperty()
+      .bind(seatAmountComboBox.valueProperty().isNotNull());
+    resetBedAmountBtn
+      .visibleProperty()
+      .bind(bedAmountComboBox.valueProperty().isNotNull());
+
+    startDatePicker.getEditor().setDisable(true);
+    startDatePicker.getEditor().setOpacity(1);
+    endDatePicker.getEditor().setDisable(true);
+    endDatePicker.getEditor().setOpacity(1);
+    startDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
+    endDatePicker.setDayCellFactory(
+      new Callback<DatePicker, DateCell>() {
+        @Override
+        public DateCell call(DatePicker param) {
+          return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+              super.updateItem(date, empty);
+              if (!empty && date != null) {
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+              }
+            }
+          };
+        }
+      }
+    );
+
+    seatAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(seatAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    bedAmountComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(bedAmountComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+
+    seatAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
+    bedAmountComboBox.setItems(
+      FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    );
+
+    fuelTypeComboBox.setItems(
+      FXCollections.observableArrayList((FuelType.values()))
+    );
+    fuelTypeComboBox.setButtonCell(
+      new ListCell<>() {
+        @Override
+        protected void updateItem(FuelType item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(fuelTypeComboBox.getPromptText());
+          } else {
+            setText(item.toString());
+          }
+        }
+      }
+    );
+    resetFuelTypeBtn
+      .visibleProperty()
+      .bind(fuelTypeComboBox.valueProperty().isNotNull());
+
+    HBox.setHgrow(offerListScroll, Priority.ALWAYS);
+    offerListScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+    VBox.setVgrow(offerListScroll, Priority.ALWAYS);
+    offerListScroll.setPrefHeight(
+      rootVBOX.getHeight() - rootAnchorPane.getHeight()
+    );
+
+    // make it impossible to enter characters instead of numbers for number fields
+    constructionYearTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          constructionYearTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
+
+    maxPricePerDayTextField
+      .textProperty()
+      .addListener((observable, oldValue, newValue) -> {
+        if (!newValue.matches("\\d*")) {
+          maxPricePerDayTextField.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+      });
   }
 
   /**
-   * Gets all available offers from the database .
+   * Gets all available offers from the database and creates subLists.
    *
    * @throws GenericServiceException
    */
   public void reloadData() throws GenericServiceException {
-    offersList.setItems(
-      FXCollections.observableArrayList(offerController.offers())
+    // get available offers
+    offerDTOList =
+      offerController
+        .offers()
+        .parallelStream()
+        .filter(OfferDTO::isActive)
+        .filter(offerDTO ->
+          // returns offerDTOs in which the loggedInUser is not excluded
+          // and in which the field excludedRenters is not null
+          // returns true (= every offerDTO) otherwise
+          userController.getLoggedInUser() == null ||
+          offerDTO.getCreator().getExcludedRenters() == null ||
+          !offerDTO
+            .getCreator()
+            .getExcludedRenters()
+            .contains(userController.getLoggedInUser().getId())
+        )
+        .collect(Collectors.toList());
+
+    // made pagination invisible if there are no offers to show
+    paginationHBox.setVisible(!offerDTOList.isEmpty());
+
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
+  }
+
+  /**
+   * Adds a pagination to the list of offers
+   */
+  private void addPagination() {
+    // get amount of pages by rounding up the result of offerDTOList's size divided by offersPerPageChoiceBox's value
+    int pageAmount = (int) Math.ceil(
+      offerDTOList.size() / Double.valueOf(offersPerPageChoiceBox.getValue())
+    );
+
+    paginationButtonsHBox.getChildren().clear();
+    for (int i = 0; i < pageAmount; i++) {
+      Button pageButton = new Button(String.valueOf(i + 1));
+      pageButton
+        .getStyleClass()
+        .add(i == lastPageVisited ? "bg-primary" : "bg-secondary");
+
+      int finalI = i;
+      pageButton.setOnAction(event -> {
+        lastPageVisited = finalI;
+        loadData(subListsList.get(finalI));
+      });
+      paginationButtonsHBox.getChildren().add(pageButton);
+    }
+
+    offerListRoot.getChildren().add(paginationHBox);
+  }
+
+  /**
+   * Partitions an offer-list into sublists of a specific max length
+   *
+   * @param inputList offer-list to partition
+   * @param size      max length of each sublist
+   * @return list of lists, each with a max length
+   */
+  private List<List<OfferDTO>> createOfferSublists(
+    List<OfferDTO> inputList,
+    int size
+  ) {
+    final AtomicInteger counter = new AtomicInteger(0);
+    return FXCollections.observableArrayList(
+      inputList
+        .stream()
+        .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
+        .values()
     );
   }
 
-  private void showInfoAlert(OfferDTO offerItem) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, offerItem.toString());
-    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-    alert.showAndWait();
+  /**
+   * Loads a specific list to the visible view
+   *
+   * @param offersList list to load
+   */
+  private void loadData(List<OfferDTO> offersList) {
+    offerListRoot.getChildren().clear();
+
+    Label header = new Label(
+      String.format(
+        "%s Angebote für Sie",
+        !offersList.isEmpty()
+          ? (offerDTOList.size() + " Passende")
+          : "Keine passenden"
+      )
+    );
+    header.setStyle("-fx-font-size: 30");
+    offerListRoot.getChildren().add(header);
+
+    for (OfferDTO offer : offersList) {
+      VBox root = new VBox();
+      Label promoteLabel = new Label("");
+
+      // visually highlight promoted offer
+      if (offer.isPromoted()) {
+        root.setStyle(
+          "-fx-background-color: #add8e6; -fx-background-radius: 20px"
+        );
+        promoteLabel.setText("-- Von uns empfohlen! --");
+        promoteLabel.setStyle(
+          "-fx-font-size: 20; -fx-font-family: Arial Rounded MT Bold;"
+        );
+      } else {
+        root.setStyle(
+          "-fx-background-color: #c9dfce; -fx-background-radius: 20px"
+        );
+      }
+
+      root.setEffect(new DropShadow(10, Color.BLACK));
+
+      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
+        offer.getOfferedObject().getVehicleID()
+      );
+      Image image;
+      // validate picture(s)
+      if (
+        picturesForVehicle.isEmpty() ||
+        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
+        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
+      ) {
+        image =
+          new Image(
+            pictureController
+              .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+              .get(0)
+              .getPath()
+          );
+      } else {
+        image = new Image("/pictures/noImg.png");
+      }
+
+      // thumbnail
+      ImageView thumbnail = new ImageView(image);
+      thumbnail.setFitHeight(150);
+      thumbnail.setFitWidth(150);
+      thumbnail.setPreserveRatio(true);
+      HBox thumbnailHbox = new HBox(thumbnail);
+      thumbnailHbox.setPrefWidth(150);
+      thumbnailHbox.setPrefHeight(150);
+      thumbnailHbox.setAlignment(Pos.BASELINE_CENTER);
+      thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
+
+      // title
+      Label titleLabel = new Label(offer.getTitle());
+      titleLabel.setStyle(
+        "-fx-font-size: 35; -fx-font-family: \"Arial Rounded MT Bold\"; -fx-text-fill: #040759"
+      );
+
+      // location
+      Label locationLabel = new Label("Abholort: " + offer.getLocation());
+      locationLabel.setStyle(
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+      );
+
+      // price
+      Label priceLabel = new Label("Preis pro Tag: € " + offer.getPrice());
+      priceLabel.setStyle(
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+      );
+
+      // brand
+      Label brandLabel = new Label(
+        "Marke: " + offer.getOfferedObject().getMake()
+      );
+      brandLabel.setStyle(
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+      );
+
+      // model
+      Label modelLabel = new Label(
+        "Modell: " + offer.getOfferedObject().getModel()
+      );
+      modelLabel.setStyle(
+        "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
+      );
+
+      VBox locationPriceBrandModelBox = new VBox(
+        locationLabel,
+        priceLabel,
+        brandLabel,
+        modelLabel
+      );
+      locationPriceBrandModelBox.setStyle("-fx-padding: 0 0 0 30");
+
+      Button moreBtn = new Button("Mehr Information");
+      moreBtn.getStyleClass().add("bg-primary");
+      moreBtn.setOnAction(event -> {
+        try {
+          mainViewController.changeView("viewOffer");
+          offerViewController.initialize(offer, true);
+        } catch (GenericServiceException ignore) {}
+      });
+
+      HBox btnBox = new HBox(moreBtn);
+      btnBox.setAlignment(Pos.TOP_RIGHT);
+      btnBox.setStyle("-fx-padding: 0 30 30 0");
+
+      VBox detailsVBox = new VBox(
+        promoteLabel,
+        titleLabel,
+        locationPriceBrandModelBox,
+        btnBox
+      );
+      detailsVBox.setAlignment(Pos.TOP_CENTER);
+      HBox.setHgrow(detailsVBox, Priority.ALWAYS);
+
+      HBox offerDetails = new HBox(thumbnailHbox, detailsVBox);
+
+      root.getChildren().add(offerDetails);
+      offerListRoot.getChildren().add(root);
+    }
+    if (!offersList.isEmpty()) addPagination();
   }
 
   /**
@@ -173,38 +576,50 @@ public class RentingViewController {
    */
   public void startSearch() throws GenericServiceException {
     Filter newFilter = new Filter();
-    if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
-      locationTextField.getText()
-    );
-    if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
-      vehicleTypeComboBox.getValue()
-    );
-    if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
-      vehicleBrandTextField.getText()
-    );
-    if (
-      !constructionYearTextField.getText().isEmpty()
-    ) newFilter.setConstructionYear(
-      Integer.parseInt(constructionYearTextField.getText())
-    );
-    if (
-      !maxPricePerDayTextField.getText().isEmpty()
-    ) newFilter.setMaxPricePerDay(
-      Integer.parseInt(maxPricePerDayTextField.getText())
-    );
-    if (!engineTextField.getText().isEmpty()) newFilter.setEngine(
-      engineTextField.getText()
-    );
-    if (transmissionComboBox.getValue() != null) newFilter.setTransmissionType(
-      transmissionComboBox.getValue()
-    );
-    if (!seatAmountTextField.getText().isEmpty()) newFilter.setSeatAmount(
-      Integer.parseInt(seatAmountTextField.getText())
-    );
-    if (!bedAmountTextField.getText().isEmpty()) newFilter.setBedAmount(
-      Integer.parseInt(bedAmountTextField.getText())
-    );
-    newFilter.setExcludeInactive(excludeInactiveCheckBox.isSelected());
+    try {
+      if (!locationTextField.getText().isEmpty()) newFilter.setLocation(
+        locationTextField.getText()
+      );
+      if (vehicleTypeComboBox.getValue() != null) newFilter.setVehicleType(
+        vehicleTypeComboBox.getValue()
+      );
+      if (!vehicleBrandTextField.getText().isEmpty()) newFilter.setVehicleBrand(
+        vehicleBrandTextField.getText()
+      );
+      if (
+        !constructionYearTextField.getText().isEmpty()
+      ) newFilter.setConstructionYear(
+        Integer.parseInt(constructionYearTextField.getText())
+      );
+      if (
+        !maxPricePerDayTextField.getText().isEmpty()
+      ) newFilter.setMaxPricePerDay(
+        Integer.parseInt(maxPricePerDayTextField.getText())
+      );
+      if (fuelTypeComboBox.getValue() != null) newFilter.setFuelType(
+        fuelTypeComboBox.getValue()
+      );
+      if (
+        transmissionComboBox.getValue() != null
+      ) newFilter.setTransmissionType(transmissionComboBox.getValue());
+      if (seatAmountComboBox.getValue() != null) newFilter.setSeatAmount(
+        seatAmountComboBox.getValue()
+      );
+      if (bedAmountComboBox.getValue() != null) newFilter.setBedAmount(
+        bedAmountComboBox.getValue()
+      );
+      if (startDatePicker.getValue() != null) newFilter.setStartDate(
+        startDatePicker.getValue()
+      );
+      if (endDatePicker.getValue() != null) newFilter.setEndDate(
+        endDatePicker.getValue()
+      );
+    } catch (NumberFormatException e) {
+      mainViewController.handleExceptionMessage(
+        "Bitte nutze für die Suche realistische Zahlen."
+      );
+    }
+
     newFilter.setRoofTent(roofTentCheckBox.isSelected());
     newFilter.setRoofRack(roofRackCheckBox.isSelected());
     newFilter.setBikeRack(bikeRackCheckBox.isSelected());
@@ -213,15 +628,13 @@ public class RentingViewController {
     newFilter.setKitchen(kitchenCheckBox.isSelected());
     newFilter.setFridge(fridgeCheckBox.isSelected());
 
-    newFilter.setMinAge21(min21CheckBox.isSelected());
-    newFilter.setCrossingBordersAllowed(crossBordersCheckBox.isSelected());
-    newFilter.setDepositInCash(payCashCheckBox.isSelected());
-
-    offersList.setItems(
-      FXCollections.observableArrayList(
-        offerController.getFilteredOffers(newFilter)
-      )
-    );
+    // get filtered offers and save them as (global) offerDTOList
+    offerDTOList = offerController.getFilteredOffers(newFilter);
+    // partition them according to offersPerPageChoiceBox's value
+    subListsList =
+      createOfferSublists(offerDTOList, offersPerPageChoiceBox.getValue());
+    // and load the first chunk
+    loadData(!subListsList.isEmpty() ? subListsList.get(0) : new ArrayList<>());
   }
 
   public void resetFilter() throws GenericServiceException {
@@ -230,11 +643,10 @@ public class RentingViewController {
     vehicleBrandTextField.clear();
     constructionYearTextField.clear();
     maxPricePerDayTextField.clear();
-    engineTextField.clear();
     transmissionComboBox.setValue(null);
-    seatAmountTextField.clear();
-    bedAmountTextField.clear();
-    excludeInactiveCheckBox.setSelected(true);
+    fuelTypeComboBox.setValue(null);
+    seatAmountComboBox.setValue(null);
+    bedAmountComboBox.setValue(null);
     roofTentCheckBox.setSelected(false);
     roofRackCheckBox.setSelected(false);
     bikeRackCheckBox.setSelected(false);
@@ -242,13 +654,10 @@ public class RentingViewController {
     toiletCheckBox.setSelected(false);
     kitchenCheckBox.setSelected(false);
     fridgeCheckBox.setSelected(false);
-    min21CheckBox.setSelected(false);
-    crossBordersCheckBox.setSelected(false);
-    payCashCheckBox.setSelected(false);
+    startDatePicker.setValue(null);
+    endDatePicker.setValue(null);
 
-    offersList.setItems(
-      FXCollections.observableArrayList(offerController.offers())
-    );
+    reloadData();
   }
 
   /**
@@ -259,9 +668,46 @@ public class RentingViewController {
   }
 
   /**
+   * Resets VehicleTypeComboBox to its initial state.
+   */
+  public void resetFuelTypeComboBox() {
+    fuelTypeComboBox.valueProperty().set(null);
+  }
+
+  /**
    * Resets TransmissionTypeComboBox to its initial state.
    */
   public void resetTransmissionTypeComboBox() {
     transmissionComboBox.valueProperty().set(null);
+  }
+
+  /**
+   * resets the startDate DatePicker
+   */
+  public void resetStartDatePicker() {
+    startDatePicker.getEditor().clear();
+    startDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the endDate DatePicker
+   */
+  public void resetEndDatePicker() {
+    endDatePicker.getEditor().clear();
+    endDatePicker.setValue(null);
+  }
+
+  /**
+   * resets the seat amount in the filter
+   */
+  public void resetSeatAmountComboBox() {
+    seatAmountComboBox.setValue(null);
+  }
+
+  /**
+   * resets the bed amount in the filter
+   */
+  public void resetBedAmountComboBox() {
+    bedAmountComboBox.setValue(null);
   }
 }
