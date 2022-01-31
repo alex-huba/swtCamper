@@ -83,9 +83,8 @@ public class MainViewController {
   @FXML
   public Pane reportUserViewBox;
 
-  private final SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
-    false
-  );
+  @FXML
+  public Pane faqViewBox;
 
   @Autowired
   private ModelMapper modelMapper;
@@ -137,13 +136,12 @@ public class MainViewController {
 
   private User latestLoggedInStatus = null;
   private String latestView = null;
-
+  private final SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
+          false
+  );
   private final LinkedList<String> historyList = new LinkedList<>();
   // needed in order to make the back button work (see goBack())
   private boolean createHistory;
-
-  @FXML
-  public Pane faqViewBox;
 
   @FXML
   private void initialize() throws GenericServiceException {

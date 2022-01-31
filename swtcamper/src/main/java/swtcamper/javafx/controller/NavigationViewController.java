@@ -64,6 +64,9 @@ public class NavigationViewController {
   @FXML
   public Button logoutBtn;
 
+  @FXML
+  public Button faqBtn;
+
   @Autowired
   private MainViewController mainViewController;
 
@@ -72,9 +75,6 @@ public class NavigationViewController {
 
   @Autowired
   private UserController userController;
-
-  @FXML
-  public Button faqBtn;
 
   private boolean isShortText = true;
 
