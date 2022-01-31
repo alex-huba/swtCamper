@@ -23,26 +23,29 @@ public class UserServiceUnitTest {
     @InjectMocks
     private UserService userServiceUnderTest;
 
-    private User testUser = new User(
-            "ThomasK96",
-            "password",
-            "t.kretschmann@t-online.de",
-            "1829309182308213",
-            "Thomas",
-            "Kretschmann",
-            UserRole.PROVIDER,
-            false
-    );
-
     @BeforeEach
     public void saveTestUser() {
-        when(userRepository.save(testUser)).thenReturn(testUser);
+        when(userServiceUnderTest.create("ThomasK96",
+                "password",
+                "t.kretschmann@t-online.de",
+                "1829309182308213",
+                "Thomas",
+                "Kretschmann",
+                UserRole.PROVIDER,
+                false)).thenReturn(any());
     }
 
     @Test
     public void whenSaveValidUserItShouldReturnUser() {
         // when
-        userServiceUnderTest.create(testUser);
+        User testUser = userServiceUnderTest.create("ThomasK96",
+                "password",
+                "t.kretschmann@t-online.de",
+                "1829309182308213",
+                "Thomas",
+                "Kretschmann",
+                UserRole.PROVIDER,
+                false);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(

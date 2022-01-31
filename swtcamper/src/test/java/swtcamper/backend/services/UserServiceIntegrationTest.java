@@ -25,18 +25,39 @@ public class UserServiceIntegrationTest {
     private UserService userServiceUnderTest;
 
     public User saveTestUser() {
-        User testUser = new User(
-                "Musti",
+        return userServiceUnderTest.create("Musti",
                 "password",
                 "m.mustermann@t-online.de",
                 "01769308213",
                 "Max",
                 "Mustermann",
                 UserRole.PROVIDER,
-                false
-        );
+                false);
+    }
 
-        return userServiceUnderTest.create(testUser);
+    @Test
+    public void creatingNewUserShouldReturnThisUser() {
+        assertEquals("Musti", saveTestUser().getUsername());
+        assertEquals("Max", saveTestUser().getName());
+        assertEquals("Mustermann", saveTestUser().getSurname());
+        assertEquals("m.mustermann@t-online.de", saveTestUser().getEmail());
+    }
+
+    @Test
+    public void userShouldNotExistAnymoreAfterDeleting() {
+        User testUser = saveTestUser();
+        userServiceUnderTest.delete(testUser.getId());
+        assertThrows(GenericServiceException.class, () -> userServiceUnderTest.getUserById(testUser.getId()));
+    }
+
+    @Test
+    public void userShouldBeUpdatedAfterUpdating() throws GenericServiceException {
+        User testUser = saveTestUser();
+
+        testUser.setUsername("Mustus");
+
+        userServiceUnderTest.update(testUser);
+        assertEquals(testUser, userServiceUnderTest.getUserById(testUser.getId()));
     }
 
     @Test
@@ -98,15 +119,15 @@ public class UserServiceIntegrationTest {
     @Test
     public void lockingUserShouldSetHimLocked() throws GenericServiceException {
         User testUser = saveTestUser();
-        userServiceUnderTest.lock(testUser.getId());
+        userServiceUnderTest.lock(testUser.getId(), "Operator");
         assertTrue(userServiceUnderTest.user().stream().filter(user -> user.getId().equals(testUser.getId())).collect(Collectors.toList()).get(0).isLocked());
     }
 
     @Test
     public void unlockingLockedUserShouldSetHimUnlocked() throws GenericServiceException {
         User testUser = saveTestUser();
-        userServiceUnderTest.lock(testUser.getId());
-        userServiceUnderTest.unlock(testUser.getId());
+        userServiceUnderTest.lock(testUser.getId(), "Operator");
+        userServiceUnderTest.unlock(testUser.getId(), "Operator");
         assertFalse(userServiceUnderTest.user().stream().filter(user -> user.getId().equals(testUser.getId())).collect(Collectors.toList()).get(0).isLocked());
     }
 
@@ -157,7 +178,7 @@ public class UserServiceIntegrationTest {
             throws UserDoesNotExistException, GenericServiceException {
         saveTestUser();
 
-        userServiceUnderTest.enable(userServiceUnderTest.user().get(0).getId());
+        userServiceUnderTest.enable(userServiceUnderTest.user().get(0).getId(), "Operator");
 
         assertTrue(userServiceUnderTest.isEnabled("Musti"));
     }
