@@ -433,7 +433,9 @@ public class RentingViewController {
     Label header = new Label(
       String.format(
         "%s Angebote für Sie",
-        !offersList.isEmpty() ? "Passende" : "Keine passenden"
+        !offersList.isEmpty()
+          ? (offerDTOList.size() + " Passende")
+          : "Keine passenden"
       )
     );
     header.setStyle("-fx-font-size: 30");
