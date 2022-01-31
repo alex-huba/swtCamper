@@ -77,8 +77,6 @@ public class UserService {
       if (userOptional.isPresent()) {
         user = userOptional.get();
         this.setLoggedInUser(user);
-      } else {
-        throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
       return user.getUserRole();
