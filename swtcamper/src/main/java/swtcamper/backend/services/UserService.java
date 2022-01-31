@@ -72,7 +72,7 @@ public class UserService {
     throws WrongPasswordException, UserDoesNotExistException {
     // Check if username and password are matching
     if (userRepository.existsByUsernameAndPassword(username, password)) {
-      User user;
+      User user = new User();
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
