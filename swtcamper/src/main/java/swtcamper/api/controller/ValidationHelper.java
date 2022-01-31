@@ -1,6 +1,7 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,19 @@ public class ValidationHelper {
   }
 
   public static boolean checkOfferTitle(String toCheck) {
-    return !toCheck.isEmpty() && lengthOverFive(toCheck);
+    return !toCheck.isEmpty() && lengthOverFive(toCheck) && noSpecialCharacters(toCheck);
+  }
+
+  public static boolean noSpecialCharacters (String toCheck) {
+    List<String> specialChars = Arrays.asList(new String[]{
+            "~","´","+","#","'","*","<",">","|","@","$","€","%","&", "§","","^",":",";",
+            "-","_","=","/","(", ")", "{","[","]","}","?","!",".",",","´","°"});
+    for (String specialChar : specialChars) {
+      if (toCheck.contains(specialChar)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public static boolean checkOfferPrice(String toCheck) {
