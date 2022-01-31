@@ -78,6 +78,9 @@
                                 <fx:include fx:id="reportUserViewBox" source="reportUserView.fxml"
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                <fx:include fx:id="faqViewBox" source="faqView.fxml"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                             </children>
                         </AnchorPane>
                     </content>
