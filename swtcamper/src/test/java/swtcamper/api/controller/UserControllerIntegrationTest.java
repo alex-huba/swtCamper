@@ -11,6 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserControllerIntegrationTest {
 
-    @Autowired
-    private UserController userControllerUnterTest;
+  @Autowired
+  private UserController userControllerUnterTest;
 }

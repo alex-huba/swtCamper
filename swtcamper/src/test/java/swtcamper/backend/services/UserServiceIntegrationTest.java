@@ -1,209 +1,447 @@
 package swtcamper.backend.services;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
+import swtcamper.backend.repositories.UserRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
-
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserServiceIntegrationTest {
 
-    @Autowired
-    private UserService userServiceUnderTest;
+  @Mock
+  @Autowired
+  private UserRepository userRepository;
 
-    public User saveTestUser() {
-        return userServiceUnderTest.create("Musti",
-                "password",
-                "m.mustermann@t-online.de",
-                "01769308213",
-                "Max",
-                "Mustermann",
-                UserRole.PROVIDER,
-                false);
-    }
+  @Autowired
+  private UserService userServiceUnderTest;
 
-    @Test
-    public void creatingNewUserShouldReturnThisUser() {
-        assertEquals("Musti", saveTestUser().getUsername());
-        assertEquals("Max", saveTestUser().getName());
-        assertEquals("Mustermann", saveTestUser().getSurname());
-        assertEquals("m.mustermann@t-online.de", saveTestUser().getEmail());
-    }
+  public User saveCheckUser() {
+    return userServiceUnderTest.create(
+      "Musti",
+      "password",
+      "m.mustermann@t-online.de",
+      "01769308213",
+      "Max",
+      "Mustermann",
+      UserRole.PROVIDER,
+      false
+    );
+  }
 
-    @Test
-    public void userShouldNotExistAnymoreAfterDeleting() {
-        User testUser = saveTestUser();
-        userServiceUnderTest.delete(testUser.getId());
-        assertThrows(GenericServiceException.class, () -> userServiceUnderTest.getUserById(testUser.getId()));
-    }
+  @Test
+  public void savingUserShouldReturnUser() {
+    User checkUser = saveCheckUser();
 
-    @Test
-    public void userShouldBeUpdatedAfterUpdating() throws GenericServiceException {
-        User testUser = saveTestUser();
+    assertNotNull(checkUser.getId());
+    assertEquals("Musti", checkUser.getUsername());
+    assertEquals("Max", checkUser.getName());
+    assertEquals("Mustermann", checkUser.getSurname());
+    assertEquals("m.mustermann@t-online.de", checkUser.getEmail());
+  }
 
-        testUser.setUsername("Mustus");
+  @Test
+  public void deletedUserShouldNotExistAnymore()
+    throws GenericServiceException {
+    saveCheckUser();
 
-        userServiceUnderTest.update(testUser);
-        assertEquals(testUser, userServiceUnderTest.getUserById(testUser.getId()));
-    }
+    userServiceUnderTest.delete(
+      userServiceUnderTest.getUserByUsername("Musti").getId()
+    );
 
-    @Test
-    public void databaseShouldBeEmptyBeforeSavingAnyUser() {
-        assertEquals(0, userServiceUnderTest.countUser());
-    }
+    assertThrows(
+      GenericServiceException.class,
+      () -> userServiceUnderTest.getUserByUsername("Musti")
+    );
+  }
 
-    @Test
-    public void databaseShouldThrowIfRequestingListOfUsers() {
-        assertThrows(GenericServiceException.class, () -> userServiceUnderTest.user());
-    }
+  @Test
+  public void updatedUserShouldBeUpdated() {
+    User checkUser = saveCheckUser();
+    checkUser.setUsername("UPDATED");
 
-    @Test
-    public void databaseShouldCountOneAfterInsertingOneUser() {
-        saveTestUser();
+    assertEquals(
+      "UPDATED",
+      userServiceUnderTest.update(checkUser).getUsername()
+    );
+  }
 
-        assertEquals(1, userServiceUnderTest.countUser());
-    }
+  @Test
+  public void isThereAnyDisabledUserShouldReturnTrue()
+    throws GenericServiceException {
+    saveCheckUser();
 
-    @Test
-    public void loggedInUserShouldBeSetAfterLogin() throws UserDoesNotExistException, WrongPasswordException {
-        saveTestUser();
-        userServiceUnderTest.login("Musti", "password");
-        assertEquals("Musti", userServiceUnderTest.getLoggedInUser().getUsername());
-    }
+    assertTrue(userServiceUnderTest.isThereAnyDisabledUser());
+  }
 
-    @Test
-    public void listOfAllUsersShouldContainUser() throws GenericServiceException {
-        saveTestUser();
+  @Test
+  public void isThereAnyDisabledUserShouldReturnFalseAfterEnabling()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.enable(checkUser.getId(), "Operator");
 
-        assertEquals("Musti", userServiceUnderTest.user().get(0).getUsername());
-        assertEquals("Max", userServiceUnderTest.user().get(0).getName());
-        assertEquals("Mustermann", userServiceUnderTest.user().get(0).getSurname());
-        assertEquals("m.mustermann@t-online.de", userServiceUnderTest.user().get(0).getEmail());
-    }
+    assertFalse(userServiceUnderTest.isThereAnyDisabledUser());
+  }
 
-    @Test
-    public void loginWithRegisteredCredentialsShouldReturnCorrectUserRole()
-            throws UserDoesNotExistException, WrongPasswordException {
-        saveTestUser();
+  @Test
+  public void getUserByIdShouldWorkForExistingUser()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    assertNotNull(userServiceUnderTest.getUserById(checkUser.getId()));
+  }
 
-        assertEquals(UserRole.PROVIDER, userServiceUnderTest.login("Musti", "password"));
-    }
+  @Test
+  public void getUserByIdShouldThrowForUnknownUser()
+    throws GenericServiceException {
+    assertThrows(
+      GenericServiceException.class,
+      () -> userServiceUnderTest.getUserById(5L)
+    );
+  }
 
-    @Test
-    public void loginWithWrongUsernameShouldThrowUserDoesNotExistException() {
-        saveTestUser();
+  @Test
+  public void getUserByUsernameShouldWorkForExistingUser()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    assertNotNull(
+      userServiceUnderTest.getUserByUsername(checkUser.getUsername())
+    );
+  }
 
-        assertThrows(UserDoesNotExistException.class, () -> userServiceUnderTest.login("Mustus", "password"));
-    }
+  @Test
+  public void getUserByUsernameShouldThrowForUnknownUser()
+    throws GenericServiceException {
+    assertThrows(
+      GenericServiceException.class,
+      () -> userServiceUnderTest.getUserByUsername("Hans")
+    );
+  }
 
-    @Test
-    public void loginWithWrongPasswordShouldThrowWrongPasswordException() {
-        saveTestUser();
+  @Test
+  public void getUsersSizeShouldBeOneAfterCreatedUser()
+    throws GenericServiceException {
+    saveCheckUser();
+    assertEquals(1, userServiceUnderTest.user().size());
+  }
 
-        assertThrows(WrongPasswordException.class, () -> userServiceUnderTest.login("Musti", "12345"));
-    }
+  @Test
+  public void getUsersShouldThrowIfThereIsNoUser() {
+    assertThrows(
+      GenericServiceException.class,
+      () -> userServiceUnderTest.user()
+    );
+  }
 
-    @Test
-    public void lockingUserShouldSetHimLocked() throws GenericServiceException {
-        User testUser = saveTestUser();
-        userServiceUnderTest.lock(testUser.getId(), "Operator");
-        assertTrue(userServiceUnderTest.user().stream().filter(user -> user.getId().equals(testUser.getId())).collect(Collectors.toList()).get(0).isLocked());
-    }
+  @Test
+  public void loggedInUserShouldReturnNullIfNoOneLoggedIn() {
+    assertNull(userServiceUnderTest.getLoggedInUser());
+  }
 
-    @Test
-    public void unlockingLockedUserShouldSetHimUnlocked() throws GenericServiceException {
-        User testUser = saveTestUser();
-        userServiceUnderTest.lock(testUser.getId(), "Operator");
-        userServiceUnderTest.unlock(testUser.getId(), "Operator");
-        assertFalse(userServiceUnderTest.user().stream().filter(user -> user.getId().equals(testUser.getId())).collect(Collectors.toList()).get(0).isLocked());
-    }
+  @Test
+  public void loggedInUserShouldReturnCorrectUserAfterLogin()
+    throws UserDoesNotExistException, WrongPasswordException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.login("Musti", "password");
+    assertNotNull(userServiceUnderTest.getLoggedInUser());
+    assertEquals(
+      checkUser.getId(),
+      userServiceUnderTest.getLoggedInUser().getId()
+    );
+  }
 
-    @Test
-    public void usedUserNameShouldNotBeFree() {
-        saveTestUser();
+  @Test
+  public void loggedInUserShouldReturnNullAfterLogout()
+    throws UserDoesNotExistException, WrongPasswordException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.login("Musti", "password");
+    assertNotNull(userServiceUnderTest.getLoggedInUser());
+    assertEquals(
+      checkUser.getId(),
+      userServiceUnderTest.getLoggedInUser().getId()
+    );
 
-        assertFalse(userServiceUnderTest.isUsernameFree("Musti"));
-    }
+    userServiceUnderTest.logout();
+    assertNull(userServiceUnderTest.getLoggedInUser());
+  }
 
-    @Test
-    public void unusedUserNameShouldBeFree() {
-        saveTestUser();
+  @Test
+  public void exludingUsersShouldMakeThemAppearInExcludedRentersList()
+    throws UserDoesNotExistException, WrongPasswordException, GenericServiceException {
+    User user1 = saveCheckUser();
+    User user2 = userServiceUnderTest.create(
+      "Annaiii",
+      "password",
+      "a.mustermann@t-online.de",
+      "017693034534",
+      "Anna",
+      "Mustermann",
+      UserRole.PROVIDER,
+      false
+    );
 
-        assertTrue(userServiceUnderTest.isUsernameFree("PaulmitP"));
-    }
+    userServiceUnderTest.login("Musti", "password");
+    userServiceUnderTest.excludeRenterForCurrentlyLoggedInUser(user2.getId());
 
-    @Test
-    public void usedEmailShouldNotBeFree() {
-        saveTestUser();
+    assertTrue(
+      userServiceUnderTest
+        .getLoggedInUser()
+        .getExcludedRenters()
+        .contains(user2.getId())
+    );
+  }
 
-        assertFalse(userServiceUnderTest.isEmailFree("m.mustermann@t-online.de"));
-    }
+  @Test
+  public void removingAnExludedUsersShouldMakeThemNotAppearInExcludedRentersListAnymore()
+    throws UserDoesNotExistException, WrongPasswordException, GenericServiceException {
+    User user1 = saveCheckUser();
+    User user2 = userServiceUnderTest.create(
+      "Annaiii",
+      "password",
+      "a.mustermann@t-online.de",
+      "017693034534",
+      "Anna",
+      "Mustermann",
+      UserRole.PROVIDER,
+      false
+    );
 
-    @Test
-    public void unusedEmailShouldBeFree() {
-        saveTestUser();
+    userServiceUnderTest.login("Musti", "password");
+    userServiceUnderTest.excludeRenterForCurrentlyLoggedInUser(user2.getId());
+    assertTrue(
+      userServiceUnderTest
+        .getLoggedInUser()
+        .getExcludedRenters()
+        .contains(user2.getId())
+    );
 
-        assertTrue(userServiceUnderTest.isEmailFree("paulmitp@gmail.com"));
-    }
+    userServiceUnderTest.removeExcludedRenterForCurrentlyLoggedInUser(
+      user2.getId()
+    );
+    assertFalse(
+      userServiceUnderTest
+        .getLoggedInUser()
+        .getExcludedRenters()
+        .contains(user2.getId())
+    );
+  }
 
-    @Test
-    public void savedUserShouldBeNotEnabled() throws UserDoesNotExistException {
-        saveTestUser();
+  @Test
+  public void loggingInWithWrongUsernameShouldThrowUserDoesNotExistException() {
+    User checkUser = saveCheckUser();
+    assertThrows(
+      UserDoesNotExistException.class,
+      () -> userServiceUnderTest.login("Anna", "password")
+    );
+  }
 
-        assertFalse(userServiceUnderTest.isEnabled("Musti"));
-    }
+  @Test
+  public void loggingInWithWrongPasswordShouldThrowWrongPasswordException() {
+    User checkUser = saveCheckUser();
+    assertThrows(
+      WrongPasswordException.class,
+      () -> userServiceUnderTest.login("Musti", "wortpass")
+    );
+  }
 
-    @Test
-    public void requestingEnabledStatusForUnknownUserShouldThrowUserDoesNotExistException() {
-        saveTestUser();
+  @Test
+  public void isUserNameFreeShouldReturnFalseForUsedUsername() {
+    User checkUser = saveCheckUser();
+    assertFalse(userServiceUnderTest.isUsernameFree("Musti"));
+  }
 
-        assertThrows(UserDoesNotExistException.class, () -> userServiceUnderTest.isEnabled("Mustus"));
-    }
+  @Test
+  public void isUserNameFreeShouldReturnTrueForFreeUsername() {
+    User checkUser = saveCheckUser();
+    assertTrue(userServiceUnderTest.isUsernameFree("Anna"));
+  }
 
-    @Test
-    public void savedUserShouldBeEnabledAfterEnabling()
-            throws UserDoesNotExistException, GenericServiceException {
-        saveTestUser();
+  @Test
+  public void isEmailFreeShouldReturnFalseForUsedEmail() {
+    User checkUser = saveCheckUser();
+    assertFalse(userServiceUnderTest.isEmailFree("m.mustermann@t-online.de"));
+  }
 
-        userServiceUnderTest.enable(userServiceUnderTest.user().get(0).getId(), "Operator");
+  @Test
+  public void isEmailFreeShouldReturnTrueForFreeEmail() {
+    User checkUser = saveCheckUser();
+    assertTrue(userServiceUnderTest.isEmailFree("a.mustermann@t-online.de"));
+  }
 
-        assertTrue(userServiceUnderTest.isEnabled("Musti"));
-    }
+  @Test
+  public void userShouldBeLockedAfterLockingHim()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.lock(checkUser.getId(), "Operator");
+    assertTrue(
+      userServiceUnderTest.getUserByUsername(checkUser.getUsername()).isLocked()
+    );
+  }
 
-    @Test
-    public void resetPasswordShouldApply()
-            throws GenericServiceException, UserDoesNotExistException, WrongPasswordException {
-        saveTestUser();
+  @Test
+  public void userShouldBeUnlockedAfterUnlockingHim()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.lock(checkUser.getId(), "Operator");
+    assertTrue(
+      userServiceUnderTest.getUserByUsername(checkUser.getUsername()).isLocked()
+    );
 
+    userServiceUnderTest.unlock(checkUser.getId(), "Operator");
+    assertFalse(
+      userServiceUnderTest.getUserByUsername(checkUser.getUsername()).isLocked()
+    );
+  }
+
+  @Test
+  public void userShouldBeEnabledAfterEnablingHim()
+    throws UserDoesNotExistException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.enable(checkUser.getId(), "Operator");
+    assertTrue(userServiceUnderTest.isEnabled(checkUser.getUsername()));
+  }
+
+  @Test
+  public void gettingEnabledStatusShouldThrowForUnknownUser()
+    throws UserDoesNotExistException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.enable(checkUser.getId(), "Operator");
+    assertThrows(
+      UserDoesNotExistException.class,
+      () -> userServiceUnderTest.isEnabled("Anna")
+    );
+  }
+
+  @Test
+  public void promotedRenterShouldBeProvider() throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    checkUser.setUserRole(UserRole.RENTER);
+    userServiceUnderTest.update(checkUser);
+    assertEquals(
+      UserRole.RENTER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+
+    userServiceUnderTest.promoteUser(checkUser.getId(), "Operator");
+    assertEquals(
+      UserRole.PROVIDER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+  }
+
+  @Test
+  public void promotedProviderShouldBeOperator()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    checkUser.setUserRole(UserRole.PROVIDER);
+    userServiceUnderTest.update(checkUser);
+    assertEquals(
+      UserRole.PROVIDER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+
+    userServiceUnderTest.promoteUser(checkUser.getId(), "Operator");
+    assertEquals(
+      UserRole.OPERATOR,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+  }
+
+  @Test
+  public void degradedProviderShouldBeRenter() throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    checkUser.setUserRole(UserRole.PROVIDER);
+    userServiceUnderTest.update(checkUser);
+    assertEquals(
+      UserRole.PROVIDER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+
+    userServiceUnderTest.degradeUser(checkUser.getId(), "Operator");
+    assertEquals(
+      UserRole.RENTER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+  }
+
+  @Test
+  public void degradedOperatorShouldBeProvider()
+    throws GenericServiceException {
+    User checkUser = saveCheckUser();
+    checkUser.setUserRole(UserRole.OPERATOR);
+    userServiceUnderTest.update(checkUser);
+    assertEquals(
+      UserRole.OPERATOR,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+
+    userServiceUnderTest.degradeUser(checkUser.getId(), "Operator");
+    assertEquals(
+      UserRole.PROVIDER,
+      userServiceUnderTest.getUserById(checkUser.getId()).getUserRole()
+    );
+  }
+
+  @Test
+  public void resetPasswordShouldWorkForCorrectCredentials()
+    throws GenericServiceException, UserDoesNotExistException, WrongPasswordException {
+    User checkUser = saveCheckUser();
+    userServiceUnderTest.resetPassword(
+      checkUser.getUsername(),
+      checkUser.getEmail(),
+      "NEUES-Password"
+    );
+
+    assertNotNull(userServiceUnderTest.login("Musti", "NEUES-Password"));
+  }
+
+  @Test
+  public void resetPasswordShouldThrowForIncorrectUsername() {
+    User checkUser = saveCheckUser();
+    assertThrows(
+      GenericServiceException.class,
+      () ->
         userServiceUnderTest.resetPassword(
-                "Musti",
-                "m.mustermann@t-online.de",
-                "passworT"
-        );
-        assertEquals(UserRole.PROVIDER, userServiceUnderTest.login("Musti", "passworT"));
-    }
+          "Anna",
+          checkUser.getEmail(),
+          "NEUES-Password"
+        )
+    );
+  }
 
-    @Test
-    public void resetPasswordWithWrongCredentialsShouldThrowGenericServiceException() {
-        saveTestUser();
+  @Test
+  public void resetPasswordShouldThrowForIncorrectEmail() {
+    User checkUser = saveCheckUser();
+    assertThrows(
+      GenericServiceException.class,
+      () ->
+        userServiceUnderTest.resetPassword(
+          checkUser.getUsername(),
+          "a.mustermann@t-online.de",
+          "NEUES-Password"
+        )
+    );
+  }
 
-        assertThrows(GenericServiceException.class, () -> userServiceUnderTest.resetPassword(
-                "Mustus",
-                "m.mustermann@t-online.de",
-                "passworT"
-        ));
-    }
+  @Test
+  public void countUserShouldBeZeroIfNoUserWasAdded() {
+    assertEquals(0L, userServiceUnderTest.countUser());
+  }
+
+  @Test
+  public void countUserShouldBeZOneAfterFirstRegistration() {
+    User checkUser = saveCheckUser();
+    assertEquals(1L, userServiceUnderTest.countUser());
+  }
 }
