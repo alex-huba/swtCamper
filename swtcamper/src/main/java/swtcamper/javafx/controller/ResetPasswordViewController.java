@@ -89,12 +89,12 @@ public class ResetPasswordViewController {
     element.setStyle("-fx-background-color: #1987547f;");
   }
 
-  private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc35457f;");
-  }
-
   private void validateNeutral(Node element) {
     element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   @FXML
