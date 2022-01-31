@@ -144,15 +144,15 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #1987547f;");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   private void validateNeutral(Node element) {
     element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
-  }
-
-  private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   public void validateUsernameTf() throws GenericServiceException {

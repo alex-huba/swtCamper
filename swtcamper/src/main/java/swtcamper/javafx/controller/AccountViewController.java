@@ -39,6 +39,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class AccountViewController {
 
+  private final SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
+    false
+  );
+
   @FXML
   public BorderPane accountRootPane;
 
@@ -94,9 +98,6 @@ public class AccountViewController {
   private MainViewController mainViewController;
 
   private User selectedUser = null;
-  private final SimpleBooleanProperty showingLogForSpecificUser = new SimpleBooleanProperty(
-    false
-  );
 
   @FXML
   public void initialize() {

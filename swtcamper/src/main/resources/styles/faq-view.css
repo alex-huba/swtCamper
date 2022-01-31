@@ -1,0 +1,14 @@
+@import "global.css";
+
+.section-heading {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 30;
+    -fx-text-fill: black;
+    -fx-base: #CBE1EF;
+}
+
+.label-for-section {
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 20;
+    -fx-wrap-text: true;
+}
