@@ -40,6 +40,7 @@ public class UserServiceUnitTest {
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(
       User.class
     );
+    when(userRepository.save(any())).thenReturn(testUser);
     verify(userRepository, times(1)).save(userArgumentCaptor.capture());
     User capturedUser = userArgumentCaptor.getValue();
 
