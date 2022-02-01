@@ -48,7 +48,10 @@ public class UserServiceUnitTest {
   }
 
   @Test
-  public void deleteShouldLog() {}
+  public void deleteShouldLog() {
+    userRepository.delete(any());
+    verify(userRepository, times(1)).delete(any());
+  }
 
   @Test
   public void updateUserShouldReturnUser() {
