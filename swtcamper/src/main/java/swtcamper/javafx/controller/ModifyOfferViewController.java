@@ -304,7 +304,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fuelComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
     );
-    rentalConditionsListView = new ListView<>();
   }
 
   /**
