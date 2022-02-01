@@ -165,7 +165,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private ValidationHelper validationHelper;
 
   @FXML
-  private ListView<String> rentalConditionsListView = new ListView<>();
+  private ListView<String> rentalConditionsListView;
 
   @FXML
   private DatePicker startDatePicker;

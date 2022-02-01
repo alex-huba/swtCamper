@@ -44,7 +44,7 @@ public class PictureServiceIntegrationTest {
     pictureRepository.save(picture);
 
     // testing method of get-method from pictureService
-    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+    List<Picture> list = pictureService.getPicturesForVehicle(
       vehicle.getVehicleID()
     );
 
@@ -59,10 +59,10 @@ public class PictureServiceIntegrationTest {
     PictureDTO pictureDTO = new PictureDTO(8008, 123, "/123/abc");
 
     //testing method create
-    pictureService.create(pictureDTO);
+    pictureService.create(modelMapper.pictureDTOToPicture(pictureDTO));
 
     // checking whether the operation was successful
-    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+    List<Picture> list = pictureService.getPicturesForVehicle(
       pictureDTO.getVehicleID()
     );
     assertEquals(1, list.size());
@@ -80,14 +80,14 @@ public class PictureServiceIntegrationTest {
       vehicle.getVehicleID(),
       "/123/abc"
     );
-    pictureService.create(pictureDTO);
-    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+    pictureService.create(modelMapper.pictureDTOToPicture(pictureDTO));
+    List<Picture> list = pictureService.getPicturesForVehicle(
       pictureDTO.getVehicleID()
     );
 
     //testing method delete
     pictureService.deletePictureById(list.get(0).getPictureID());
-    List<PictureDTO> emptyList = pictureService.getPicturesForVehicle(
+    List<Picture> emptyList = pictureService.getPicturesForVehicle(
       pictureDTO.getVehicleID()
     );
 
@@ -102,7 +102,7 @@ public class PictureServiceIntegrationTest {
     vehicle.setVehicleID(123);
 
     // trying to fetch pictures for the given test-vehicle
-    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+    List<Picture> list = pictureService.getPicturesForVehicle(
       vehicle.getVehicleID()
     );
 
