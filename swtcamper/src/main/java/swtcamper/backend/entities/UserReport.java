@@ -1,9 +1,7 @@
 package swtcamper.backend.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+
 import swtcamper.backend.entities.interfaces.IUserReport;
 
 @Entity
@@ -15,10 +13,10 @@ public class UserReport implements IUserReport {
 
   private boolean active;
 
-  @ManyToOne
+  @ManyToOne(cascade = {CascadeType.MERGE})
   private User reporter;
 
-  @ManyToOne
+  @ManyToOne(cascade = {CascadeType.MERGE})
   private User reportee;
 
   private String reportReason;
