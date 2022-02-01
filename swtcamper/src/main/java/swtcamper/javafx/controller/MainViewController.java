@@ -164,7 +164,11 @@ public class MainViewController {
   @FXML
   public void goBack() throws GenericServiceException {
     // button is invisible anyway at this point but just be safe...
-    if (historyList.size() <= 1) return;
+    if (
+      historyList.size() <= 1 ||
+      userController.getLoggedInUser() != null &&
+      userController.getLoggedInUser().isLocked()
+    ) return;
 
     historyList.removeLast();
     // set boolean false in order to not overwrite the last index directly again
