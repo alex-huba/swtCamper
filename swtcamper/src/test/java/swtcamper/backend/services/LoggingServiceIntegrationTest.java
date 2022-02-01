@@ -1,5 +1,7 @@
 package swtcamper.backend.services;
 
+import static org.junit.Assert.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +18,6 @@ import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.repositories.LoggingRepository;
-
-import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
