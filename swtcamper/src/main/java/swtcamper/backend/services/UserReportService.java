@@ -1,5 +1,6 @@
 package swtcamper.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,11 @@ public class UserReportService {
    * @return list of all available UserReports
    */
   public List<UserReport> getAllUserReports() {
-    return userReportRepository.findAll();
+    try {
+      return userReportRepository.findAll();
+    } catch (Exception ignore) {
+      return new ArrayList<>();
+    }
   }
 
   /**
