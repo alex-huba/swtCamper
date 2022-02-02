@@ -465,15 +465,12 @@ public class RentingViewController {
 
       root.setEffect(new DropShadow(10, Color.BLACK));
 
-      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
-        offer.getOfferedObject().getVehicleID()
-      );
       Image image;
-      // validate picture(s)
       if (
-        picturesForVehicle.isEmpty() ||
-        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
-        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
       ) {
         image =
           new Image(
