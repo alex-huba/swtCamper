@@ -148,27 +148,29 @@ public class OfferService {
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
-            new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "New offer with ID %s created by user %s.",
-                            newOfferId,
-                            creator.getUsername()
-                    )
-            )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New offer with ID %s created by user %s.",
+          newOfferId,
+          creator.getUsername()
+        )
+      )
     );
     Optional<Offer> offerOptional = offerRepository.findById(newOfferId);
-    Optional<Vehicle> vehicleOptional = vehicleRepository.findById(offerOptional.get().getOfferedObject().getVehicleID());
+    Optional<Vehicle> vehicleOptional = vehicleRepository.findById(
+      offerOptional.get().getOfferedObject().getVehicleID()
+    );
     long newVehicleId = vehicleOptional.get().getVehicleID();
     loggingController.log(
-            new LoggingMessage(
-                    LoggingLevel.INFO,
-                    String.format(
-                            "New vehicle with ID %s created by user %s.",
-                            newVehicleId,
-                            creator.getUsername()
-                    )
-            )
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New vehicle with ID %s created by user %s.",
+          newVehicleId,
+          creator.getUsername()
+        )
+      )
     );
 
     if (offerOptional.isPresent()) {
@@ -178,7 +180,6 @@ public class OfferService {
         "Newly created offer with ID: " + newOfferId + " not found."
       );
     }
-
   }
 
   /**
