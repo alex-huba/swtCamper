@@ -46,10 +46,6 @@ public class LoggingService {
         logger.error(loggingMessageDTO.getLoggingMessage());
         break;
       default:
-        logger.error(
-          "[LoggingLevel could not be determined!] " +
-          loggingMessageDTO.getLoggingMessage()
-        );
         break;
     }
   }
