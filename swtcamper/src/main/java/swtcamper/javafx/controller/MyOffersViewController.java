@@ -1,8 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -15,11 +12,10 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -28,25 +24,25 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class MyOffersViewController {
 
   @FXML
-  public ScrollPane offerListScroll;
+  private ScrollPane offerListScroll;
 
   @FXML
-  public VBox offerListRoot;
+  private VBox offerListRoot;
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;

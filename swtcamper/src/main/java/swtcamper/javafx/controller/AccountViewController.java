@@ -30,9 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.contract.UserReportDTO;
-import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
+import swtcamper.api.contract.interfaces.ILoggingController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -44,55 +44,55 @@ public class AccountViewController {
   );
 
   @FXML
-  public BorderPane accountRootPane;
+  private BorderPane accountRootPane;
 
   @FXML
-  public ToolBar buttonToolbar;
+  private ToolBar buttonToolbar;
 
   @FXML
-  public Button showLogBtn;
+  private Button showLogBtn;
 
   @FXML
-  public Button blockBtn;
+  private Button blockBtn;
 
   @FXML
-  public Button degradeBtn;
+  private Button degradeBtn;
 
   @FXML
-  public Button promoteBtn;
+  private Button promoteBtn;
 
   @FXML
-  public Button logoutBtn;
+  private Button logoutBtn;
 
   @FXML
-  public SplitPane operatorDashboard;
+  private SplitPane operatorDashboard;
 
   @FXML
-  public ListView<LoggingMessageDTO> logListView;
+  private ListView<LoggingMessageDTO> logListView;
 
   @FXML
-  public TableView<User> usersTableView;
+  private TableView<User> usersTableView;
 
   @FXML
-  public TextField userFilterTextField;
+  private TextField userFilterTextField;
 
   @FXML
-  public Button resetUserFilterBtn;
+  private Button resetUserFilterBtn;
 
   @FXML
-  public Button resetLogBtn;
+  private Button resetLogBtn;
 
   @FXML
-  public VBox reportVBox;
+  private VBox reportVBox;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;

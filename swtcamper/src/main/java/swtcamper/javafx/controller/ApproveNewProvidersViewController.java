@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -17,10 +17,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ApproveNewProvidersViewController {
 
   @FXML
-  public VBox toApproveListView;
+  private VBox toApproveListView;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @FXML
   public void initialize() throws GenericServiceException {
