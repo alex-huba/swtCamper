@@ -11,8 +11,8 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserReportDTO;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -20,19 +20,19 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ExcludeRenterViewController {
 
   @FXML
-  public VBox excludedRentersVBox;
+  private VBox excludedRentersVBox;
 
   @FXML
-  public TextField findUsersTextField;
+  private TextField findUsersTextField;
 
   @FXML
-  public VBox userResultsVBox;
+  private VBox userResultsVBox;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;

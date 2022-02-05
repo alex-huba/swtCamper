@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
@@ -22,28 +22,28 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
 
   @FXML
-  public Button loginButton;
+  private Button loginButton;
 
   @FXML
-  public Hyperlink registerButton;
+  private Hyperlink registerButton;
 
   @FXML
-  public Hyperlink forgotPasswordButton;
+  private Hyperlink forgotPasswordButton;
 
   @FXML
-  public TextField usernameTf;
+  private TextField usernameTf;
 
   @FXML
-  public PasswordField passwordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private RegisterViewController registerViewController;
