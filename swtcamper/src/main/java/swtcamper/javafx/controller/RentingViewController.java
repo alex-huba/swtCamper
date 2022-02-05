@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +21,9 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.contract.interfaces.IOfferController;
 import swtcamper.api.contract.interfaces.IPictureController;
 import swtcamper.api.contract.interfaces.IUserController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;

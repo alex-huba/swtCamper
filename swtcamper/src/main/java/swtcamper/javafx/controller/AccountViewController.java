@@ -33,9 +33,6 @@ import swtcamper.api.contract.UserReportDTO;
 import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.contract.interfaces.IUserReportController;
-import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 

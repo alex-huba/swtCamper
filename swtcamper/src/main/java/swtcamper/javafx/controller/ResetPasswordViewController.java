@@ -8,17 +8,16 @@ import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.interfaces.IUserController;
-import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ResetPasswordViewController {
 
   @FXML
-  private Label errorMessageLabel;
+  public TextField usernameTf;
 
   @FXML
-  public TextField usernameTf;
+  private Label errorMessageLabel;
 
   @FXML
   private TextField emailTf;

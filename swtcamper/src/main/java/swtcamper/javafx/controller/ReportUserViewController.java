@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.contract.interfaces.IUserReportController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;

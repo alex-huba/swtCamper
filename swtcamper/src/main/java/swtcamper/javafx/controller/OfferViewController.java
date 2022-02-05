@@ -27,7 +27,7 @@ import swtcamper.api.contract.interfaces.IBookingController;
 import swtcamper.api.contract.interfaces.IOfferController;
 import swtcamper.api.contract.interfaces.IPictureController;
 import swtcamper.api.contract.interfaces.IUserController;
-import swtcamper.api.controller.*;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
@@ -145,8 +145,8 @@ public class OfferViewController {
   private Button abortBookingRequestBtn;
 
   private OfferDTO viewedOffer;
-  private LongStringConverter longStringConverter = new LongStringConverter();
-  private DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private final LongStringConverter longStringConverter = new LongStringConverter();
+  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @Autowired
   private MainViewController mainViewController;

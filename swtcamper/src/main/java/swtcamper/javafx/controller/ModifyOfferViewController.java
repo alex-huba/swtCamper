@@ -32,9 +32,6 @@ import swtcamper.api.contract.PictureDTO;
 import swtcamper.api.contract.interfaces.IOfferController;
 import swtcamper.api.contract.interfaces.IPictureController;
 import swtcamper.api.contract.interfaces.IUserController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -134,20 +131,20 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   @FXML
   private TextField rentalConditionsTextField;
 
-  private SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
-  private SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @Autowired
   private ModelMapper modelMapper;

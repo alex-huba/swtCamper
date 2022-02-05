@@ -12,18 +12,11 @@ import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
-
-  @FXML
-  private AnchorPane navigationRoot;
-
-  @FXML
-  private VBox navBarItems;
 
   @FXML
   public Button homeButton;
@@ -44,13 +37,7 @@ public class NavigationViewController {
   public Button approveButton;
 
   @FXML
-  private Circle approveNotificationDot;
-
-  @FXML
   public Button myBookingsButton;
-
-  @FXML
-  private Circle myBookingsNotificationDot;
 
   @FXML
   public Button loginButton;
@@ -59,13 +46,25 @@ public class NavigationViewController {
   public Button accountButton;
 
   @FXML
+  public Button faqBtn;
+
+  @FXML
+  private AnchorPane navigationRoot;
+
+  @FXML
+  private VBox navBarItems;
+
+  @FXML
+  private Circle approveNotificationDot;
+
+  @FXML
+  private Circle myBookingsNotificationDot;
+
+  @FXML
   private Circle accountNotificationDot;
 
   @FXML
   private Button logoutBtn;
-
-  @FXML
-  public Button faqBtn;
 
   @Autowired
   private MainViewController mainViewController;
