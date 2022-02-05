@@ -260,7 +260,7 @@ public class BookingService {
             new LoggingMessage(
               LoggingLevel.INFO,
               String.format(
-                "UBooking with ID %s was deleted by user %s",
+                "Booking with ID %s was deleted by user %s",
                 bookingID,
                 user.getUsername()
               )
