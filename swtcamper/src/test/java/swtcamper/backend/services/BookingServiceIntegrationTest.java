@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -20,7 +21,8 @@ import swtcamper.backend.entities.Booking;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
 
-@RunWith(SpringRunner.class)
+@RunWith(Parameterized.class)
+
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class BookingServiceIntegrationTest {
@@ -31,7 +33,8 @@ public class BookingServiceIntegrationTest {
   @Autowired
   private BookingRepository bookingRepository;
 
-  private static Stream<List<Booking>> provideBookingsForGetAllBookings() {
+  @Parameterized.Parameters
+  public static ArrayList<List> provideBookingsForGetAllBookings() {
     Booking booking1 = new Booking();
     Booking booking2 = new Booking();
     Booking booking3 = new Booking();
@@ -39,13 +42,17 @@ public class BookingServiceIntegrationTest {
     List<Booking> oneBookingList = List.of(booking1);
     List<Booking> twoBookingsList = List.of(booking1, booking2);
     List<Booking> threeBookingsList = List.of(booking1, booking2, booking3);
-    return Stream.of(
-      emptyList,
-      oneBookingList,
-      twoBookingsList,
-      threeBookingsList
-    );
+    ArrayList<List> parameters = new ArrayList<>();
+    parameters.add(emptyList);
+    parameters.add(oneBookingList);
+    parameters.add(twoBookingsList);
+    parameters.add(threeBookingsList);
+    return parameters;
   }
+
+  fun arrays()= listOf(listOf(listOf(1,2,3,4,5,6,7,8,9),3, listOf(4,6,8)))
+
+  fun arrays()= arrayOf(listOf(listOf(1,2,3,4,5,6,7,8,9),3, listOf(4,6,8)))
 
   // ----- TESTING -----
 
