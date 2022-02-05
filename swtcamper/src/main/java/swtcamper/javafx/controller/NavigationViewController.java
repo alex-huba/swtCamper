@@ -12,18 +12,11 @@ import javafx.scene.shape.Circle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class NavigationViewController {
-
-  @FXML
-  public AnchorPane navigationRoot;
-
-  @FXML
-  public VBox navBarItems;
 
   @FXML
   public Button homeButton;
@@ -44,13 +37,7 @@ public class NavigationViewController {
   public Button approveButton;
 
   @FXML
-  public Circle approveNotificationDot;
-
-  @FXML
   public Button myBookingsButton;
-
-  @FXML
-  public Circle myBookingsNotificationDot;
 
   @FXML
   public Button loginButton;
@@ -59,19 +46,28 @@ public class NavigationViewController {
   public Button accountButton;
 
   @FXML
-  public Circle accountNotificationDot;
+  public Button faqBtn;
 
   @FXML
-  public Button logoutBtn;
+  private AnchorPane navigationRoot;
+
+  @FXML
+  private VBox navBarItems;
+
+  @FXML
+  private Circle approveNotificationDot;
+
+  @FXML
+  private Circle myBookingsNotificationDot;
+
+  @FXML
+  private Circle accountNotificationDot;
+
+  @FXML
+  private Button logoutBtn;
 
   @Autowired
   private MainViewController mainViewController;
-
-  @Autowired
-  private NavigationViewController navigationViewController;
-
-  @Autowired
-  private UserController userController;
 
   private boolean isShortText = true;
 
@@ -88,7 +84,7 @@ public class NavigationViewController {
 
   private void setStartButtons() {
     navBarItems.getChildren().clear();
-    navBarItems.getChildren().addAll(homeButton, loginButton);
+    navBarItems.getChildren().addAll(homeButton, loginButton, faqBtn);
   }
 
   @FXML
@@ -129,7 +125,8 @@ public class NavigationViewController {
             homeButton,
             dealHistoryButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+            faqBtn
           );
           break;
         // Enable provider functionalities
@@ -141,14 +138,16 @@ public class NavigationViewController {
               activeOffersButton,
               dealHistoryButton,
               excludeButton,
-              myBookingsButton
+              myBookingsButton,
+              faqBtn
             );
           } else {
             navBarList.addAll(
               homeButton,
               dealHistoryButton,
               myBookingsButton,
-              accountButton
+              accountButton,
+              faqBtn
             );
           }
           break;
@@ -162,11 +161,12 @@ public class NavigationViewController {
             excludeButton,
             approveButton,
             myBookingsButton,
-            accountButton
+            accountButton,
+            faqBtn
           );
           break;
         default:
-          navBarList.addAll(homeButton, accountButton);
+          navBarList.addAll(homeButton, accountButton, faqBtn);
           break;
       }
     }
@@ -214,6 +214,9 @@ public class NavigationViewController {
         ((Button) child).setText("");
         ((Button) child).setPrefWidth(45);
 
+        faqBtn.setText("");
+        faqBtn.setPrefWidth(45);
+
         logoutBtn.setText("");
         logoutBtn.setPrefWidth(45);
       }
@@ -233,6 +236,9 @@ public class NavigationViewController {
       ) {
         ((Button) child).setText(((Button) child).getAccessibleText());
         ((Button) child).setPrefWidth(172);
+
+        faqBtn.setText("FAQ");
+        faqBtn.setPrefWidth(172);
 
         logoutBtn.setText(logoutBtn.getAccessibleText());
         logoutBtn.setPrefWidth(172);

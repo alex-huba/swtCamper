@@ -12,18 +12,18 @@ public class Booking implements IBooking {
 
   @Id
   @GeneratedValue
-  Long id;
+  private Long id;
 
   @ManyToOne
-  User renter;
+  private User renter;
 
   @ManyToOne
-  Offer offer;
+  private Offer offer;
 
-  LocalDate startDate;
-  LocalDate endDate;
-  boolean active;
-  boolean rejected;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private boolean active;
+  private boolean rejected;
 
   public Booking() {}
 

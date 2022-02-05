@@ -13,7 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -21,49 +21,49 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @FXML
-  public TextField usernameTf;
+  private TextField usernameTf;
 
   @FXML
-  public PasswordField passwordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public PasswordField repeatPasswordPf;
+  private PasswordField repeatPasswordPf;
 
   @FXML
-  public TextField emailTf;
+  private TextField emailTf;
 
   @FXML
-  public TextField phoneTf;
+  private TextField phoneTf;
 
   @FXML
-  public TextField nameTf;
+  private TextField nameTf;
 
   @FXML
-  public TextField surnameTf;
+  private TextField surnameTf;
 
   @FXML
-  public CheckBox renterCb;
+  private CheckBox renterCb;
 
   @FXML
-  public CheckBox providerCb;
+  private CheckBox providerCb;
 
   @FXML
-  public Button cancelBtn;
+  private Button cancelBtn;
 
   @FXML
-  public Button registerBtn;
+  private Button registerBtn;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @FXML
-  public VBox rootElement;
+  private VBox rootElement;
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
@@ -144,15 +144,15 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #1987547f;");
+  }
+
+  private void validateFalse(Node element) {
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   private void validateNeutral(Node element) {
     element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
-  }
-
-  private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
   }
 
   public void validateUsernameTf() throws GenericServiceException {

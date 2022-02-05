@@ -19,7 +19,7 @@ import swtcamper.backend.entities.Picture;
 import swtcamper.backend.repositories.PictureRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PictureServiceTest {
+public class PictureServiceUnitTest {
 
   @InjectMocks
   private PictureService pictureServiceUnderTest;

@@ -12,7 +12,7 @@ import swtcamper.backend.entities.interfaces.IOffer;
 @Entity
 public class Offer implements IOffer {
 
-  ArrayList<Pair> blockedDates;
+  private ArrayList<Pair> blockedDates;
 
   @Id
   @GeneratedValue

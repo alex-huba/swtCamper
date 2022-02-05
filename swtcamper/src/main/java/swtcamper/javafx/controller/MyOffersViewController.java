@@ -12,10 +12,10 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -24,25 +24,25 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class MyOffersViewController {
 
   @FXML
-  public ScrollPane offerListScroll;
+  private ScrollPane offerListScroll;
 
   @FXML
-  public VBox offerListRoot;
+  private VBox offerListRoot;
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
@@ -61,19 +61,13 @@ public class MyOffersViewController {
   private void createCards(User user) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
-    if (offerController.getOffersCreatedByUser(user).isEmpty()) {
-      Label infoLabel = new Label("Du hast noch keine Anzeigen erstellt.");
-      infoLabel.setDisable(true);
-      offerListRoot.getChildren().add(infoLabel);
-      return;
-    }
-
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
       Image image;
       if (
-        !pictureController
+        pictureController
           .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .isEmpty()
+          .size() >
+        0
       ) {
         image =
           new Image(

@@ -52,6 +52,10 @@ public class UserController implements IUserController {
     return userService.getLoggedInUser();
   }
 
+  public void setLoggedInUser(User user) {
+    userService.setLoggedInUser(user);
+  }
+
   @Override
   public ArrayList<User> getAllUsers() throws GenericServiceException {
     return new ArrayList<>(userService.user());
@@ -87,10 +91,6 @@ public class UserController implements IUserController {
   @Override
   public void logout() {
     userService.logout();
-  }
-
-  public void setLoggedInUser(User user) {
-    userService.setLoggedInUser(user);
   }
 
   @Override

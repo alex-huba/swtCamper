@@ -29,9 +29,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -48,99 +48,103 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
-  public TextField titleTextField;
+  private TextField titleTextField;
 
   @FXML
-  public TextField priceTextField;
+  private TextField priceTextField;
 
   @FXML
-  public TextField locationTextField;
+  private TextField locationTextField;
 
   @FXML
-  public TextField contactTextField;
+  private TextField contactTextField;
 
   @FXML
-  public TextArea particularitiesTextArea;
+  private TextArea particularitiesTextArea;
 
   @FXML
-  public CheckBox activeCheckBox;
+  private CheckBox activeCheckBox;
 
   @FXML
-  public ComboBox<VehicleType> vehicleTypeComboBox;
+  private ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @FXML
-  public TextField brandTextField;
+  private TextField brandTextField;
 
   @FXML
-  public TextField modelTextField;
+  private TextField modelTextField;
 
   @FXML
-  public TextField constructionYearTextField;
+  private TextField constructionYearTextField;
 
   @FXML
-  public TextField widthTextField;
+  private TextField widthTextField;
 
   @FXML
-  public TextField lengthTextField;
+  private TextField lengthTextField;
 
   @FXML
-  public TextField heightTextField;
+  private TextField heightTextField;
 
   @FXML
-  public ComboBox<FuelType> fuelComboBox;
+  private ComboBox<FuelType> fuelComboBox;
 
   @FXML
-  public ComboBox<TransmissionType> transmissionComboBox;
+  private ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public ComboBox<String> seatsComboBox;
+  private ComboBox<String> seatsComboBox;
 
   @FXML
-  public ComboBox<String> bedsComboBox;
+  private ComboBox<String> bedsComboBox;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  private CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  private CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  private CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckBox;
+  private CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  private CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenUnitCheckBox;
+  private CheckBox kitchenUnitCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  private CheckBox fridgeCheckBox;
 
   @FXML
-  public HBox picturesHBox;
+  private HBox picturesHBox;
 
   @FXML
-  public Button placeOfferButton;
+  private Button placeOfferButton;
 
   @FXML
-  public TextField rentalConditionsTextField;
+  private TextField rentalConditionsTextField;
 
-  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @Autowired
   private ModelMapper modelMapper;
@@ -149,13 +153,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ValidationHelper validationHelper;
@@ -220,6 +224,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
     contactTextField.setOnKeyTyped(this);
+    widthTextField.setOnKeyTyped(this);
+    lengthTextField.setOnKeyTyped(this);
+    heightTextField.setOnKeyTyped(this);
+    constructionYearTextField.setOnKeyTyped(this);
 
     vehicleTypeComboBox
       .getSelectionModel()
@@ -247,6 +255,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
           .and(isContactOk)
           .and(isVehicleTypeOk)
           .and(isTransmissionTypeOk)
+          .and(isWidthOk)
+          .and(isLengthOk)
+          .and(isHeightOk)
+          .and(isYearOk)
           .not()
       );
 
@@ -619,6 +631,12 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     isSeatsOk.set(false);
     isBedsOk.set(false);
 
+    //because offer can be saved without these parameters
+    isWidthOk.set(true);
+    isLengthOk.set(true);
+    isHeightOk.set(true);
+    isYearOk.set(true);
+
     errorLabel.setText("");
   }
 
@@ -649,6 +667,18 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     } else if (bedsComboBox.equals(source)) {
       int inputBeds = Integer.parseInt(bedsComboBox.getValue());
       validateBeds(inputBeds);
+    } else if (lengthTextField.equals(source)) {
+      int inputLength = Integer.parseInt(lengthTextField.getText());
+      validateLength(inputLength);
+    } else if (widthTextField.equals(source)) {
+      int inputWidth = Integer.parseInt(widthTextField.getText());
+      validateWidth(inputWidth);
+    } else if (heightTextField.equals(source)) {
+      int inputHeight = Integer.parseInt(heightTextField.getText());
+      validateHeight(inputHeight);
+    } else if (constructionYearTextField.equals(source)) {
+      int inputYear = Integer.parseInt(constructionYearTextField.getText());
+      validateYear(inputYear);
     }
   }
 
@@ -887,7 +917,10 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private void validateTransmissionType(
     TransmissionType inputTransmissionType
   ) {
-    if (vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)) {
+    if (
+      vehicleTypeComboBox.getValue() != null &&
+      vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
+    ) {
       isTransmissionTypeOk.set(true);
       return;
     }
@@ -908,7 +941,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         vehicleTypeComboBox.getValue() != null &&
         vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
       ) ||
-      Integer.parseInt(seatsComboBox.getValue()) > 0
+      validationHelper.checkSeats(seatsComboBox.getValue())
     ) {
       errorLabel.setText("");
       validateTrue(seatsComboBox);
@@ -921,7 +954,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBeds(int inputBeds) {
-    if (inputBeds < 0) {
+    if (!validationHelper.checkBeds(String.valueOf(inputBeds))) {
       errorLabel.setText("Ungültige Anzahl von Betten");
       validateFalse(bedsComboBox);
       isBedsOk.set(false);
@@ -929,6 +962,54 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       errorLabel.setText("");
       validateTrue(bedsComboBox);
       isBedsOk.set(true);
+    }
+  }
+
+  private void validateWidth(int inputWidth) {
+    if (!validationHelper.checkSizeParameter(inputWidth)) {
+      errorLabel.setText("Ungültige Breite");
+      validateFalse(widthTextField);
+      isWidthOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(widthTextField);
+      isWidthOk.set(true);
+    }
+  }
+
+  private void validateLength(int inputLength) {
+    if (!validationHelper.checkSizeParameter(inputLength)) {
+      errorLabel.setText("Ungültige Länge");
+      validateFalse(lengthTextField);
+      isLengthOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(lengthTextField);
+      isLengthOk.set(true);
+    }
+  }
+
+  private void validateHeight(int inputHeight) {
+    if (!validationHelper.checkSizeParameter(inputHeight)) {
+      errorLabel.setText("Ungültige Höhe");
+      validateFalse(heightTextField);
+      isHeightOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(heightTextField);
+      isHeightOk.set(true);
+    }
+  }
+
+  private void validateYear(int inputYear) {
+    if (!validationHelper.checkYear(inputYear)) {
+      errorLabel.setText("Ungültiges Baujahr");
+      validateFalse(constructionYearTextField);
+      isYearOk.set(false);
+    } else {
+      errorLabel.setText("");
+      validateTrue(constructionYearTextField);
+      isYearOk.set(true);
     }
   }
 

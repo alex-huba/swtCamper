@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -23,9 +21,9 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
@@ -36,108 +34,111 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class RentingViewController {
 
   @FXML
-  public TextField locationTextField;
+  private TextField locationTextField;
 
   @FXML
-  public ComboBox<VehicleType> vehicleTypeComboBox;
+  private ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
-  public Button resetVehicleTypeBtn;
+  private Button resetVehicleTypeBtn;
 
   @FXML
-  public TextField vehicleBrandTextField;
+  private TextField vehicleBrandTextField;
 
   @FXML
-  public TextField constructionYearTextField;
+  private TextField constructionYearTextField;
 
   @FXML
-  public TextField maxPricePerDayTextField;
+  private TextField maxPricePerDayTextField;
 
   @FXML
-  public ComboBox<FuelType> fuelTypeComboBox;
+  private ComboBox<FuelType> fuelTypeComboBox;
 
   @FXML
-  public Button resetFuelTypeBtn;
+  private Button resetFuelTypeBtn;
 
   @FXML
-  public ComboBox<TransmissionType> transmissionComboBox;
+  private ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public Button resetTransmissionTypeBtn;
+  private Button resetTransmissionTypeBtn;
 
   @FXML
-  public ComboBox<Integer> seatAmountComboBox;
+  private ComboBox<Integer> seatAmountComboBox;
 
   @FXML
-  public Button resetSeatAmountBtn;
+  private Button resetSeatAmountBtn;
 
   @FXML
-  public ComboBox<Integer> bedAmountComboBox;
+  private ComboBox<Integer> bedAmountComboBox;
 
   @FXML
-  public Button resetBedAmountBtn;
+  private Button resetBedAmountBtn;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  private CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  private CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  private CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckBox;
+  private CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  private CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenCheckBox;
+  private CheckBox kitchenCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  private CheckBox fridgeCheckBox;
 
   @FXML
-  public DatePicker startDatePicker;
+  private DatePicker startDatePicker;
 
   @FXML
-  public Button resetStartDatePickerBtn;
+  private Button resetStartDatePickerBtn;
 
   @FXML
-  public DatePicker endDatePicker;
+  private DatePicker endDatePicker;
 
   @FXML
-  public Button resetEndDatePickerBtn;
+  private Button resetEndDatePickerBtn;
 
   @FXML
-  public HBox paginationHBox;
+  private HBox paginationHBox;
 
   @FXML
-  public HBox paginationButtonsHBox;
+  private HBox paginationButtonsHBox;
 
   @FXML
-  public ChoiceBox<Integer> offersPerPageChoiceBox;
+  private ChoiceBox<Integer> offersPerPageChoiceBox;
 
   @FXML
-  public HBox offersPerPageHBox;
+  private HBox offersPerPageHBox;
 
   @FXML
-  public HBox offerListBox;
+  private HBox offerListBox;
 
   @FXML
-  public ScrollPane offerListScroll;
+  private ScrollPane offerListScroll;
 
   @FXML
-  public VBox offerListRoot;
+  private VBox offerListRoot;
 
   @FXML
-  public VBox rootVBOX;
+  private VBox rootVBOX;
 
   @FXML
-  public AnchorPane rootAnchorPane;
+  private AnchorPane rootAnchorPane;
 
-  int lastPageVisited;
+  /**
+   * needed for pagination
+   */
+  private int lastPageVisited;
 
   @Autowired
   private MainViewController mainViewController;
@@ -146,13 +147,13 @@ public class RentingViewController {
   private OfferViewController offerViewController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;
@@ -435,7 +436,9 @@ public class RentingViewController {
     Label header = new Label(
       String.format(
         "%s Angebote für Sie",
-        !offersList.isEmpty() ? "Passende" : "Keine passenden"
+        !offersList.isEmpty()
+          ? (offerDTOList.size() + " Passende")
+          : "Keine passenden"
       )
     );
     header.setStyle("-fx-font-size: 30");
@@ -460,13 +463,14 @@ public class RentingViewController {
         );
       }
 
-      root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
+      root.setEffect(new DropShadow(10, Color.BLACK));
 
       Image image;
       if (
-        !pictureController
+        pictureController
           .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
-          .isEmpty()
+          .size() >
+        0
       ) {
         image =
           new Image(
@@ -482,9 +486,12 @@ public class RentingViewController {
       // thumbnail
       ImageView thumbnail = new ImageView(image);
       thumbnail.setFitHeight(150);
+      thumbnail.setFitWidth(150);
       thumbnail.setPreserveRatio(true);
       HBox thumbnailHbox = new HBox(thumbnail);
-      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setPrefWidth(150);
+      thumbnailHbox.setPrefHeight(150);
+      thumbnailHbox.setAlignment(Pos.BASELINE_CENTER);
       thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
 
       // title

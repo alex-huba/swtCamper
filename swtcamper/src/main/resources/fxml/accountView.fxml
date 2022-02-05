@@ -9,8 +9,10 @@
     <top>
         <ToolBar fx:id="buttonToolbar" prefHeight="40.0" BorderPane.alignment="CENTER">
             <items>
+                <Button fx:id="resetLogBtn" mnemonicParsing="false" onAction="#resetLogList" text="Zeige alle Logs"/>
                 <Button fx:id="showLogBtn" mnemonicParsing="false" onAction="#showLogForUser"
                         text="Zeige Logs zu diesem Nutzer"/>
+                <Separator orientation="VERTICAL"/>
                 <Button fx:id="blockBtn" mnemonicParsing="false" text="Global Blockieren"/>
                 <Button fx:id="promoteBtn" mnemonicParsing="false" onAction="#promoteUser" text="Befördern"/>
                 <Button fx:id="degradeBtn" mnemonicParsing="false" onAction="#degradeUser" text="Degradieren"/>
@@ -27,7 +29,15 @@
                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                               AnchorPane.topAnchor="0.0">
                             <children>
-                                <Label text="Log History"/>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label text="Log History"/>
+                                        <Button mnemonicParsing="false" onAction="#downloadLog" text="Download"/>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" top="3.0"/>
+                                    </padding>
+                                </HBox>
                                 <ListView fx:id="logListView" prefHeight="1000.0"/>
                             </children>
                         </VBox>
@@ -43,8 +53,34 @@
                                         <VBox AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0"
                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <Label text="Nutzer"/>
-                                                <ListView fx:id="usersListView"/>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label text="Nutzer"/>
+                                                        <HBox spacing="2.0">
+                                                            <children>
+                                                                <TextField fx:id="userFilterTextField"
+                                                                           onKeyTyped="#filterUsers"
+                                                                           promptText="Nutzer suchen"/>
+                                                                <Button fx:id="resetUserFilterBtn"
+                                                                        mnemonicParsing="false"
+                                                                        onAction="#resetUserFilter"
+                                                                        style="-fx-font-size: 10;"
+                                                                        styleClass="bg-danger" text="X"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" top="2.0"/>
+                                                    </padding>
+                                                </HBox>
+                                                <TableView fx:id="usersTableView">
+                                                    <columns>
+                                                        <TableColumn prefWidth="75.0" text="Username"/>
+                                                        <TableColumn prefWidth="75.0" text="Name"/>
+                                                        <TableColumn prefWidth="75.0" text="Email"/>
+                                                        <TableColumn prefWidth="177.0" text="(more generated in code)"/>
+                                                    </columns>
+                                                </TableView>
                                             </children>
                                         </VBox>
                                     </children>
@@ -64,6 +100,9 @@
                                                     </padding>
                                                 </VBox>
                                             </children>
+                                            <padding>
+                                                <Insets bottom="2.0" left="2.0" top="2.0"/>
+                                            </padding>
                                         </VBox>
                                     </children>
                                 </AnchorPane>

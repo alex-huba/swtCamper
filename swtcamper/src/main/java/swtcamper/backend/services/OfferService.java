@@ -268,7 +268,11 @@ public class OfferService {
 
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
-      if (booking.getOffer().getOfferID() == offerId && booking.isActive()) {
+      if (
+        booking.getOffer().getOfferID() == offerId &&
+        booking.isActive() &&
+        !booking.isRejected()
+      ) {
         throw new GenericServiceException(
           "Cannot modify offer with ID " +
           offerId +
@@ -348,7 +352,11 @@ public class OfferService {
   public void delete(long id, UserDTO user) throws GenericServiceException {
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
-      if (booking.getOffer().getOfferID() == id) {
+      if (
+        booking.getOffer().getOfferID() == id &&
+        booking.isActive() &&
+        !booking.isRejected()
+      ) {
         throw new GenericServiceException(
           "Cannot modify offer with ID " +
           id +

@@ -64,21 +64,19 @@ public class UserService {
     user.setPassword(HashHelper.hashIt(password));
     user.setUserRole(userRole);
     user.setEnabled(enabled);
-    userRepository.save(user);
+    User newUser = userRepository.save(user);
 
-    // no is-present check because userRepository.save(user) will have definitely created this user
-    long newId = userRepository.findByUsername(username).get().getId();
     loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
           "New user with ID %s and username '%s' registered.",
-          newId,
+          newUser.getId(),
           username
         )
       )
     );
-    return userRepository.findById(newId).get();
+    return newUser;
   }
 
   /**

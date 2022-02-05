@@ -40,7 +40,10 @@ public class ValidationHelper {
 
   public static boolean checkOfferPrice(String toCheck) {
     return (
-      !toCheck.isEmpty() && isNumber(toCheck) && Integer.parseInt(toCheck) > 0
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 10 &&
+      Integer.parseInt(toCheck) < 100001
     );
   }
 
@@ -109,5 +112,31 @@ public class ValidationHelper {
       }
     }
     return noBookedDaysInBetween;
+  }
+
+  public boolean checkSizeParameter(int toCheck) {
+    return (toCheck > 99 && toCheck < 100001);
+  }
+
+  public boolean checkYear(int toCheck) {
+    return (toCheck > 1907 && toCheck < LocalDate.now().getYear() + 1);
+  }
+
+  public boolean checkSeats(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > 0 &&
+      Integer.parseInt(toCheck) < 13
+    );
+  }
+
+  public boolean checkBeds(String toCheck) {
+    return (
+      !toCheck.isEmpty() &&
+      isNumber(toCheck) &&
+      Integer.parseInt(toCheck) > -1 &&
+      Integer.parseInt(toCheck) < 13
+    );
   }
 }
