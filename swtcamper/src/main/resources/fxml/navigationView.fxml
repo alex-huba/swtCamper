@@ -173,6 +173,18 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Button fx:id="faqBtn" accessibleHelp="faq" alignment="BASELINE_LEFT" mnemonicParsing="false"
+                onAction="#handleNavBtnClick" prefHeight="42.0" prefWidth="172.0" styleClass="navBtn" textFill="WHITE"
+                AnchorPane.bottomAnchor="80.0">
+            <graphic>
+                <ImageView fx:id="faqButtonIcon" accessibleText="FAQ" fitHeight="30.0" fitWidth="30.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icons/faq.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
     </children>
     <stylesheets>
         <URL value="@../styles/navigation-view.css"/>

@@ -436,7 +436,9 @@ public class RentingViewController {
     Label header = new Label(
       String.format(
         "%s Angebote für Sie",
-        !offersList.isEmpty() ? "Passende" : "Keine passenden"
+        !offersList.isEmpty()
+          ? (offerDTOList.size() + " Passende")
+          : "Keine passenden"
       )
     );
     header.setStyle("-fx-font-size: 30");
@@ -461,17 +463,14 @@ public class RentingViewController {
         );
       }
 
-      root.setEffect(new DropShadow(4d, 0d, +6d, Color.BLACK));
+      root.setEffect(new DropShadow(10, Color.BLACK));
 
-      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
-        offer.getOfferedObject().getVehicleID()
-      );
       Image image;
-      // validate picture(s)
       if (
-        picturesForVehicle.isEmpty() ||
-        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
-        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
       ) {
         image =
           new Image(
@@ -487,9 +486,12 @@ public class RentingViewController {
       // thumbnail
       ImageView thumbnail = new ImageView(image);
       thumbnail.setFitHeight(150);
+      thumbnail.setFitWidth(150);
       thumbnail.setPreserveRatio(true);
       HBox thumbnailHbox = new HBox(thumbnail);
-      thumbnailHbox.setAlignment(Pos.TOP_CENTER);
+      thumbnailHbox.setPrefWidth(150);
+      thumbnailHbox.setPrefHeight(150);
+      thumbnailHbox.setAlignment(Pos.BASELINE_CENTER);
       thumbnailHbox.setStyle("-fx-padding: 20 20 20 20");
 
       // title

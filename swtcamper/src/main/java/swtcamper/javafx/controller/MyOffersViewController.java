@@ -65,23 +65,13 @@ public class MyOffersViewController {
   private void createCards(User user) throws GenericServiceException {
     offerListRoot.getChildren().clear();
 
-    if (offerController.getOffersCreatedByUser(user).isEmpty()) {
-      Label infoLabel = new Label("Du hast noch keine Anzeigen erstellt.");
-      infoLabel.setDisable(true);
-      offerListRoot.getChildren().add(infoLabel);
-      return;
-    }
-
     for (OfferDTO offer : offerController.getOffersCreatedByUser(user)) {
-      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
-        offer.getOfferedObject().getVehicleID()
-      );
       Image image;
-      // validate picture(s)
       if (
-        picturesForVehicle.isEmpty() ||
-        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
-        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
       ) {
         image =
           new Image(
