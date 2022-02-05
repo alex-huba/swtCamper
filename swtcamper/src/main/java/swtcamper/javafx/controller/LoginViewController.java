@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
@@ -43,7 +44,7 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private RegisterViewController registerViewController;

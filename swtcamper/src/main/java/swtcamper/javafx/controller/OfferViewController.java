@@ -23,6 +23,10 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.*;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
@@ -31,6 +35,7 @@ import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 
 @Component
 public class OfferViewController {
@@ -147,13 +152,13 @@ public class OfferViewController {
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ValidationHelper validationHelper;
@@ -165,7 +170,7 @@ public class OfferViewController {
   private ModifyOfferViewController modifyOfferViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private BookingService bookingService;
@@ -488,7 +493,7 @@ public class OfferViewController {
               startDatePicker.getValue(),
               endDatePicker.getValue()
             );
-          } catch (GenericServiceException e) {
+          } catch (GenericServiceException | UserDoesNotExistException e) {
             mainViewController.handleExceptionMessage(e.getMessage());
           }
           checkMode(true);

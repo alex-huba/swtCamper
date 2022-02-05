@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -40,7 +41,7 @@ public class ResetPasswordViewController {
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @FXML
   public void initialize() {

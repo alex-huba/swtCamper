@@ -29,6 +29,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
@@ -153,13 +156,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ValidationHelper validationHelper;

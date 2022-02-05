@@ -70,12 +70,6 @@ public class NavigationViewController {
   @Autowired
   private MainViewController mainViewController;
 
-  @Autowired
-  private NavigationViewController navigationViewController;
-
-  @Autowired
-  private UserController userController;
-
   private boolean isShortText = true;
 
   @FXML

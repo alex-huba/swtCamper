@@ -24,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.OfferController;
 import swtcamper.api.controller.PictureController;
 import swtcamper.api.controller.UserController;
@@ -147,13 +150,13 @@ public class RentingViewController {
   private OfferViewController offerViewController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;

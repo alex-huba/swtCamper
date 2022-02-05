@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.backend.entities.Booking;
@@ -31,10 +33,10 @@ public class DealHistoryViewController {
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private ModelMapper modelMapper;

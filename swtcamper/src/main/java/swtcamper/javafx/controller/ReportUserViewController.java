@@ -6,6 +6,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
 import swtcamper.backend.entities.User;
@@ -25,10 +27,10 @@ public class ReportUserViewController {
   public Button sendReportButton;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private MainViewController mainViewController;

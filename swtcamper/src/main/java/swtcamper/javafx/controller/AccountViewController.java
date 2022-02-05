@@ -30,6 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.LoggingMessageDTO;
 import swtcamper.api.contract.UserReportDTO;
+import swtcamper.api.contract.interfaces.ILoggingController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
@@ -86,13 +89,13 @@ public class AccountViewController {
   public VBox reportVBox;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;

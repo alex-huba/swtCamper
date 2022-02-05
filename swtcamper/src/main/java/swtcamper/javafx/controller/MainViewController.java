@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserReportDTO;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.api.controller.BookingController;
 import swtcamper.api.controller.UserController;
 import swtcamper.api.controller.UserReportController;
@@ -90,13 +93,13 @@ public class MainViewController {
   private ModelMapper modelMapper;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
   private MyOffersViewController myOffersViewController;
