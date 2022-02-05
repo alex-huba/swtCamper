@@ -18,13 +18,13 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ReportUserViewController {
 
   @FXML
-  public TextField reportThisUserTextField;
+  private TextField reportThisUserTextField;
 
   @FXML
-  public TextArea reasonForReportTextArea;
+  private TextArea reasonForReportTextArea;
 
   @FXML
-  public Button sendReportButton;
+  private Button sendReportButton;
 
   @Autowired
   private IUserReportController userReportController;

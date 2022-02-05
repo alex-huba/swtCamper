@@ -15,27 +15,27 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ResetPasswordViewController {
 
   @FXML
-  public Label errorMessageLabel;
+  private Label errorMessageLabel;
 
   @FXML
   public TextField usernameTf;
 
   @FXML
-  public TextField emailTf;
+  private TextField emailTf;
 
   @FXML
-  public PasswordField passwordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public PasswordField repeatPasswordPf;
+  private PasswordField repeatPasswordPf;
 
   @FXML
-  public Button resetButton;
+  private Button resetButton;
 
-  SimpleBooleanProperty isUsernameOk;
-  SimpleBooleanProperty isEmailOk;
-  SimpleBooleanProperty isPasswordOk;
-  SimpleBooleanProperty isRepeatPasswordOk;
+  private SimpleBooleanProperty isUsernameOk;
+  private SimpleBooleanProperty isEmailOk;
+  private SimpleBooleanProperty isPasswordOk;
+  private SimpleBooleanProperty isRepeatPasswordOk;
 
   @Autowired
   private MainViewController mainViewController;

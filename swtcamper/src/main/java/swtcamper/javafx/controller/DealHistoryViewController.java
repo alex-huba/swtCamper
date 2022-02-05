@@ -24,7 +24,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class DealHistoryViewController {
 
   @FXML
-  public VBox bookingsListVBox;
+  private VBox bookingsListVBox;
 
   @Autowired
   private OfferViewController offerViewController;

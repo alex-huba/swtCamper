@@ -23,22 +23,22 @@ public class LoginViewController implements EventHandler<KeyEvent> {
   private final BooleanProperty isPasswordOk = new SimpleBooleanProperty(false);
 
   @FXML
-  public Button loginButton;
+  private Button loginButton;
 
   @FXML
-  public Hyperlink registerButton;
+  private Hyperlink registerButton;
 
   @FXML
-  public Hyperlink forgotPasswordButton;
+  private Hyperlink forgotPasswordButton;
 
   @FXML
-  public TextField usernameTf;
+  private TextField usernameTf;
 
   @FXML
-  public PasswordField passwordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @Autowired
   private MainViewController mainViewController;

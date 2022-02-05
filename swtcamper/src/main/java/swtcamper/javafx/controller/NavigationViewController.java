@@ -20,10 +20,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class NavigationViewController {
 
   @FXML
-  public AnchorPane navigationRoot;
+  private AnchorPane navigationRoot;
 
   @FXML
-  public VBox navBarItems;
+  private VBox navBarItems;
 
   @FXML
   public Button homeButton;
@@ -44,13 +44,13 @@ public class NavigationViewController {
   public Button approveButton;
 
   @FXML
-  public Circle approveNotificationDot;
+  private Circle approveNotificationDot;
 
   @FXML
   public Button myBookingsButton;
 
   @FXML
-  public Circle myBookingsNotificationDot;
+  private Circle myBookingsNotificationDot;
 
   @FXML
   public Button loginButton;
@@ -59,10 +59,10 @@ public class NavigationViewController {
   public Button accountButton;
 
   @FXML
-  public Circle accountNotificationDot;
+  private Circle accountNotificationDot;
 
   @FXML
-  public Button logoutBtn;
+  private Button logoutBtn;
 
   @FXML
   public Button faqBtn;

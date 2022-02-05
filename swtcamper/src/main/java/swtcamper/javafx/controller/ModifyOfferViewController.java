@@ -51,103 +51,103 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
-  public TextField titleTextField;
+  private TextField titleTextField;
 
   @FXML
-  public TextField priceTextField;
+  private TextField priceTextField;
 
   @FXML
-  public TextField locationTextField;
+  private TextField locationTextField;
 
   @FXML
-  public TextField contactTextField;
+  private TextField contactTextField;
 
   @FXML
-  public TextArea particularitiesTextArea;
+  private TextArea particularitiesTextArea;
 
   @FXML
-  public CheckBox activeCheckBox;
+  private CheckBox activeCheckBox;
 
   @FXML
-  public ComboBox<VehicleType> vehicleTypeComboBox;
+  private ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @FXML
-  public TextField brandTextField;
+  private TextField brandTextField;
 
   @FXML
-  public TextField modelTextField;
+  private TextField modelTextField;
 
   @FXML
-  public TextField constructionYearTextField;
+  private TextField constructionYearTextField;
 
   @FXML
-  public TextField widthTextField;
+  private TextField widthTextField;
 
   @FXML
-  public TextField lengthTextField;
+  private TextField lengthTextField;
 
   @FXML
-  public TextField heightTextField;
+  private TextField heightTextField;
 
   @FXML
-  public ComboBox<FuelType> fuelComboBox;
+  private ComboBox<FuelType> fuelComboBox;
 
   @FXML
-  public ComboBox<TransmissionType> transmissionComboBox;
+  private ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public ComboBox<String> seatsComboBox;
+  private ComboBox<String> seatsComboBox;
 
   @FXML
-  public ComboBox<String> bedsComboBox;
+  private ComboBox<String> bedsComboBox;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  private CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  private CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  private CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckBox;
+  private CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  private CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenUnitCheckBox;
+  private CheckBox kitchenUnitCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  private CheckBox fridgeCheckBox;
 
   @FXML
-  public HBox picturesHBox;
+  private HBox picturesHBox;
 
   @FXML
-  public Button placeOfferButton;
+  private Button placeOfferButton;
 
   @FXML
-  public TextField rentalConditionsTextField;
+  private TextField rentalConditionsTextField;
 
-  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  private SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @Autowired
   private ModelMapper modelMapper;

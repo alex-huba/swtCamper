@@ -18,7 +18,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ApproveNewProvidersViewController {
 
   @FXML
-  public VBox toApproveListView;
+  private VBox toApproveListView;
 
   @Autowired
   private IUserController userController;

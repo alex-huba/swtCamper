@@ -22,43 +22,43 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @FXML
-  public TextField usernameTf;
+  private TextField usernameTf;
 
   @FXML
-  public PasswordField passwordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public PasswordField repeatPasswordPf;
+  private PasswordField repeatPasswordPf;
 
   @FXML
-  public TextField emailTf;
+  private TextField emailTf;
 
   @FXML
-  public TextField phoneTf;
+  private TextField phoneTf;
 
   @FXML
-  public TextField nameTf;
+  private TextField nameTf;
 
   @FXML
-  public TextField surnameTf;
+  private TextField surnameTf;
 
   @FXML
-  public CheckBox renterCb;
+  private CheckBox renterCb;
 
   @FXML
-  public CheckBox providerCb;
+  private CheckBox providerCb;
 
   @FXML
-  public Button cancelBtn;
+  private Button cancelBtn;
 
   @FXML
-  public Button registerBtn;
+  private Button registerBtn;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @FXML
-  public VBox rootElement;
+  private VBox rootElement;
 
   @Autowired
   private MainViewController mainViewController;

@@ -26,7 +26,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class MyBookingsViewController {
 
   @FXML
-  public VBox bookingsListVBox;
+  private VBox bookingsListVBox;
 
   @Autowired
   private ModelMapper modelMapper;

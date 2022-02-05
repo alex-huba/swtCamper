@@ -32,10 +32,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class MyOffersViewController {
 
   @FXML
-  public ScrollPane offerListScroll;
+  private ScrollPane offerListScroll;
 
   @FXML
-  public VBox offerListRoot;
+  private VBox offerListRoot;
 
   @Autowired
   private MainViewController mainViewController;

@@ -39,55 +39,55 @@ public class MainViewController {
   public final String startPageAfterLogin = "home";
 
   @FXML
-  public Label globalHeaderLabel;
+  private Label globalHeaderLabel;
 
   @FXML
-  public Button globalBackBtn;
+  private Button globalBackBtn;
 
   @FXML
-  public AnchorPane mainStage;
+  private AnchorPane mainStage;
 
   @FXML
-  public Node homeViewBox;
+  private Node homeViewBox;
 
   @FXML
-  public Node placeOfferViewBox;
+  private Node placeOfferViewBox;
 
   @FXML
-  public Pane offerViewBox;
+  private Pane offerViewBox;
 
   @FXML
-  public Pane activeOffersViewBox;
+  private Pane activeOffersViewBox;
 
   @FXML
-  public Pane dealHistoryViewBox;
+  private Pane dealHistoryViewBox;
 
   @FXML
-  public Pane excludeRenterViewBox;
+  private Pane excludeRenterViewBox;
 
   @FXML
-  public Pane approveDealViewBox;
+  private Pane approveDealViewBox;
 
   @FXML
-  public Pane myBookingsViewBox;
+  private Pane myBookingsViewBox;
 
   @FXML
-  public Pane loginViewBox;
+  private Pane loginViewBox;
 
   @FXML
-  public Pane accountViewBox;
+  private Pane accountViewBox;
 
   @FXML
-  public Pane registerViewBox;
+  private Pane registerViewBox;
 
   @FXML
-  public Pane forgotPasswordViewBox;
+  private Pane forgotPasswordViewBox;
 
   @FXML
-  public Pane reportUserViewBox;
+  private Pane reportUserViewBox;
 
   @FXML
-  public Pane faqViewBox;
+  private Pane faqViewBox;
 
   @Autowired
   private ModelMapper modelMapper;

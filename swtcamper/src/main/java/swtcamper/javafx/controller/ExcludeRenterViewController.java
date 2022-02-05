@@ -22,13 +22,13 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ExcludeRenterViewController {
 
   @FXML
-  public VBox excludedRentersVBox;
+  private VBox excludedRentersVBox;
 
   @FXML
-  public TextField findUsersTextField;
+  private TextField findUsersTextField;
 
   @FXML
-  public VBox userResultsVBox;
+  private VBox userResultsVBox;
 
   @Autowired
   private IUserController userController;

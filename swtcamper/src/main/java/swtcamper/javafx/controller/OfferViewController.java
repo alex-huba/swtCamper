@@ -43,110 +43,110 @@ public class OfferViewController {
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   @FXML
-  public HBox pictureHorizontHBox;
+  private HBox pictureHorizontHBox;
 
   @FXML
-  public Label vehicleTypeLabel;
+  private Label vehicleTypeLabel;
 
   @FXML
-  public Label brandLabel;
+  private Label brandLabel;
 
   @FXML
-  public Label modelLabel;
+  private Label modelLabel;
 
   @FXML
-  public Label constructionLabel;
+  private Label constructionLabel;
 
   @FXML
-  public Label priceLabel;
+  private Label priceLabel;
 
   @FXML
-  public Label widthLabel;
+  private Label widthLabel;
 
   @FXML
-  public Label lengthLabel;
+  private Label lengthLabel;
 
   @FXML
-  public Label heightLabel;
+  private Label heightLabel;
 
   @FXML
-  public Label engineLabel;
+  private Label engineLabel;
 
   @FXML
-  public Label transmissionLabel;
+  private Label transmissionLabel;
 
   @FXML
-  public Label roofTentLabel;
+  private Label roofTentLabel;
 
   @FXML
-  public Label roofRackLabel;
+  private Label roofRackLabel;
 
   @FXML
-  public Label bikeRackLabel;
+  private Label bikeRackLabel;
 
   @FXML
-  public Label showerLabel;
+  private Label showerLabel;
 
   @FXML
-  public Label toiletLabel;
+  private Label toiletLabel;
 
   @FXML
-  public Label kitchenUnitLabel;
+  private Label kitchenUnitLabel;
 
   @FXML
-  public Label fridgeLabel;
+  private Label fridgeLabel;
 
   @FXML
-  public Label contactLabel;
+  private Label contactLabel;
 
   @FXML
-  public Label locationLabel;
+  private Label locationLabel;
 
   @FXML
-  public Label particularitiesLabel;
+  private Label particularitiesLabel;
 
   @FXML
-  public VBox rentalConditionsVBox;
+  private VBox rentalConditionsVBox;
 
   @FXML
-  public Label seatsLabel;
+  private Label seatsLabel;
 
   @FXML
-  public Label bedsLabel;
+  private Label bedsLabel;
 
   @FXML
-  public Label titleLabel;
+  private Label titleLabel;
 
   @FXML
-  public Button modifyButton;
+  private Button modifyButton;
 
   @FXML
-  public Button bookingButton;
+  private Button bookingButton;
 
   @FXML
-  public Button promotingButton;
+  private Button promotingButton;
 
   @FXML
-  public Label dateLabel;
+  private Label dateLabel;
 
   @FXML
-  public DatePicker startDatePicker;
+  private DatePicker startDatePicker;
 
   @FXML
-  public DatePicker endDatePicker;
+  private DatePicker endDatePicker;
 
   @FXML
-  public HBox rentHBox;
+  private HBox rentHBox;
 
   @FXML
-  public Label rentLabel;
+  private Label rentLabel;
 
   @FXML
-  public Button abortBookingRequestBtn;
+  private Button abortBookingRequestBtn;
 
-  public OfferDTO viewedOffer;
-  LongStringConverter longStringConverter = new LongStringConverter();
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private OfferDTO viewedOffer;
+  private LongStringConverter longStringConverter = new LongStringConverter();
+  private DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @Autowired
   private MainViewController mainViewController;
