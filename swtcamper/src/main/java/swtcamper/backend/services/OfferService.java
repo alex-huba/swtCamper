@@ -145,17 +145,6 @@ public class OfferService {
       rentalConditions,
       blockedDates
     );
-    long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
-    loggingController.log(
-      new LoggingMessage(
-        LoggingLevel.INFO,
-        String.format(
-          "New vehicle with ID %s created by user %s.",
-          newVehicleId,
-          creator.getUsername()
-        )
-      )
-    );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
@@ -169,6 +158,21 @@ public class OfferService {
       )
     );
     Optional<Offer> offerOptional = offerRepository.findById(newOfferId);
+    Optional<Vehicle> vehicleOptional = vehicleRepository.findById(
+      offerOptional.get().getOfferedObject().getVehicleID()
+    );
+    long newVehicleId = vehicleOptional.get().getVehicleID();
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New vehicle with ID %s created by user %s.",
+          newVehicleId,
+          creator.getUsername()
+        )
+      )
+    );
+
     if (offerOptional.isPresent()) {
       return offerOptional.get();
     } else {
@@ -397,8 +401,7 @@ public class OfferService {
    * @return List of OfferDTOs of offers that were created by the user
    * @throws GenericServiceException
    */
-  public List<Offer> getOffersCreatedByUser(User user)
-    throws GenericServiceException {
+  public List<Offer> getOffersCreatedByUser(User user) {
     return offers()
       .stream()
       .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))
