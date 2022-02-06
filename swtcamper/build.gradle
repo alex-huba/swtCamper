@@ -41,7 +41,6 @@ dependencies {
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
-	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
 }
 
 sourceSets {
