@@ -20,3 +20,377 @@
 
 \subsection{Other Stories}
 \input{sections/references/a-product-backlog/a.7-other-stories.tex}
+
+
+\subsubsection{Login}
+
+\textbf{As a} User,\hfill\break
+\textbf{I want} login by supplying my email and my password,\hfill\break
+\textbf{so that} I can rent/offer vans or administrate portal.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 2
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item it is impossible to use functionality of portal (other than just looking through offers) without being logged in
+    \item wrong username and/or password does not give access (user is informed if password or username is wrong)
+    \item a user can change their password in case they've forgotten it and login with the new password
+    \item a Renter only sees the renter GUI
+    \item a Provider only sees the Provider GUI
+    \item a Operator only sees the Operator GUI
+    \item it is impossible to use provider functionalities logged in as a provider if the operator has not admitted the registration yet
+\end{itemize}
+
+\subsubsection{Registration}
+
+\textbf{As a} User,\hfill\break
+\textbf{I want} register by supplying my email and by creation my personal password plus username,\hfill\break
+\textbf{so that} I can create a profile at the portal for rent/offer van activities.
+
+\textbf{Meta-Information}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 2
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria}
+
+The story is done, when
+\begin{itemize}
+    \item only unique emails and usernames are accepted,
+    \item only valid usernames and emails are accepted,
+    \item only passwords with at least 5 symbols are accepted; otherwise “Password is too short” is displayed
+    \item only usernames with at least 5 symbols are accepted; otherwise “Username is too short” is displayed
+    \item after successful registration it is possible for the user to login in the portal
+    \item after successful registration the user is saved in the database
+\end{itemize}
+
+\subsubsection{Place offer}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} place an offer,\hfill\break
+\textbf{so that} my vehicles can be booked by renters.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 1
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item it is possible to enter info about a vehicle (images, features, dates when it is available, description of rental conditions, particularities) into a form, which will then be considered an offer by the system
+    \item the offer/vehicle is entered into the database
+    \item each offer has obligatory information. If this information is not filled-in provider cannot create the offer
+\end{itemize}
+
+\subsubsection{Update Offer}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} update an existing offer,\hfill\break
+\textbf{so that} the information is up to date.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 1
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item The provider can enter an “Edit”-Mode by clicking a button on the offer screen, which is only shown to provider accounts
+    \item The edit button is only shown on offers belonging to the respective provider
+    \item After editing the offer is finished, the database entry of the offer gets updated
+    \item Providers can access the list of their offers
+    \item Provider can delete the offer
+\end{itemize}
+
+\subsubsection{(Un)block provider or renter}
+
+\textbf{As an} Operator,\hfill\break
+\textbf{I want} exclude/include back provider or renter,\hfill\break
+\textbf{so that} I can administrate the portal and avoid negative deals on the portal.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Operator can block provider or renter after the request of the corresponding supplicant who has written a detailed complaint about the previous deal.
+    \item Operator can unblock provider or renter.
+    \item It is impossible for a blocked user to make more deals.
+\end{itemize}
+
+\subsubsection{Configure options}
+
+\textbf{As an} Operator,\hfill\break
+\textbf{I want} configure options like for searching and filtering,\hfill\break
+\textbf{so that} I can adjust them to changing needs.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 4
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Operator can access the list of all filters for search options.
+    \item Operator can add a new filter to this list.
+    \item Operator can delete a filter from this list.
+    \item Operator can save the changes after the job is done.
+\end{itemize}
+
+\subsubsection{Filter}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} to filter vehicles,\hfill\break
+\textbf{so that} I can find fitting vehicles easier.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 1
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can filter for vehicle's features
+    \item Renter can filter for availability
+    \item Renter can filter for rental costs
+    \item Renter can filter for rental conditions
+    \item Returned search list is small and clearly arranged
+\end{itemize}
+
+\subsubsection{Request}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} to be able to make a request,\hfill\break
+\textbf{so that} I know if the wanted vehicle is available.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 1
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can send a request for booking
+    \item New booking is added to the list of all bookings of the renter
+\end{itemize}
+
+
+\subsubsection{Booking}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want}to be able to make a booking,\hfill\break
+\textbf{so that}I can get the wanted vehicle
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: S
+    \item Sprint: 1
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item I get a booking confirmation
+\end{itemize}
+
+\subsubsection{Exclude renters}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} to be able to exclude renters,\hfill\break
+\textbf{so that} I can avoid renters with a bad history of renting.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: ?
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item It is impossible for excluded renters to rent vehicles from the provider who excluded them
+    \item It is possible to revoke the "ban" for the provider
+    \item It is impossible to exclude an account that is already excluded
+    \item Booking functions are not available for excluded renters
+\end{itemize}
+
+\subsubsection{Approve the booking}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} approve the booking,\hfill\break
+\textbf{so that} I can make the deal on the portal properly.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Provider receive request for renting her/his van
+    \item Provider can agree or decline the request
+    \item Request contains all mandatory information: date for rent, renter name and rating, amount of money etc.
+    \item After acceptance of the request, new deal is added to the list of deals of provider
+\end{itemize}
+
+\subsubsection{Operator's Influence}
+
+\textbf{As an} Operator,\hfill\break
+\textbf{I want} be able to influence search results,\hfill\break
+\textbf{so that} I can make my own vehicles more visible.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 4
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Operator have a list of all offers, placed on the portal.
+    \item Operator can access each offer and overview the overall info about the deal.
+    \item Each offer has adjustable attribute ranking named “promoted offer”.
+    \item Operator can mark offer as “promoted offer” via a button
+    \item After submission, the changes must be saved.
+    \item Offers that are marked as “promoted offer” are visually highlighted in the offer list.
+\end{itemize}
+
+\subsubsection{Booking history}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} have a booking history,\hfill\break
+\textbf{so that} I can track my bookings.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 3
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can access a list of all bookings that they have including finished and active
+    \item Renter can access each offer from past and check all info about booking
+\end{itemize}
+
+\subsubsection{FAQ}
+
+\textbf{As a} User,\hfill\break
+\textbf{I want} to read the FAQ,\hfill\break
+\textbf{so that} I can follow the rules of the portal.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size:
+    \item Sprint:
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item user can access the FAQ section from the main menu
+    \item FAQ consists of all necessary info regarding rent/offer
+\end{itemize}
+
+\subsubsection{User Story Name}
+
+\textbf{As a}\hfill\break
+\textbf{I want}\hfill\break
+\textbf{so that}
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size:
+    \item Sprint:
+    \item customer satisfaction:
+    \item customer dissatisfaction:
+    \item Priority:
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item d
+    \item d
+    \item d
+\end{itemize}
