@@ -1,27 +1,23 @@
 package swtcamper.backend.services;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-import java.lang.management.GarbageCollectorMXBean;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.util.Pair;
-import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.ui.Model;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
@@ -130,6 +126,10 @@ public class BookingServiceUnitTest {
     doReturn(bookings).when(bookingRepository).findAllById(any());
   }
 
+  public void mockGetAllBookings(List<Booking> bookings) {
+    doReturn(bookings).when(bookingRepository).findAll();
+  }
+
   // Offer Stuff
 
   public Offer createValidOffer() {
@@ -223,6 +223,33 @@ public class BookingServiceUnitTest {
     List<Booking> actual = bookingServiceUnderTest.getAllBookings();
     // assert
     assertEquals(expected, actual);
+  }
+
+  // getBookingsForUser
+
+  @Test
+  public void getBookingsForUserShouldReturnBookingsOfUser() {
+    // arrange
+    Booking booking1 = new Booking();
+    Booking booking2 = new Booking();
+    User user1 = createEmptyUser();
+    User user2 = createEmptyUser();
+    user1.setId(1L);
+    user2.setId(2L);
+    Offer offer1 = new Offer();
+    Offer offer2 = new Offer();
+    offer1.setCreator(user1);
+    offer2.setCreator(user2);
+    booking1.setOffer(offer1);
+    booking2.setOffer(offer2);
+    List<Booking> bookings = new ArrayList<>();
+    bookings.add(booking1);
+    bookings.add(booking2);
+    mockGetAllBookings(bookings);
+    // act
+    List<Booking> actual = bookingServiceUnderTest.getBookingsForUser(user1);
+    // assert
+    assertEquals(1L, (long) actual.get(0).getOffer().getCreator().getId());
   }
 
   // create()
@@ -452,7 +479,7 @@ public class BookingServiceUnitTest {
     );
   }
 
-  // getBookedDays()
+  // getBookedAndBlockedDays()
 
   @Test(expected = GenericServiceException.class)
   public void getBookedDaysShouldThrowGSEIfOfferNotFound()
@@ -460,7 +487,7 @@ public class BookingServiceUnitTest {
     // arrange
     mockFindOfferByIdReturnsEmptyOptional();
     // act
-    bookingServiceUnderTest.getBookedDays(1L);
+    bookingServiceUnderTest.getBookedAndBlockedDays(1L);
   }
 
   @Test
@@ -475,7 +502,7 @@ public class BookingServiceUnitTest {
     expected.add(createValidDateOfTodayPlusXDays(2));
     expected.add(createValidDateOfTodayPlusXDays(3));
     // act
-    List<LocalDate> actual = bookingServiceUnderTest.getBookedDays(1L);
+    List<LocalDate> actual = bookingServiceUnderTest.getBookedAndBlockedDays(1L);
     // assert
     assertIterableEquals(expected, actual);
   }
