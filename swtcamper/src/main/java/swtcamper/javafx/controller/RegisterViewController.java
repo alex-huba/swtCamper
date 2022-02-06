@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.controller.UserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -64,6 +65,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private UserController userController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
@@ -157,7 +161,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
+    if (!validationHelper.checkUserName(input)) {
       errorLabel.setText(
         "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
       );

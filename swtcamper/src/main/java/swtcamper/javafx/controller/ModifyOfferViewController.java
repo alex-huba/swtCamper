@@ -843,7 +843,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateLocation(String inputLocation) {
-    if (inputLocation.isEmpty() || inputLocation.length() < 3) {
+    if (!validationHelper.checkOfferLocation(inputLocation)) {
       errorLabel.setText("Ungültiger Abholort");
       validateFalse(locationTextField);
       isLocationOk.set(false);
@@ -855,7 +855,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateContact(String inputContact) {
-    if (inputContact.isEmpty() || inputContact.length() < 5) {
+    if (!validationHelper.checkOfferContact(inputContact)) {
       errorLabel.setText("Ungültiger Kontakt");
       validateFalse(contactTextField);
       isContactOk.set(false);
@@ -940,8 +940,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       (
         vehicleTypeComboBox.getValue() != null &&
         vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
-      ) ||
-      validationHelper.checkSeats(seatsComboBox.getValue())
+      )
     ) {
       errorLabel.setText("");
       validateTrue(seatsComboBox);
@@ -954,15 +953,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBeds(int inputBeds) {
-    if (!validationHelper.checkBeds(String.valueOf(inputBeds))) {
-      errorLabel.setText("Ungültige Anzahl von Betten");
-      validateFalse(bedsComboBox);
-      isBedsOk.set(false);
-    } else {
       errorLabel.setText("");
       validateTrue(bedsComboBox);
       isBedsOk.set(true);
-    }
   }
 
   private void validateWidth(int inputWidth) {
