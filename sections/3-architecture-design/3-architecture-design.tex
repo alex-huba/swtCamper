@@ -125,46 +125,13 @@ Durch diesen Ansatz können Bilder leider nur lokal gespeichert werden und funkt
 
 \paragraph{User}
 Die Userklasse besitzt neben einer automatisch erzeugten ID außerdem Attribute für den Nutzernamen, Vor- und Nachnamen, Emailadresse, Telefonnummer und Passwort. Das Attribut userRole gibt an welche Rolle der Nutzer bei Nutzung der Anwendung einnimmt, und welche Befugnisse er dadurch hat (vgl. View-Abbildung in \ref{fig:architecture}). Damit zusammenhängend gibt es außerdem das Attribut enabled, das nur auf false gesetzt wird wenn sich ein Nutzer als Provider neu registriert, da es eine Aforderung war, dass diese Personen zuerst geprüft werden sollen bevor sie neue Anzeigen erstellen können. Solange ein Nutzer die Rolle des Providers hat und enabled auf false steht, hat er die gleichen Befugnisse und Möglichkeiten wie die Nutzerrolle Renter. \\
-
-
-% TODO
-Long id
-String username
-String name
-String surname
-String email
-String phone
-String password
-UserRole userRole
-boolean locked
-boolean enabled
-ArrayList<Long> excludedRenters
+Ein weiteres Booleanfeld ist locked, das benötigt wird um einen Nutzer global zu blockieren; seine Möglichkeiten in der Anwendung sind damit stark eingeschränkt. Im Gegensatz zu dieser Möglichkeit die nur von einem Operator ausgeführt werden kann, gibt es noch die mit der Provider andere Nutzer von ihren Anzeigen ausschließen können. Dafür nutzen User-Objekte eine Liste excludedRenters, in der die IDs der auszuschließenden Nutzer gespeichert werden.
 
 \paragraph{UserReport}
 UserReports werden benötigt, damit ein Nutzer (ab UserRole Provider) einen anderen melden kann. Ein abgesendeter UserReport wird dann in der Datenbank gespeichert (hat wieder eine automatisch generierte ID) und hat dabei ein boolean Feld active, das auf true gesetzt ist, bis der Report von einem Operator bearbeitet (angenommen oder abgewiesen) wird. Um dem entscheidenden Operator seine Entscheidung einfacher zu machen, beinhaltet jeder UserReport sowohl den Nutzernamen des Meldenden, als auch des Gemeldeten und eine Nachricht, warum der Meldende die Meldung eingereicht hat.
 
 \paragraph{Vehicle}
-% TODO
-long vehicleID
-VehicleType vehicleType
-String make
-String model
-String year
-double length
-double width
-double height
-FuelType fuelType
-String transmission
-int seats
-int beds
-boolean roofTent
-boolean roofRack
-boolean bikeRack
-boolean shower
-boolean toilet
-boolean kitchenUnit
-boolean fridge
-
+Genau wie die Offerklasse spielt die Klasse für die Fahrzeuge selbst eine sehr zentrale Rolle, weswegen sie auch mit als erstes implementiert wurde. Sie enthält sehr rudimentäre Attribute um die angebotenen Fahrzeuge abzubilden; dazu gehören neben der automatisch generierten ID die Marke, das Modell, das Baujahr, Länge, Breite und Höhe, die Art der Schaltung, die Anzahl der Sitzplätze und die Anzahl der Betten. Um zu beschreiben, ob das Fahrzeug Dachzelt, Dachgepäckträger, Fahrradträger, Dusche, Toilette, Kücheneinheit oder Kühlschrank hat, wurde einfache Booleanvariablen genutzt. Außerdem gibt es für die Art des Fahrzeugs und die Art des Kraftstoffs eigene Enumerations.
 
 \subsection{Designprinzipien}
 
