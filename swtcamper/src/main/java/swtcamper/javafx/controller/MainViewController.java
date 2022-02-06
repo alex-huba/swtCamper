@@ -169,7 +169,7 @@ public class MainViewController {
       userController.getLoggedInUser() != null &&
       userController.getLoggedInUser().isLocked()
     ) return;
-    if(!historyList.isEmpty() && historyList.getLast().equals("home")) {
+    if (!historyList.isEmpty() && historyList.getLast().equals("home")) {
       rentingViewController.resetFilter();
     }
     historyList.removeLast();
@@ -289,7 +289,7 @@ public class MainViewController {
     if (createHistory) {
       // only add new page if it is not the last one as well
       if (historyList.isEmpty() || !historyList.getLast().equals(switchTo)) {
-        if(!historyList.isEmpty() && historyList.getLast().equals("home")) {
+        if (!historyList.isEmpty() && historyList.getLast().equals("home")) {
           rentingViewController.resetFilter();
         }
         historyList.add(switchTo);
