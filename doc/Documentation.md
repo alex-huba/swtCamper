@@ -46,32 +46,182 @@ The below overview contains all files and folders, each accompanied by a brief d
 
 ```plain
 SWTcamper
-├── build.gradle %% the gradle build file
-├── gradlew %% the gradle wrapper script
-├── src
-    ├── main
-    │   ├── java
-    │   │   └── swtcamper
-    │   │       ├── Main.java %% starts the application
-    │   │       ├── App.java %% defines the SpringBootApplication
-    │   │       ├── api
-                    ├── contract
-                        ├── BookingDTO.java %% Data Transfer Object of a Booking object, used to transfer booking data from View to Service
-                        ├── IBookingController %% Interface of BookingController, specifies CRUD methods for booking objects
-                        ├── IOfferController %% Interface of OfferController, specifies CRUD methods for offer objects
-                        ├── IUserController %% Interface of UserController, specifies CRUD methods for user objects
-    │   │       ├── backend %% all resources associated with the backend component
-    │   │       │   ├── entity %% represent concepts persisted in the database
-    │   │       │   ├── repository %% provides basic CRUD operations on entities, e.g., find, save, delete, etc.
-    │   │       │   ├── service %% implement the business logic and persist changes made to entities in the database using repositories
-    │   │       │   └── controller %% backend controllers receive DTOs, invoke services, and return DTOs
-    │   │       ├── frontend
-    │   │       │   └── controller %% frontend controllers map user interaction, e.g., clicking on a button, to backend controller actions, e.g., assigning a task
-    │   │       └── shared %% DTO classes shared between the frontend and backend
-    │   └── resources %% FXML view files and configuration of the application for deployment
-    └── test
-        ├── java %% unit and integration tests
-        └── resources %% test data and configuration of the application for testing
+|   build.gradle
+|   gradlew
+\---src
+    +---main
+    |   +---java
+    |   |   \---swtcamper
+    |   |       |   App.java %% defines the SpringBootApplication
+    |   |       |   Main.java %% starts the application
+    |   |       |
+    |   |       +---api
+    |   |       |   |   ModelMapper.java
+    |   |       |   |
+    |   |       |   +---contract %% Data Transfer Objects, used to transfer data between View and Service
+    |   |       |   |   |   BookingDTO.java
+    |   |       |   |   |   LoggingMessageDTO.java
+    |   |       |   |   |   OfferDTO.java
+    |   |       |   |   |   OfferedObjectTypeDTO.java
+    |   |       |   |   |   PictureDTO.java
+    |   |       |   |   |   UserDTO.java
+    |   |       |   |   |   UserReportDTO.java
+    |   |       |   |   |   UserRoleDTO.java
+    |   |       |   |   |   VehicleDTO.java
+    |   |       |   |   |   VehicleTypeDTO.java
+    |   |       |   |   |
+    |   |       |   |   \---interfaces %% Interfaces of the controller classes, specifiying CRUD and supportive methods
+    |   |       |   |           IBookingController.java
+    |   |       |   |           ILoggingController.java
+    |   |       |   |           IOfferController.java
+    |   |       |   |           IPictureController.java
+    |   |       |   |           IUserController.java
+    |   |       |   |           IUserReportController.java
+    |   |       |   |
+    |   |       |   \---controller %% Backend controllers receive DTOs, invoke services, and return DTOs
+    |   |       |           BookingController.java
+    |   |       |           HashHelper.java
+    |   |       |           LoggingController.java
+    |   |       |           OfferController.java
+    |   |       |           PictureController.java
+    |   |       |           UserController.java
+    |   |       |           UserReportController.java
+    |   |       |           ValidationHelper.java %% Offers static methods to validate user inputs
+    |   |       |
+    |   |       +---backend %% All resources associated with the backend component
+    |   |       |   +---entities %% Represent concepts, some persisted in the database
+    |   |       |   |   |   Booking.java
+    |   |       |   |   |   Filter.java %% Records chosen filter options for getting fitting offers
+    |   |       |   |   |   FuelType.java
+    |   |       |   |   |   LoggingLevel.java
+    |   |       |   |   |   LoggingMessage.java
+    |   |       |   |   |   Offer.java
+    |   |       |   |   |   OfferedObjectType.java
+    |   |       |   |   |   Picture.java
+    |   |       |   |   |   TransmissionType.java
+    |   |       |   |   |   User.java
+    |   |       |   |   |   UserReport.java
+    |   |       |   |   |   UserRole.java
+    |   |       |   |   |   Vehicle.java
+    |   |       |   |   |   VehicleType.java
+    |   |       |   |   |
+    |   |       |   |   \---interfaces
+    |   |       |   |           IBooking.java
+    |   |       |   |           IFilter.java
+    |   |       |   |           ILoggingMessage.java
+    |   |       |   |           IOffer.java
+    |   |       |   |           IPicture.java
+    |   |       |   |           IUser.java
+    |   |       |   |           IUserReport.java
+    |   |       |   |           IVehicle.java
+    |   |       |   |
+    |   |       |   +---repositories %% Provides basic CRUD operations on entities, e.g., find, save, delete, etc.
+    |   |       |   |       BookingRepository.java
+    |   |       |   |       LoggingRepository.java
+    |   |       |   |       OfferRepository.java
+    |   |       |   |       PictureRepository.java
+    |   |       |   |       UserReportRepository.java
+    |   |       |   |       UserRepository.java
+    |   |       |   |       VehicleRepository.java
+    |   |       |   |
+    |   |       |   \---services %% Implement the business logic and persist changes made to entities in the database using repositories
+    |   |       |       |   BookingService.java
+    |   |       |       |   LoggingService.java
+    |   |       |       |   OfferService.java
+    |   |       |       |   PictureService.java
+    |   |       |       |   UserReportService.java
+    |   |       |       |   UserService.java
+    |   |       |       |
+    |   |       |       \---exceptions
+    |   |       |               GenericServiceException.java
+    |   |       |               UserDoesNotExistException.java
+    |   |       |               WrongPasswordException.java
+    |   |       |
+    |   |       \---javafx
+    |   |           \---controller
+    |   |                   AccountViewController.java
+    |   |                   ApproveNewProvidersViewController.java
+    |   |                   DealHistoryViewController.java
+    |   |                   ExcludeRenterViewController.java
+    |   |                   LoginViewController.java
+    |   |                   MainViewController.java
+    |   |                   ModifyOfferViewController.java
+    |   |                   MyBookingsViewController.java
+    |   |                   MyOffersViewController.java
+    |   |                   NavigationViewController.java
+    |   |                   OfferViewController.java
+    |   |                   RegisterViewController.java
+    |   |                   RentingViewController.java
+    |   |                   ReportUserViewController.java
+    |   |                   ResetPasswordViewController.java
+    |   |
+    |   \---resources
+    |       |   application.yml
+    |       |
+    |       +---fxml
+    |       |       accountView.fxml
+    |       |       approveNewProvidersView.fxml
+    |       |       dealHistoryView.fxml
+    |       |       excludeRenterView.fxml
+    |       |       faqView.fxml
+    |       |       loginView.fxml
+    |       |       mainView.fxml
+    |       |       modifyOfferView.fxml
+    |       |       myBookingsView.fxml
+    |       |       myOffersView.fxml
+    |       |       navigationView.fxml
+    |       |       offerView.fxml
+    |       |       registerView.fxml
+    |       |       rentingView.fxml
+    |       |       reportUserView.fxml
+    |       |       resetPasswordView.fxml
+    |       |
+    |       +---icons
+    |       |       active_offers.png
+    |       |       add_photo.png
+    |       |       approvement.png
+    |       |       deal_history.png
+    |       |       delete.png
+    |       |       exclude.png
+    |       |       faq.png
+    |       |       homepage.png
+    |       |       login.png
+    |       |       logout.png
+    |       |       manage.png
+    |       |       manage_rental_conditions.png
+    |       |       manage_users.png
+    |       |       manage_vechicle_feature.png
+    |       |       my_bookings.png
+    |       |       new_offer.png
+    |       |       promote.png
+    |       |       user.png
+    |       |
+    |       +---pictures
+    |       |       campervan-wallpaper.jpg
+    |       |       logo.png
+    |       |       noImg.png
+    |       |       SWTCamper.jpg
+    |       |
+    |       \---styles
+    |               deal-history-view.css
+    |               exclude-renter-view.css
+    |               faq-view.css
+    |               global.css
+    |               login-view.css
+    |               main-view.css
+    |               modify-offer-view.css
+    |               my-bookings-view.css
+    |               my-offers-view.css
+    |               navigation-view.css
+    |               register-view.css
+    |               renting-view.css
+    |               report-user-view.css
+    |               reset-password-view.css
+    |               view-offer-view.css
+    |
+    \---test
+        +---java %% unit and integration tests
+        \---resources %% test data and configuration of the application for testing
 ```
 
 ## Architecture & Design

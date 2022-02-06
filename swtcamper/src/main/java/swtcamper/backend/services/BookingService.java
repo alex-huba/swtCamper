@@ -38,10 +38,10 @@ public class BookingService {
   }
 
   /**
-   * Get a list of all bookings that were created by a specified User
+   * Get a list of all bookings of the offers of a provider
    *
-   * @param user User to look for bookings created by him/her
-   * @return list of all bookings that were created by the user
+   * @param user Provider for whom all bookings of his/her offers shall be returned
+   * @return list of all bookings that were made of the providers offers
    */
   public List<Booking> getBookingsForUser(User user) {
     return getAllBookings()
@@ -67,9 +67,10 @@ public class BookingService {
     LocalDate startDate,
     LocalDate endDate
   ) throws GenericServiceException {
-    long newBookingId = bookingRepository
-      .save(new Booking(user, offer, startDate, endDate))
-      .getId();
+    Booking booking = bookingRepository.save(
+      new Booking(user, offer, startDate, endDate)
+    );
+    long newBookingId = booking.getId();
     loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
@@ -125,7 +126,7 @@ public class BookingService {
         throw new GenericServiceException(
           "The booking with ID " +
           bookingID +
-          " cannot be deleted since it is still active."
+          " cannot be updated since it is still active."
         );
       }
       booking.setStartDate(startDate);
@@ -165,6 +166,7 @@ public class BookingService {
     if (bookingOptional.isPresent()) {
       // Booking found so update can be made
       Booking booking = bookingOptional.get();
+
       // Update by setting active = true
       booking.setActive(true);
 
@@ -278,20 +280,20 @@ public class BookingService {
       }
     } else {
       throw new GenericServiceException(
-        "Booking not found, deletion not possible"
+        "Booking not found, deletion not possible."
       );
     }
   }
 
   /**
-   * For a specific offer, this method gathers all days on which the offer is booked (by renters) or blocked (by the offer creator). <br> That means each startDate and endDate and all days in between.
-   * *
+   * For a specific offer, this method gathers all days on which the offer is booked (by renters) or blocked (by the offer creator).<br>
+   * That means each startDate and endDate and all days in between.
    *
    * @param offerID
    * @return a list of the booked days
    * @throws GenericServiceException
    */
-  public List<LocalDate> getBookedDays(long offerID)
+  public List<LocalDate> getBookedAndBlockedDays(long offerID)
     throws GenericServiceException {
     List<LocalDate> bookedOrBlockedDays = new ArrayList<>();
 
@@ -353,11 +355,14 @@ public class BookingService {
     List<Offer> offerResponse = offerRepository.findAll();
     for (Offer offer : offerResponse) {
       try {
-        List<LocalDate> bookedDays = getBookedDays(offer.getOfferID());
+        List<LocalDate> bookedDays = getBookedAndBlockedDays(
+          offer.getOfferID()
+        );
         boolean offerAvailable = true;
         for (LocalDate requestedDay : requestedDays) {
           if (bookedDays.contains(requestedDay)) {
             offerAvailable = false;
+            break;
           }
         }
         if (offerAvailable) {
@@ -368,43 +373,6 @@ public class BookingService {
       }
     }
     return offers;
-  }
-
-  /**
-   * Checks if a booking being re-activated is still available (in case the booked period was booked by someone else while the booking was deactivated).
-   *
-   * @param offerID
-   * @param bookingID
-   * @return <b>True</b>, if the offer is still available for the initially booked period (i.e. the booking can be reactivated). <br>
-   * <b>False</b>, if the offer is not available anymore for the initially booked period (i.e. the renter has to pick new start and end dates).
-   * @throws GenericServiceException
-   */
-  public boolean offerStillAvailable(long offerID, long bookingID)
-    throws GenericServiceException {
-    Optional<Booking> bookingResponse = bookingRepository.findById(bookingID);
-    if (bookingResponse.isPresent()) {
-      Booking booking = bookingResponse.get();
-
-      LocalDate startDate = booking.getStartDate();
-      LocalDate endDate = booking.getEndDate();
-
-      List<LocalDate> requestedDays = new ArrayList<>();
-      long amountOfDays = ChronoUnit.DAYS.between(startDate, endDate);
-      for (int i = 0; i <= amountOfDays; i++) {
-        requestedDays.add(startDate.plus(i, ChronoUnit.DAYS));
-      }
-
-      List<LocalDate> bookedDays = getBookedDays(offerID);
-      for (LocalDate requestedDay : requestedDays) {
-        if (bookedDays.contains(requestedDay)) {
-          return false;
-        }
-      }
-      return true;
-    }
-    throw new GenericServiceException(
-      "Booking with following ID not found: " + bookingID
-    );
   }
 
   public void reject(long bookingID) {
