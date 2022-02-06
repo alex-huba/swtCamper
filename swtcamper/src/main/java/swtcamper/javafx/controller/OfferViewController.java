@@ -515,7 +515,7 @@ public class OfferViewController {
    */
   private void setCellFactory(DatePicker datePicker, OfferDTO offerDTO) {
     try {
-      final List<LocalDate> bookedDays = bookingService.getBookedDays(
+      final List<LocalDate> bookedDays = bookingService.getBookedAndBlockedDays(
         offerDTO.getID()
       );
       final List<LocalDate> blockedDates = offerService.getBlockedDates(
