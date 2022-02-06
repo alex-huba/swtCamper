@@ -401,7 +401,6 @@ public class BookingServiceUnitTest {
     assertFalse(bookingArgumentCaptor.getValue().isActive());
   }
 
-
   @Test(expected = GenericServiceException.class)
   public void deleteShouldThrowGSEIfBookingNotFound()
     throws GenericServiceException {
@@ -467,7 +466,9 @@ public class BookingServiceUnitTest {
     expected.add(createValidDateOfTodayPlusXDays(2));
     expected.add(createValidDateOfTodayPlusXDays(3));
     // act
-    List<LocalDate> actual = bookingServiceUnderTest.getBookedAndBlockedDays(1L);
+    List<LocalDate> actual = bookingServiceUnderTest.getBookedAndBlockedDays(
+      1L
+    );
     // assert
     assertIterableEquals(expected, actual);
   }

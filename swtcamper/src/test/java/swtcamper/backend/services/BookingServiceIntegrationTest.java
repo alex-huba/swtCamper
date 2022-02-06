@@ -1,8 +1,8 @@
 package swtcamper.backend.services;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -91,7 +91,12 @@ public class BookingServiceIntegrationTest {
       Offer offer = new Offer(user, vehicle);
       offer = offerRepository.save(offer);
       for (int j = 0; j < i; j++) {
-        Booking booking = new Booking(user, offer, LocalDate.now(), LocalDate.now().plus(1, ChronoUnit.DAYS));
+        Booking booking = new Booking(
+          user,
+          offer,
+          LocalDate.now(),
+          LocalDate.now().plus(1, ChronoUnit.DAYS)
+        );
         bookingRepository.save(booking);
       }
     }
@@ -111,8 +116,9 @@ public class BookingServiceIntegrationTest {
     // assert
     Booking actualBooking = actual.get(0);
     Booking expectedBooking = expected.get(0);
-    assertThat(actualBooking).usingRecursiveComparison()
-            .isEqualTo(expectedBooking);
+    assertThat(actualBooking)
+      .usingRecursiveComparison()
+      .isEqualTo(expectedBooking);
   }
 
   @Test
@@ -142,45 +148,56 @@ public class BookingServiceIntegrationTest {
   }
 
   @Test
-  public void createShouldPersistAndReturnNewBooking() throws GenericServiceException {
+  public void createShouldPersistAndReturnNewBooking()
+    throws GenericServiceException {
     // arrange
     User user = createUniqueUser();
     Offer offer = createUniqueOffer();
     Booking expected = new Booking(
-            user,
-            offer,
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS));
+      user,
+      offer,
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     // act
     Booking actual = bookingServiceUnderTest.create(
-            user,
-            offer,
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS));
+      user,
+      offer,
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     // assert
-    assertThat(actual).usingRecursiveComparison().ignoringFields("id", "offer").isEqualTo(expected);
+    assertThat(actual)
+      .usingRecursiveComparison()
+      .ignoringFields("id", "offer")
+      .isEqualTo(expected);
     assertEquals(offer.getOfferID(), actual.getOffer().getOfferID());
   }
 
   @Test
   public void updateShouldUpdateBooking() throws GenericServiceException {
     // arrange
-    Booking booking = bookingRepository.save(new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS))
+    Booking booking = bookingRepository.save(
+      new Booking(
+        createUniqueUser(),
+        createUniqueOffer(),
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
     );
     // act
     Booking actual = bookingServiceUnderTest.update(
-            booking.getId(),
-            LocalDate.now().plus(3, ChronoUnit.DAYS),
-            LocalDate.now().plus(4, ChronoUnit.DAYS),
-            true,
-            modelMapper.userToUserDTO(booking.getRenter())
+      booking.getId(),
+      LocalDate.now().plus(3, ChronoUnit.DAYS),
+      LocalDate.now().plus(4, ChronoUnit.DAYS),
+      true,
+      modelMapper.userToUserDTO(booking.getRenter())
     );
     // assert
-    assertEquals(actual.getStartDate(), LocalDate.now().plus(3, ChronoUnit.DAYS));
+    assertEquals(
+      actual.getStartDate(),
+      LocalDate.now().plus(3, ChronoUnit.DAYS)
+    );
     assertEquals(actual.getEndDate(), LocalDate.now().plus(4, ChronoUnit.DAYS));
     assertTrue(actual.isActive());
   }
@@ -188,14 +205,18 @@ public class BookingServiceIntegrationTest {
   @Test
   public void updateShouldThrowGSEIfBookingNotFound() {
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.update(
-              1L,
-              LocalDate.now(),
-              LocalDate.now().plus(1, ChronoUnit.DAYS),
-              false,
-              new UserDTO());
-    });
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.update(
+          1L,
+          LocalDate.now(),
+          LocalDate.now().plus(1, ChronoUnit.DAYS),
+          false,
+          new UserDTO()
+        );
+      }
+    );
     String expected = "Booking not found. Update not possible.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
@@ -205,22 +226,30 @@ public class BookingServiceIntegrationTest {
   public void updateShouldThrowGSEIfBookingIsActive() {
     // arrange
     Booking booking = new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS));
+      createUniqueUser(),
+      createUniqueOffer(),
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     booking.setActive(true);
     bookingRepository.save(booking);
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.update(
-              booking.getId(),
-              booking.getStartDate(),
-              booking.getEndDate(),
-              booking.isActive(),
-              modelMapper.userToUserDTO(booking.getRenter()));
-    });
-    String expected = "The booking with ID " + booking.getId() + " cannot be updated since it is still active.";
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.update(
+          booking.getId(),
+          booking.getStartDate(),
+          booking.getEndDate(),
+          booking.isActive(),
+          modelMapper.userToUserDTO(booking.getRenter())
+        );
+      }
+    );
+    String expected =
+      "The booking with ID " +
+      booking.getId() +
+      " cannot be updated since it is still active.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
@@ -228,15 +257,19 @@ public class BookingServiceIntegrationTest {
   @Test
   public void activateShouldSetActiveToTrue() throws GenericServiceException {
     // arrange
-    Booking booking = bookingRepository.save(new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS)));
+    Booking booking = bookingRepository.save(
+      new Booking(
+        createUniqueUser(),
+        createUniqueOffer(),
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
+    );
     // act
     Booking actual = bookingServiceUnderTest.activate(
-            booking.getId(),
-            modelMapper.userToUserDTO(booking.getRenter()));
+      booking.getId(),
+      modelMapper.userToUserDTO(booking.getRenter())
+    );
     // assert
     assertTrue(actual.isActive());
   }
@@ -244,30 +277,34 @@ public class BookingServiceIntegrationTest {
   @Test
   public void activateShouldThrowGSEIfBookingNotFound() {
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.activate(
-              1L,
-              new UserDTO());
-    });
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.activate(1L, new UserDTO());
+      }
+    );
     String expected = "Booking not found. Activation not possible.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
 
   @Test
-  public void deactivateShouldSetActiveToFalse() throws GenericServiceException {
+  public void deactivateShouldSetActiveToFalse()
+    throws GenericServiceException {
     // arrange
     Booking booking = new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS));
+      createUniqueUser(),
+      createUniqueOffer(),
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     booking.setActive(true);
     bookingRepository.save(booking);
     // act
     Booking actual = bookingServiceUnderTest.deactivate(
-            booking.getId(),
-            modelMapper.userToUserDTO(booking.getRenter()));
+      booking.getId(),
+      modelMapper.userToUserDTO(booking.getRenter())
+    );
     // assert
     assertFalse(actual.isActive());
   }
@@ -275,26 +312,34 @@ public class BookingServiceIntegrationTest {
   @Test
   public void deactivateShouldThrowGSEIfBookingNotFound() {
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.deactivate(
-              1L,
-              new UserDTO());
-    });
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.deactivate(1L, new UserDTO());
+      }
+    );
     String expected = "Booking not found. Deactivation not possible.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
 
   @Test
-  public void deleteShouldRemoveBookingFromRepository() throws GenericServiceException {
+  public void deleteShouldRemoveBookingFromRepository()
+    throws GenericServiceException {
     // arrange
-    Booking booking = bookingRepository.save(new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS)));
+    Booking booking = bookingRepository.save(
+      new Booking(
+        createUniqueUser(),
+        createUniqueOffer(),
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
+    );
     // act
-    bookingServiceUnderTest.delete(booking.getId(), modelMapper.userToUserDTO(booking.getRenter()));
+    bookingServiceUnderTest.delete(
+      booking.getId(),
+      modelMapper.userToUserDTO(booking.getRenter())
+    );
     // assert
     assertFalse(bookingRepository.findById(booking.getId()).isPresent());
   }
@@ -303,19 +348,27 @@ public class BookingServiceIntegrationTest {
   public void deleteShouldThrowGSEIfBookingIsActive() {
     // arrange
     Booking booking = new Booking(
-            createUniqueUser(),
-            createUniqueOffer(),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS));
+      createUniqueUser(),
+      createUniqueOffer(),
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     booking.setActive(true);
     bookingRepository.save(booking);
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.delete(
-              booking.getId(),
-              modelMapper.userToUserDTO(booking.getRenter()));
-    });
-    String expected = "The booking with ID " + booking.getId() + " cannot be deleted since it is still active.";
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.delete(
+          booking.getId(),
+          modelMapper.userToUserDTO(booking.getRenter())
+        );
+      }
+    );
+    String expected =
+      "The booking with ID " +
+      booking.getId() +
+      " cannot be deleted since it is still active.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
@@ -323,58 +376,76 @@ public class BookingServiceIntegrationTest {
   @Test
   public void deleteShouldThrowGSEIfBookingNotFound() {
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.delete(
-              1L,
-              new UserDTO());
-    });
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.delete(1L, new UserDTO());
+      }
+    );
     String expected = "Booking not found, deletion not possible.";
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
 
   @Test
-  public void deleteShouldRemoveBookingFromOffer() throws GenericServiceException{
+  public void deleteShouldRemoveBookingFromOffer()
+    throws GenericServiceException {
     // arrange
     Offer offer = createUniqueOffer();
-    Booking booking = bookingRepository.save(new Booking(
-            createUniqueUser(),
-            offer,
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS)));
+    Booking booking = bookingRepository.save(
+      new Booking(
+        createUniqueUser(),
+        offer,
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
+    );
     // act
-    bookingServiceUnderTest.delete(booking.getId(), modelMapper.userToUserDTO(booking.getRenter()));
+    bookingServiceUnderTest.delete(
+      booking.getId(),
+      modelMapper.userToUserDTO(booking.getRenter())
+    );
     // assert
-    Offer offerWithoutBooking = offerRepository.findById(offer.getOfferID()).get();
+    Offer offerWithoutBooking = offerRepository
+      .findById(offer.getOfferID())
+      .get();
     assertFalse(offerWithoutBooking.getBookings().contains(booking.getId()));
   }
 
   @Test
-  public void getBookedAndBlockedDaysShouldReturnAllBookedAndBlockedDays() throws GenericServiceException{
+  public void getBookedAndBlockedDaysShouldReturnAllBookedAndBlockedDays()
+    throws GenericServiceException {
     // arrange
     Offer offer = createUniqueOffer();
     ArrayList<Pair> blockedDates = new ArrayList<>();
-    Pair pair = new Pair(LocalDate.now(), LocalDate.now().plus(1, ChronoUnit.DAYS));
+    Pair pair = new Pair(
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
+    );
     blockedDates.add(pair);
     offer.setBlockedDates(blockedDates);
-    Booking booking = bookingRepository.save(new Booking(
-            createUniqueUser(),
-            offer,
-            LocalDate.now().plus(2, ChronoUnit.DAYS),
-            LocalDate.now().plus(3, ChronoUnit.DAYS)));
+    Booking booking = bookingRepository.save(
+      new Booking(
+        createUniqueUser(),
+        offer,
+        LocalDate.now().plus(2, ChronoUnit.DAYS),
+        LocalDate.now().plus(3, ChronoUnit.DAYS)
+      )
+    );
     offer.getBookings().add(booking.getId());
     Offer modifiedOffer = offerRepository.save(offer);
     List<LocalDate> expected = new ArrayList<>();
     Collections.addAll(
-            expected,
-            LocalDate.now().plus(2, ChronoUnit.DAYS),
-            LocalDate.now().plus(3, ChronoUnit.DAYS),
-            LocalDate.now(),
-            LocalDate.now().plus(1, ChronoUnit.DAYS)
-
+      expected,
+      LocalDate.now().plus(2, ChronoUnit.DAYS),
+      LocalDate.now().plus(3, ChronoUnit.DAYS),
+      LocalDate.now(),
+      LocalDate.now().plus(1, ChronoUnit.DAYS)
     );
     // act
-    List<LocalDate> actual = bookingServiceUnderTest.getBookedAndBlockedDays(modifiedOffer.getOfferID());
+    List<LocalDate> actual = bookingServiceUnderTest.getBookedAndBlockedDays(
+      modifiedOffer.getOfferID()
+    );
     // assert
     assertEquals(expected, actual);
   }
@@ -382,51 +453,65 @@ public class BookingServiceIntegrationTest {
   @Test
   public void getBookedAndBlockedDaysShouldThrowGSEIfOfferNotFound() {
     // act & assert
-    Exception exception = assertThrows(GenericServiceException.class, () -> {
-      bookingServiceUnderTest.getBookedAndBlockedDays(1L);
-    });
+    Exception exception = assertThrows(
+      GenericServiceException.class,
+      () -> {
+        bookingServiceUnderTest.getBookedAndBlockedDays(1L);
+      }
+    );
     String expected = "Offer with following ID not found: " + 1L;
     String actual = exception.getMessage();
     assertEquals(expected, actual);
   }
 
   @Test
-  public void getAvailableOffersShouldReturnAllOffersIfArgumentsAreNull() throws GenericServiceException {
+  public void getAvailableOffersShouldReturnAllOffersIfArgumentsAreNull()
+    throws GenericServiceException {
     // arrange
     Offer offer = createUniqueOffer();
     Long expected = offer.getOfferID();
     // act
-    List<Offer> availableOffers = bookingServiceUnderTest.getAvailableOffers(null, null);
+    List<Offer> availableOffers = bookingServiceUnderTest.getAvailableOffers(
+      null,
+      null
+    );
     Long actual = availableOffers.get(0).getOfferID();
     // assert
     assertEquals(expected, actual);
   }
 
   @Test
-  public void getAvailableOffersShouldReturnAllAvailableOffers() throws GenericServiceException {
+  public void getAvailableOffersShouldReturnAllAvailableOffers()
+    throws GenericServiceException {
     // arrange
     Offer availableOffer = createUniqueOffer();
     Offer nonAvailableOffer = createUniqueOffer();
     Booking booking = bookingRepository.save(
-            new Booking(
-              createUniqueUser(),
-              nonAvailableOffer,
-              LocalDate.now(),
-              LocalDate.now().plus(1, ChronoUnit.DAYS)
-            )
+      new Booking(
+        createUniqueUser(),
+        nonAvailableOffer,
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
     );
     ArrayList<Long> bookings = new ArrayList<>();
     bookings.add(booking.getId());
     nonAvailableOffer.setBookings(bookings);
     ArrayList<Pair> blockedDates = new ArrayList<>();
-    Pair pair = new Pair(LocalDate.now().plus(2, ChronoUnit.DAYS), LocalDate.now().plus(3, ChronoUnit.DAYS));
+    Pair pair = new Pair(
+      LocalDate.now().plus(2, ChronoUnit.DAYS),
+      LocalDate.now().plus(3, ChronoUnit.DAYS)
+    );
     blockedDates.add(pair);
     nonAvailableOffer.setBlockedDates(blockedDates);
     offerRepository.save(availableOffer);
     offerRepository.save(nonAvailableOffer);
     Long expected = availableOffer.getOfferID();
     // act
-    List<Offer> availableOffers = bookingServiceUnderTest.getAvailableOffers(LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(2, ChronoUnit.DAYS));
+    List<Offer> availableOffers = bookingServiceUnderTest.getAvailableOffers(
+      LocalDate.now().plus(1, ChronoUnit.DAYS),
+      LocalDate.now().plus(2, ChronoUnit.DAYS)
+    );
     Long actual = availableOffers.get(0).getOfferID();
     // assert
     assertEquals(expected, actual);
@@ -436,17 +521,16 @@ public class BookingServiceIntegrationTest {
   public void rejectShouldSetRejectedToTrue() {
     // arrange
     Booking booking = bookingRepository.save(
-            new Booking(
-                    createUniqueUser(),
-                    createUniqueOffer(),
-                    LocalDate.now(),
-                    LocalDate.now().plus(1, ChronoUnit.DAYS)
-            )
+      new Booking(
+        createUniqueUser(),
+        createUniqueOffer(),
+        LocalDate.now(),
+        LocalDate.now().plus(1, ChronoUnit.DAYS)
+      )
     );
     // act
     bookingServiceUnderTest.reject(booking.getId());
     // assert
     assertTrue(bookingRepository.findById(booking.getId()).get().isRejected());
   }
-
 }

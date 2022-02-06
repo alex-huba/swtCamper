@@ -355,7 +355,9 @@ public class BookingService {
     List<Offer> offerResponse = offerRepository.findAll();
     for (Offer offer : offerResponse) {
       try {
-        List<LocalDate> bookedDays = getBookedAndBlockedDays(offer.getOfferID());
+        List<LocalDate> bookedDays = getBookedAndBlockedDays(
+          offer.getOfferID()
+        );
         boolean offerAvailable = true;
         for (LocalDate requestedDay : requestedDays) {
           if (bookedDays.contains(requestedDay)) {

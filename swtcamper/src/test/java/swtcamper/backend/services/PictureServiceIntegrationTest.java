@@ -21,92 +21,92 @@ import swtcamper.backend.repositories.PictureRepository;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class PictureServiceIntegrationTest {
 
-    @Autowired
-    private PictureRepository pictureRepository;
+  @Autowired
+  private PictureRepository pictureRepository;
 
-    @Autowired
-    private PictureService pictureService;
+  @Autowired
+  private PictureService pictureService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+  @Autowired
+  private ModelMapper modelMapper;
 
-    @Test
-    public void getPicturesForVehicleShouldReturnCorrectPictures() {
-        // creating vehicle under test
-        Vehicle vehicle = new Vehicle();
-        vehicle.setVehicleID(123);
+  @Test
+  public void getPicturesForVehicleShouldReturnCorrectPictures() {
+    // creating vehicle under test
+    Vehicle vehicle = new Vehicle();
+    vehicle.setVehicleID(123);
 
-        // creating picture for vehicle and saving it in repo
-        Picture picture = new Picture();
-        picture.setVehicleID(vehicle.getVehicleID());
-        picture.setPath("/123/abc");
-        picture.setPictureID(8008);
-        pictureRepository.save(picture);
+    // creating picture for vehicle and saving it in repo
+    Picture picture = new Picture();
+    picture.setVehicleID(vehicle.getVehicleID());
+    picture.setPath("/123/abc");
+    picture.setPictureID(8008);
+    pictureRepository.save(picture);
 
-        // testing method of get-method from pictureService
-        List<PictureDTO> list = pictureService.getPicturesForVehicle(
-                vehicle.getVehicleID()
-        );
+    // testing method of get-method from pictureService
+    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+      vehicle.getVehicleID()
+    );
 
-        // checking whether the operation was successful
-        assertEquals(1, list.size());
-        assertEquals(vehicle.getVehicleID(), list.get(0).getVehicleID());
-    }
+    // checking whether the operation was successful
+    assertEquals(1, list.size());
+    assertEquals(vehicle.getVehicleID(), list.get(0).getVehicleID());
+  }
 
-    @Test
-    public void createPictureShouldStorePictureInDatabase() {
-        // creating pictureDTO under test
-        PictureDTO pictureDTO = new PictureDTO(8008, 123, "/123/abc");
+  @Test
+  public void createPictureShouldStorePictureInDatabase() {
+    // creating pictureDTO under test
+    PictureDTO pictureDTO = new PictureDTO(8008, 123, "/123/abc");
 
-        //testing method create
-        pictureService.create(pictureDTO);
+    //testing method create
+    pictureService.create(pictureDTO);
 
-        // checking whether the operation was successful
-        List<PictureDTO> list = pictureService.getPicturesForVehicle(
-                pictureDTO.getVehicleID()
-        );
-        assertEquals(1, list.size());
-        assertEquals(pictureDTO.getVehicleID(), list.get(0).getVehicleID());
-    }
+    // checking whether the operation was successful
+    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+      pictureDTO.getVehicleID()
+    );
+    assertEquals(1, list.size());
+    assertEquals(pictureDTO.getVehicleID(), list.get(0).getVehicleID());
+  }
 
-    @Test
-    public void deletePictureByIdShouldDeletePictureByGivenId() {
-        // creating picture under test
-        Vehicle vehicle = new Vehicle();
-        vehicle.setVehicleID(123);
+  @Test
+  public void deletePictureByIdShouldDeletePictureByGivenId() {
+    // creating picture under test
+    Vehicle vehicle = new Vehicle();
+    vehicle.setVehicleID(123);
 
-        PictureDTO pictureDTO = new PictureDTO(
-                8008,
-                vehicle.getVehicleID(),
-                "/123/abc"
-        );
-        pictureService.create(pictureDTO);
-        List<PictureDTO> list = pictureService.getPicturesForVehicle(
-                pictureDTO.getVehicleID()
-        );
+    PictureDTO pictureDTO = new PictureDTO(
+      8008,
+      vehicle.getVehicleID(),
+      "/123/abc"
+    );
+    pictureService.create(pictureDTO);
+    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+      pictureDTO.getVehicleID()
+    );
 
-        //testing method delete
-        pictureService.deletePictureById(list.get(0).getPictureID());
-        List<PictureDTO> emptyList = pictureService.getPicturesForVehicle(
-                pictureDTO.getVehicleID()
-        );
+    //testing method delete
+    pictureService.deletePictureById(list.get(0).getPictureID());
+    List<PictureDTO> emptyList = pictureService.getPicturesForVehicle(
+      pictureDTO.getVehicleID()
+    );
 
-        // checking whether the operation was successful
-        assertEquals(0, emptyList.size());
-    }
+    // checking whether the operation was successful
+    assertEquals(0, emptyList.size());
+  }
 
-    @Test
-    public void pictureServiceShouldReturnEmptyListIfThereAreNoPicturesForGivenVehicle() {
-        //creating random vehicle without assigned pictures
-        Vehicle vehicle = new Vehicle();
-        vehicle.setVehicleID(123);
+  @Test
+  public void pictureServiceShouldReturnEmptyListIfThereAreNoPicturesForGivenVehicle() {
+    //creating random vehicle without assigned pictures
+    Vehicle vehicle = new Vehicle();
+    vehicle.setVehicleID(123);
 
-        // trying to fetch pictures for the given test-vehicle
-        List<PictureDTO> list = pictureService.getPicturesForVehicle(
-                vehicle.getVehicleID()
-        );
+    // trying to fetch pictures for the given test-vehicle
+    List<PictureDTO> list = pictureService.getPicturesForVehicle(
+      vehicle.getVehicleID()
+    );
 
-        //checking whether method works fine
-        assertTrue(list.isEmpty());
-    }
+    //checking whether method works fine
+    assertTrue(list.isEmpty());
+  }
 }
