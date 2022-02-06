@@ -18,7 +18,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.Booking;
@@ -32,7 +31,7 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @RunWith(MockitoJUnitRunner.class)
 public class BookingServiceUnitTest {
 
-  // ------------- Mocking -------------
+  // ------------- MOCKING -------------
 
   @InjectMocks
   private BookingService bookingServiceUnderTest;
@@ -42,9 +41,6 @@ public class BookingServiceUnitTest {
 
   @Mock
   private BookingRepository bookingRepository;
-
-  @Mock
-  private ModelMapper modelMapper;
 
   @Mock
   private LoggingController loggingController;
@@ -116,10 +112,6 @@ public class BookingServiceUnitTest {
       .findById(any());
   }
 
-  public void mockBookingGetId(Booking booking) {
-    doReturn(1L).when(booking).getId();
-  }
-
   public void mockFindAllBookingsByIdReturnsListOf1Booking() {
     List<Booking> bookings = new ArrayList<>();
     bookings.add(createValidBooking());
@@ -133,7 +125,7 @@ public class BookingServiceUnitTest {
   // Offer Stuff
 
   public Offer createValidOffer() {
-    Offer offer = new Offer(
+    return new Offer(
       new User(),
       new Vehicle(),
       "title",
@@ -144,7 +136,6 @@ public class BookingServiceUnitTest {
       new ArrayList<String>(),
       new ArrayList<Pair>()
     );
-    return offer;
   }
 
   public Offer createValidOfferWith1Booking() {
@@ -194,25 +185,20 @@ public class BookingServiceUnitTest {
   // User stuff
 
   public User createEmptyUser() {
-    User user = new User();
-    return user;
+    return new User();
   }
 
   public UserDTO createEmptyUserDTO() {
-    UserDTO userDTO = new UserDTO();
-    return userDTO;
+    return new UserDTO();
   }
 
   // LocalDates
 
   public LocalDate createValidDateOfTodayPlusXDays(int x) {
-    LocalDate endDate = LocalDate.now().plus(x, ChronoUnit.DAYS);
-    return endDate;
+    return LocalDate.now().plus(x, ChronoUnit.DAYS);
   }
 
-  // ------------- Testing -------------
-
-  // getAllBookings()
+  // ------------- TESTING -------------
 
   @Test
   public void getAllBookingsShouldReturnAllBookings() {
@@ -224,8 +210,6 @@ public class BookingServiceUnitTest {
     // assert
     assertEquals(expected, actual);
   }
-
-  // getBookingsForUser
 
   @Test
   public void getBookingsForUserShouldReturnBookingsOfUser() {
@@ -252,13 +236,6 @@ public class BookingServiceUnitTest {
     assertEquals(1L, (long) actual.get(0).getOffer().getCreator().getId());
   }
 
-  // create()
-
-  /**
-   * Checks if the create method calls bookingRepository.save() with the given arguments
-   *
-   * @throws GenericServiceException
-   */
   @Test
   public void createShouldGiveBookingToRepository()
     throws GenericServiceException {
@@ -279,7 +256,7 @@ public class BookingServiceUnitTest {
       createValidDateOfTodayPlusXDays(1)
     );
     // act
-    Booking actual = bookingServiceUnderTest.create(
+    bookingServiceUnderTest.create(
       user,
       offer,
       createValidDateOfTodayPlusXDays(0),
@@ -320,8 +297,6 @@ public class BookingServiceUnitTest {
       createValidDateOfTodayPlusXDays(1)
     );
   }
-
-  // update()
 
   @Test(expected = GenericServiceException.class)
   public void updateShouldThrowGSEIfOfferNotPresent()
@@ -375,10 +350,8 @@ public class BookingServiceUnitTest {
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
     assertEquals(newStartDate, bookingArgumentCaptor.getValue().getStartDate());
     assertEquals(newEndDate, bookingArgumentCaptor.getValue().getEndDate());
-    assertEquals(true, bookingArgumentCaptor.getValue().isActive());
+    assertTrue(bookingArgumentCaptor.getValue().isActive());
   }
-
-  //activate()
 
   @Test(expected = GenericServiceException.class)
   public void activateShouldThrowGSEIfBookingNotFound()
@@ -401,10 +374,8 @@ public class BookingServiceUnitTest {
     bookingServiceUnderTest.activate(2L, createEmptyUserDTO());
     // assert
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
-    assertEquals(true, bookingArgumentCaptor.getValue().isActive());
+    assertTrue(bookingArgumentCaptor.getValue().isActive());
   }
-
-  // deactivate()
 
   @Test(expected = GenericServiceException.class)
   public void deactivateShouldThrowGSEIfBookingNotFound()
@@ -427,10 +398,9 @@ public class BookingServiceUnitTest {
     bookingServiceUnderTest.deactivate(1L, new UserDTO());
     // assert
     verify(bookingRepository).save(bookingArgumentCaptor.capture());
-    assertEquals(false, bookingArgumentCaptor.getValue().isActive());
+    assertFalse(bookingArgumentCaptor.getValue().isActive());
   }
 
-  // delete()
 
   @Test(expected = GenericServiceException.class)
   public void deleteShouldThrowGSEIfBookingNotFound()
@@ -473,13 +443,8 @@ public class BookingServiceUnitTest {
     bookingServiceUnderTest.delete(1L, new UserDTO());
     // assert
     verify(offerRepository).save(offerArgumentCaptor.capture());
-    assertEquals(
-      false,
-      offerArgumentCaptor.getValue().getBookings().contains(1L)
-    );
+    assertFalse(offerArgumentCaptor.getValue().getBookings().contains(1L));
   }
-
-  // getBookedAndBlockedDays()
 
   @Test(expected = GenericServiceException.class)
   public void getBookedDaysShouldThrowGSEIfOfferNotFound()
