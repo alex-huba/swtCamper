@@ -124,6 +124,9 @@ Als Lösung haben wir deswegen ein eigenes Repository für die Bilder erstellt. 
 Durch diesen Ansatz können Bilder leider nur lokal gespeichert werden und funktierien nicht in einem verteilten System. Da unsere Anwendung allerdings sowieso nur die Anforderung hatte, lokal zu laufen, war das für diesen Rahmen in Ordnung.
 
 \paragraph{User}
+Die Userklasse besitzt neben einer automatisch erzeugten ID außerdem Attribute für den Nutzernamen, Vor- und Nachnamen, Emailadresse, Telefonnummer und Passwort. Das Attribut userRole gibt an welche Rolle der Nutzer bei Nutzung der Anwendung einnimmt, und welche Befugnisse er dadurch hat (vgl. View-Abbildung in \ref{fig:architecture}). Damit zusammenhängend gibt es außerdem das Attribut enabled, das nur auf false gesetzt wird wenn sich ein Nutzer als Provider neu registriert, da es eine Aforderung war, dass diese Personen zuerst geprüft werden sollen bevor sie neue Anzeigen erstellen können. Solange ein Nutzer die Rolle des Providers hat und enabled auf false steht, hat er die gleichen Befugnisse und Möglichkeiten wie die Nutzerrolle Renter. \\
+
+
 % TODO
 Long id
 String username
