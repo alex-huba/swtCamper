@@ -1,7 +1,0 @@
-\section{Architecture \& Design}
-\label{sec:architecture_design}
-
-\emph{\textbf{Approximate weighing on mark:} 20\%}							\\
-\emph{\textbf{Approximate expected report length:} 5--8 pages of text}
-
-\emph{Describe and justify both the architecture and the design of your software. Illustrate its architecture and design using appropriate UML diagrams. Motivate its architecture and design in the light of design principles and possible alternatives. Also highlight and justify any use of architectural patterns and design patterns. Pay special attention to detailing your database schema, and justify all design decisions taken.}

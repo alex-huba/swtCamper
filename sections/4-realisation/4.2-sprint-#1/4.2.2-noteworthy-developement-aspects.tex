@@ -1,1 +1,17 @@
-\emph{Describe and justify the development approach taken and the artefacts produced in this sprint (e.g., prototypes).  State any peculiarities of this sprint, such as peculiarities  regarding (i)~adopted development practices, (ii)~encountered obstacles, (iii)~questions that arose and needed clarification possibly from the client, or (iv)~important aspects regarding --- or changes to --- your software architecture, your algorithms or your techniques applied to solve a technical problem.}
+In this sprint we have broken down the functionalities far too much into their individual parts (e.g. each controller or view individually named); this meant that team members could not work independently on their issues because they had to wait for others who had the same problem themselves. This 'deadlock-like' condition was also an important part of our retrospective to avoid this mistake in future sprints. \\
+You can also see that in addition to the user stories, work was also carried out on issues that were either improvements from Sprint 0 or that are important for the project itself (such as the design of a prototype or the redesign of our project plan). \\
+The move from the \textit{xTasks} skeleton to \textit{swtcamper}, as already mentioned in the (now old) Sprint Goal, has also been processed. \\
+Unfortunately, the order in which we carried out the merge requests afterwards led to serious problems that we will also take with us into the next sprint and work on there. The better solution probably would have been to carry out all merge requests first and only then to move to \textit{swtcamper}. We did it the other way around.
+
+\paragraph{Problems that occured and how we solved them}
+
+\begin{itemize}
+    \item Docker did not run on Windows 7 $\rightarrow$ the affected team member worked on other tasks first and bought a new PC by now
+    \item \textit{MainController} cannot be implemented without the other Controllers $\rightarrow$ good and early conversation in the team made it possible anyway
+    \item IntelliJ had problems with JavaFX $\rightarrow$ the help desk found out that this particular error came from the use of a wrong
+    sub folder
+    \item Correct usage of branches $\rightarrow$ a team member gave the others a quick introduction into Gitlab's 'Create Merge Request' from within the issue itself and also showed how to work on Merge Requests
+    \item how to upload pictures and save pictures since the database complained about the size of the stored object? $\rightarrow$ after consultation with the client it was ok to not upload the pictures but just save their paths
+    \item IntelliJ shows Class as not existent - even if it is $\rightarrow$ This problem is not fixed until today but since it's only from IntelliJ's linter it works anyway, but stays annoying
+    \item 'Merge Hell' – we should have done 'clear codebase to skeleton' after merging everything, not started with everything else and merge it into new \textit{/swtcamper/} $\rightarrow$ As already stated, this problem came with us into Sprint 2 and had to be worked on further, but we could solve it and avoided it from there on mostly
+\end{itemize}
