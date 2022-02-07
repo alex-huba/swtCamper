@@ -56,7 +56,7 @@ public class LoggingServiceIntegrationTest {
     );
 
     assertEquals(1, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(0).getTime());
     assertEquals(
       LoggingLevel.INFO,
       loggingServiceUnterTest.getAllLogMessages().get(0).getLogLevel()
@@ -75,7 +75,7 @@ public class LoggingServiceIntegrationTest {
     );
 
     assertEquals(2, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(1).getTime());
     assertEquals(
       LoggingLevel.WARNING,
       loggingServiceUnterTest.getAllLogMessages().get(1).getLogLevel()
