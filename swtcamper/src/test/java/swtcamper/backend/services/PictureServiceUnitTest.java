@@ -13,12 +13,15 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.backend.entities.Picture;
 import swtcamper.backend.repositories.PictureRepository;
 
 @RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class PictureServiceUnitTest {
 
   @InjectMocks

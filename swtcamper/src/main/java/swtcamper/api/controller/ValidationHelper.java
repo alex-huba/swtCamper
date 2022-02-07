@@ -36,13 +36,53 @@ public class ValidationHelper {
   }
 
   public static boolean checkOfferTitle(String toCheck) {
-    return !toCheck.isEmpty() && lengthOverFive(toCheck) && noSpecialCharacters(toCheck);
+    return (
+      !toCheck.isEmpty() &&
+      lengthOverFive(toCheck) &&
+      noSpecialCharacters(toCheck)
+    );
   }
 
-  public static boolean noSpecialCharacters (String toCheck) {
-    List<String> specialChars = Arrays.asList(new String[]{
-            "~","´","+","#","'","*","<",">","|","@","$","€","%","&", "§","","^",":",";",
-            "-","_","=","/","(", ")", "{","[","]","}","?","!",".",",","´","°"});
+  public static boolean noSpecialCharacters(String toCheck) {
+    List<String> specialChars = Arrays.asList(
+      new String[] {
+        "~",
+        "´",
+        "+",
+        "#",
+        "'",
+        "*",
+        "<",
+        ">",
+        "|",
+        "@",
+        "$",
+        "€",
+        "%",
+        "&",
+        "§",
+        "",
+        "^",
+        ":",
+        ";",
+        "-",
+        "_",
+        "=",
+        "/",
+        "(",
+        ")",
+        "{",
+        "[",
+        "]",
+        "}",
+        "?",
+        "!",
+        ".",
+        ",",
+        "´",
+        "°",
+      }
+    );
     for (String specialChar : specialChars) {
       if (toCheck.contains(specialChar)) {
         return false;
