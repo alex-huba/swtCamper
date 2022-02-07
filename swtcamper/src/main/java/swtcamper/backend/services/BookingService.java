@@ -67,9 +67,10 @@ public class BookingService {
     LocalDate startDate,
     LocalDate endDate
   ) throws GenericServiceException {
-    long newBookingId = bookingRepository
-      .save(new Booking(user, offer, startDate, endDate))
-      .getId();
+    Booking booking = bookingRepository.save(
+      new Booking(user, offer, startDate, endDate)
+    );
+    long newBookingId = booking.getId();
     loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
