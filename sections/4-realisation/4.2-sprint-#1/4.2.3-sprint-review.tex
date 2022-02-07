@@ -1,1 +1,20 @@
-\emph{Describe the product increment produced in this sprint. Compare the achieved increment with the sprint goal and the user stories that were chosen for this sprint. Give a brief summary on your team's retrospective, including changes to the product backlog and also to the development process and/or techniques that you installed after the sprint in order to overcome any identified obstacle.}
+\paragraph{Describe the product increment produced in this sprint}
+
+When starting the application, only two of the visible tabs can be clicked on and used: on the one hand, 'Login' and on the other hand, 'Rent a Camper'. The latter has not yet been implemented and the login is implemented more demonstratively than functional: there is only one 'Login' button which, after clicking on it, activates the other tabs 'My Offers' and 'Place Offer'. \\
+All offers that have already been placed can be viewed in a list under 'My Offers'. Above that are the buttons 'Place Offer', 'View Offer', 'Update Offer' and 'Delete Offer'. 
+
+Via 'Place Offer' the user is automatically taken to the tab of the same name. Here he can enter information on the offer (title, price per day, location, availability) and on the vehicle itself (vehicle type, make, model, year of construction). For the latter, the user can also select features and upload images. At this point in time, only the title and price per day can be saved in the increment. \\
+Using the 'Place Offer' button, the user can then return to 'My Offers' where the new offer is listed accordingly. \\
+To change the offer, you can click on the 'Update Offer' button, which activates the tab of the same name and takes you to it. The same form can be seen here as on 'Place Offer', only this time the relevant fields are already filled out and ready to be changed. Once this is done, the 'Update Offer' button can be clicked, which brings the user back to 'My Offers'. The 'Update Offer' tab is now also deactivated again. \\
+Via the 'View Offer' button, the user receives an info alert at this point in time, in which the relevant information (including the ID from the database) can be seen. The same function is also hidden behind a double-click on an offer. \\
+With the last button 'Delete Offer', the selected offer is deleted from the database after a request in the form of a warning alert. If no offer is selected and the user presses one of the buttons, he will also receive an alert with the instruction to select an offer first.
+
+\paragraph{Compare the achieved increment with the sprint goal and the user stories that were chosen for this sprint}
+
+The sprint goal was achieved (for the most part) since new offers could be created (and saved in the database), displayed in a list, updated and deleted. In addition, our Blast Off was updated (w.r.t. the feedback we got from the last Review Meeting). \\
+The only thing that has not yet been fully achieved is the move to swtcamper, or has not yet been fully merged with the functionalities.
+
+\paragraph{Give a brief summary on your team's retrospective, including changes to the product backlog}
+
+We learned from the customer that our menu navigation in the prototype is still too complicated (too few links), that a user should be able to have several roles at the same time and that an offer should not be deletable if it is already rented out (or communicate that to the User somehow). \\
+We learned from the client that our sprint goal should direct more joy to the customer (which we tried to make better at the beginning of this chapter) and that quality assurance is not only possible via code, but can and should also be applied through tests/ methods, such as usability testing, before implementation.
