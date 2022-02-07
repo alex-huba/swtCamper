@@ -1,12 +1,9 @@
 package swtcamper.backend.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.api.controller.HashHelper;
-import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
@@ -16,6 +13,10 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 import swtcamper.backend.services.exceptions.WrongPasswordException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -23,7 +24,7 @@ public class UserService {
   private UserRepository userRepository;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
   private HashHelper hashHelper;
@@ -64,21 +65,19 @@ public class UserService {
     user.setPassword(HashHelper.hashIt(password));
     user.setUserRole(userRole);
     user.setEnabled(enabled);
-    userRepository.save(user);
+    User newUser = userRepository.save(user);
 
-    // no is-present check because userRepository.save(user) will have definitely created this user
-    long newId = userRepository.findByUsername(username).get().getId();
     loggingController.log(
       new LoggingMessage(
         LoggingLevel.INFO,
         String.format(
           "New user with ID %s and username '%s' registered.",
-          newId,
+          newUser.getId(),
           username
         )
       )
     );
-    return userRepository.findById(newId).get();
+    return newUser;
   }
 
   /**
@@ -256,13 +255,11 @@ public class UserService {
     // Check if username and password are matching
     String hashedPassword = HashHelper.hashIt(password);
     if (userRepository.existsByUsernameAndPassword(username, hashedPassword)) {
-      User user;
+      User user = new User();
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
         this.setLoggedInUser(user);
-      } else {
-        throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
       loggingController.log(

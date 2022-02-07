@@ -23,7 +23,11 @@ import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.BookingDTO;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.*;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
@@ -31,6 +35,7 @@ import swtcamper.backend.entities.Vehicle;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
+import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 
 @Component
 public class OfferViewController {
@@ -38,122 +43,122 @@ public class OfferViewController {
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
 
   @FXML
-  public HBox pictureHorizontHBox;
+  private HBox pictureHorizontHBox;
 
   @FXML
-  public Label vehicleTypeLabel;
+  private Label vehicleTypeLabel;
 
   @FXML
-  public Label brandLabel;
+  private Label brandLabel;
 
   @FXML
-  public Label modelLabel;
+  private Label modelLabel;
 
   @FXML
-  public Label constructionLabel;
+  private Label constructionLabel;
 
   @FXML
-  public Label priceLabel;
+  private Label priceLabel;
 
   @FXML
-  public Label widthLabel;
+  private Label widthLabel;
 
   @FXML
-  public Label lengthLabel;
+  private Label lengthLabel;
 
   @FXML
-  public Label heightLabel;
+  private Label heightLabel;
 
   @FXML
-  public Label engineLabel;
+  private Label engineLabel;
 
   @FXML
-  public Label transmissionLabel;
+  private Label transmissionLabel;
 
   @FXML
-  public Label roofTentLabel;
+  private Label roofTentLabel;
 
   @FXML
-  public Label roofRackLabel;
+  private Label roofRackLabel;
 
   @FXML
-  public Label bikeRackLabel;
+  private Label bikeRackLabel;
 
   @FXML
-  public Label showerLabel;
+  private Label showerLabel;
 
   @FXML
-  public Label toiletLabel;
+  private Label toiletLabel;
 
   @FXML
-  public Label kitchenUnitLabel;
+  private Label kitchenUnitLabel;
 
   @FXML
-  public Label fridgeLabel;
+  private Label fridgeLabel;
 
   @FXML
-  public Label contactLabel;
+  private Label contactLabel;
 
   @FXML
-  public Label locationLabel;
+  private Label locationLabel;
 
   @FXML
-  public Label particularitiesLabel;
+  private Label particularitiesLabel;
 
   @FXML
-  public VBox rentalConditionsVBox;
+  private VBox rentalConditionsVBox;
 
   @FXML
-  public Label seatsLabel;
+  private Label seatsLabel;
 
   @FXML
-  public Label bedsLabel;
+  private Label bedsLabel;
 
   @FXML
-  public Label titleLabel;
+  private Label titleLabel;
 
   @FXML
-  public Button modifyButton;
+  private Button modifyButton;
 
   @FXML
-  public Button bookingButton;
+  private Button bookingButton;
 
   @FXML
-  public Button promotingButton;
+  private Button promotingButton;
 
   @FXML
-  public Label dateLabel;
+  private Label dateLabel;
 
   @FXML
-  public DatePicker startDatePicker;
+  private DatePicker startDatePicker;
 
   @FXML
-  public DatePicker endDatePicker;
+  private DatePicker endDatePicker;
 
   @FXML
-  public HBox rentHBox;
+  private HBox rentHBox;
 
   @FXML
-  public Label rentLabel;
+  private Label rentLabel;
 
   @FXML
-  public Button abortBookingRequestBtn;
+  private Button abortBookingRequestBtn;
 
-  public OfferDTO viewedOffer;
-  LongStringConverter longStringConverter = new LongStringConverter();
-  DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
+  private OfferDTO viewedOffer;
+  private final LongStringConverter longStringConverter = new LongStringConverter();
+  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ValidationHelper validationHelper;
@@ -165,7 +170,7 @@ public class OfferViewController {
   private ModifyOfferViewController modifyOfferViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private BookingService bookingService;
@@ -488,7 +493,7 @@ public class OfferViewController {
               startDatePicker.getValue(),
               endDatePicker.getValue()
             );
-          } catch (GenericServiceException e) {
+          } catch (GenericServiceException | UserDoesNotExistException e) {
             mainViewController.handleExceptionMessage(e.getMessage());
           }
           checkMode(true);

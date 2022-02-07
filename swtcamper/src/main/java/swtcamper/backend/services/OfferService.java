@@ -1,32 +1,30 @@
 package swtcamper.backend.services;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.LoggingController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
 import swtcamper.backend.repositories.VehicleRepository;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class OfferService {
 
   @Autowired
-  OfferService offerService;
-
-  @Autowired
-  UserService userService;
+  private UserService userService;
 
   @Autowired
   private VehicleRepository vehicleRepository;
@@ -35,10 +33,10 @@ public class OfferService {
   private OfferRepository offerRepository;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
   private ModelMapper modelMapper;
@@ -145,17 +143,6 @@ public class OfferService {
       rentalConditions,
       blockedDates
     );
-    long newVehicleId = vehicleRepository.save(vehicle).getVehicleID();
-    loggingController.log(
-      new LoggingMessage(
-        LoggingLevel.INFO,
-        String.format(
-          "New vehicle with ID %s created by user %s.",
-          newVehicleId,
-          creator.getUsername()
-        )
-      )
-    );
 
     long newOfferId = offerRepository.save(offer).getOfferID();
     loggingController.log(
@@ -169,6 +156,21 @@ public class OfferService {
       )
     );
     Optional<Offer> offerOptional = offerRepository.findById(newOfferId);
+    Optional<Vehicle> vehicleOptional = vehicleRepository.findById(
+      offerOptional.get().getOfferedObject().getVehicleID()
+    );
+    long newVehicleId = vehicleOptional.get().getVehicleID();
+    loggingController.log(
+      new LoggingMessage(
+        LoggingLevel.INFO,
+        String.format(
+          "New vehicle with ID %s created by user %s.",
+          newVehicleId,
+          creator.getUsername()
+        )
+      )
+    );
+
     if (offerOptional.isPresent()) {
       return offerOptional.get();
     } else {
@@ -268,7 +270,11 @@ public class OfferService {
 
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
-      if (booking.getOffer().getOfferID() == offerId && booking.isActive()) {
+      if (
+        booking.getOffer().getOfferID() == offerId &&
+        booking.isActive() &&
+        !booking.isRejected()
+      ) {
         throw new GenericServiceException(
           "Cannot modify offer with ID " +
           offerId +
@@ -348,7 +354,11 @@ public class OfferService {
   public void delete(long id, UserDTO user) throws GenericServiceException {
     // check if offer is in rent right now
     for (Booking booking : bookingController.getAllBookings()) {
-      if (booking.getOffer().getOfferID() == id) {
+      if (
+        booking.getOffer().getOfferID() == id &&
+        booking.isActive() &&
+        !booking.isRejected()
+      ) {
         throw new GenericServiceException(
           "Cannot modify offer with ID " +
           id +
@@ -389,8 +399,7 @@ public class OfferService {
    * @return List of OfferDTOs of offers that were created by the user
    * @throws GenericServiceException
    */
-  public List<Offer> getOffersCreatedByUser(User user)
-    throws GenericServiceException {
+  public List<Offer> getOffersCreatedByUser(User user) {
     return offers()
       .stream()
       .filter(offerDTO -> offerDTO.getCreator().getId().equals(user.getId()))

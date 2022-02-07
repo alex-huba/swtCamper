@@ -29,9 +29,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.VehicleRepository;
@@ -48,103 +48,103 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
 
   @FXML
-  public TextField titleTextField;
+  private TextField titleTextField;
 
   @FXML
-  public TextField priceTextField;
+  private TextField priceTextField;
 
   @FXML
-  public TextField locationTextField;
+  private TextField locationTextField;
 
   @FXML
-  public TextField contactTextField;
+  private TextField contactTextField;
 
   @FXML
-  public TextArea particularitiesTextArea;
+  private TextArea particularitiesTextArea;
 
   @FXML
-  public CheckBox activeCheckBox;
+  private CheckBox activeCheckBox;
 
   @FXML
-  public ComboBox<VehicleType> vehicleTypeComboBox;
+  private ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
-  public Label errorLabel;
+  private Label errorLabel;
 
   @FXML
-  public TextField brandTextField;
+  private TextField brandTextField;
 
   @FXML
-  public TextField modelTextField;
+  private TextField modelTextField;
 
   @FXML
-  public TextField constructionYearTextField;
+  private TextField constructionYearTextField;
 
   @FXML
-  public TextField widthTextField;
+  private TextField widthTextField;
 
   @FXML
-  public TextField lengthTextField;
+  private TextField lengthTextField;
 
   @FXML
-  public TextField heightTextField;
+  private TextField heightTextField;
 
   @FXML
-  public ComboBox<FuelType> fuelComboBox;
+  private ComboBox<FuelType> fuelComboBox;
 
   @FXML
-  public ComboBox<TransmissionType> transmissionComboBox;
+  private ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public ComboBox<String> seatsComboBox;
+  private ComboBox<String> seatsComboBox;
 
   @FXML
-  public ComboBox<String> bedsComboBox;
+  private ComboBox<String> bedsComboBox;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  private CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  private CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  private CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckBox;
+  private CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  private CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenUnitCheckBox;
+  private CheckBox kitchenUnitCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  private CheckBox fridgeCheckBox;
 
   @FXML
-  public HBox picturesHBox;
+  private HBox picturesHBox;
 
   @FXML
-  public Button placeOfferButton;
+  private Button placeOfferButton;
 
   @FXML
-  public TextField rentalConditionsTextField;
+  private TextField rentalConditionsTextField;
 
-  SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
-  SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @Autowired
   private ModelMapper modelMapper;
@@ -153,19 +153,19 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private MainViewController mainViewController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ValidationHelper validationHelper;
 
   @FXML
-  private ListView<String> rentalConditionsListView = new ListView<>();
+  private ListView<String> rentalConditionsListView;
 
   @FXML
   private DatePicker startDatePicker;
@@ -316,7 +316,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     fuelComboBox.setItems(
       FXCollections.observableArrayList((FuelType.values()))
     );
-    rentalConditionsListView = new ListView<>();
   }
 
   /**

@@ -6,8 +6,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -16,19 +16,19 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class ReportUserViewController {
 
   @FXML
-  public TextField reportThisUserTextField;
+  private TextField reportThisUserTextField;
 
   @FXML
-  public TextArea reasonForReportTextArea;
+  private TextArea reasonForReportTextArea;
 
   @FXML
-  public Button sendReportButton;
+  private Button sendReportButton;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private MainViewController mainViewController;

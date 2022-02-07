@@ -1,7 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +21,9 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.contract.PictureDTO;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Filter;
 import swtcamper.backend.entities.FuelType;
 import swtcamper.backend.entities.TransmissionType;
@@ -37,108 +34,111 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 public class RentingViewController {
 
   @FXML
-  public TextField locationTextField;
+  private TextField locationTextField;
 
   @FXML
-  public ComboBox<VehicleType> vehicleTypeComboBox;
+  private ComboBox<VehicleType> vehicleTypeComboBox;
 
   @FXML
-  public Button resetVehicleTypeBtn;
+  private Button resetVehicleTypeBtn;
 
   @FXML
-  public TextField vehicleBrandTextField;
+  private TextField vehicleBrandTextField;
 
   @FXML
-  public TextField constructionYearTextField;
+  private TextField constructionYearTextField;
 
   @FXML
-  public TextField maxPricePerDayTextField;
+  private TextField maxPricePerDayTextField;
 
   @FXML
-  public ComboBox<FuelType> fuelTypeComboBox;
+  private ComboBox<FuelType> fuelTypeComboBox;
 
   @FXML
-  public Button resetFuelTypeBtn;
+  private Button resetFuelTypeBtn;
 
   @FXML
-  public ComboBox<TransmissionType> transmissionComboBox;
+  private ComboBox<TransmissionType> transmissionComboBox;
 
   @FXML
-  public Button resetTransmissionTypeBtn;
+  private Button resetTransmissionTypeBtn;
 
   @FXML
-  public ComboBox<Integer> seatAmountComboBox;
+  private ComboBox<Integer> seatAmountComboBox;
 
   @FXML
-  public Button resetSeatAmountBtn;
+  private Button resetSeatAmountBtn;
 
   @FXML
-  public ComboBox<Integer> bedAmountComboBox;
+  private ComboBox<Integer> bedAmountComboBox;
 
   @FXML
-  public Button resetBedAmountBtn;
+  private Button resetBedAmountBtn;
 
   @FXML
-  public CheckBox roofTentCheckBox;
+  private CheckBox roofTentCheckBox;
 
   @FXML
-  public CheckBox roofRackCheckBox;
+  private CheckBox roofRackCheckBox;
 
   @FXML
-  public CheckBox bikeRackCheckBox;
+  private CheckBox bikeRackCheckBox;
 
   @FXML
-  public CheckBox showerCheckBox;
+  private CheckBox showerCheckBox;
 
   @FXML
-  public CheckBox toiletCheckBox;
+  private CheckBox toiletCheckBox;
 
   @FXML
-  public CheckBox kitchenCheckBox;
+  private CheckBox kitchenCheckBox;
 
   @FXML
-  public CheckBox fridgeCheckBox;
+  private CheckBox fridgeCheckBox;
 
   @FXML
-  public DatePicker startDatePicker;
+  private DatePicker startDatePicker;
 
   @FXML
-  public Button resetStartDatePickerBtn;
+  private Button resetStartDatePickerBtn;
 
   @FXML
-  public DatePicker endDatePicker;
+  private DatePicker endDatePicker;
 
   @FXML
-  public Button resetEndDatePickerBtn;
+  private Button resetEndDatePickerBtn;
 
   @FXML
-  public HBox paginationHBox;
+  private HBox paginationHBox;
 
   @FXML
-  public HBox paginationButtonsHBox;
+  private HBox paginationButtonsHBox;
 
   @FXML
-  public ChoiceBox<Integer> offersPerPageChoiceBox;
+  private ChoiceBox<Integer> offersPerPageChoiceBox;
 
   @FXML
-  public HBox offersPerPageHBox;
+  private HBox offersPerPageHBox;
 
   @FXML
-  public HBox offerListBox;
+  private HBox offerListBox;
 
   @FXML
-  public ScrollPane offerListScroll;
+  private ScrollPane offerListScroll;
 
   @FXML
-  public VBox offerListRoot;
+  private VBox offerListRoot;
 
   @FXML
-  public VBox rootVBOX;
+  private VBox rootVBOX;
 
   @FXML
-  public AnchorPane rootAnchorPane;
+  private AnchorPane rootAnchorPane;
 
-  int lastPageVisited;
+  /**
+   * needed for pagination
+   */
+  private int lastPageVisited;
 
   @Autowired
   private MainViewController mainViewController;
@@ -147,13 +147,13 @@ public class RentingViewController {
   private OfferViewController offerViewController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   private List<OfferDTO> offerDTOList;
   private List<List<OfferDTO>> subListsList;
@@ -465,15 +465,12 @@ public class RentingViewController {
 
       root.setEffect(new DropShadow(10, Color.BLACK));
 
-      List<PictureDTO> picturesForVehicle = pictureController.getPicturesForVehicle(
-        offer.getOfferedObject().getVehicleID()
-      );
       Image image;
-      // validate picture(s)
       if (
-        picturesForVehicle.isEmpty() ||
-        !picturesForVehicle.get(0).getPath().startsWith("file:///") ||
-        Files.exists(Path.of(picturesForVehicle.get(0).getPath().substring(8)))
+        pictureController
+          .getPicturesForVehicle(offer.getOfferedObject().getVehicleID())
+          .size() >
+        0
       ) {
         image =
           new Image(

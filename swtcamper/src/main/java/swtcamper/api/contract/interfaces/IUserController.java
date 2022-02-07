@@ -26,6 +26,8 @@ public interface IUserController {
 
   User getLoggedInUser();
 
+  void setLoggedInUser(User user);
+
   ArrayList<User> getAllUsers() throws GenericServiceException;
 
   void excludeRenterForCurrentlyLoggedInUser(long idOfRenterToExclude)

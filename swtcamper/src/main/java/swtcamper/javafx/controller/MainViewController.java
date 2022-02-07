@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.api.contract.UserReportDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
@@ -36,67 +36,67 @@ public class MainViewController {
   public final String startPageAfterLogin = "home";
 
   @FXML
-  public Label globalHeaderLabel;
+  private Label globalHeaderLabel;
 
   @FXML
-  public Button globalBackBtn;
+  private Button globalBackBtn;
 
   @FXML
-  public AnchorPane mainStage;
+  private AnchorPane mainStage;
 
   @FXML
-  public Node homeViewBox;
+  private Node homeViewBox;
 
   @FXML
-  public Node placeOfferViewBox;
+  private Node placeOfferViewBox;
 
   @FXML
-  public Pane offerViewBox;
+  private Pane offerViewBox;
 
   @FXML
-  public Pane activeOffersViewBox;
+  private Pane activeOffersViewBox;
 
   @FXML
-  public Pane dealHistoryViewBox;
+  private Pane dealHistoryViewBox;
 
   @FXML
-  public Pane excludeRenterViewBox;
+  private Pane excludeRenterViewBox;
 
   @FXML
-  public Pane approveDealViewBox;
+  private Pane approveDealViewBox;
 
   @FXML
-  public Pane myBookingsViewBox;
+  private Pane myBookingsViewBox;
 
   @FXML
-  public Pane loginViewBox;
+  private Pane loginViewBox;
 
   @FXML
-  public Pane accountViewBox;
+  private Pane accountViewBox;
 
   @FXML
-  public Pane registerViewBox;
+  private Pane registerViewBox;
 
   @FXML
-  public Pane forgotPasswordViewBox;
+  private Pane forgotPasswordViewBox;
 
   @FXML
-  public Pane reportUserViewBox;
+  private Pane reportUserViewBox;
 
   @FXML
-  public Pane faqViewBox;
+  private Pane faqViewBox;
 
   @Autowired
   private ModelMapper modelMapper;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserReportController userReportController;
 
   @Autowired
   private MyOffersViewController myOffersViewController;
@@ -137,7 +137,7 @@ public class MainViewController {
   private User latestLoggedInStatus = null;
   private String latestView = null;
   private final SimpleBooleanProperty updateHappening = new SimpleBooleanProperty(
-          false
+    false
   );
   private final LinkedList<String> historyList = new LinkedList<>();
   // needed in order to make the back button work (see goBack())
@@ -164,7 +164,11 @@ public class MainViewController {
   @FXML
   public void goBack() throws GenericServiceException {
     // button is invisible anyway at this point but just be safe...
-    if (historyList.size() <= 1) return;
+    if (
+      historyList.size() <= 1 ||
+      userController.getLoggedInUser() != null &&
+      userController.getLoggedInUser().isLocked()
+    ) return;
 
     historyList.removeLast();
     // set boolean false in order to not overwrite the last index directly again

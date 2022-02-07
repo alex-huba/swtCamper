@@ -40,6 +40,26 @@ public class User implements IUser {
     this.enabled = false;
   }
 
+  public User(
+    String username,
+    String password,
+    String email,
+    String phone,
+    String name,
+    String surname,
+    UserRole userRole,
+    boolean enabled
+  ) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.phone = phone;
+    this.name = name;
+    this.surname = surname;
+    this.userRole = userRole;
+    this.enabled = enabled;
+  }
+
   @Override
   public Long getId() {
     return id;
