@@ -1,100 +1,98 @@
-\section{Architektur \& Design}
+\section{Architecture \& Design}
 \label{sec:architecture_design}
 
 \paragraph{Primary textual contributors.}
 \mbox{}\\\emph{Thomas Kretschmann}
 
-In diesem Kapitel wird die Architektur und das dazugehörige Design von SWTcamper präsentiert. Zuerst zeigen wir, für welches Architekturmodell wir uns entschieden haben und begründen unsere Entscheidung. Dann werden wir die darauf aufbauende Umsetzung erläutern, und wie daraus individuelle Designentscheidungen abgeleitet werden können. Insbesondere werden wir auf das Design des Datenbankschemas und die Darstellung der einzelnen Entitäten eingehen. Abschließend werden die verwendeten Entwurfsmuster und Entwurfsprinzipien vorgestellt und dargestellt
-erklärt.
+This chapter presents the architecture and the related design of SWTcamper. First, we show which architectural model we have chosen and justify our decision. Then we will explain the implementation based on this and how individual design decisions can be derived from it. In particular, we will go into the design of the database schema and the representation of each entity. Finally, the design patterns and design principles used are presented and briefly explained.
 
-
-\subsection{Architektur erklärt}
-Bei der Architektur von SWTcamper haben wir uns für das Model-View-Controller Architekturmuster entschieden, da dies das Frontend vom Backend abkapselt und es ermöglicht bei gleich bleibendem Backend die grafische Nutzeroberfläche zu verändern. Das ist vor allem in dem Hinblick interesant, dass vorgesehen wird, dass zukünftige SWL-Studierende die Anwendung mit einem Web-Frontend versehen sollen.
-
-Im Gegensatz dazu läuft die von uns gebaute Anwendung komplett lokal, wobei man sich aber vorstellen könnte die Datenbank, bzw. den Dockercontainer, der jene beinhaltet, auch auf einer örtlich entfernen Maschine anzubieten.
-
-Durch die klare Aufteilung der zum MVC-Pattern (gut erkennbar in \ref{fig:architecture}) gehörenden Schichten war es außerdem sehr gut möglich, zugehörige Tasks klar getrennt auf Teammitglieder zu verteilen.
+\subsection{Choice of Architecture}
+For the architecture of SWTcamper, we opted for the \textit{Model-View-Controller} architecture pattern, as this encapsulates the frontend from the backend and allows the graphical user interface to be changed while the backend remains the same. This is particularly interesting in view of the fact that future SWL students should provide the application with a web front end. \\
+In contrast, the application we built runs completely locally, although one could imagine offering the database or the \textit{Docker container} that contains it on a remote machine. \\
+Due to the clear division of the layers belonging to the MVC pattern (easily recognizable in \ref{fig:architecture}), it was also possible to clearly distribute associated tasks to team members with ease.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=12cm]{resources/images/architecture.drawio.png}
-	\caption{Architektur}
+	\includegraphics[width=15cm]{resources/images/architecture.drawio.png}
+	\caption{Architecture}
 	\label{fig:architecture}
 \end{figure}
 
-\subsubsection{Layered MVC generell}
-Das Model View Controller-Pattern ist ein Architektur-, bzw. Entwurfsmuster, das einen flexiblen Programmentwurf bietet, eine spätere Änderung oder Erweiterung erleichtert und eine Wiederverwendbarkeit der einzelnen Komponenten ermöglicht.
-Anwendungen, welche nach den Prinzipien von MVC gestaltet werden, bestehen aus drei austauschbaren Komponenten: 
+\subsubsection{Layered MVC in general}
+The Model-View-Controller pattern is an architecture or design pattern that offers flexible program design, makes it easier to change or expand it later, and allows the individual components to be reused.
+Applications designed according to the principles of MVC consist of three interchangeable components:
 
 \begin{itemize}
-	\item Das Model besteht aus mehreren Model-Klassen. Jede repräsentiert eine grundlegende Einheit innerhalb der verwendeten Datenstruktur. Sie stellen darüber hinaus grundlegende Datenoperationen zur Verfügung, welche nicht unbedingt der prinzipiellen Programmlogik zugehörig sind. Dazu gehören zum Beispiel die einzelnen Entitäten auf deren Grundlage die Anwendung läuft, oder auch die Services die notwendige Werte aus der Datenbank bereitstellen und bereits zum notwendigen Grad verarbeiten können.
+	\item \textbf{The model} consists of several model classes. Each represents a basic entity within the data structure used. They also provide basic data operations that are not necessarily part of the basic program logic. This includes, for example, the individual entities on the basis of which the application runs, or the services that provide the necessary values from the database and can already process them to the necessary degree.
 	
-	\item View-Klassen stellen die grafische Benutzeroberfläche bereit. Die Model-Klassen stellen die angezeigten Daten zur Verfügung, eine direkte Verbindung zwischen den beiden Programmteilen existiert allerdings nicht. Der Controller informiert die Bestandteile der Oberflächendarstellung über Änderungen am Model und diese passen die angezeigten Inhalte bei Bedarf an.
+	\item \textbf{View} classes provide the graphical user interface. The model classes provide the displayed data, but there is no direct connection between the two program parts. The controller informs the components of the surface display about changes to the model and they adjust the displayed content if necessary.
 	
-	\item Die Controller-Klassen fungieren als Verbindungsstück zwischen View- und Model-Bestandteilen. Aktionen der Nutzer leitet die View zum Controller weiter, welcher die dahinterstehende Programmlogik ausführt. Die Logik informiert einzelne Views im Bedarfsfall über Änderungen am Model, um eine passende Reaktion auf diese zu ermöglichen.
+	\item \textbf{The controller} classes act as a connector between view and model components. The view forwards user actions to the controller, which executes the underlying program logic. If necessary, the logic informs individual views about changes to the model in order to enable an appropriate reaction to them.
 \end{itemize}
 
 \subsubsection{JavaFX (view)}
-JavaFX ist ein Open-Source-Framework, das zum Erstellen von grafischen Benutzeroberflächen (GUI) verwendet wird. Wir haben in SWTcamper die Funktion von JavaFX verwendet, die es ermöglicht, den Ansichtsteil vollständig in FXML-Dateien zu definieren. 
-Lediglich in für die dynamischen Programmteile wurden die Views programmatsch erzeugt (z.B. für die Liste an verfügbaren Anzeigen oder das Operator-Dashboard). Die View wird dann während der Laufzeit des Programms unter Verwendung der FXML-Dateien und JavaFX erstellt. Die ViewController sind die Controller der einzelnen Views, die sich nicht nur um das Event-Handling kümmern, sondern auch von den \"richtigen\" Controllern Daten anfordern und weiterleiten.
+JavaFX is an open source framework used to create graphical user interfaces (GUI). In SWTcamper we used the JavaFX feature that allows to fully define the view part in FXML files. The views were only generated programmatically for dynamic program parts, like the list of available displays or the operator dashboard. The view is then created at runtime of the program using the FXML files and JavaFX. The view controllers are the controllers of the individual views, which not only take care of event handling, but also request and forward data from the 'real' controllers.
 
 \subsubsection{Spring boot (view, controller, model)}
-Spring Boot ist ein Open-Source-Framework, das viele Funktionalitäten zur Entwicklung einer eigenständigen Anwendung bietet. Es vereinfacht den Softwareentwicklungsprozess, indem es die Komplexität reduziert und eine klare Struktur bietet. Es kommt dabei in unserem Fall in jeder Schicht des MVC-Patterns zum Einsatz.
-
-Damit das Framework weiß, wie es mit jeder Klasse umgeht, gibt es Annotationen die es Spring Boot ermöglichen, die erforderliche Umgebung für die Klassen zu erstellen. Ein Beispiel dafür ist die Annotation @Service, die über jeder unserer Serviceklassen platziert wird, oder @Component, das über jedem Controller zum Einsatz kommt.
-
-Einfach nur Spring Boot zu benutzen garantiert keine Qualität, aber es bietet eine Struktur, die es einfacher macht, qualitative Software zu entwickeln Fehler zu vermeiden.
+Spring Boot is an open source framework that offers many functionalities for developing a standalone application. It simplifies the software development process by reducing complexity and providing a clear structure. In our case, it is used in every layer of the MVC pattern. \\
+In order for the framework to know how to deal with each class, there are annotations that allow Spring Boot to create the necessary environment for the classes. An example of this is the \textit{@Service} annotation, which is placed above each of our service classes, or \textit{@Component}, which is used above each controller. \\
+Simply using Spring Boot doesn't guarantee quality, but it does provide a structure that makes it easier to develop quality software and avoid mistakes.
 
 \subsubsection{JPA (model)}
-In Kombination mit Spring Boot ermöglicht uns die Java Persistence API die Konvertierung von Java-Objekten in
-Datenbankobjekte und umgekehrt. Durch Annotationen in den Entitätsklassen lassen sich diverse Einstellungen vornehmen, um das gewünschte Datenbankschema automatisch zu implementieren.
+Combined with Spring Boot, the \textit{Java Persistence API} allows us to convert Java objects to
+Database objects and vice versa. Various settings can be made through annotations in the entity classes in order to implement the desired database schema automatically.
 
 \subsubsection{Docker (model)}
-Docker ist eine Open-Source-Software, die es uns ermöglicht, Anwendungen in einem virtuellen Container-Umgebung auszuführen. Viele Softwareanbieter bieten bereits vorkonfigurierte Images an, es ermöglichen, dass ihre Anwendung in einer containerisierten Docker-Umgebung ausgeführt wird. 
-Wir haben Docker verwendet, um unsere Datenbank MariaDB darin auszuführen.
+Docker is open source software that allows us to run applications in a virtual container environment. Many software vendors already provide preconfigured images that allow their application to run in a containerized Docker environment. We used Docker to run our \textit{MariaDB} database in it.
 
 \subsubsection{MariaDB (model)}
-MariaDB ist eine relationale Open-Source-Datenbank. Wir verwenden es, um unsere Daten konsistent zu speichern. MariaDB bietet auch ein eigenes Docker-Image an, was es zu einer guten Wahl für unsere Anwendung macht.
+MariaDB is an open-source relational database. We use it to store our data consistently. MariaDB also offers its own Docker image, making it a good choice for our application.
 
-\subsection{Von der Architektur zum Design}
-Um zu verstehen welche Komponenten wir für die Anwendung brauchen und wie wir am besten vorgehen haben wir im Rahmen des ersten Sprints ein Use Case Diagramm (\ref{fig:use-case-diagram}) und ein ein ER-Diagramm (\ref{fig:er-diagram}) angefertigt, welche sich im Laufe des Projekts verändert haben.
+\subsection{Design Implementation}
+In order to understand which components we need for the application and how best to proceed, we created a use case diagram (\ref{fig:use-case-diagram}) and an ER diagram (\ref{fig:er-diagram}) which have changed over the course of the project.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=15cm]{resources/images/use-case-diagram.png}
-	\caption{Use Case Diagramm}
+	\includegraphics[width=12cm]{resources/images/use-case-diagram.png}
+	\caption{Use Case Diagram}
 	\label{fig:use-case-diagram}
 \end{figure}
 
-\paragraph{Grundstruktur}
-Das Herzstück von SWTcamper ist die MainView und ihr zugehöriger ViewController, die bei Programmstart direkt von App.java (Startpunkt für JavaFX Anwendungen) aufgerufen wird. Sie beinhaltet über Imports alle anderen FXML-Views, die über den Controller abhängig vom NavigationViewController hinzugefügt oder entfernt werden. (in \ref{fig:architecture} versucht dar zu stellen) Bei Programmstart wird über die Methode changeView() zuerst die RentingView geladen, die alle verfügbaren Anzeigen beinhaltet. Dazu wird das sich in der MainView befindende AnchorPane \"mainStage\" zuerst komplett geleert und anschließend mit der genannten RentingView gefüllt. Drückt der Nutzer nun einen Button in der NavigationView (Buttons werden abhängig von der UserRole angezeigt (ebenfalls aus \ref{fig:architecture} zu entnehmen)), wird über deren ViewController der MainViewController beauftragt das gleiche Vorgehen für die neu ausgewählte View zu wiederholen. Um die Views voneinander zu unterscheiden, muss in die genannte Methode changeView() ein passender String übergeben werden (z.B. \"home\" für die RentingView oder \"history\" für die DealHistoryView). Da zu Programmstart bereits alle ViewController initialziert werden, müssen in den MainViewController auch alle anderen ViewController importiert werden, damit man für jeden einzeln eine Reload-Methode aufrufen kann.
+\paragraph{Basic Structure}
+The heart of SWTcamper is the \textit{MainView} and its associated view controller, which is called directly from \textit{App.java} (starting point for JavaFX applications) when the program starts. Via imports, it contains all other FXML views that are added or removed via the controller depending on the \textit{NavigationViewController}. (trying to show in \ref{fig:architecture}) When the program starts, the \textit{RentingView} is loaded first via the \textit{changeView()} method, which contains all available displays. To do this, the \textit{AnchorPane} 'mainStage' in the \textit{MainView} is first completely emptied and then filled with the \textit{RentingView} mentioned. If the user now presses a button in the \textit{NavigationView} (buttons are displayed depending on the \textit{UserRole} (also taken from \ref{fig:architecture})), the \textit{MainViewController} is instructed via its view controller to repeat the same procedure for the newly selected view. In order to differentiate between the views, a suitable string must be passed to the \textit{changeView()} method (e.g. 'home' for the \textit{RentingView} or 'history' for the \textit{DealHistoryView}). Since all view controllers are already initialized when the program starts, all other view controllers must also be imported into the \textit{MainViewController} so that a reload method can be called for each one individually.
 
-\subsection{Klassendiagramm}
-% TODO
+\subsection{Class diagrams}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{resources/images/class diagrams/class-diagram_controller-services.png}
-	\caption{Klassendiagramm Controller-Services}
+	\caption{Class diagram of Controllers and Services}
 	\label{fig:cd:controller-services}
 \end{figure}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{resources/images/class diagrams/class-diagram_entities.png}
-	\caption{Klassendiagramm Entities}
-	\label{ffig:cd:entities}
+	\caption{Class diagram of Entities}
+	\label{fig:cd:entities}
 \end{figure}
 
-\subsection{Datenmodell \& Designentscheidungen}
-% TODO
+\subsection{Data model \& Design decisions}
+In order to get an overview of the entities to be implemented and how they interact, we created an ER diagram at the beginning of Sprint 0 (figure \ref{fig:er-diagram_draft}), which only changed slightly over the course of the project has (figure \ref{fig:er-diagram}). In this chapter we present our entities and their structures.
+
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=15cm]{resources/images/ER-diagram.drawio.png}
-	\caption{Entity Relationship Diagram}
+	\includegraphics[width=12cm]{resources/images/ER-diagram_first.png}
+	\caption{First draft of a Entity Relationship Diagram}
+	\label{fig:er-diagram_draft}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=15cm]{resources/images/ER-diagram_final.png}
+	\caption{Our final Entity Relationship Diagram}
 	\label{fig:er-diagram}
 \end{figure}
 
 \paragraph{Booking}
-Die Booking-Klasse wird benötigt um einen User an eine Anzeige zu binden. Dazu besitzt sie eine ID die (durch die Annotationen @Id und @GeneratedValue) automatisch von der Datenbank generiert wird, einen User der die zugehörige Anzeige mieten möchte, die genannte Anzeige selbst, ein Startdatum und ein Enddatum. Des weiteren gibt es die beiden boolschen Felder active und rejected. Eine Buchung wird mit active = false erzeugt und bleibt solange inaktiv bis sie angenommen wird; sollte sie abgelehnt werden, wird das ebenfalls mit false erzeugte Feld rejected auf true gesetzt. Die Kombination dieser beiden Werte wird an mehreren Stellen der Anwendung gebraucht um Zustände festzustellen:
+The Booking class is required to bind a user to an ad. To do this, it has an ID that is automatically generated by the database (through the \textit{@Id} and \textit{@GeneratedValue} annotations), a user who wants to rent the associated ad, the ad itself, a start date and an end date. Furthermore, there are the two boolean fields \textit{active} and \textit{rejected}. A booking is created with \textit{active = false} and remains inactive until accepted; if it is rejected, the field \textit{rejected}, which was also created with \textit{false}, is set to \textit{true}. The combination of these two values is used at several points in the application to determine states:
 
 \begin{tabular}{|c|c|c|c|}
 	\hline
@@ -102,103 +100,99 @@ Die Booking-Klasse wird benötigt um einen User an eine Anzeige zu binden. Dazu 
 	\hline
 	&  & true & false \\
 	\hline
-	rejected & true & \begin{tabular}[c]{@{}c@{}}Anzeige wurde frühzeitig beendet,\\wird im Angebotsverlauf gelistet\end{tabular} & / \\
+	rejected & true & \begin{tabular}[c]{@{}c@{}}Offer ended early,\\gets listed in offer history\end{tabular} & / \\
 	\hline
-	& false & \begin{tabular}[c]{@{}c@{}}Anzeige kann nicht bearbeitet \\oder gelöscht werden\end{tabular} & \begin{tabular}[c]{@{}c@{}}Anzeige erscheint bei Provider in \\``Neue Anfrage zu Angebot'' \\(noch nicht im Verlauf)\end{tabular} \\
+	& false & \begin{tabular}[c]{@{}c@{}}Offer can not get modified\\or deleted\end{tabular} & \begin{tabular}[c]{@{}c@{}}Provider sees offer as\\``New request for offer''\\(not yet in offer history)\end{tabular} \\
 	\hline
 \end{tabular}
 
 \paragraph{Filter}
-Die Filter-Klasse ist die einzige Entitätsklasse in SWTcamper, die nicht in der Datenbank gespeichert wird. In ihr kommen alle Felder aus Offer und Vehicle vor, die für eine gute Suche benötigt werden. Bei Start der Suche wird eine neue Filterinstanz erzeugt und die notwendigen Felder gesetzt. Diese Instanz wird dann dem OfferController übergeben, der damit die Liste aller Anzeigen filtert und eine neue Liste mit zur Filterinstanz passenden Anzeigen zurückgibt.
+The Filter class is the only entity class in SWTcamper that is not stored in the database. It contains all the fields from \textit{Offer} and \textit{Vehicle} that are required for a good search. When the search is started, a new filter instance is created and the necessary fields are set. This instance is then passed to the \textit{OfferController}, which uses it to filter the list of all ads and returns a new list of ads that match the filter instance.
 
 \paragraph{LoggingMessage}
-LoggingMessages werden von fast allen Services aus generiert und werden benötigt um Geschehnisse nachverfolgen zu können. Eine Liste an LoggingMessages kann als Operator über die AccountView eingesehen und als log-Datei heruntergeladen werden. Da alle vorkommenden LoggingMessages auch in der Datenbank gespeichert werden besitzt jede eine eindeutige und automatisch generierte ID und einen Zeitstempel zu dem sie ertellt wurde. Der Enum LoggingLevel gibt an wie wichtig die LoggingMessage ist (INFO, WARNING, ERROR) und es gibt außerdem noch eine Nachricht damit der Einseher weiß um was es geht.
+Logging messages are generated by almost all services and are required to be able to track events. A list of logging messages can be viewed as an operator via the \textit{AccountView} and downloaded as a log file. Since all logging messages that occur are also stored in the database, each has a unique and automatically generated ID and a time stamp for which it was created. The enum \textit{loggingLevel} indicates how important the logging message is (INFO, WARNING, ERROR) and there is also a message so that the viewer knows what it is about.
 
 \paragraph{Offer}
-Die Offerklasse wurde mit der Vehicleklasse zusammen als erstes in SWTcamper implementiert. Im Laufe der Entwicklung wurde sie allerdings erweitert und verbessert. Sie wird benötigt um Anzeigen abzubilden - einer der Grundlagen von SWTcamper. Objekte dieser Klasse besitzen eine von der Datenbank automatisch generierte ID, einen User der der Ersteller der Anzeige ist, Titel, Abholort, Kontaktdaten über die der Ersteller erreichbar sein möchte, Besonderheiten über die Anzeige (wie zum Beispiel Dinge die nicht über SWTcamper bereits abgedeckt werden) und einen Preis. Über active kann der Ersteler angeben, ob die Anzeige öffentlich gelistet werden soll und wenn prmoted true ist, wird die Anzeige in der Liste hervorgehoben; diese Funktion kann nur von Operatoren verändert werden, ist aber für alle Nutzer sichtbar. Des weiteren enthält jede Anzeige natürlich auch ein fest dazugehöriges Vehicle-Objekt mit all seinen Werten und jeweils Listen für blockierte Daten zu denen die Anzeige nicht gebucht werden kann, nicht überschneidenden Buchungen und rentalConditions, mit denen der Ersteller Bedingungen festlegt, an die sich der Mieter zu halten hat. \\
-Das Feld offeredObjectType wird in unserer Version von SWTcamper nicht weiter genutzt; es wäre allerdings möglich die Anwendung hier zu erweitern.
+The offer class was implemented first in SWTcamper together with the vehicle class. In the course of development, however, it was expanded and improved. It is needed to display offers - one of the basics of SWTcamper. Objects of this class have an ID automatically generated by the database, a user who created the offer, title, pick-up location, contact details via which the creator would like to be reached, special features of the offer (such as things that are not already covered by SWTcamper ) and a price. Via \textit{active} the creator can specify whether the offer should be publicly listed and if \textit{promoted} is \textit{true} the offer will be highlighted in the list; this function can only be changed by operators, but is visible to all users. Of course, each offer also contains a permanently associated vehicle object with all its values and lists for blocked dates for which the offer cannot be booked, non-overlapping bookings and rentalConditions, with which the creator specifies conditions to which the renter adheres has to hold. \\
+The \textit{offeredObjectType} field is no longer used in our version of SWTcamper; however, it would be possible to extend the application here.
 
 \paragraph{Picture}
-Urspünglich war geplant, dass die in SWTcamper für die Vehicles gespeicherten Bilder komplett in die Datenbank geladen werden; dabei gab es allerdings viele Probleme den richtigen Datentyp zu finden und es kam zu vielen Fehlern, dass die Datenbank keine Objekte dieser Größe speichern könne. Deswegen sind wir als nächstes darauf umgestiegen, im Vehicle Objekt eine Liste an Pfaden zu speichern. Diese Liste war allerdings ab ungefähr drei Bildern ebenfalls zu lang für die Datenbank. \\
-Als Lösung haben wir deswegen ein eigenes Repository für die Bilder erstellt. Dabei enthält jeder Eintrag neben der obligatorischen ID den Pfad zu dem Bild und die ID zu dem Vehicle zu dem es zuzuordnen ist. \\
-Durch diesen Ansatz können Bilder leider nur lokal gespeichert werden und funktierien nicht in einem verteilten System. Da unsere Anwendung allerdings sowieso nur die Anforderung hatte, lokal zu laufen, war das für diesen Rahmen in Ordnung.
+Originally it was planned that the images stored in SWTcamper for the vehicles would be completely loaded into the database; however, there were many problems finding the right data type and there were many errors that the database could not store objects of this size. So next we switched to storing a list of paths in the Vehicle object. However, this list was also too long for the database from around three images onwards. \\
+As a solution, we have therefore created our own repository for the images. In addition to the obligatory ID, each entry contains the path to the image and the ID of the vehicle to which it is to be assigned. \\
+Unfortunately, this approach means that images can only be stored locally and do not work in a distributed system. However, since our application only had the requirement to run locally anyway, that was fine for this framework.
 
 \paragraph{User}
-Die Userklasse besitzt neben einer automatisch erzeugten ID außerdem Attribute für den Nutzernamen, Vor- und Nachnamen, Emailadresse, Telefonnummer und Passwort. Das Attribut userRole gibt an welche Rolle der Nutzer bei Nutzung der Anwendung einnimmt, und welche Befugnisse er dadurch hat (vgl. View-Abbildung in \ref{fig:architecture}). Damit zusammenhängend gibt es außerdem das Attribut enabled, das nur auf false gesetzt wird wenn sich ein Nutzer als Provider neu registriert, da es eine Aforderung war, dass diese Personen zuerst geprüft werden sollen bevor sie neue Anzeigen erstellen können. Solange ein Nutzer die Rolle des Providers hat und enabled auf false steht, hat er die gleichen Befugnisse und Möglichkeiten wie die Nutzerrolle Renter. \\
-Ein weiteres Booleanfeld ist locked, das benötigt wird um einen Nutzer global zu blockieren; seine Möglichkeiten in der Anwendung sind damit stark eingeschränkt. Im Gegensatz zu dieser Möglichkeit die nur von einem Operator ausgeführt werden kann, gibt es noch die mit der Provider andere Nutzer von ihren Anzeigen ausschließen können. Dafür nutzen User-Objekte eine Liste excludedRenters, in der die IDs der auszuschließenden Nutzer gespeichert werden.
+In addition to an automatically generated ID, the User class also has attributes for the username, first and last name, email address, telephone number and password. The \textit{userRole} attribute indicates which role the user assumes when using the application and which authorizations he has as a result (cf. view illustration in figure \ref{fig:architecture}). Related to this there is also the attribute \textit{enabled}, which is only set to \textit{false} when a user registers as a new provider, since it was a requirement that these people should first be checked before they can create new offers. As long as a user has the role of provider and \textit{enabled} is set to \textit{false}, he has the same powers and options as the \textit{userRole} Renter. \\
+Another boolean field is \textit{locked}, which is required to globally block a user; its application options are therefore severely limited. In contrast to this possibility, which can only be carried out by an operator, there is also one for providers with which other users can be excluded from their offers. To do this, User objects use a list \textit{excludedRenters}, in which the IDs of the users to be excluded are stored.
 
 \paragraph{UserReport}
-UserReports werden benötigt, damit ein Nutzer (ab UserRole Provider) einen anderen melden kann. Ein abgesendeter UserReport wird dann in der Datenbank gespeichert (hat wieder eine automatisch generierte ID) und hat dabei ein boolean Feld active, das auf true gesetzt ist, bis der Report von einem Operator bearbeitet (angenommen oder abgewiesen) wird. Um dem entscheidenden Operator seine Entscheidung einfacher zu machen, beinhaltet jeder UserReport sowohl den Nutzernamen des Meldenden, als auch des Gemeldeten und eine Nachricht, warum der Meldende die Meldung eingereicht hat.
+UserReports are required so that one user (as of UserRole Provider) can report another. A submitted UserReport is then stored in the database (again has an automatically generated ID) and has an \textit{active} boolean field set to \textit{true} until the report is processed (\textit{accepted} or \textit{rejected}) by an operator. In order to make it easier for the decisive operator to make his decision, each UserReport contains both the username of the reporter and the reported person and a message explaining why the reporter submitted the report.
 
 \paragraph{Vehicle}
-Genau wie die Offerklasse spielt die Klasse für die Fahrzeuge selbst eine sehr zentrale Rolle, weswegen sie auch mit als erstes implementiert wurde. Sie enthält sehr rudimentäre Attribute um die angebotenen Fahrzeuge abzubilden; dazu gehören neben der automatisch generierten ID die Marke, das Modell, das Baujahr, Länge, Breite und Höhe, die Art der Schaltung, die Anzahl der Sitzplätze und die Anzahl der Betten. Um zu beschreiben, ob das Fahrzeug Dachzelt, Dachgepäckträger, Fahrradträger, Dusche, Toilette, Kücheneinheit oder Kühlschrank hat, wurde einfache Booleanvariablen genutzt. Außerdem gibt es für die Art des Fahrzeugs und die Art des Kraftstoffs eigene Enumerations.
+Just like the offer class, the class for the vehicles themselves plays a very central role, which is why it was implemented first. It contains very rudimentary attributes to represent the vehicles offered; in addition to the automatically generated ID, this includes the brand, model, year of construction, length, width and height, the type of connection, the number of seats and the number of beds. Simple boolean variables were used to describe whether the vehicle has a roof tent, roof rack, bike rack, shower, toilet, kitchen unit or refrigerator. There are also separate enumerations for the type of vehicle and the type of fuel.
 
-\subsection{Designprinzipien}
+\subsection{Design Principles}
 
-\subsubsection{Allgemeine Prinzipien}
-% TODO
-Loose Coupling
-High Cohesion
-Hide information
-Encapsulate Logic
-Program to an interface, not an implementation
+\subsubsection{General Principles}
 
-\subsubsection{SOLID Designprinzipien}
+\paragraph{Hide information}
+Similar to what is explained in SOLID's Open-Closed-Principle (\ref{subsec:solid:ocp}), we have applied the 'public' and 'private' access modifiers as far as possible, so that the classes are encapsulated as much as possible. However, we really only used 'public' and 'private' and neglected e.g. 'protected', which only allows visibility within the current package. Implementing this would improve the quality of the software and could well be done in another sprint.
 
-\paragraph{Single-Responsibility-Prinzip}
-% TODO
-Das Single-Responsibility-Prinzip besagt, dass jede Klasse nur eine einzige Verantwortung haben solle. Verantwortung wird hierbei als „Grund zur Änderung“ definiert
+\paragraph{Loose Coupling}
+The parts of SWTcamper's Model-, View- and Controller components are clearly seperated from each other and communicate only through interfaces.
 
-\paragraph{Open-Closed-Prinzip}
-% TODO
-Das Open-Closed-Prinzip besagt, dass Software-Einheiten (hier Module, Klassen, Methoden usw.) Erweiterungen möglich machen sollen (dafür offen sein), aber ohne dabei ihr Verhalten zu ändern (ihr Sourcecode und ihre Schnittstelle sollte sich nicht ändern).
+\paragraph{Program to an interface, not an implementation}
+In SWTcamper we have interfaces for our repositories for the database, for our backend controllers and for our entities. Since we didn't apply this principle from the beginning, but relatively late, we didn't build the interfaces for the entities into the rest of the code, so that they are instantiated directly and not via their interfaces (which would need casts to normal classes anyway). This task would be a good fit for another sprint and shouldn't take much time. In the meantime, the interfaces still represent a kind of 'security template'. For the first two class groups, however, we have applied it according to the principle.
 
-\paragraph{Liskovsches Substitutionsprinzip}
-% TODO
-Das Liskovsche Substitutionsprinzip (LSP) oder Ersetzbarkeitsprinzip fordert, dass eine Instanz einer abgeleiteten Klasse sich so verhalten muss, dass jemand, der meint, ein Objekt der Basisklasse vor sich zu haben, nicht durch unerwartetes Verhalten überrascht wird, wenn es sich dabei tatsächlich um ein Objekt eines Subtyps handelt.
+\paragraph{High Cohesion}
+This is pretty similar to SOLID's SRP (\ref{subsec:solid:srp}); as mentioned there our classes mostly have only one purpose. Improvments could be made in the MainViewController which also includes the database scanner.
 
-\paragraph{Interface-Segregation-Prinzip}
-% TODO
-Das Interface-Segregation-Prinzip dient dazu, zu große Interfaces aufzuteilen. Die Aufteilung soll gemäß den Anforderungen der Clients an die Interfaces gemacht werden – und zwar derart, dass die neuen Interfaces genau auf die Anforderungen der einzelnen Clients passen. Die Clients müssen also nur mit Interfaces agieren, die das und nur das können, was die Clients benötigen.
+\paragraph{Encapsulate Logic}
+This principle was implemented in our application primarily by the fact that the frontend controllers do not have direct access to the backend controllers, but only to the methods from the backend controllers' interfaces.
 
-\paragraph{Dependency-Inversion-Prinzip}
-% TODO
-Das Dependency-Inversion-Prinzip beschäftigt sich mit der Reduktion der Kopplung von Modulen. Es besagt, dass Abhängigkeiten immer von konkreteren Modulen niedriger Ebenen zu abstrakten Modulen höherer Ebenen gerichtet sein sollten.
+\subsubsection{SOLID Design Principle}
 
+\paragraph{Single-Responsibility-Principle}
+\label{subsec:solid:srp}
+For SWTcamper we implemented contract classes and DTO objects. Through this
+feature we are able to display the objects of the database with additional information that
+can be useful to the user without modifying the objects themselves. Real changes to the objects
+are only carried out by saving, deleting or updating operations to ensure that we comply with them
+the principle of individual responsibility. \\
+Otherwise, our classes mostly have only one purpose. An exception is the MainViewController, which, in addition to managing the other view controllers, also scans the database for changes every second.
 
-\subsection{Designmuster}
+\paragraph{Open-Closed-Principle}
+\label{subsec:solid:ocp}
+By using the MVC pattern it is possible to exchange the frontend without changing the backend. Replacing the database with another one wouldn't be difficult either, as long as JPA is still able to map the objects correctly. This is made even easier by the fact that our database is made available in a container using Docker, which is easier to exchange than without. \\
+Furthermore, it would be possible to extend our existing interfaces; however, this was not explicitly valued during development. Instead, we have kept as much internals as possible private, so that classes are encapsulated from the outside as much as possible, which has worked almost completely with a few exceptions.
 
-\subsubsection{Verhaltensmuster}
-Observer Pattern (nicht von DB angeboten)
-% TODO
-Das Beobachter-Muster (englisch observer pattern, auch listener pattern) ist ein Entwurfsmuster aus dem Bereich der Softwareentwicklung. Es gehört zur Kategorie der Verhaltensmuster (engl. behavioral patterns) und dient der Weitergabe von Änderungen an einem Objekt an von diesem Objekt abhängige Strukturen.[1] Das Muster ist eines der sogenannten GoF-Muster (Gang of Four; siehe Viererbande).
-Neben publish-subscribe (kurz pub/sub) erfährt das Beobachter-Muster mit dem Signal-Slot-Konzept eine weitere Ausprägung. 
+\paragraph{Liskov's Substitution-, Interface-Segregation- and Dependency-Inversion Principles}
+Since we did not go into design principles too much when planning, we did not find any examples for these principles in our application. It is possible that SWTcamper is less suitable for this in its current form. \\
+A possible implementation of Liskov's substitution principle would be to implement the IUser interface in the three different user classes Renter, Provider and Operator, instead of implementing it via an enumeration of UserRoles as we did. That would certainly be a point that could be improved in future sprints.
 
-\subsubsection{Erzeugungsmuster}
-\paragraph{Abstrakte Fabrik}
-% TODO
-Die abstrakte Fabrik definiert eine Schnittstelle zur Erzeugung einer Familie von Objekten, wobei die konkreten Klassen der zu erzeugenden Objekte erst zur Laufzeit festgelegt werden.
+\subsection{Design Patterns}
 
-\paragraph{Singleton Pattern}
-% TODO (DB Scanner, EntitiyListener unperformanter)
-Von einer Klasse soll nur ein einziges Mal ein Objekt erzeugt werden, z. B. weil eine zentrale Struktur erzwungen werden soll oder eine korrespondierende Hardware-Komponente physikalisch nur einmal existiert.
+\subsubsection{Observer Pattern (behavioral patterns)}
+\label{subsec:observer-pattern}
+We would have liked to have used this pattern to implement the notifications in such a way that the database automatically sends notifications to all observers (push notification). Unfortunately, we found that MariaDB does not support such functionality. But it was possible to implement a so-called entity listener via Spring Boot annotations; This caused a thread to be started in the background, which checked for changes to the respective entity objects at regular intervals and executed the desired functionality if there was a change. However, inconveniently, in our application this caused the notification dots (the objects that the thread should change when an entity changes) to flicker in the navigation bar, so we decided to implement such a scanner ourselves, which actually worked better: \\
+To do this, we implemented the \textit{listenForDataBaseChanges()} method in the \textit{MainViewController}, which fetches the necessary objects from the database and saves them in local variables. After the next fetch, it then compares these variables with the new data and executes the corresponding functionalities if the two data sets are different differentiate. So that this is possible at regular intervals, the method was provided with \textit{@Scheduled(fixedDelay = 1000)}, which also starts a new thread in which, in contrast to the first implementation, the time intervals can be controlled. This implementation also corresponds to the pull notification of the observer pattern.
 
-\paragraph{Fabrikmethode}
-% TODO
-Mehrere verwandte Typen von Objekten (Klassen) implementieren die gleiche Schnittstelle, unterscheiden sich jedoch in Namen und Verwendungszweck. Nun soll in einem Programmkontext ein konkretes Objekt eines bestimmten Typs verwendet werden.
+Furthermore, we used properties in many places in the application and either bound them to others or set EventListeners on them so that dependencies adjust automatically without having to trigger the functionality separately. \\
+The (forced by JavaFX) use of observable lists is also to be assigned to the observer pattern, since changes in the lists automatically cause a change in the objects in which they are used.
 
-\subsubsection{Strukturmuster}
-\paragraph{Adapter}
-% TODO
-adaptiert eine Schnittstelle für eine Klasse in eine andere, die der Client erwartet
+\subsubsection{Singleton Pattern (creational patterns)}
+Since the structure of SWTcamper is designed in such a way that the \textit{MainView} holds all other views (cf. figure \ref{fig:architecture}), only one object is created at the start of the \textit{MainViewController} and the \textit{NavigationViewController}, which are permanently displayed and their contents are only change. However, both are also referenced in other view controllers using Spring Boot's \textit{@Autowired}, so at this point we are not 100 percent sure how the framework handles these classes exactly. \\
+It would also have been nice to have the database scanner explained in section \ref{subsec:observer-pattern} in its own class, so that it would only be instantiated once - independent of the \textit{MainViewController}. However, it can be assumed that this will only happen once.
 
-\paragraph{Dekorierer}
-% TODO
-Ermöglicht der Klasse zusätzliche Funktionalität während der Laufzeit hinzuzufügen, wobei durch Ableiten die Klassenanzahl exponentiell ansteigt
+\subsubsection{Factory Method (creational patterns)}
+We didn't use this method explicitly, but because we use the Spring Framework and provide many similar classes with the same annotations (\textit{@Component}, \textit{@Service}, \textit{@Entity}, \textit{@Repository}), they use the same interfaces and therefore also have the same standard methods , such as \textit{initialize()}. \\
+An explicit implementation might be possible with the ViewControllers; Due to the component-based structure of the application, however, our classes differ so much that sharing interfaces is of little use.
 
-\paragraph{Pipes und Filter}
-% TODO
-Ist eine Prozesskette, in der die Ausgabe von jedem Prozess die Eingabe des nächsten Prozesses ist
+\subsubsection{Decorator Pattern (structural patterns)}
+Initially, to create a new ad and to edit an ad, we had two different views and controllers. However, since the two functionalities are so similar, we have combined them in a view (and thus a controller) \textit{ModifyView}. There is a boolean variable to distinguish between creating a new ad or editing an existing one. The decorator pattern could have been used here, which would extend the class with additional functionality at runtime. However, it is questionable whether this would bring a real advantage given the size of our application and the class.
 
+\subsubsection{Pipes and Filters (structural patterns)}
+We used functional programming in SWTcamper in several places, especially when processing lists (e.g. for filters), and lined up the methods so that the output of the last processing step was always the input for the next.
 
 \subsection{Summary}
+In SWTcamper we have applied many of the design principles we are familiar with - partly consciously and partly unconsciously. In some cases, we only implemented them when writing this report, after hearing from them again. Overall, we could definitely implement more with more time and also with higher accuracy. In addition, it would also be good in the future to go into the principles more at the beginning of the architecture and not only later on, but in retrospect we neglected that a bit too much.
