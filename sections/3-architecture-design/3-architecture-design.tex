@@ -9,12 +9,12 @@ This chapter presents the architecture and the related design of SWTcamper. Firs
 \subsection{Choice of Architecture}
 For the architecture of SWTcamper, we opted for the \textit{Model-View-Controller} architecture pattern, as this encapsulates the frontend from the backend and allows the graphical user interface to be changed while the backend remains the same. This is particularly interesting in view of the fact that future SWL students should provide the application with a web front end. \\
 In contrast, the application we built runs completely locally, although one could imagine offering the database or the \textit{Docker container} that contains it on a remote machine. \\
-Due to the clear division of the layers belonging to the MVC pattern (easily recognizable in \ref{fig:architecture}), it was also possible to clearly distribute associated tasks to team members with ease.
+Due to the clear division of the layers belonging to the MVC pattern (easily recognizable in fig. \ref{fig:architecture}), it was also possible to clearly distribute associated tasks to team members with ease.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=15cm]{resources/images/architecture.drawio.png}
-	\caption{Architecture}
+	\caption{General Architecture of SWTcamper}
 	\label{fig:architecture}
 \end{figure}
 
@@ -103,7 +103,7 @@ As a solution, we have therefore created our own repository for the images. In a
 Unfortunately, this approach means that images can only be stored locally and do not work in a distributed system. However, since our application only had the requirement to run locally anyway, that was fine for this framework.
 
 \paragraph{User}
-In addition to an automatically generated ID, the User class also has attributes for the username, first and last name, email address, telephone number and password. The \textit{userRole} attribute indicates which role the user assumes when using the application and which authorizations he has as a result (cf. view illustration in figure \ref{fig:architecture}). Related to this there is also the attribute \textit{enabled}, which is only set to \textit{false} when a user registers as a new provider, since it was a requirement that these people should first be checked before they can create new offers. As long as a user has the role of provider and \textit{enabled} is set to \textit{false}, he has the same powers and options as the \textit{userRole} Renter. \\
+In addition to an automatically generated ID, the User class also has attributes for the username, first and last name, email address, telephone number and password. The \textit{userRole} attribute indicates which role the user assumes when using the application and which authorizations he has as a result (cf. view illustration in fig. \ref{fig:architecture}). Related to this there is also the attribute \textit{enabled}, which is only set to \textit{false} when a user registers as a new provider, since it was a requirement that these people should first be checked before they can create new offers. As long as a user has the role of provider and \textit{enabled} is set to \textit{false}, he has the same powers and options as the \textit{userRole} Renter. \\
 Another boolean field is \textit{locked}, which is required to globally block a user; its application options are therefore severely limited. In contrast to this possibility, which can only be carried out by an operator, there is also one for providers with which other users can be excluded from their offers. To do this, User objects use a list \textit{excludedRenters}, in which the IDs of the users to be excluded are stored.
 
 \paragraph{UserReport}
@@ -166,7 +166,7 @@ The (forced by JavaFX) use of observable lists is also to be assigned to the obs
 \subsubsection{Creational patterns}
 
 \paragraph{Singleton Pattern}
-Since the structure of SWTcamper is designed in such a way that the \textit{MainView} holds all other views (cf. figure \ref{fig:architecture}), only one object is created at the start of the \textit{MainViewController} and the \textit{NavigationViewController}, which are permanently displayed and their contents are only change. However, both are also referenced in other view controllers using Spring Boot's \textit{@Autowired}, so at this point we are not 100 percent sure how the framework handles these classes exactly. \\
+Since the structure of SWTcamper is designed in such a way that the \textit{MainView} holds all other views (cf. fig. \ref{fig:architecture}), only one object is created at the start of the \textit{MainViewController} and the \textit{NavigationViewController}, which are permanently displayed and their contents are only change. However, both are also referenced in other view controllers using Spring Boot's \textit{@Autowired}, so at this point we are not 100 percent sure how the framework handles these classes exactly. \\
 It would also have been nice to have the database scanner explained in section \ref{subsec:observer-pattern} in its own class, so that it would only be instantiated once - independent of the \textit{MainViewController}. However, it can be assumed that this will only happen once.
 
 \paragraph{Factory Method}
