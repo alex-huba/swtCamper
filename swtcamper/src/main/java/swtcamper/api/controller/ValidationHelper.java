@@ -2,7 +2,6 @@ package swtcamper.api.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
 import swtcamper.backend.services.BookingService;
@@ -71,7 +70,7 @@ public class ValidationHelper {
   }
 
   public boolean checkSizeParameter(int toCheck) {
-    return (toCheck <= 99 || toCheck >= 100001);
+    return (toCheck > 99 && toCheck < 100001);
   }
 
   public boolean checkYear(int toCheck) {
