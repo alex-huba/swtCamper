@@ -170,13 +170,7 @@ public class OfferService {
       )
     );
 
-    if (offerOptional.isPresent()) {
-      return offerOptional.get();
-    } else {
-      throw new GenericServiceException(
-        "Newly created offer with ID: " + newOfferId + " not found."
-      );
-    }
+    return offerOptional.get();
   }
 
   /**
