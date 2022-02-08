@@ -1,1 +1,158 @@
-\emph{Include stories that were completed in the fourth sprint.}
+\subsubsection{Place offer}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} place an offer,\hfill\break
+\textbf{so that} my vehicles can be booked by renters.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item it is possible to enter info about a vehicle (images, features, dates when it is available, description of rental conditions, particularities) into a form, which will then be considered an offer by the system
+    \item the offer/vehicle is entered into the database
+    \item each offer has obligatory information. If this information is not filled-in provider cannot create the offer
+\end{itemize}
+
+
+\subsubsection{Filter}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} to filter vehicles,\hfill\break
+\textbf{so that} I can find fitting vehicles easier.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can filter for vehicle's features
+    \item Renter can filter for availability
+    \item Renter can filter for rental costs
+    \item Renter can filter for rental conditions
+    \item Returned search list is small and clearly arranged
+\end{itemize}
+
+
+\subsubsection{Approve the booking}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} approve the booking,\hfill\break
+\textbf{so that} I can make the deal on the portal properly.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Provider receive request for renting her/his van
+    \item Provider can agree or decline the request
+    \item Request contains all mandatory information: date for rent, renter name and rating, amount of money etc.
+    \item After acceptance of the request, new deal is added to the list of deals of provider
+\end{itemize}
+
+
+\subsubsection{Booking history}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} have a booking history,\hfill\break
+\textbf{so that} I can track my bookings.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can access a list of all bookings that they have including finished and active
+    \item Renter can access each offer from past and check all info about booking
+\end{itemize}
+
+
+\subsubsection{(Un)block provider or renter}
+
+\textbf{As an} Operator,\hfill\break
+\textbf{I want} exclude/include back provider or renter,\hfill\break
+\textbf{so that} I can administrate the portal and avoid negative deals on the portal.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Operator can block provider or renter after the request of the corresponding supplicant who has written a detailed complaint about the previous deal.
+    \item Operator can unblock provider or renter.
+    \item It is impossible for a blocked user to make more deals.
+\end{itemize}
+
+
+\subsubsection{Exclude renters}
+
+\textbf{As a} Provider,\hfill\break
+\textbf{I want} to be able to exclude renters,\hfill\break
+\textbf{so that} I can avoid renters with a bad history of renting.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item It is impossible for excluded renters to rent vehicles from the provider who excluded them
+    \item It is possible to revoke the "ban" for the provider
+    \item It is impossible to exclude an account that is already excluded
+    \item Booking functions are not available for excluded renters
+\end{itemize}
+
+
+\subsubsection{Operator's Influence}
+
+\textbf{As an} Operator,\hfill\break
+\textbf{I want} be able to influence search results,\hfill\break
+\textbf{so that} I can make my own vehicles more visible.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 4
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Operator have a list of all offers, placed on the portal.
+    \item Operator can access each offer and overview the overall info about the deal.
+    \item Each offer has adjustable attribute ranking named “promoted offer”.
+    \item Operator can mark offer as “promoted offer” via a button
+    \item After submission, the changes must be saved.
+    \item Offers that are marked as “promoted offer” are visually highlighted in the offer list.
+\end{itemize}

@@ -1,1 +1,88 @@
-\emph{Include stories that were completed in the third sprint.}
+\subsubsection{Login}
+
+\textbf{As a} User,\hfill\break
+\textbf{I want} login by supplying my email and my password,\hfill\break
+\textbf{so that} I can rent/offer vans or administrate portal.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 3
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item it is impossible to use functionality of portal (other than just looking through offers) without being logged in
+    \item wrong username and/or password does not give access (user is informed if password or username is wrong)
+    \item a user can change their password in case they've forgotten it and login with the new password
+    \item a Renter only sees the renter GUI
+    \item a Provider only sees the Provider GUI
+    \item a Operator only sees the Operator GUI
+    \item it is impossible to use provider functionalities logged in as a provider if the operator has not admitted the registration yet
+\end{itemize}
+
+\subsubsection{Registration}
+
+\textbf{As a} User,\hfill\break
+\textbf{I want} register by supplying my email and by creation my personal password plus username,\hfill\break
+\textbf{so that} I can create a profile at the portal for rent/offer van activities.
+
+\textbf{Meta-Information}
+\begin{itemize}
+    \item Size: L
+    \item Sprint: 3
+\end{itemize}
+
+\textbf{Acceptance Criteria}
+
+The story is done, when
+\begin{itemize}
+    \item only unique emails and usernames are accepted,
+    \item only valid usernames and emails are accepted,
+    \item only passwords with at least 5 symbols are accepted; otherwise “Password is too short” is displayed
+    \item only usernames with at least 5 symbols are accepted; otherwise “Username is too short” is displayed
+    \item after successful registration it is possible for the user to login in the portal
+    \item after successful registration the user is saved in the database
+\end{itemize}
+
+
+\subsubsection{Request}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want} to be able to make a request,\hfill\break
+\textbf{so that} I know if the wanted vehicle is available.
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: M
+    \item Sprint: 3
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item Renter can send a request for booking
+    \item New booking is added to the list of all bookings of the renter
+\end{itemize}
+
+\subsubsection{Booking}
+
+\textbf{As a} Renter,\hfill\break
+\textbf{I want}to be able to make a booking,\hfill\break
+\textbf{so that}I can get the wanted vehicle
+
+\textbf{Meta-Information:}
+\begin{itemize}
+    \item Size: S
+    \item Sprint: 3
+\end{itemize}
+
+\textbf{Acceptance Criteria:}
+
+The story is done, when
+\begin{itemize}
+    \item I get a booking confirmation
+\end{itemize}
