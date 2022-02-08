@@ -4,7 +4,7 @@
 \paragraph{Primary textual contributors.}
 \mbox{}\\\emph{Thomas Kretschmann}
 
-This chapter presents the architecture and the related design of SWTcamper. First, we show which architectural model we have chosen and justify our decision. Then we will explain the implementation based on this and how individual design decisions can be derived from it. In particular, we will go into the design of the database schema and the representation of each entity. Finally, the design patterns and design principles used are presented and briefly explained.
+This chapter introduces the architecture and related design of SWTcamper. First, we show which architectural model we have chosen and justify our decision. We will then derive the implementation based on this and how the resulting individual design decisions can be derived. In particular, we go into the design of the database schema and the representation of each entity. Finally, the design patterns and design principles used are presented and briefly explained.
 
 \subsection{Choice of Architecture}
 For the architecture of SWTcamper, we opted for the \textit{Model-View-Controller} architecture pattern, as this encapsulates the frontend from the backend and allows the graphical user interface to be changed while the backend remains the same. This is particularly interesting in view of the fact that future SWL students should provide the application with a web front end. \\
@@ -31,25 +31,25 @@ Applications designed according to the principles of MVC consist of three interc
 \end{itemize}
 
 \subsubsection{JavaFX (view)}
-JavaFX is an open source framework used to create graphical user interfaces (GUI). In SWTcamper we used the JavaFX feature that allows to fully define the view part in FXML files. The views were only generated programmatically for dynamic program parts, like the list of available displays or the operator dashboard. The view is then created at runtime of the program using the FXML files and JavaFX. The view controllers are the controllers of the individual views, which not only take care of event handling, but also request and forward data from the 'real' controllers.
+JavaFX is a framework for creating cross-platform Java applications. With FXML, it enables a declarative description of graphical user interfaces based on XML. The Scene Builder is a graphical tool that simplifies the creation of FXML files. In addition, web technologies such as CSS can also be used for the design by embedding them in the FXML code. \\
+View controllers are the controllers of the individual views, which not only take care of event handling, but also request and forward data from the 'real' controllers. \\
+We used all of these functions as part of this project. The views were only generated programmatically for dynamic program parts, like the list of available displays or the operator dashboard.
 
 \subsubsection{Spring boot (view, controller, model)}
-Spring Boot is an open source framework that offers many functionalities for developing a standalone application. It simplifies the software development process by reducing complexity and providing a clear structure. In our case, it is used in every layer of the MVC pattern. \\
-In order for the framework to know how to deal with each class, there are annotations that allow Spring Boot to create the necessary environment for the classes. An example of this is the \textit{@Service} annotation, which is placed above each of our service classes, or \textit{@Component}, which is used above each controller. \\
-Simply using Spring Boot doesn't guarantee quality, but it does provide a structure that makes it easier to develop quality software and avoid mistakes.
+Spring Boot is an open source framework that offers many functionalities for developing a standalone application. It simplifies the software development process by reducing complexity and providing a clear structure. Especially in contrast to classic Spring applications, where several XML configuration files had to be edited, Spring Boot offers a quick creation of a new project. \\
+In order for the framework to know how to deal with each class, there are annotations that allow Spring Boot to create the necessary environment for the classes. An example of this is the \textit{@Service} annotation, which is placed above each of our service classes, or \textit{@Component}, which is used above each controller.
 
 \subsubsection{JPA (model)}
-Combined with Spring Boot, the \textit{Java Persistence API} allows us to convert Java objects to
-Database objects and vice versa. Various settings can be made through annotations in the entity classes in order to implement the desired database schema automatically.
+The \textit{Jakarta Persistence API} is an interface for Java applications that simplifies the assignment and transfer of objects to database entries. It simplifies solving the object-relational mapping problem of storing run-time objects of a Java application across a single session (persistence). Various settings can be made through annotations in the entity classes in order to implement the desired database schema automatically.
 
 \subsubsection{Docker (model)}
-Docker is open source software that allows us to run applications in a virtual container environment. Many software vendors already provide preconfigured images that allow their application to run in a containerized Docker environment. We used Docker to run our \textit{MariaDB} database in it.
+Docker is open source software that allows us to run applications in a virtual container environment. Docker simplifies the deployment of applications because containers that contain all the necessary packages can be easily transported and installed as files. Containers ensure the separation and management of the resources used on a computer. We used Docker to run our \textit{MariaDB} database in it.
 
 \subsubsection{MariaDB (model)}
-MariaDB is an open-source relational database. We use it to store our data consistently. MariaDB also offers its own Docker image, making it a good choice for our application.
+MariaDB is an open-source relational database-system and a fork of \textit{MySQL}. We used it to store our data consistently. MariaDB can be used by its own Docker image.
 
 \subsection{Design Implementation}
-In order to understand which components we need for the application and how best to proceed, we created a use case diagram (fig. \ref{fig:use-case-diagram}) and an ER diagram (fig. \ref{fig:er-diagram}) which have changed over the course of the project.
+In order to understand which components we need for the application and how best to proceed, we created a use case diagram (fig. \ref{fig:use-case-diagram}) and an ER diagram (fig. \ref{fig:er-diagram}) in Sprint 0, which have changed over the course of the project.
 
 \begin{figure}[h]
 	\centering
@@ -62,13 +62,13 @@ In order to understand which components we need for the application and how best
 The heart of SWTcamper is the \textit{MainView} and its associated view controller, which is called directly from \textit{App.java} (starting point for JavaFX applications) when the program starts. Via imports, it contains all other FXML views that are added or removed via the controller depending on the \textit{NavigationViewController}. (trying to show in fig. \ref{fig:architecture}) When the program starts, the \textit{RentingView} is loaded first via the \textit{changeView()} method, which contains all available displays. To do this, the \textit{AnchorPane} 'mainStage' in the \textit{MainView} is first completely emptied and then filled with the \textit{RentingView} mentioned. If the user now presses a button in the \textit{NavigationView} (buttons are displayed depending on the \textit{UserRole} (also taken from fig. \ref{fig:architecture})), the \textit{MainViewController} is instructed via its view controller to repeat the same procedure for the newly selected view. In order to differentiate between the views, a suitable string must be passed to the \textit{changeView()} method (e.g. 'home' for the \textit{RentingView} or 'history' for the \textit{DealHistoryView}). Since all view controllers are already initialized when the program starts, all other view controllers must also be imported into the \textit{MainViewController} so that a reload method can be called for each one individually.
 
 \subsection{Class diagrams}
-We made a class diagram in the first sprints. Since our classes have changed since then, we wanted to include an automatically generated class diagram at this point; However, since this is much too big, we tried to split it up into its most important classes and integrate them separately. The diagrams can be viewed in the Additional Material (fig. \ref{fig:cd:controller-services} and fig. \ref{fig:cd:entities}).
+We made a class diagram in the first sprints. Since our classes have changed since then, we wanted to include an automatically generated class diagram at this point; However, since this is much too big, we tried to split it up into its most important classes and integrate them separately. The diagrams can be viewed in the Additional Material (fig. \ref{fig:cd:controller-services} and fig. \ref{fig:cd:entities} (note: for the sake of clarity we missed out attributes and methods, but at least for the entities these can be seen in our ER-diagram (fig. \ref{fig:er-diagram}))).
 
 \subsection{Data model \& Design decisions}
-In order to get an overview of the entities to be implemented and how they interact, we created an ER diagram at the beginning of Sprint 0 (fig. \ref{fig:er-diagram_draft}), which only changed slightly over the course of the project has (figure \ref{fig:er-diagram}). In this chapter we present our entities and their structures.
+In order to get an overview of the entities to be implemented and how they interact, we created an ER-diagram at the beginning of Sprint 0 (fig. \ref{fig:er-diagram_draft}), which only changed slightly over the course of the project has (fig. \ref{fig:er-diagram}). In this chapter we present our entities and their structures.
 
 \paragraph{Booking}
-The Booking class is required to bind a user to an ad. To do this, it has an ID that is automatically generated by the database (through the \textit{@Id} and \textit{@GeneratedValue} annotations), a user who wants to rent the associated ad, the ad itself, a start date and an end date. Furthermore, there are the two boolean fields \textit{active} and \textit{rejected}. A booking is created with \textit{active = false} and remains inactive until accepted; if it is rejected, the field \textit{rejected}, which was also created with \textit{false}, is set to \textit{true}. The combination of these two values is used at several points in the application to determine states:
+The Booking class is required to bind a user to an offer. To do this, it has an ID that is automatically generated by the database (through the \textit{@Id} and \textit{@GeneratedValue} annotations), a user who wants to rent the associated offer, the offer itself, a start date and an end date. Furthermore, there are the two boolean fields \textit{active} and \textit{rejected}. A booking is created with \textit{active = false} and remains inactive until accepted; if it is rejected, the field \textit{rejected}, which was also created with \textit{false}, is set to \textit{true}. The combination of these two values is used at several points in the application to determine states:
 
 \begin{table}[h]
 	\centering
@@ -88,7 +88,7 @@ The Booking class is required to bind a user to an ad. To do this, it has an ID 
 \end{table}
 
 \paragraph{Filter}
-The Filter class is the only entity class in SWTcamper that is not stored in the database. It contains all the fields from \textit{Offer} and \textit{Vehicle} that are required for a good search. When the search is started, a new filter instance is created and the necessary fields are set. This instance is then passed to the \textit{OfferController}, which uses it to filter the list of all ads and returns a new list of ads that match the filter instance.
+The Filter class is the only entity class in SWTcamper that is not stored in the database. It contains all the fields from \textit{Offer} and \textit{Vehicle} that are required for a good search. When the search is started, a new filter instance is created and the necessary fields are set. This instance is then passed to the \textit{OfferController}, which uses it to filter the list of all offers and returns a new list of offers that match the filter instance.
 
 \paragraph{LoggingMessage}
 Logging messages are generated by almost all services and are required to be able to track events. A list of logging messages can be viewed as an operator via the \textit{AccountView} and downloaded as a log file. Since all logging messages that occur are also stored in the database, each has a unique and automatically generated ID and a time stamp for which it was created. The enum \textit{loggingLevel} indicates how important the logging message is (INFO, WARNING, ERROR) and there is also a message so that the viewer knows what it is about.
