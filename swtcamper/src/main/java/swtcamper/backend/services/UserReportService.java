@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import swtcamper.api.controller.LoggingController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.ILoggingController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.UserReport;
@@ -20,10 +20,10 @@ public class UserReportService {
   private UserReportRepository userReportRepository;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   /**
    * Creates a new {@link UserReport}

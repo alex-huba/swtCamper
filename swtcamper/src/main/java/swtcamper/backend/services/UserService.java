@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.api.controller.HashHelper;
-import swtcamper.api.controller.LoggingController;
 import swtcamper.backend.entities.LoggingLevel;
 import swtcamper.backend.entities.LoggingMessage;
 import swtcamper.backend.entities.User;
@@ -23,7 +23,7 @@ public class UserService {
   private UserRepository userRepository;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   @Autowired
   private HashHelper hashHelper;
@@ -254,13 +254,11 @@ public class UserService {
     // Check if username and password are matching
     String hashedPassword = HashHelper.hashIt(password);
     if (userRepository.existsByUsernameAndPassword(username, hashedPassword)) {
-      User user;
+      User user = new User();
       Optional<User> userOptional = userRepository.findByUsername(username);
       if (userOptional.isPresent()) {
         user = userOptional.get();
         this.setLoggedInUser(user);
-      } else {
-        throw new UserDoesNotExistException("User doesn't exist.");
       }
       // Username and password are matching
       loggingController.log(

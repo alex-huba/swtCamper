@@ -10,7 +10,7 @@ import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swtcamper.api.contract.UserDTO;
-import swtcamper.api.controller.LoggingController;
+import swtcamper.api.contract.interfaces.ILoggingController;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.BookingRepository;
 import swtcamper.backend.repositories.OfferRepository;
@@ -26,7 +26,7 @@ public class BookingService {
   private BookingRepository bookingRepository;
 
   @Autowired
-  private LoggingController loggingController;
+  private ILoggingController loggingController;
 
   /**
    * Get a List of all available bookings
