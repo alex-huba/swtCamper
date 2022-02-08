@@ -11,3 +11,98 @@ by your team, or has been added by the client. You may apply any documentation
 and analysis technique taught in module SWT-FSE-B or from the requirements 
 engineering literature, including techniques based on user stories, use cases 
 and prototyping. Properly reference and justify all employed techniques.}
+
+\subsection{Functional Requirements}
+\emph{P: project brief, A: assumption by team, C: added by client}
+
+\paragraph{Requirement 1:} [PA] The user shall be able to login by supplying email and password. (01: Login)
+\paragraph{Requirement 2:} [A] It shall be impossible to use the portal's functionality without being logged in. (01: Login)
+\paragraph{Requirement 3:} [A] It shall not be possible to gain access with wrong username and/or password. (01: Login)
+\paragraph{Requirement 4:} [A] It shall be possible for users to change their passwords. (01: Login)
+\paragraph{Requirement 5:} [C] A renter shall only see the renter GUI. (01: Login)
+\paragraph{Requirement 6:} [C] A provider shall only see the provider GUI. (01: Login)
+\paragraph{Requirement 7:} [C] An operator shall only see the operator GUI. (01: Login)
+\paragraph{Requirement 8:} [C] It shall not be possible for providers to use provider functionality if they are not enabled yet. (01: Login)
+
+\paragraph{Requirement 9:} [PA] It shall be possible for user to register by supplying user information, containing username, e-mail and password. (01: Registration)
+\paragraph{Requirement 10:} [A] E-mails and usernames shall only be accepted if they're unique. (01: Registration)
+\paragraph{Requirement 11:} [A] Usernames and emails shall only be accepted if they're valid. (01: Registration)
+\paragraph{Requirement 12:} [A] Usernames and passwords shall have at least 5 characters. (01: Registration)
+\paragraph{Requirement 13:} [A] Registered users shall be saved to the database. (01: Registration)
+
+\paragraph{Requirement 14:} [P] It shall be possible for providers to place offers. (02: Place Offer)
+\paragraph{Requirement 15:} [P] It shall be possible to enter information about the vehicles. (02: Place Offer)
+\paragraph{Requirement 16:} [A] When creating an offer, the offer and its vehicle shall be saved to the database. (02: Place Offer)
+\paragraph{Requirement 17:} [A] It shall not be possible to create an offer without the necessary information. (02: Place Offer)
+
+\paragraph{Requirement 18:} [A] It shall be possible to for providers to update an own existing offer. (03: Update Offer)
+\paragraph{Requirement 19:} [A] Updated offers shall be saved to the database. (03: Update Offer)
+\paragraph{Requirement 20:} [A] Providers shall be able to access a list of their offers. (03: Update Offer)
+\paragraph{Requirement 21:} [A] It shall be possible for providers to delete their own offers. (03: Update Offer)
+
+\paragraph{Requirement 22:} [P] It shall be possible for operators to block/unblock other users. (04: (Un)block provider or renter)
+\paragraph{Requirement 23:} [C] It shall be possible for users that are not renters only to write a complaint about other users. (04: (Un)block provider or renter)
+\paragraph{Requirement 24:} [C] It shall not be possible for blocked users to make any more deals. (04: (Un)block provider or renter)
+
+\paragraph{Requirement 25:} [P] It shall be possible for operators to configure search and filter options. (05: configure options)
+\paragraph{Requirement 26:} [A] Operators shall be able to access a list of all filters and search options. (05: configure options)
+\paragraph{Requirement 27:} [P] It shall be possible for operators to modify the list of filter and search options. (05: configure options)
+
+\paragraph{Requirement 28:} [P] It shall be possible to use filters on the list of all available offers. (06: Filter)
+\paragraph{Requirement 29:} [P] It shall be able to filter for vehicle's features (06: Filter)
+\paragraph{Requirement 30:} [P] It shall be able to filter for availability (06: Filter)
+\paragraph{Requirement 31:} [P] It shall be able to filter for rental costs (06: Filter)
+\paragraph{Requirement 32:} [P] It shall be able to filter for rental conditions (06: Filter)
+
+\paragraph{Requirement 33:} [P] It shall be possible for renters to make a request for an offer. (07: Request)
+
+\paragraph{Requirement 34:} [P] It shall be possible for renters to make a booking. (08: Booking)
+\paragraph{Requirement 35:} [C] The renter shall get a booking confirmation after it got accepted. (08: Booking)
+\paragraph{Requirement 36:} [A] After the booking got accepted it shall be visible in renter's booking history. (08: Booking)
+\paragraph{Requirement 37:} [A] After the booking got accepted it shall be visible in provider's booking history. (08: Booking)
+\paragraph{Requirement 38:} [C] Provider shall be able to cancel accepted bookings.
+
+
+\paragraph{Requirement 39:} [P] It shall be possible for providers to exclude renters from their offers. (09: Exclude renters)
+\paragraph{Requirement 40:} [A] Excluded renters shall not be able to book an offer from providers who excluded them. (09: Exclude renters)
+\paragraph{Requirement 41:} [A] Providers shall be able to revoke the exclusion. (09: Exclude renters)
+\paragraph{Requirement 42:} [A] It shall not be possible to exclude a renter that is already excluded. (09: Exclude renters)
+
+\paragraph{Requirement 43:} [A] It shall be possible for providers to approve or decline booking requests. (10: Approve the booking)
+\paragraph{Requirement 44:} [A] Providers shall receive notifications for new booking requests. (10: Approve the booking)
+\paragraph{Requirement 45:} [A] A request shall contain mandator information like dates, renter's name and rating and amount of money. (10: Approve the booking)
+\paragraph{Requirement 46:} [A] The booking shall be visible in provider's deal history after accepting it. (10: Approve the booking)
+\paragraph{Requirement 47:} [A] The booking shall not be visible in provider's deal history after declining it. (10: Approve the booking)
+
+\paragraph{Requirement 48:} [PC] It shall be possible for operators to influence search results. (11: Operator's influence)
+\paragraph{Requirement 49:} [A] Each offer shall have an adjustable attribute ranking names ‘promoted offer'. (11: Operator's influence)
+\paragraph{Requirement 50:} [C] Operators shall be able to mark an offer as ‘promoted offer' via a button. (11: Operator's influence)
+\paragraph{Requirement 51:} [A] Promoted attribute shall be saved to the database. (11: Operator's influence)
+
+\paragraph{Requirement 52:} [A] Users shall be able to see their personal booking history. (12: Booking history)
+\paragraph{Requirement 53:} [A] It shall be possible to access offers from the past and check all info about the booking. (12: Booking history)
+\paragraph{Requirement 54:} [A] Bookings shall only be listed here if they were accepted. (12: Booking history)
+
+\paragraph{Requirement 55:} [A] It shall be possible for (unregistered) users to read a FAQ. (13: FAQ)
+\paragraph{Requirement 56:} [A] The FAQ section shall be accessible from the main menu. (13: FAQ)
+\paragraph{Requirement 57:} [A] The FAQ section shall contain all necessary information about renting and offering vehicles. (13: FAQ)
+
+\paragraph{Requirement 58:} [P] SWTcamper shall run on a single-user PC with a JavaFX user interface and interact with a MariaDB database
+
+\paragraph{Requirement 59:} [C] There shall be a logging functionality that logs all relevant actions in SWTcamper.
+\paragraph{Requirement 60:} [C] User passowords shall be hashed.
+
+
+\subsection{Non-functional Requirements}
+
+\paragraph{Requirement 61:} [A] There shall be an info to the user if username or password is not correct. (01: Registration)
+\paragraph{Requirement 62:} [PC] The returned list shall be small and clearly arranged. (06: Filter)
+\paragraph{Requirement 63:} [PC] The returned list shall be pagable.
+\paragraph{Requirement 64:} [P] Offers that are marked as promoted shall be highlighted in the list of offers. (11: Operator's Influence)
+
+\paragraph{Requirement 65:} [P] SWTcamper shall establish a web portal for the rental of camper vans.
+\paragraph{Requirement 66:} [P] Rental companies, as well as individuals who offer their camper van for rent, shall be able to professionally advertise their vehicles and process bookings via the portal.
+\paragraph{Requirement 67:} [P] Potential renters shall have a positive experience throughout when selecting and booking vehicles.
+\paragraph{Requirement 68:} [P] To satisfy the high expectations of all stakeholders regarding user experience and reliability, the portal's operator shall be able to easily configure and administrate the portal.
+\paragraph{Requirement 69:} [P] To realize the project SWT Camper, a modern Java prototype of the portal shall be specified, designed and implemented
+\paragraph{Requirement 70:} [C] The layout of SWTcamper shall be responsive.
