@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.backend.services.BookingService;
 import swtcamper.api.controller.UserController;
+import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 import swtcamper.javafx.controller.MainViewController;
@@ -29,8 +29,8 @@ public class ValidationHelper {
 
   public static boolean containsSpecialCharacters(String toCheck) {
     String specialCharacters = "!@#$%&*()'+,-./:;<=>?[]^_`{|}";
-    for (int i=0; i<toCheck.length(); i++) {
-      if(specialCharacters.contains(Character.toString(toCheck.charAt(i)))) {
+    for (int i = 0; i < toCheck.length(); i++) {
+      if (specialCharacters.contains(Character.toString(toCheck.charAt(i)))) {
         return true;
       }
     }
@@ -39,8 +39,8 @@ public class ValidationHelper {
 
   public static boolean containsNumbers(String toCheck) {
     String specialCharacters = "1234567890";
-    for (int i=0; i<toCheck.length(); i++) {
-      if(specialCharacters.contains(Character.toString(toCheck.charAt(i)))) {
+    for (int i = 0; i < toCheck.length(); i++) {
+      if (specialCharacters.contains(Character.toString(toCheck.charAt(i)))) {
         return true;
       }
     }
@@ -52,9 +52,7 @@ public class ValidationHelper {
   }
 
   public static boolean checkOfferTitle(String toCheck) {
-    return (
-                    checkStringLength(toCheck, 5, 999) &&
-                    noSpecialCharacters(toCheck));
+    return (checkStringLength(toCheck, 5, 999) && noSpecialCharacters(toCheck));
   }
 
   public static boolean checkOfferPrice(String toCheck) {
@@ -67,13 +65,11 @@ public class ValidationHelper {
   }
 
   public static boolean checkOfferLocation(String toCheck) {
-    return (
-                    checkStringLength(toCheck, 3, 99));
+    return (checkStringLength(toCheck, 3, 99));
   }
 
   public static boolean checkOfferContact(String toCheck) {
-    return (
-                    checkStringLength(toCheck, 3, 99));
+    return (checkStringLength(toCheck, 3, 99));
   }
 
   public boolean checkSizeParameter(int toCheck) {
@@ -92,8 +88,8 @@ public class ValidationHelper {
    * @return true if startDate is before endDate and not on the same day
    */
   public static boolean checkRentingDates(
-          LocalDate startDate,
-          LocalDate endDate
+    LocalDate startDate,
+    LocalDate endDate
   ) {
     return startDate.isBefore(endDate) && !startDate.equals(endDate);
   }
@@ -107,13 +103,12 @@ public class ValidationHelper {
    * @return true, if no booked days lie in between, false if booked days lie in between
    */
   public static boolean checkRentingDatesWithOffer(
-          LocalDate startDate,
-          LocalDate endDate,
-          OfferDTO offer,
-          // TODO checken
-          BookingService bookingService,
-          OfferService offerService,
-          MainViewController mainViewController
+    LocalDate startDate,
+    LocalDate endDate,
+    OfferDTO offer,
+    BookingService bookingService,
+    OfferService offerService,
+    MainViewController mainViewController
   ) {
     boolean noBookedDaysInBetween = true;
     if (!checkRentingDates(startDate, endDate)) {
@@ -121,10 +116,10 @@ public class ValidationHelper {
     } else {
       try {
         List<LocalDate> bookedDays = bookingService.getBookedDays(
-                offer.getID()
+          offer.getID()
         );
         List<LocalDate> blockedDays = offerService.getBlockedDates(
-                offer.getID()
+          offer.getID()
         );
         for (LocalDate day : bookedDays) {
           if (day.isAfter(startDate) && day.isBefore(endDate)) {
@@ -144,44 +139,32 @@ public class ValidationHelper {
   }
 
   public static boolean checkUserName(String toCheck) {
-    return
-            (checkStringLength(toCheck, 5, 25) &&
-                    noSpecialCharacters(toCheck));
-
+    return (checkStringLength(toCheck, 5, 25) && noSpecialCharacters(toCheck));
   }
 
   public static boolean checkPassword(String toCheck) {
-    return
-            checkStringLength(toCheck, 5, 25) &&
-                    containsNumbers(toCheck) &&
-                    containsSpecialCharacters(toCheck);
-
+    return (
+      checkStringLength(toCheck, 5, 25) &&
+      containsNumbers(toCheck) &&
+      containsSpecialCharacters(toCheck)
+    );
   }
 
   public static boolean checkEmail(String toCheck) {
-    return
-            toCheck.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
-
+    return toCheck.matches(
+      "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$"
+    );
   }
 
   public static boolean checkPhone(String toCheck) {
-    return
-            (isNumber(toCheck) &&
-                    checkStringLength(toCheck, 8, 15));
-
+    return (isNumber(toCheck) && checkStringLength(toCheck, 8, 15));
   }
 
   public static boolean checkName(String toCheck) {
-    return
-            (isLetters(toCheck) &&
-                    checkStringLength(toCheck, 3, 20));
-
+    return (isLetters(toCheck) && checkStringLength(toCheck, 3, 20));
   }
 
   public static boolean checkSurname(String toCheck) {
-    return
-            (isLetters(toCheck) &&
-                    checkStringLength(toCheck, 3, 20 ));
-
+    return (isLetters(toCheck) && checkStringLength(toCheck, 3, 20));
   }
 }

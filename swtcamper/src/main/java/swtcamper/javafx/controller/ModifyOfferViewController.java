@@ -890,7 +890,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBrand(String inputBrand) {
-    if (inputBrand.isEmpty() || inputBrand.length() < 2) {
+    if (validationHelper.checkStringLength(brandTextField.getText(), 2, 25)) {
       errorLabel.setText("Ungültiger Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
@@ -902,7 +902,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateModel(String inputModel) {
-    if (inputModel.isEmpty() || inputModel.length() < 2) {
+    if (validationHelper.checkStringLength(modelTextField.getText(), 2, 25)) {
       errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);
@@ -952,9 +952,9 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBeds(int inputBeds) {
-      errorLabel.setText("");
-      validateTrue(bedsComboBox);
-      isBedsOk.set(true);
+    errorLabel.setText("");
+    validateTrue(bedsComboBox);
+    isBedsOk.set(true);
   }
 
   private void validateWidth(int inputWidth) {
@@ -1072,10 +1072,19 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * action for adding new rental conditions
    */
   public void addRentalConditionButtonAction() {
-    if (
-      rentalConditionsTextField.getText() != null &&
-      !rentalConditionsTextField.getText().isEmpty()
+    if (rentalConditionsTextField.getText().isEmpty()) {
+      mainViewController.handleExceptionMessage("Nichts zum Hinzufügen!");
+    } else if (
+      !validationHelper.checkStringLength(
+        rentalConditionsTextField.getText(),
+        3,
+        25
+      )
     ) {
+      mainViewController.handleExceptionMessage(
+        "Die Mietvoraussetzung ist zu lang!"
+      );
+    } else {
       String rentalCondition = rentalConditionsTextField.getText();
       rentalConditionsTextField.clear();
       rentalConditions.add(rentalCondition);
@@ -1086,8 +1095,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       if (isEditMode.get()) {
         placeOfferButton.visibleProperty().set(true);
       }
-    } else {
-      mainViewController.handleExceptionMessage("Nichts zum Hinzufügen!");
     }
   }
 
