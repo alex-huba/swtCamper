@@ -1,12 +1,10 @@
 package swtcamper.api.controller;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.UserController;
 import swtcamper.backend.services.BookingService;
 import swtcamper.backend.services.OfferService;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -73,7 +71,7 @@ public class ValidationHelper {
   }
 
   public boolean checkSizeParameter(int toCheck) {
-    return (toCheck > 99 && toCheck < 100001);
+    return (toCheck <= 99 || toCheck >= 100001);
   }
 
   public boolean checkYear(int toCheck) {
@@ -91,7 +89,7 @@ public class ValidationHelper {
     LocalDate startDate,
     LocalDate endDate
   ) {
-    return startDate.isBefore(endDate) && !startDate.equals(endDate);
+    return !startDate.isBefore(endDate) || startDate.equals(endDate);
   }
 
   /**
@@ -111,7 +109,7 @@ public class ValidationHelper {
     MainViewController mainViewController
   ) {
     boolean noBookedDaysInBetween = true;
-    if (!checkRentingDates(startDate, endDate)) {
+    if (checkRentingDates(startDate, endDate)) {
       noBookedDaysInBetween = false;
     } else {
       try {
@@ -135,7 +133,7 @@ public class ValidationHelper {
         mainViewController.handleExceptionMessage(e.getMessage());
       }
     }
-    return noBookedDaysInBetween;
+    return !noBookedDaysInBetween;
   }
 
   public static boolean checkUserName(String toCheck) {

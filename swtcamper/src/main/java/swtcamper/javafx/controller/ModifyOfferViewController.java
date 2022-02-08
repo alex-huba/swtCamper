@@ -219,7 +219,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     bedsComboBox
       .valueProperty()
       .addListener((observable, oldValue, newValue) -> {
-        if (newValue != null) validateBeds(Integer.parseInt(newValue));
+        if (newValue != null) validateBeds();
       });
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
@@ -665,7 +665,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       validateSeats();
     } else if (bedsComboBox.equals(source)) {
       int inputBeds = Integer.parseInt(bedsComboBox.getValue());
-      validateBeds(inputBeds);
+      validateBeds();
     } else if (lengthTextField.equals(source)) {
       int inputLength = Integer.parseInt(lengthTextField.getText());
       validateLength(inputLength);
@@ -806,7 +806,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateModel(modelTextField.getText());
     validateTransmissionType(transmissionComboBox.getValue());
     validateSeats();
-    validateBeds(Integer.parseInt(bedsComboBox.getValue()));
+    validateBeds();
   }
 
   private void validateTrue(Node element) {
@@ -842,7 +842,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateLocation(String inputLocation) {
-    if (!validationHelper.checkOfferLocation(inputLocation)) {
+    if (!ValidationHelper.checkOfferLocation(inputLocation)) {
       errorLabel.setText("Ungültiger Abholort");
       validateFalse(locationTextField);
       isLocationOk.set(false);
@@ -854,7 +854,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateContact(String inputContact) {
-    if (!validationHelper.checkOfferContact(inputContact)) {
+    if (!ValidationHelper.checkOfferContact(inputContact)) {
       errorLabel.setText("Ungültiger Kontakt");
       validateFalse(contactTextField);
       isContactOk.set(false);
@@ -890,7 +890,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBrand(String inputBrand) {
-    if (validationHelper.checkStringLength(brandTextField.getText(), 2, 25)) {
+    if (ValidationHelper.checkStringLength(inputBrand, 2, 25)) {
       errorLabel.setText("Ungültiger Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
@@ -902,7 +902,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateModel(String inputModel) {
-    if (validationHelper.checkStringLength(modelTextField.getText(), 2, 25)) {
+    if (ValidationHelper.checkStringLength(inputModel, 2, 25)) {
       errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);
@@ -951,14 +951,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateBeds(int inputBeds) {
-    errorLabel.setText("");
+  private void validateBeds() {
     validateTrue(bedsComboBox);
     isBedsOk.set(true);
   }
 
   private void validateWidth(int inputWidth) {
-    if (!validationHelper.checkSizeParameter(inputWidth)) {
+    if (validationHelper.checkSizeParameter(inputWidth)) {
       errorLabel.setText("Ungültige Breite");
       validateFalse(widthTextField);
       isWidthOk.set(false);
@@ -970,7 +969,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateLength(int inputLength) {
-    if (!validationHelper.checkSizeParameter(inputLength)) {
+    if (validationHelper.checkSizeParameter(inputLength)) {
       errorLabel.setText("Ungültige Länge");
       validateFalse(lengthTextField);
       isLengthOk.set(false);
@@ -982,7 +981,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateHeight(int inputHeight) {
-    if (!validationHelper.checkSizeParameter(inputHeight)) {
+    if (validationHelper.checkSizeParameter(inputHeight)) {
       errorLabel.setText("Ungültige Höhe");
       validateFalse(heightTextField);
       isHeightOk.set(false);
@@ -1128,24 +1127,24 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     if (
       startDatePicker.getValue() == null ||
       endDatePicker.getValue() == null ||
-      !ValidationHelper.checkRentingDates(
-        startDatePicker.getValue(),
-        endDatePicker.getValue()
-      )
+              ValidationHelper.checkRentingDates(
+                      startDatePicker.getValue(),
+                      endDatePicker.getValue()
+              )
     ) {
       mainViewController.handleExceptionMessage(
         "Das Startdatum darf nicht nach oder am selben Tag wie das Enddatum liegen!"
       );
     } else if (
       isEditMode.get() &&
-      !ValidationHelper.checkRentingDatesWithOffer(
-        startDatePicker.getValue(),
-        endDatePicker.getValue(),
-        offerDTO,
-        bookingService,
-        offerService,
-        mainViewController
-      )
+              ValidationHelper.checkRentingDatesWithOffer(
+                      startDatePicker.getValue(),
+                      endDatePicker.getValue(),
+                      offerDTO,
+                      bookingService,
+                      offerService,
+                      mainViewController
+              )
     ) {
       mainViewController.handleExceptionMessage(
         "Zwischen Start- und Enddatum darf keine andere Buchung liegen!"
