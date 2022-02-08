@@ -1,0 +1,74 @@
+After discussing with the entire team, the state our application was in,
+ we set clear goals for the fourth sprint during the sprint planning 
+ meeting. Also, we considered the customer's and client’s comments and
+synchronized them with our goals accordingly.\\Generally speaking, development team was aimed at the following goals during the fourth sprint: 
+\begin{enumerate}
+	\item Provider shall be able to exclude unwanted renters (with bad renting history e.g.) in order to avoid negative consequences of careless usage of provider’s vehicle.
+	\item Operator shall be capable of blocking unwanted providers or renters so that on the portal will be no unsuccessful deals.
+	\item Operator shall have the means for manipulating the search results on the portal in order to promote specific offers. 
+	\item Renter shall be able to view the booking history for tracking the expenses on the portal.
+	\item Portal shall have visible notifications for users in order to highlight important processes for specific users.
+	\item User’s data shall be secured. Especially, passwords in the database shall be hashed in order to upgrade security level of the portal. 
+	\item Improve the quality of the code through the creation of unit and integration tests and detailed documentation in order to simplify the process of adding new functionality to the application and for facilitating the maintenance of the application in the future.
+\end{enumerate}
+So, as can be seen from this list, the work during fourth sprint was dedicated to 
+user management from provider and operator perspective, booking history for renter, 
+search results manipulations for operator and improving user experience through 
+adding notifications and securing user’s data.  
+
+The goal has four directions, which gives 
+main stakeholders a significant amount of portal management tools, expands the 
+capabilities of the user's personal account. Features dedicated to the visual 
+component and security are implemented to attract a wider audience of users after 
+the deploying the application.
+
+\pagebreak
+\paragraph{Our team has derived the following tasks from the chosen for this sprint user stories: \newline \newline}
+
+\begin{tabular}{|l|l|l|}
+    \hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/126}{Create unit tests for ValidationHelper} &  & Patrick \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/72}{Create unit tests for UserService} &  & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/54}{Create unit tests for OfferService} &  & Sabir \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/83}{Create unit tests for BookingService} &  & Aaron \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/135}{Adjust search area}  & User Story 06: Filter & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/123}{Fix green text fields} &  & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/58}{Add stars for beds in offer view} & User Story 02: Place offer & Patrick \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/145}{Validation of maximal numerical input} & User Story 02: Place offer & Oleksandr \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/141}{Adapt View 'Neues Angebot'} & User Story 02: Place offer & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/67}{Upload \& display vehicle picture} & User Story 02: Place offer & Sabir \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/71}{Implement booking confirmation } & User Story 07: Request & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/115}{(Un)block and Enable/Disable User} & {User Story 04: Block provider} & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/130}{Implement list of promoted offers} & User Story 11: Operator´s Influence & Melissa \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/74}{Add Booking List to Offer} & User Story 12: Booking history & Aaron \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/133}{Exclude unwanted renters} & User Story 09: Exclude renters & Thomas \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/117}{Implement unavailable dates booking} & User Story 08: Booking & Aaron \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/168}{Implement User report for renter} & User Story 04: Block provider & Melissa \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/137}{Add Logout button to side nav} & User Story 01: Login & Aaron \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/118}{Implement password encryption} & User Story 01: Registration & Oleksandr \\
+	\hline
+	\href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/144}{Implement header for every view} &  & Thomas \\
+	\hline
+    \href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/139}{Implement Save Changes button} &  & Aaron \\
+	\hline
+    \href{https://gitlab.rz.uni-bamberg.de/swt/teaching/2021-ws/swt-swl-b/group-a/-/issues/146}{Implement configuration number of offers shown} & User Story 06: Filter & Thomas \\
+	\hline
+\end{tabular}
