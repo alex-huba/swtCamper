@@ -144,7 +144,7 @@ public class ValidationHelper {
       noBookedDaysInBetween = false;
     } else {
       try {
-        List<LocalDate> bookedDays = bookingService.getBookedDays(
+        List<LocalDate> bookedDays = bookingService.getBookedAndBlockedDays(
           offer.getID()
         );
         List<LocalDate> blockedDays = offerService.getBlockedDates(
