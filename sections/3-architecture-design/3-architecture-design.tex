@@ -180,7 +180,7 @@ An explicit implementation might be possible with the ViewControllers; Due to th
 Initially, to create a new ad and to edit an ad, we had two different views and controllers. However, since the two functionalities are so similar, we have combined them in a view (and thus a controller) \textit{ModifyView}. There is a boolean variable to distinguish between creating a new ad or editing an existing one. The decorator pattern could have been used here, which would extend the class with additional functionality at runtime. However, it is questionable whether this would bring a real advantage given the size of our application and the class.
 
 \paragraph{Pipes and Filters}
-We used functional programming in SWTcamper in several places, especially when processing lists (e.g. for filters), and lined up the methods so that the output of the last processing step was always the input for the next.
+We used lamdas in SWTcamper in several places, especially when processing lists (e.g. for filters), and lined up the methods so that the output of the last processing step was always the input for the next.
 
 \subsection{Summary}
 In SWTcamper we have applied many of the design principles we are familiar with - partly consciously and partly unconsciously. In some cases, we only implemented them when writing this report, after hearing from them again. Overall, we could definitely implement more with more time and also with higher accuracy. In addition, it would also be good in the future to go into the principles more at the beginning of the architecture and not only later on, but in retrospect we neglected that a bit too much.
