@@ -37,6 +37,10 @@ If there is both the team and the customer noted, it means that it was an assump
 
 \subsection{Functional Requirements}
 
+A lot of the functional requirements were changed or refined several times.
+The following requirements represent the final ones.
+If there has been a lot of changes and refining, it will be specified in a paragraph underneath the description.
+
 \paragraph{RQ1: Registration and login}
 \begin{itemize}
     \item The system shall provide means for a user to register to the portal by supplying user information, containing:  (Project Brief, Team)
@@ -53,6 +57,7 @@ If there is both the team and the customer noted, it means that it was an assump
     \item It shall not be possible for a user to gain access to the portal with the wrong username and password. (Team)
     \item It shall also not be possible for a user to use the portal's functionality without being logged in. (Team)
     \item Users shall be able to change their password by supplying their unique username and unique email address. (Team, Customer)
+    \item OPTIONAL: The users passwords shall be encrypted. (Team, Customer)
     \item In addition to the home, offer search, login/logout and FAQ view, a renter shall only see the renter views: (Customer (Prototyping))
         \subitem Active bookings view
         \subitem Deal history view
@@ -169,6 +174,24 @@ But in terms of complexity and time required, the FAQ requirement was easier and
 \end{itemize}
 
 \subsection{Non-Functional Requirements}
+Many of the non-functional requirements were gathered by using prototyping as an elicitation, and also validation, technique.
+The prototype allowed us to get very specific requirement refinements from the customer, especially in the review meetings.
+This made the elicitation process to collect non-functional requirements much easier.
+
+\begin{itemize}
+    \item The applications' design shall be leaned on the design of a web platform. (Customer)
+    \item The system shall be easy to use and easy to administrate. (Project Brief)
+    \item Potential renters shall have a positive experience throughout their offer browsing. (Project Brief)
+    \item Providers shall be able to professionally advertise their vehicles. (Project Brief)
+    \item The menu navigation shall be permanent / globally accessible and contain quick links. (Customer)
+    \item The configuration of options shall be dynamic. (Customer)
+    \item The layout of the application shall be responsive. (Customer)
+    \item The offer list shall have a card layout. (Customer)
+    \item The returned search list shall be small and clearly arranged. (Project Brief)
+    \item OPTIONAL: The returned search list shall also be pageable. (Customer)
+\end{itemize}
+
+
 \subsection{Constraints}
 \subsubsection{Solution Constraints}
 \subsubsection{Project Constraints}
