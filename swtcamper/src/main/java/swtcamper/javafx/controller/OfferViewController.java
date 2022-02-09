@@ -449,7 +449,7 @@ public class OfferViewController {
       // Liegt Startdatum nach Enddatum?
       // Startdatum == Enddatum?
       if (
-        !ValidationHelper.checkRentingDates(
+        ValidationHelper.checkRentingDates(
           startDatePicker.getValue(),
           endDatePicker.getValue()
         )
@@ -459,7 +459,7 @@ public class OfferViewController {
         );
         // Gibt es gebuchte Tage zwischen Start- und Enddatum?
       } else if (
-        !ValidationHelper.checkRentingDatesWithOffer(
+        ValidationHelper.checkRentingDatesWithOffer(
           startDatePicker.getValue(),
           endDatePicker.getValue(),
           this.viewedOffer,

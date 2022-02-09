@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.controller.ValidationHelper;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
@@ -64,6 +65,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   @Autowired
   private IUserController userController;
+
+  @Autowired
+  private ValidationHelper validationHelper;
 
   private BooleanProperty isUsernameOk;
   private BooleanProperty isPasswordOk;
@@ -157,9 +161,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validateUsernameTf() throws GenericServiceException {
     String input = usernameTf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
+    if (!validationHelper.checkUserName(input)) {
       errorLabel.setText(
-        "Ungültiger Nutzername: 5 Zeichen mindestens und keine Leerzeichen"
+        "Ungültiger Nutzername: 5 Zeichen mindestens und keine Sonderzeichen"
       );
       validateFalse(usernameTf);
       isUsernameOk.setValue(false);
@@ -178,9 +182,9 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   public void validatePasswordPf() {
     String input = passwordPf.getText();
-    if (input.length() < 5 || !input.matches("^[a-zA-Z0-9.-äöüÄÖÜ]*")) {
+    if (!validationHelper.checkPassword(input)) {
       errorLabel.setText(
-        "Ungültiges Passwort: 5 Zeichen mindestens und keine Leerzeichen"
+        "Ungültiges Passwort: mindestens 5 Zeichen, eine Zahl und ein Sonderzeichen!"
       );
       validateFalse(passwordPf);
       isPasswordOk.setValue(false);
@@ -206,10 +210,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateEmailTf() throws GenericServiceException {
     String input = emailTf.getText();
-    if (
-      input.length() < 5 ||
-      !input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
-    ) {
+    if (!validationHelper.checkEmail(input)) {
       errorLabel.setText("Ungültiges Email");
       validateFalse(emailTf);
       isEmailOk.setValue(false);
@@ -226,7 +227,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validatePhoneTf() {
     String input = phoneTf.getText();
-    if (input.length() < 9 || !input.matches("^[0-9-]*")) {
+    if (!validationHelper.checkPhone(input)) {
       errorLabel.setText("Ungültige Telefonnummer. Bitte keine Buchstaben.");
       validateFalse(phoneTf);
       isPhoneOk.setValue(false);
@@ -239,7 +240,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateNameTf() {
     String input = nameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-ZäöüÄÖÜ]*")) {
+    if (!validationHelper.checkName(input)) {
       errorLabel.setText("Ungültiger Name: 2 Buchstaben mindestens");
       validateFalse(nameTf);
       isNameOk.setValue(false);
@@ -252,7 +253,7 @@ public class RegisterViewController implements EventHandler<KeyEvent> {
 
   private void validateSurnameTf() {
     String input = surnameTf.getText();
-    if (input.length() < 3 || !input.matches("^[a-zA-Z-äöüÄÖÜß]*")) {
+    if (!validationHelper.checkSurname(input)) {
       errorLabel.setText("Ungültiger Nachname: 2 Buchstaben mindestens");
       validateFalse(surnameTf);
       isSurnameOk.setValue(false);

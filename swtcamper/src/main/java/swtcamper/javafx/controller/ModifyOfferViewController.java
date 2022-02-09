@@ -219,7 +219,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     bedsComboBox
       .valueProperty()
       .addListener((observable, oldValue, newValue) -> {
-        if (newValue != null) validateBeds(Integer.parseInt(newValue));
+        if (newValue != null) validateBeds();
       });
     titleTextField.setOnKeyTyped(this);
     locationTextField.setOnKeyTyped(this);
@@ -664,17 +664,13 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     } else if (seatsComboBox.equals(source)) {
       validateSeats();
     } else if (bedsComboBox.equals(source)) {
-      int inputBeds = Integer.parseInt(bedsComboBox.getValue());
-      validateBeds(inputBeds);
+      validateBeds();
     } else if (lengthTextField.equals(source)) {
-      int inputLength = Integer.parseInt(lengthTextField.getText());
-      validateLength(inputLength);
+      validateLength(lengthTextField.getText());
     } else if (widthTextField.equals(source)) {
-      int inputWidth = Integer.parseInt(widthTextField.getText());
-      validateWidth(inputWidth);
+      validateWidth(widthTextField.getText());
     } else if (heightTextField.equals(source)) {
-      int inputHeight = Integer.parseInt(heightTextField.getText());
-      validateHeight(inputHeight);
+      validateHeight(heightTextField.getText());
     } else if (constructionYearTextField.equals(source)) {
       int inputYear = Integer.parseInt(constructionYearTextField.getText());
       validateYear(inputYear);
@@ -806,7 +802,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     validateModel(modelTextField.getText());
     validateTransmissionType(transmissionComboBox.getValue());
     validateSeats();
-    validateBeds(Integer.parseInt(bedsComboBox.getValue()));
+    validateBeds();
   }
 
   private void validateTrue(Node element) {
@@ -819,7 +815,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   private void validateTitle(String inputTitle) {
     if (!ValidationHelper.checkOfferTitle(inputTitle)) {
-      errorLabel.setText("Invalid title");
+      errorLabel.setText("Ungültiger Titel");
       validateFalse(titleTextField);
       isTitleOk.set(false);
     } else {
@@ -842,7 +838,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateLocation(String inputLocation) {
-    if (inputLocation.isEmpty() || inputLocation.length() < 3) {
+    if (!ValidationHelper.checkOfferLocation(inputLocation)) {
       errorLabel.setText("Ungültiger Abholort");
       validateFalse(locationTextField);
       isLocationOk.set(false);
@@ -854,7 +850,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateContact(String inputContact) {
-    if (inputContact.isEmpty() || inputContact.length() < 5) {
+    if (!ValidationHelper.checkOfferContact(inputContact)) {
       errorLabel.setText("Ungültiger Kontakt");
       validateFalse(contactTextField);
       isContactOk.set(false);
@@ -890,7 +886,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateBrand(String inputBrand) {
-    if (inputBrand.isEmpty() || inputBrand.length() < 2) {
+    if (!ValidationHelper.checkStringLength(inputBrand, 2, 25)) {
       errorLabel.setText("Ungültiger Hersteller");
       validateFalse(brandTextField);
       isBrandOk.set(false);
@@ -902,7 +898,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   }
 
   private void validateModel(String inputModel) {
-    if (inputModel.isEmpty() || inputModel.length() < 2) {
+    if (!ValidationHelper.checkStringLength(inputModel, 2, 25)) {
       errorLabel.setText("Ungültiges Modell");
       validateFalse(modelTextField);
       isModelOk.set(false);
@@ -940,7 +936,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
         vehicleTypeComboBox.getValue() != null &&
         vehicleTypeComboBox.getValue().equals(VehicleType.TRAILER)
       ) ||
-      validationHelper.checkSeats(seatsComboBox.getValue())
+      Integer.parseInt(seatsComboBox.getValue()) > 0
     ) {
       errorLabel.setText("");
       validateTrue(seatsComboBox);
@@ -952,51 +948,71 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     }
   }
 
-  private void validateBeds(int inputBeds) {
-    if (!validationHelper.checkBeds(String.valueOf(inputBeds))) {
-      errorLabel.setText("Ungültige Anzahl von Betten");
-      validateFalse(bedsComboBox);
-      isBedsOk.set(false);
-    } else {
-      errorLabel.setText("");
-      validateTrue(bedsComboBox);
-      isBedsOk.set(true);
-    }
+  private void validateBeds() {
+    validateTrue(bedsComboBox);
+    isBedsOk.set(true);
   }
 
-  private void validateWidth(int inputWidth) {
-    if (!validationHelper.checkSizeParameter(inputWidth)) {
+  private void validateWidth(String inputWidth) {
+    try {
+      if (
+        inputWidth.isEmpty() ||
+        validationHelper.checkSizeParameter(Integer.parseInt(inputWidth))
+      ) {
+        errorLabel.setText("");
+        validateTrue(widthTextField);
+        isWidthOk.set(true);
+      } else {
+        errorLabel.setText("Ungültige Breite");
+        validateFalse(widthTextField);
+        isWidthOk.set(false);
+      }
+    } catch (NumberFormatException e) {
       errorLabel.setText("Ungültige Breite");
       validateFalse(widthTextField);
       isWidthOk.set(false);
-    } else {
-      errorLabel.setText("");
-      validateTrue(widthTextField);
-      isWidthOk.set(true);
     }
   }
 
-  private void validateLength(int inputLength) {
-    if (!validationHelper.checkSizeParameter(inputLength)) {
+  private void validateLength(String inputLength) {
+    try {
+      if (
+        inputLength.isEmpty() ||
+        validationHelper.checkSizeParameter(Integer.parseInt(inputLength))
+      ) {
+        errorLabel.setText("");
+        validateTrue(lengthTextField);
+        isLengthOk.set(true);
+      } else {
+        errorLabel.setText("Ungültige Länge");
+        validateFalse(lengthTextField);
+        isLengthOk.set(false);
+      }
+    } catch (NumberFormatException e) {
       errorLabel.setText("Ungültige Länge");
       validateFalse(lengthTextField);
       isLengthOk.set(false);
-    } else {
-      errorLabel.setText("");
-      validateTrue(lengthTextField);
-      isLengthOk.set(true);
     }
   }
 
-  private void validateHeight(int inputHeight) {
-    if (!validationHelper.checkSizeParameter(inputHeight)) {
+  private void validateHeight(String inputHeight) {
+    try {
+      if (
+        inputHeight.isEmpty() ||
+        validationHelper.checkSizeParameter(Integer.parseInt(inputHeight))
+      ) {
+        errorLabel.setText("");
+        validateTrue(heightTextField);
+        isHeightOk.set(true);
+      } else {
+        errorLabel.setText("Ungültige Höhe");
+        validateFalse(heightTextField);
+        isHeightOk.set(false);
+      }
+    } catch (NumberFormatException e) {
       errorLabel.setText("Ungültige Höhe");
       validateFalse(heightTextField);
       isHeightOk.set(false);
-    } else {
-      errorLabel.setText("");
-      validateTrue(heightTextField);
-      isHeightOk.set(true);
     }
   }
 
@@ -1079,10 +1095,19 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
    * action for adding new rental conditions
    */
   public void addRentalConditionButtonAction() {
-    if (
-      rentalConditionsTextField.getText() != null &&
-      !rentalConditionsTextField.getText().isEmpty()
+    if (rentalConditionsTextField.getText().isEmpty()) {
+      mainViewController.handleExceptionMessage("Nichts zum Hinzufügen!");
+    } else if (
+      !validationHelper.checkStringLength(
+        rentalConditionsTextField.getText(),
+        3,
+        25
+      )
     ) {
+      mainViewController.handleExceptionMessage(
+        "Die Mietvoraussetzung ist zu lang!"
+      );
+    } else {
       String rentalCondition = rentalConditionsTextField.getText();
       rentalConditionsTextField.clear();
       rentalConditions.add(rentalCondition);
@@ -1093,8 +1118,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       if (isEditMode.get()) {
         placeOfferButton.visibleProperty().set(true);
       }
-    } else {
-      mainViewController.handleExceptionMessage("Nichts zum Hinzufügen!");
     }
   }
 
@@ -1128,7 +1151,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     if (
       startDatePicker.getValue() == null ||
       endDatePicker.getValue() == null ||
-      !ValidationHelper.checkRentingDates(
+      ValidationHelper.checkRentingDates(
         startDatePicker.getValue(),
         endDatePicker.getValue()
       )
@@ -1138,7 +1161,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
       );
     } else if (
       isEditMode.get() &&
-      !ValidationHelper.checkRentingDatesWithOffer(
+      ValidationHelper.checkRentingDatesWithOffer(
         startDatePicker.getValue(),
         endDatePicker.getValue(),
         offerDTO,
