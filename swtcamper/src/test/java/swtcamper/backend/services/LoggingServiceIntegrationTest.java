@@ -52,53 +52,53 @@ public class LoggingServiceIntegrationTest {
   public void databaseShouldContainCorrectLogMessages() {
     // INFO Log
     loggingControllerUnterTest.log(
-      new LoggingMessage(LoggingLevel.INFO, "Das ist ein Test von Musti")
+            new LoggingMessage(LoggingLevel.INFO, "Das ist ein Test von Musti")
     );
 
     assertEquals(1, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(0).getTime());
     assertEquals(
-      LoggingLevel.INFO,
-      loggingServiceUnterTest.getAllLogMessages().get(0).getLogLevel()
+            LoggingLevel.INFO,
+            loggingServiceUnterTest.getAllLogMessages().get(0).getLogLevel()
     );
     assertEquals(
-      "Das ist ein Test von Musti",
-      loggingServiceUnterTest.getAllLogMessages().get(0).getLoggingMessage()
+            "Das ist ein Test von Musti",
+            loggingServiceUnterTest.getAllLogMessages().get(0).getLoggingMessage()
     );
 
     // WARNING Log
     loggingControllerUnterTest.log(
-      new LoggingMessage(
-        LoggingLevel.WARNING,
-        "Das ist der zweite Test von Musti"
-      )
+            new LoggingMessage(
+                    LoggingLevel.WARNING,
+                    "Das ist der zweite Test von Musti"
+            )
     );
 
     assertEquals(2, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(1).getTime());
     assertEquals(
-      LoggingLevel.WARNING,
-      loggingServiceUnterTest.getAllLogMessages().get(1).getLogLevel()
+            LoggingLevel.WARNING,
+            loggingServiceUnterTest.getAllLogMessages().get(1).getLogLevel()
     );
     assertEquals(
-      "Das ist der zweite Test von Musti",
-      loggingServiceUnterTest.getAllLogMessages().get(1).getLoggingMessage()
+            "Das ist der zweite Test von Musti",
+            loggingServiceUnterTest.getAllLogMessages().get(1).getLoggingMessage()
     );
 
     // ERROR Log
     loggingControllerUnterTest.log(
-      new LoggingMessage(LoggingLevel.ERROR, "Obacht, ein Misuse von Anna!")
+            new LoggingMessage(LoggingLevel.ERROR, "Obacht, ein Misuse von Anna!")
     );
 
     assertEquals(3, loggingServiceUnterTest.getAllLogMessages().size());
     assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
     assertEquals(
-      LoggingLevel.ERROR,
-      loggingServiceUnterTest.getAllLogMessages().get(2).getLogLevel()
+            LoggingLevel.ERROR,
+            loggingServiceUnterTest.getAllLogMessages().get(2).getLogLevel()
     );
     assertEquals(
-      "Obacht, ein Misuse von Anna!",
-      loggingServiceUnterTest.getAllLogMessages().get(2).getLoggingMessage()
+            "Obacht, ein Misuse von Anna!",
+            loggingServiceUnterTest.getAllLogMessages().get(2).getLoggingMessage()
     );
   }
 
@@ -108,7 +108,7 @@ public class LoggingServiceIntegrationTest {
 
     // first Log from 'Musti'
     loggingControllerUnterTest.log(
-      new LoggingMessage(LoggingLevel.INFO, "Das ist ein Test von Musti")
+            new LoggingMessage(LoggingLevel.INFO, "Das ist ein Test von Musti")
     );
     logList = loggingServiceUnterTest.getLogForUser(getExampleUser());
 
@@ -116,10 +116,10 @@ public class LoggingServiceIntegrationTest {
 
     // second Log from 'Musti'
     loggingControllerUnterTest.log(
-      new LoggingMessage(
-        LoggingLevel.WARNING,
-        "Das ist der zweite Test von Musti"
-      )
+            new LoggingMessage(
+                    LoggingLevel.WARNING,
+                    "Das ist der zweite Test von Musti"
+            )
     );
     logList = loggingServiceUnterTest.getLogForUser(getExampleUser());
 
@@ -127,7 +127,7 @@ public class LoggingServiceIntegrationTest {
 
     // first log from 'Anna'
     loggingControllerUnterTest.log(
-      new LoggingMessage(LoggingLevel.ERROR, "Obacht, ein Misuse von Anna!")
+            new LoggingMessage(LoggingLevel.ERROR, "Obacht, ein Misuse von Anna!")
     );
     logList = loggingServiceUnterTest.getLogForUser(getExampleUser());
 
