@@ -1,50 +1,46 @@
 package swtcamper.javafx.controller;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ResetPasswordViewController {
 
-  @Autowired
-  private MainViewController mainViewController;
-
-  @Autowired
-  private UserController userController;
-
-  @FXML
-  public Label errorMessageLabel;
-
   @FXML
   public TextField usernameTf;
 
   @FXML
-  public TextField emailTf;
+  private Label errorMessageLabel;
 
   @FXML
-  public PasswordField passwordPf;
+  private TextField emailTf;
 
   @FXML
-  public PasswordField repeatPasswordPf;
+  private PasswordField passwordPf;
 
   @FXML
-  public Button resetButton;
+  private PasswordField repeatPasswordPf;
 
-  SimpleBooleanProperty isUsernameOk;
-  SimpleBooleanProperty isEmailOk;
-  SimpleBooleanProperty isPasswordOk;
-  SimpleBooleanProperty isRepeatPasswordOk;
+  @FXML
+  private Button resetButton;
+
+  private SimpleBooleanProperty isUsernameOk;
+  private SimpleBooleanProperty isEmailOk;
+  private SimpleBooleanProperty isPasswordOk;
+  private SimpleBooleanProperty isRepeatPasswordOk;
+
+  @Autowired
+  private MainViewController mainViewController;
+
+  @Autowired
+  private IUserController userController;
 
   @FXML
   public void initialize() {
@@ -90,11 +86,15 @@ public class ResetPasswordViewController {
   }
 
   private void validateTrue(Node element) {
-    element.setStyle("-fx-background-color: #198754; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #1987547f;");
+  }
+
+  private void validateNeutral(Node element) {
+    element.setStyle("-fx-background-color: white; -fx-text-fill: #000000");
   }
 
   private void validateFalse(Node element) {
-    element.setStyle("-fx-background-color: #dc3545; -fx-text-fill: #FFFFFF");
+    element.setStyle("-fx-background-color: #dc35457f;");
   }
 
   @FXML
@@ -156,9 +156,11 @@ public class ResetPasswordViewController {
   }
 
   public void resetInputFields() {
-    usernameTf.clear();
-    emailTf.clear();
-    passwordPf.clear();
-    repeatPasswordPf.clear();
+    FXCollections
+      .observableArrayList(usernameTf, emailTf, passwordPf, repeatPasswordPf)
+      .forEach(textField -> {
+        textField.clear();
+        validateNeutral(textField);
+      });
   }
 }

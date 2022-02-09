@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="TOP_CENTER" spacing="30.0" styleClass="rootNodeBackground" stylesheets="@../styles/faq-view.css"
+      xmlns="http://javafx.com/javafx/17">
+    <Accordion>
+        <panes>
+            <TitledPane text="Wie miete ich ein Wohnmobil bei SWTcamper?" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="&#x2022; Um ein Fahrzeug auf diesem Portal zu mieten, müssen Sie ein Konto erstellen."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Um ein neuen Account zu erstellen, klicken Sie bitte auf die Button Login und dann auf die Button Registrieren."
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+            <TitledPane text="Ich kann mich nicht auf Ihrem Portal registrieren" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="Es gibt mehrere mögliche Gründe, warum Sie sich nicht registrieren konnten:"
+                                   styleClass="label-for-section"/>
+                            <Label text="1.  Sie haben versucht, ein Account mit ungültigem Vornamen oder/und Nachnamen zu erstellen. Die Mindestanzahl von Buchstaben beträgt 3."
+                                   styleClass="label-for-section"/>
+                            <Label text="2.  Sie haben versucht, ein Konto mit einem ungültigen Nutzername zu erstellen. Bitte beachten Sie, dass der Nickname aus mindestens 5 Zeichen bestehen muss und keine Leerzeichen verwendet werden dürfen."
+                                   styleClass="label-for-section"/>
+                            <Label text="3.  Sie haben versucht, ein Konto mit einem ungültigen Passwort zu erstellen. Bitte beachten Sie, dass das Passwort aus mindestens 5 Zeichen bestehen muss und keine Leerzeichen verwendet werden dürfen. Außerdem muss Ihr Passwort gleich dem Passwort aus Textfeld „Passwort weiderholen“ sein."
+                                   styleClass="label-for-section"/>
+                            <Label text="4.  Sie haben eine ungültige E-Mail-Adresse verwendet."
+                                   styleClass="label-for-section"/>
+                            <Label text="5.  Sie haben eine ungültige Telefonnummer verwendet."
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+            <TitledPane text="Ich habe mein Passwort vergessen" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="&#x2022; Machen Sie keine Sorgen! Wir haben berücksichtigt, dass Benutzer manchmal ihre Passwörter vergessen."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Um Ihr Passwort wiederherzustellen, klicken Sie auf die Button „Login“ und dann auf die Button „Passwort vergessen?“."
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+            <TitledPane text="Wie erstelle ich eine Anzeige für mein Fahrzeug?" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="&#x2022; Um Ihre Fahrzeuge auf unserem Portal mieten zu können, müssen Sie als Provider registriert sein. Wenn Sie bereits Provider sind, dann klicken Sie auf den Button „Neues Angebot“."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Bitte beachten Sie, dass Sie zur Erstellung eines neuen Angebots auf unserem Portal die mit einem Sternchen gekennzeichneten Pflichtfelder ausfüllen müssen."
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+            <TitledPane text="Wie verwalte ich meine Angebote?" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="&#x2022; Unser Portal verfügt über alle notwendigen Tools, um mit Ihren Angeboten zu arbeiten."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Wenn Sie auf die Button „Aktive Angebote“ klicken, sehen Sie eine Liste aller Ihrer Angebote."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Alle Informationen zu Ihrem Angebot erhalten Sie über den Button „mehr Informationen“."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Um Ihr Angebot zu ändern, klicken Sie auf den Button „Angebot bearbeiten“."
+                                   styleClass="label-for-section"/>
+                            <Label text="&#x2022; Um Ihr Angebot aus dem Portal zu entfernen, klicken Sie auf die Schaltfläche „Löschen“"
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+            <TitledPane text="Manche Autos kann ich nicht mieten" styleClass="section-heading">
+                <content>
+                    <VBox spacing="10">
+                        <children>
+                            <Label text="Höchstwahrscheinlich wurden Sie vom Provider blockiert. Das bedeutet, dass er in Zukunft keine Geschäfte mehr mit Ihnen machen möchte. Es tut uns sehr leid."
+                                   styleClass="label-for-section"/>
+                        </children>
+                    </VBox>
+                </content>
+            </TitledPane>
+        </panes>
+    </Accordion>
+
+
+</VBox>

@@ -1,6 +1,7 @@
 package swtcamper.backend.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -12,13 +13,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import swtcamper.api.ModelMapper;
 import swtcamper.api.contract.PictureDTO;
 import swtcamper.backend.entities.Picture;
 import swtcamper.backend.repositories.PictureRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PictureServiceTest {
+@MockitoSettings(strictness = Strictness.LENIENT)
+public class PictureServiceUnitTest {
 
   @InjectMocks
   private PictureService pictureServiceUnderTest;
@@ -92,7 +96,9 @@ public class PictureServiceTest {
     mockPictureToPictureDTO(giveMeTestPicture());
 
     // When
-    pictureServiceUnderTest.create(giveMeTestPictureDTO());
+    pictureServiceUnderTest.create(
+      modelMapper.pictureDTOToPicture(giveMeTestPictureDTO())
+    );
 
     ArgumentCaptor<Picture> pictureArgumentCaptor = ArgumentCaptor.forClass(
       Picture.class
@@ -113,10 +119,10 @@ public class PictureServiceTest {
     when(modelMapper.picturesToPictureDTOs(any()))
       .thenReturn(giveMeListOfPicturesDTO());
 
-    List<PictureDTO> actual = pictureServiceUnderTest.getPicturesForVehicle(
+    List<Picture> actual = pictureServiceUnderTest.getPicturesForVehicle(
       giveMeTestPictureDTO().getVehicleID()
     );
-    PictureDTO actualPicture = actual.get(0);
+    Picture actualPicture = actual.get(0);
 
     List<PictureDTO> expected = new ArrayList<>();
     expected.add(giveMeTestPictureDTO());

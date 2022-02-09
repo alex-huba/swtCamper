@@ -10,35 +10,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
-import swtcamper.api.controller.UserReportController;
+import swtcamper.api.contract.UserReportDTO;
+import swtcamper.api.contract.interfaces.IUserController;
+import swtcamper.api.contract.interfaces.IUserReportController;
 import swtcamper.backend.entities.User;
-import swtcamper.backend.entities.UserReport;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class ExcludeRenterViewController {
 
-  @Autowired
-  private UserController userController;
+  @FXML
+  private VBox excludedRentersVBox;
+
+  @FXML
+  private TextField findUsersTextField;
+
+  @FXML
+  private VBox userResultsVBox;
 
   @Autowired
-  private UserReportController userReportController;
+  private IUserController userController;
+
+  @Autowired
+  private IUserReportController userReportController;
 
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
   private ReportUserViewController reportUserViewController;
-
-  @FXML
-  public VBox excludedRentersVBox;
-
-  @FXML
-  public TextField findUsersTextField;
-
-  @FXML
-  public VBox userResultsVBox;
 
   @FXML
   public void initialize() throws GenericServiceException {
@@ -122,6 +122,7 @@ public class ExcludeRenterViewController {
 
   /**
    * Searches for users that fit to the given searchText and displays the result in userResultsVBox
+   *
    * @param searchText String that shall be used to filter available usernames
    * @throws GenericServiceException
    */
@@ -182,7 +183,7 @@ public class ExcludeRenterViewController {
         try {
           userController.excludeRenterForCurrentlyLoggedInUser(user.getId());
           // reset search
-          findUsersTextField.setText("");
+          findUsersTextField.clear();
           findUsers("");
 
           reloadExcludedRenters();
@@ -200,14 +201,14 @@ public class ExcludeRenterViewController {
       Button reportButton = new Button("Diesen Nutzer melden");
       // determine whether there is another active report from this user about that user already
       boolean isThisUserAlreadyReportedByLoggedInUser = false;
-      for (UserReport userReport : userReportController.getAllUserReports()) {
+      for (UserReportDTO userReportDTO : userReportController.getAllUserReports()) {
         if (
-          userReport.getReportee().getId().equals(user.getId()) &&
-          userReport
+          userReportDTO.getReportee().getId().equals(user.getId()) &&
+          userReportDTO
             .getReporter()
             .getId()
             .equals(userController.getLoggedInUser().getId()) &&
-          userReport.isActive()
+          userReportDTO.isActive()
         ) {
           isThisUserAlreadyReportedByLoggedInUser = true;
           break;

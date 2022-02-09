@@ -12,10 +12,10 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.contract.OfferDTO;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.OfferController;
-import swtcamper.api.controller.PictureController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IOfferController;
+import swtcamper.api.contract.interfaces.IPictureController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -23,32 +23,32 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class MyOffersViewController {
 
+  @FXML
+  private ScrollPane offerListScroll;
+
+  @FXML
+  private VBox offerListRoot;
+
   @Autowired
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private OfferController offerController;
+  private IOfferController offerController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
-  private PictureController pictureController;
+  private IPictureController pictureController;
 
   @Autowired
   private ModifyOfferViewController modifyOfferViewController;
 
   @Autowired
   private OfferViewController offerViewController;
-
-  @FXML
-  public ScrollPane offerListScroll;
-
-  @FXML
-  public VBox offerListRoot;
 
   public void reloadData() throws GenericServiceException {
     // create the "cards" that has been created by the logged-in user
@@ -109,7 +109,7 @@ public class MyOffersViewController {
 
       // brand
       Label brandLabel = new Label(
-        "Marke: " + offer.getOfferedObject().getVehicleFeatures().getMake()
+        "Marke: " + offer.getOfferedObject().getMake()
       );
       brandLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -117,7 +117,7 @@ public class MyOffersViewController {
 
       // model
       Label modelLabel = new Label(
-        "Modell: " + offer.getOfferedObject().getVehicleFeatures().getModel()
+        "Modell: " + offer.getOfferedObject().getModel()
       );
       modelLabel.setStyle(
         "-fx-font-size: 20; -fx-font-family: \"Arial Rounded MT Bold\";"
@@ -178,8 +178,6 @@ public class MyOffersViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
           try {
             offerController.delete(offer.getID());
-          } catch (GenericServiceException ignore) {}
-          try {
             reloadData();
           } catch (GenericServiceException ignore) {}
         }

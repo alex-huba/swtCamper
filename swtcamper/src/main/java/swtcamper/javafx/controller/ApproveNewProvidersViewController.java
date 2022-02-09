@@ -1,6 +1,5 @@
 package swtcamper.javafx.controller;
 
-import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.User;
 import swtcamper.backend.entities.UserRole;
 import swtcamper.backend.services.exceptions.GenericServiceException;
@@ -17,11 +16,11 @@ import swtcamper.backend.services.exceptions.GenericServiceException;
 @Component
 public class ApproveNewProvidersViewController {
 
-  @Autowired
-  private UserController userController;
-
   @FXML
-  public VBox toApproveListView;
+  private VBox toApproveListView;
+
+  @Autowired
+  private IUserController userController;
 
   @FXML
   public void initialize() throws GenericServiceException {
@@ -32,12 +31,7 @@ public class ApproveNewProvidersViewController {
     toApproveListView.getChildren().clear();
 
     if (userController.countUser() > 0) {
-      if (
-        userController
-          .getAllUsers()
-          .stream()
-          .anyMatch(user -> !user.isEnabled())
-      ) {
+      if (userController.isThereAnyDisabledUser()) {
         for (User user : userController.getAllUsers()) {
           if (
             user.getUserRole().equals(UserRole.PROVIDER) && !user.isEnabled()

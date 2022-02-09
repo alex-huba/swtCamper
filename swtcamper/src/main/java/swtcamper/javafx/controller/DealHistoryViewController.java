@@ -3,27 +3,26 @@ package swtcamper.javafx.controller;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.controller.BookingController;
-import swtcamper.api.controller.UserController;
+import swtcamper.api.contract.interfaces.IBookingController;
+import swtcamper.api.contract.interfaces.IUserController;
 import swtcamper.backend.entities.Booking;
 import swtcamper.backend.services.exceptions.GenericServiceException;
 
 @Component
 public class DealHistoryViewController {
+
+  @FXML
+  private VBox bookingsListVBox;
 
   @Autowired
   private OfferViewController offerViewController;
@@ -32,16 +31,13 @@ public class DealHistoryViewController {
   private MainViewController mainViewController;
 
   @Autowired
-  private BookingController bookingController;
+  private IBookingController bookingController;
 
   @Autowired
-  private UserController userController;
+  private IUserController userController;
 
   @Autowired
   private ModelMapper modelMapper;
-
-  @FXML
-  public VBox bookingsListVBox;
 
   @FXML
   private void initialize() {
@@ -57,14 +53,15 @@ public class DealHistoryViewController {
       .stream()
       .filter(booking -> booking.isActive() || booking.isRejected())
       .filter(booking ->
-        Objects.equals(
-          booking.getRenter().getId(),
-          userController.getLoggedInUser().getId()
-        ) ||
-        Objects.equals(
-          booking.getOffer().getCreator().getId(),
-          userController.getLoggedInUser().getId()
-        )
+        booking
+          .getRenter()
+          .getId()
+          .equals(userController.getLoggedInUser().getId()) ||
+        booking
+          .getOffer()
+          .getCreator()
+          .getId()
+          .equals(userController.getLoggedInUser().getId())
       )
       .collect(Collectors.toList());
 
@@ -131,7 +128,10 @@ public class DealHistoryViewController {
 
       // check if booking is rented or provided
       if (
-        booking.getRenter().getId() == userController.getLoggedInUser().getId()
+        booking
+          .getRenter()
+          .getId()
+          .equals(userController.getLoggedInUser().getId())
       ) {
         bookingVBox.setStyle("-fx-background-radius: 20; -fx-padding: 10;");
         bookingVBox.getStyleClass().add("bg-purple");

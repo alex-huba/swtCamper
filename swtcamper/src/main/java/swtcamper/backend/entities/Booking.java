@@ -1,25 +1,29 @@
 package swtcamper.backend.entities;
 
 import java.time.LocalDate;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import swtcamper.backend.entities.interfaces.IBooking;
 
 @Entity
-public class Booking {
+public class Booking implements IBooking {
 
   @Id
   @GeneratedValue
-  Long id;
+  private Long id;
 
   @ManyToOne
-  User renter;
+  private User renter;
 
   @ManyToOne
-  Offer offer;
+  private Offer offer;
 
-  LocalDate startDate;
-  LocalDate endDate;
-  boolean active;
-  boolean rejected;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private boolean active;
+  private boolean rejected;
 
   public Booking() {}
 
@@ -37,58 +41,72 @@ public class Booking {
     this.rejected = false;
   }
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
+  @Override
   public User getRenter() {
     return renter;
   }
 
+  @Override
   public void setRenter(User renter) {
     this.renter = renter;
   }
 
+  @Override
   public Offer getOffer() {
     return offer;
   }
 
+  @Override
   public void setOffer(Offer offer) {
     this.offer = offer;
   }
 
+  @Override
   public LocalDate getStartDate() {
     return startDate;
   }
 
+  @Override
   public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
+  @Override
   public LocalDate getEndDate() {
     return endDate;
   }
 
+  @Override
   public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
+  @Override
   public boolean isActive() {
     return active;
   }
 
+  @Override
   public void setActive(boolean active) {
     this.active = active;
   }
 
+  @Override
   public boolean isRejected() {
     return rejected;
   }
 
+  @Override
   public void setRejected(boolean rejected) {
     this.rejected = rejected;
   }

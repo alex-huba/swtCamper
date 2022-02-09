@@ -1,4 +1,4 @@
-package swtcamper.backend.entities;
+package swtcamper.backend.entities.interfaces;
 
 public interface IPicture {
   long getPictureID();
