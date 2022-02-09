@@ -31,8 +31,84 @@ Also, a lot of requirements (or their priority) changed during the sprint.
 Therefore it was very important to keep asking questions and try to refine the requirements regularly.
 On basis of the example project "xTASKS", the requirements were grouped by the different main functionalities of the project:
 Register and login, Offering Campers, Search and filtering, Booking process, Administration section, User Management % and General.
+The sources will be noted in brackets at the end of the requirement description.
+It can either be the Project Brief, assumptions made by the team (in the following: team) or requirements of the customer.
+If there is both the team and the customer noted, it means that it was an assumption made by the team which the customer saw as an important requirement, too, or that the customer detailed or changed the requirement more.
 
 \subsection{Functional Requirements}
+
+\paragraph{RQ1: Registration and login}
+\begin{itemize}
+    \item The system shall provide means for a user to register to the portal by supplying user information, containing:  (Project Brief, Team)
+        \subitem a unique username,
+        \subitem a unique e-mail address,
+        \subitem a password,
+        \subitem name, surname and phone number.
+    \item The user information shall only be accepted if they are valid: (Team)
+        \subitem username and password with at least 5 characters
+        \subitem name and surname without special characters.
+    \item The user shall not be able to register without filling in the mandatory information fields. (Team, Customer)
+    \item Registered users shall be saved into the database. (Team)
+    \item The user shall be able to login to the portal by supplying the unique username and password. (Project Brief, Team, Customer)
+    \item It shall not be possible for a user to gain access to the portal with the wrong username and password. (Team)
+    \item It shall also not be possible for a user to use the portal's functionality without being logged in. (Team)
+    \item Users shall be able to change their password by supplying their unique username and unique email address. (Team, Customer)
+    \item In addition to the home, offer search, login/logout and FAQ view, a renter shall only see the renter views: (Customer (Prototyping))
+        \subitem Active bookings view
+        \subitem Deal history view
+    \item In addition to the home, offer search, login/logout and FAQ view, a provider shall only see the provider views: (Customer (Prototyping))
+        \subitem Create offer view
+        \subitem Active bookings view
+        \subitem Deal history view
+        \subitem Exclude and report user view
+    \item In addition to the home, offer search, login/logout and FAQ view, an operator shall see all the views: (Customer (Prototyping))
+        \subitem Create offer view
+        \subitem Active bookings view
+        \subitem Deal history view
+        \subitem Exclude and report user view
+        \subitem Accept / deny provider view
+        \subitem Administation dashboard view
+    \item It shall not be possible for providers to use providers functionality if they are not enabled by the operator yet.
+\end{itemize}
+
+
+\paragraph{RQ2: Camper van offering}
+\begin{itemize}
+    \item The system shall make it possible to create, edit and delete an offer. (Project Brief)
+    \item The system shall make it possible to indicate / upload the following information about the vehicle: (Project Brief)
+        \subitem Pictures
+        \subitem Vehicle features
+        \subitem Availability dates
+        \subitem Rental conditions
+        \subitem Particularities
+    \item It shall not be possible to create an offer without filling in the mandatory information fields. (Team, Customer)
+    \item When creating or updating an offer, the offer and its vehicle shall be saved into the database. (Team)
+    \item In the offer creation process the provider shall be able to configure rental conditions. (Customer)
+    \item The system shall provide means for a provider to access a list of their own offers. (Team)
+    \item The list of offers shall contain a thumbnail for each offer. (Customer)
+\end{itemize}
+
+\paragraph{RQ3: Search and filter offers}
+\begin{itemize}
+    \item The system shall provide users search and filtering options when browsing for camper vans on offer. (Project Brief)
+    \item It shall be able to search and filter offers regarding: (Project Brief, Customer)
+        \subitem vehicle features,
+        \subitem availability,
+        \subitem rental costs,
+    \item Inactive offers shall not be returned as a search result. (Team)
+\end{itemize}
+
+\paragraph{RQ4: Booking process}
+\begin{itemize}
+    \item The system shall provide users search and filtering options when browsing for camper vans on offer. (Project Brief)
+    \item It shall be able to search and filter offers regarding: (Project Brief, Customer)
+    \subitem vehicle features,
+    \subitem availability,
+    \subitem rental costs,
+    \item Inactive offers shall not be returned as a search result. (Team)
+\end{itemize}
+
+
 \subsection{Non-Functional Requirements}
 \subsection{Constraints}
 \subsubsection{Solution Constraints}
