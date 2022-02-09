@@ -100,14 +100,73 @@ If there is both the team and the customer noted, it means that it was an assump
 
 \paragraph{RQ4: Booking process}
 \begin{itemize}
-    \item The system shall provide users search and filtering options when browsing for camper vans on offer. (Project Brief)
-    \item It shall be able to search and filter offers regarding: (Project Brief, Customer)
-    \subitem vehicle features,
-    \subitem availability,
-    \subitem rental costs,
-    \item Inactive offers shall not be returned as a search result. (Team)
+    \item Users shall be able to submit a booking request for an active offer.
+    \item The request in the providers perspective shall contain information as: (Project Brief)
+        \subitem booking dates
+        \subitem renter's name
+        \subitem rating
+        \subitem total price
+    \item The portal shall display a booking confirmation after a successful booking request. (Team)
+    \item The provider shall receive a notification after a renter requested to book their camper van. (Customer)
+    \item The provider shall also be able to accept or decline the booking request. (Customer)
+    \item The renter shall get a booking confirmation after their booking request was accepted. (Team, Customer)
+    \item After the booking got accepted by the provider, it shall be listed in both the renters and the providers booking history. (Team)
+    \item A provider shall be able to cancel a booking in any stage of the booking process. (Customer)
+    \item Users shall see their personal booking history, including all bookings they ever got accepted (renter) or ever accepted (provider).  (Team)
+    \item A requested booking shall be saved into the database. (Team)
 \end{itemize}
 
+\paragraph{RQ5: Administration section}
+\begin{itemize}
+    \item The operator shall be able to configure the following options via an administration section:
+        \subitem vehicle features
+        \subitem number of promoted offers shown on one search result page
+    \item
+\end{itemize}
+
+At the beginning, the customer said that it would be necessary for the operator to also configure the rental conditions.
+After one or two iteration this requirement changed, and the customer preferred to let the provider configure the rental conditions by themselves, so that the provider would be more flexible to indicate their own needs.
+It came up in a PO meeting.
+This is a perfect example for a dynamic requirements change.
+Also, the configuration of the vehicle features was one requirement that we couldn't make on time.
+It had a lower priority, as the customer said it would not be mandatory, but they still wanted to have it.
+We communicated it to the customer on time, and they were okay with us not implementing it.
+Regarding the number of promoted offers shown on one search result page, we also discussed with the customer our changing requirement.
+The reason why the customer wanted to have this feature, is because they wanted to prevent a search result page being filled with only promoted offers on the beginning if the position of the offer is being changed.
+We argumented, that this problem would be resolved by not changing the position of a promoted offer and only highlighting it visually.
+Because in later releases providers might want to pay to promote their offers, this solution pleased the customer.
+
+
+\begin{itemize}
+    \item The operator shall be able to block or unblock users. (Project Brief)
+    \item Providers and operators shall be able to report a user. (Customer)
+    \item The operator shall get a notification if a provider registered and accept or decline it. (Customer)
+    \item It shall be possible for operators to influence search results. They shall be able to do so by highlighting an existing offer via a 'promote offer' button.
+    \item Promoted offers shall be saved into the database.
+    \item The operator shall be able to see a history / tracker of every activity in the SWTcamper via a log. (Team, Customer)
+\end{itemize}
+
+
+\paragraph{RQ6: User management}
+\begin{itemize}
+    \item The system shall differentiate between the providers' user role, the renters' user role and the operators user role. (Project Brief, Customer)
+    \item Providers and operators shall be able to report a user. (Customer)
+    \item A blocked user shall not be able to make any more deals. (Customer)
+    \item A provider shall be able to exclude a renter from their offers, if the renter is not already yet excluded by them. They shall also be able to revoke the exclusion. (Project Brief, Team)
+    \item Excluded renters shall not have the possibility to see the any offer of the provider who excluded them. (Team)
+\end{itemize}
+
+We also implemented a FAQ, as it was part of our prototype which we showed to the customer in the beginning.
+The customer was very pleased to see, that we sticked to our prototype and even implemented an optional thing.
+Of course, there would have been other open requirements with higher priority, as the operators' configuration of options.
+But in terms of complexity and time required, the FAQ requirement was easier and quicker to implement in the last sprint.
+
+\paragraph{Optional, RQ6: FAQ}
+\begin{itemize}
+    \item  The system shall provide means for (unregistered) users to read a FAQ. (Team)
+    \item The FAQ section shall be accessible from the main menu. (Team)
+    \item The FAQ section shall contain all neccessary information about renting and offering vehicles. (Team)
+\end{itemize}
 
 \subsection{Non-Functional Requirements}
 \subsection{Constraints}
