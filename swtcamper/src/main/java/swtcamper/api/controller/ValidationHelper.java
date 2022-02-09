@@ -69,14 +69,6 @@ public class ValidationHelper {
     return (checkStringLength(toCheck, 3, 99));
   }
 
-  public boolean checkSizeParameter(int toCheck) {
-    return (toCheck > 99 && toCheck < 100001);
-  }
-
-  public boolean checkYear(int toCheck) {
-    return (toCheck > 1907 && toCheck < LocalDate.now().getYear() + 1);
-  }
-
   /**
    * Checks if startDate is before endDate or on the same day
    *
@@ -163,5 +155,13 @@ public class ValidationHelper {
 
   public static boolean checkSurname(String toCheck) {
     return (isLetters(toCheck) && checkStringLength(toCheck, 3, 20));
+  }
+
+  public boolean checkSizeParameter(int toCheck) {
+    return (toCheck > 99 && toCheck < 100001);
+  }
+
+  public boolean checkYear(int toCheck) {
+    return (toCheck > 1907 && toCheck < LocalDate.now().getYear() + 1);
   }
 }

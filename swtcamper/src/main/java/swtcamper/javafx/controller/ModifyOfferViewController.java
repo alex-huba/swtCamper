@@ -46,6 +46,20 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
   private final LongStringConverter longStringConverter = new LongStringConverter();
   private final ArrayList<Long> bookings = new ArrayList<>();
   private final SimpleBooleanProperty isEditMode = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
+  private final SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @FXML
   private TextField titleTextField;
@@ -130,21 +144,6 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
 
   @FXML
   private TextField rentalConditionsTextField;
-
-  private final SimpleBooleanProperty isPriceOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isBrandOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isModelOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isSeatsOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isBedsOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isTitleOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isLocationOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isContactOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isVehicleTypeOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isTransmissionTypeOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isWidthOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isLengthOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isHeightOk = new SimpleBooleanProperty();
-  private final SimpleBooleanProperty isYearOk = new SimpleBooleanProperty();
 
   @Autowired
   private ModelMapper modelMapper;
@@ -1098,7 +1097,7 @@ public class ModifyOfferViewController implements EventHandler<KeyEvent> {
     if (rentalConditionsTextField.getText().isEmpty()) {
       mainViewController.handleExceptionMessage("Nichts zum Hinzufügen!");
     } else if (
-      !validationHelper.checkStringLength(
+      !ValidationHelper.checkStringLength(
         rentalConditionsTextField.getText(),
         3,
         25

@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import swtcamper.api.ModelMapper;
-import swtcamper.api.contract.OfferDTO;
 import swtcamper.api.contract.UserDTO;
 import swtcamper.backend.entities.*;
 import swtcamper.backend.repositories.OfferRepository;
