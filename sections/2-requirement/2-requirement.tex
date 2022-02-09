@@ -4,39 +4,29 @@
 \paragraph{Primary textual contributors:}
 \mbox{}\\\emph{Dehom Melissa Pereira Gnassingbe, Patrick Willibald Haas}
 
-\emph{Document and analyze the software's functional requirements, 
-non-functional requirements and development constraints. In particular, state 
-whether a requirement is derived from the project brief, is an assumption made 
-by your team, or has been added by the client. You may apply any documentation 
-and analysis technique taught in module SWT-FSE-B or from the requirements 
-engineering literature, including techniques based on user stories, use cases 
-and prototyping. Properly reference and justify all employed techniques.}
-
-
-The following lists all requirements that had to be implemented for the SWTCamper software.
+The following lists all requirements that had to be implemented for the SWTCamper software, even the optional ones.
 Our requirements engineering process contained the requirements' elicitation, requirements analysis and negotiation, requirements documentation and requirements validation.
 Exactly as taught in the SWT-FSE-B module.
 The different stages of the requirements engineering process were repeated in every sprint, sometimes several times.
 In the blastoff-phase we derived all the constraints, functional and non-functional requirements from the project brief and also added some requirements we thought of while brainstorming in the team.
 While working on the different user stories and updating the acceptance criteria, we also derived some more requirements.
-But our main elicitation technique was interviewing.
+But our main elicitation techniques were interviewing and prototyping.
 Most of the requirements were gathered by interviewing the customer in the PO Meetings.
 Another helpful source of requirements was the bi-weekly Sprint Review-Meetings, where we could ask the customer to refine the requirements.
 During our development process, especially in the implementation part, there often came up changing requirements.
 We validated those changing or new requirements with the customers' feedback in the review meetings.
-% We also established some requirements that came up with during the implementation by getting feedback from the customer.
 The customer also recommended us to create a prototype, so that we could more easily validate the requirements with them.
 Indeed, the prototype allowed us to see if we understand the initial requirements well, and if there was a need to define more others.
-Also, a lot of requirements (or their priority) changed during the sprint.
-Therefore it was very important to keep asking questions and try to refine the requirements regularly.
+Also, a lot of requirements (or their priority) changed during one sprint.
+Therefore, it was very important to keep asking questions and try to refine the requirements regularly.
 On basis of the example project "xTASKS", the requirements were grouped by the different main functionalities of the project:
-Register and login, Offering Campers, Search and filtering, Booking process, Administration section, User Management % and General.
+Registration and login, Camper van offering, Search and filter offers, Booking process, Administration section and User Management.
+Non-functional requirements and constraints are not stated with a functionality.
 The sources will be noted in brackets at the end of the requirement description.
-It can either be the Project Brief, assumptions made by the team (in the following: team) or requirements of the customer.
-If there is both the team and the customer noted, it means that it was an assumption made by the team which the customer saw as an important requirement, too, or that the customer detailed or changed the requirement more.
+It can either be the Project Brief, assumptions made by the team (in the following: Team) or requirements of the customer.
+If there is both the team and the customer noted, it means that it was an assumption made by the team which the customer validated, or that the customer detailed or changed the requirement more.
 
 \subsection{Functional Requirements}
-
 A lot of the functional requirements were changed or refined several times.
 The following requirements represent the final ones.
 If there has been a lot of changes and refining, it will be specified in a paragraph underneath the description.
@@ -44,35 +34,44 @@ If there has been a lot of changes and refining, it will be specified in a parag
 \paragraph{RQ1: Registration and login}
 \begin{itemize}
     \item The system shall provide means for a user to register to the portal by supplying user information, containing:  (Project Brief, Team)
-        \subitem a unique username,
-        \subitem a unique e-mail address,
-        \subitem a password,
-        \subitem name, surname and phone number.
-    \item The user information shall only be accepted if they are valid: (Team)
-        \subitem username and password with at least 5 characters
-        \subitem name and surname without special characters.
+        \begin{itemize}
+            \item a unique username,
+            \item a password,
+            \item name, surname and phone number.
+        \end{itemize}
+    \item The user information shall only be accepted if it is valid: (Team)
+        \begin{itemize}
+            \item username and password with at least 5 characters
+            \item name and surname without special characters.
+        \end{itemize}
     \item The user shall not be able to register without filling in the mandatory information fields. (Team, Customer)
     \item Registered users shall be saved into the database. (Team)
-    \item The user shall be able to login to the portal by supplying the unique username and password. (Project Brief, Team, Customer)
+    \item The user shall be able to login to the portal by supplying their unique username and password. (Project Brief, Team, Customer)
     \item It shall not be possible for a user to gain access to the portal with the wrong username and password. (Team)
     \item It shall also not be possible for a user to use the portal's functionality without being logged in. (Team)
     \item Users shall be able to change their password by supplying their unique username and unique email address. (Team, Customer)
     \item OPTIONAL: The users passwords shall be encrypted. (Team, Customer)
     \item In addition to the home, offer search, login/logout and FAQ view, a renter shall only see the renter views: (Customer (Prototyping))
-        \subitem Active bookings view
-        \subitem Deal history view
+        \begin{itemize}
+            \item Active bookings view
+            \item Deal history view
+        \end{itemize}
     \item In addition to the home, offer search, login/logout and FAQ view, a provider shall only see the provider views: (Customer (Prototyping))
-        \subitem Create offer view
-        \subitem Active bookings view
-        \subitem Deal history view
-        \subitem Exclude and report user view
+        \begin{itemize}
+            \item Create offer view
+            \item Active bookings view
+            \item Deal history view
+            \item Exclude and report user view
+        \end{itemize}
     \item In addition to the home, offer search, login/logout and FAQ view, an operator shall see all the views: (Customer (Prototyping))
-        \subitem Create offer view
-        \subitem Active bookings view
-        \subitem Deal history view
-        \subitem Exclude and report user view
-        \subitem Accept / deny provider view
-        \subitem Administation dashboard view
+        \begin{itemize}
+            \item Create offer view
+            \item Active bookings view
+            \item Deal history view
+            \item Exclude and report user view
+            \item Accept / deny provider view
+            \item Administration dashboard view
+        \end{itemize}
     \item It shall not be possible for providers to use providers functionality if they are not enabled by the operator yet.
 \end{itemize}
 
@@ -81,11 +80,13 @@ If there has been a lot of changes and refining, it will be specified in a parag
 \begin{itemize}
     \item The system shall make it possible to create, edit and delete an offer. (Project Brief)
     \item The system shall make it possible to indicate / upload the following information about the vehicle: (Project Brief)
-        \subitem Pictures
-        \subitem Vehicle features
-        \subitem Availability dates
-        \subitem Rental conditions
-        \subitem Particularities
+        \begin{itemize}
+            \item Pictures
+            \item Vehicle features
+            \item Availability dates
+            \item Rental conditions
+            \item Particularities
+        \end{itemize}
     \item It shall not be possible to create an offer without filling in the mandatory information fields. (Team, Customer)
     \item When creating or updating an offer, the offer and its vehicle shall be saved into the database. (Team)
     \item In the offer creation process the provider shall be able to configure rental conditions. (Customer)
@@ -97,9 +98,11 @@ If there has been a lot of changes and refining, it will be specified in a parag
 \begin{itemize}
     \item The system shall provide users search and filtering options when browsing for camper vans on offer. (Project Brief)
     \item It shall be able to search and filter offers regarding: (Project Brief, Customer)
-        \subitem vehicle features,
-        \subitem availability,
-        \subitem rental costs,
+        \begin{itemize}
+            \item vehicle features,
+            \item availability,
+            \item rental costs,
+        \end{itemize}
     \item Inactive offers shall not be returned as a search result. (Team)
 \end{itemize}
 
@@ -107,10 +110,12 @@ If there has been a lot of changes and refining, it will be specified in a parag
 \begin{itemize}
     \item Users shall be able to submit a booking request for an active offer.
     \item The request in the providers perspective shall contain information as: (Project Brief)
-        \subitem booking dates
-        \subitem renter's name
-        \subitem rating
-        \subitem total price
+        \begin{itemize}
+            \item booking dates
+            \item renter's name
+            \item rating
+            \item total price
+    \end{itemize}
     \item The portal shall display a booking confirmation after a successful booking request. (Team)
     \item The provider shall receive a notification after a renter requested to book their camper van. (Customer)
     \item The provider shall also be able to accept or decline the booking request. (Customer)
@@ -124,17 +129,19 @@ If there has been a lot of changes and refining, it will be specified in a parag
 \paragraph{RQ5: Administration section}
 \begin{itemize}
     \item The operator shall be able to configure the following options via an administration section:
-        \subitem vehicle features
-        \subitem number of promoted offers shown on one search result page
-    \item
+        \begin{itemize}
+            \item vehicle features,
+            \item number of promoted offers shown on one search result page.
+        \end{itemize}
 \end{itemize}
 
 At the beginning, the customer said that it would be necessary for the operator to also configure the rental conditions.
-After one or two iteration this requirement changed, and the customer preferred to let the provider configure the rental conditions by themselves, so that the provider would be more flexible to indicate their own needs.
+After one or two iterations this requirement changed
+The customer preferred to let the provider configure the rental conditions by themselves, so that the provider would be more flexible to indicate their own needs.
 It came up in a PO meeting.
 This is a perfect example for a dynamic requirements change.
 Also, the configuration of the vehicle features was one requirement that we couldn't make on time.
-It had a lower priority, as the customer said it would not be mandatory, but they still wanted to have it.
+It had a lower priority, as the customer said it would not be mandatory, even though they still wanted to have it.
 We communicated it to the customer on time, and they were okay with us not implementing it.
 Regarding the number of promoted offers shown on one search result page, we also discussed with the customer our changing requirement.
 The reason why the customer wanted to have this feature, is because they wanted to prevent a search result page being filled with only promoted offers on the beginning if the position of the offer is being changed.
@@ -174,7 +181,7 @@ But in terms of complexity and time required, the FAQ requirement was easier and
 \end{itemize}
 
 \subsection{Non-Functional Requirements}
-Many of the non-functional requirements were gathered by using prototyping as an elicitation, and also validation, technique.
+Many of the non-functional requirements were gathered by using prototyping as a requirments' elicitation and validation technique.
 The prototype allowed us to get very specific requirement refinements from the customer, especially in the review meetings.
 This made the elicitation process to collect non-functional requirements much easier.
 
@@ -196,17 +203,20 @@ This made the elicitation process to collect non-functional requirements much ea
 To further specify our product we listed the constraints of the software.
 \subsubsection{Solution Constraints}
 \begin{itemize}
-    \item The portal's prototype shall run on a single-user PC with a JavaFX user interface. (Source: Client/Project Brief)
-    \item The portal's prototype shall interact with a MariaDB database. (Source: Client/Project Brief)
-    \item An administration section shall be developed for the portal's operator. (Source: Client/Project Brief)
+    \item The portal's prototype shall run on a single-user PC with a JavaFX user interface. (Client, Project Brief)
+    \item The portal's prototype shall interact with a MariaDB database. (Client, Project Brief)
+    \item An administration section shall be developed for the portal's operator. (Client, Project Brief)
 \end{itemize}
 \subsubsection{Project Constraints}
 \begin{itemize}
-    \item The portal's prototype shall be developed during 5 sprints with a sprint length of 2 weeks. (Source: Client/Project Brief)
-    \item The project shall be handed in on February, 9th at 12pm. (Source: Client/Project Brief)
+    \item The portal's prototype shall be developed during 5 sprints. (Client, Project Brief)
+    \item The project shall be handed in on February, 9th at 12pm. (Client, Project Brief)
 \end{itemize}
 \subsubsection{Process Constraints}
 \begin{itemize}
-    \item For version control the tool Git shall be used via GitLab repository. (Source: Client/Project Brief)
-    \item For documenting the source code JavaDoc shall be used. (Source: Client/Project Brief)
+    \item For version control the tool Git shall be used via GitLab repository. (Client, Project Brief)
+    \item For documenting the source code JavaDoc shall be used. (Client, Project Brief)
+    \item The development shall follow SCRUM as a development process with a sprint length of 2 weeks. (Client, Project Brief)
 \end{itemize}
+
+All in all, our requirements engineering process was very dynamic. The high priority requirements were done and the customer seemed to be satisfied with the final result, shown in the Review Meeting of our last sprint.
