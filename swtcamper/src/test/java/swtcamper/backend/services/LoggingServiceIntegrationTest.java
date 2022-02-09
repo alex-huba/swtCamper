@@ -1,9 +1,8 @@
 package swtcamper.backend.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +55,7 @@ public class LoggingServiceIntegrationTest {
     );
 
     assertEquals(1, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(0).getTime());
     assertEquals(
       LoggingLevel.INFO,
       loggingServiceUnterTest.getAllLogMessages().get(0).getLogLevel()
@@ -75,7 +74,7 @@ public class LoggingServiceIntegrationTest {
     );
 
     assertEquals(2, loggingServiceUnterTest.getAllLogMessages().size());
-    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(2).getTime());
+    assertNotNull(loggingServiceUnterTest.getAllLogMessages().get(1).getTime());
     assertEquals(
       LoggingLevel.WARNING,
       loggingServiceUnterTest.getAllLogMessages().get(1).getLogLevel()

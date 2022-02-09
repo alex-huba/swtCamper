@@ -1,12 +1,13 @@
 package swtcamper.backend.services;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.util.Pair;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;

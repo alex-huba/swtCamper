@@ -41,6 +41,8 @@ import swtcamper.backend.services.exceptions.UserDoesNotExistException;
 public class OfferViewController {
 
   private final SimpleBooleanProperty isRentingMode = new SimpleBooleanProperty();
+  private final LongStringConverter longStringConverter = new LongStringConverter();
+  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @FXML
   private HBox pictureHorizontHBox;
@@ -145,8 +147,6 @@ public class OfferViewController {
   private Button abortBookingRequestBtn;
 
   private OfferDTO viewedOffer;
-  private final LongStringConverter longStringConverter = new LongStringConverter();
-  private final DoubleStringConverter doubleStringConverter = new DoubleStringConverter();
 
   @Autowired
   private MainViewController mainViewController;
